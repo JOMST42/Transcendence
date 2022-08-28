@@ -1,0 +1,11 @@
+{
+  "folders": [
+	{
+		"path": "./transcendence-api"
+	},
+	{
+		"path": "./transcendence-spa"
+	}
+],
+  "settings": {}
+}
