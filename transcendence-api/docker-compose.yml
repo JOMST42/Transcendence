@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  dev-bd:
+    image: postgres:latest
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: ${DEV_DB_USER}
+      POSTGRES_PASSWORD: ${DEV_DB_PASSWORD}
+      POSTGRES_DB: ${DEV_DB_NAME}
+    networks:
+      - transcendence
+
+networks:
+  transcendence:

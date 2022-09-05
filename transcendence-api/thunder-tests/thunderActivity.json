@@ -26,5 +26,58 @@
     "headers": [],
     "params": [],
     "tests": []
+  },
+  {
+    "_id": "f95036a3-ab85-4828-b486-61d3b6c3e9d2",
+    "colId": "history",
+    "containerId": "",
+    "name": "http://localhost:3000/weather",
+    "url": "http://localhost:3000/weather/4",
+    "method": "DELETE",
+    "sortNum": 0,
+    "created": "2022-09-05T19:53:45.074Z",
+    "modified": "2022-09-05T21:03:31.849Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "formencoded",
+      "raw": "",
+      "form": [
+        {
+          "name": "value",
+          "value": "hello justine"
+        }
+      ]
+    },
+    "tests": []
+  },
+  {
+    "_id": "2d9b86a1-8300-47ee-962b-df9897746770",
+    "colId": "history",
+    "containerId": "",
+    "name": "http://localhost:3000/weather/5",
+    "url": "http://localhost:3000/weather/5",
+    "method": "PATCH",
+    "sortNum": 0,
+    "created": "2022-09-05T21:11:52.314Z",
+    "modified": "2022-09-05T21:21:29.842Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "formencoded",
+      "raw": "",
+      "form": [
+        {
+          "name": "value",
+          "value": "hello"
+        },
+        {
+          "name": "description",
+          "value": "test",
+          "isDisabled": true
+        }
+      ]
+    },
+    "tests": []
   }
 ]
