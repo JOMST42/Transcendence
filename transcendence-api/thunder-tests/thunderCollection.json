@@ -1,1 +1,16 @@
-[]
+[
+  {
+    "_id": "67f64b1a-ae96-4fb6-b682-1b9f9de83f2d",
+    "colName": "Weather",
+    "created": "2022-09-06T02:50:08.422Z",
+    "sortNum": 10000,
+    "folders": [],
+    "settings": {
+      "headers": [],
+      "tests": [],
+      "options": {
+        "baseUrl": "http://localhost:3000"
+      }
+    }
+  }
+]
