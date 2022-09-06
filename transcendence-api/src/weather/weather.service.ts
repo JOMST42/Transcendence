@@ -1,5 +1,5 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
-import { Weather } from '@prisma/client';
+import { Weather, PrismaPromise } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateWeatherDto, UpdateWeatherDto } from './dto';
 
@@ -7,11 +7,11 @@ import { CreateWeatherDto, UpdateWeatherDto } from './dto';
 export class WeatherService {
   constructor(private readonly prisma: PrismaService) {}
 
-  getWeather(): Promise<Weather[]> {
+  getWeather(): PrismaPromise<Weather[]> {
     return this.prisma.weather.findMany();
   }
 
-  getWeatherById(id: number): Promise<Weather | null> {
+  getWeatherById(id: number): PrismaPromise<Weather | null> {
     return this.prisma.weather.findUnique({
       where: {
         id,
@@ -19,13 +19,13 @@ export class WeatherService {
     });
   }
 
-  createWeather(dto: CreateWeatherDto): Promise<Weather> {
+  createWeather(dto: CreateWeatherDto): PrismaPromise<Weather> {
     return this.prisma.weather.create({
       data: dto,
     });
   }
 
-  deleteWeather(id: number): Promise<Weather> {
+  deleteWeather(id: number): PrismaPromise<Weather> {
     return this.prisma.weather.delete({
       where: {
         id,
@@ -33,7 +33,7 @@ export class WeatherService {
     });
   }
 
-  updateWeather(id: number, dto: UpdateWeatherDto): Promise<Weather> {
+  updateWeather(id: number, dto: UpdateWeatherDto): PrismaPromise<Weather> {
     const weather = this.prisma.weather.findUnique({
       where: {
         id,
