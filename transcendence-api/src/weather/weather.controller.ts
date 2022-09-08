@@ -18,7 +18,7 @@ import { WeatherService } from './weather.service';
 export class WeatherController {
   constructor(private readonly weatherService: WeatherService) {}
 
-  @Get('')
+  @Get()
   async getWeather(): Promise<Weather[]> {
     return await this.weatherService.getWeather();
   }
