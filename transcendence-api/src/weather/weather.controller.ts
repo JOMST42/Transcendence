@@ -11,6 +11,7 @@ import {
   Post,
 } from '@nestjs/common';
 import { Weather } from '@prisma/client';
+
 import { CreateWeatherDto, UpdateWeatherDto } from './dto';
 import { WeatherService } from './weather.service';
 
