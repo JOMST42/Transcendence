@@ -12,8 +12,8 @@ export class FtStrategy extends PassportStrategy(Strategy, '42') {
     config: ConfigService,
   ) {
     super({
-      clientID: config.get('API42_UID'),
-      clientSecret: config.get('API42_SECRET'),
+      clientID: config.get('FT_UID'),
+      clientSecret: config.get('FT_SECRET'),
       callbackURL: config.get('CALLBACK_URL'),
       scope: ['public'],
       profileFields: {
@@ -31,9 +31,12 @@ export class FtStrategy extends PassportStrategy(Strategy, '42') {
     refresh_token: string,
     profile: Profile,
   ): Promise<User | null> {
-    console.log(access_token);
-    console.log(refresh_token);
-    console.log(profile);
-    return await this.authService.validateUser(profile);
+    return await this.authService.validateUser({
+      username: profile.username,
+      displayName: profile.displayName,
+      firstName: profile.firstName,
+      lastName: profile.lastName,
+      email: profile.email,
+    });
   }
 }

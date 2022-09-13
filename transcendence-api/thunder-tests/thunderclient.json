@@ -4,11 +4,11 @@
     "colId": "67f64b1a-ae96-4fb6-b682-1b9f9de83f2d",
     "containerId": "",
     "name": "Get Weather",
-    "url": "",
+    "url": "scxvxv",
     "method": "GET",
     "sortNum": 10000,
     "created": "2022-09-06T02:50:22.912Z",
-    "modified": "2022-09-06T02:51:28.738Z",
+    "modified": "2022-09-12T18:08:27.643Z",
     "headers": [],
     "params": [],
     "tests": []

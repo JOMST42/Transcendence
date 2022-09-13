@@ -1,14 +1,20 @@
 import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import { JwtService } from '@nestjs/jwt';
 import { User } from '@prisma/client';
-import { Profile } from 'passport-42';
 import { PrismaService } from '../prisma/prisma.service';
+import { TokenPayload, UserDetails } from './auth.model';
 
 @Injectable()
 export class AuthService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly jwt: JwtService,
+    private readonly config: ConfigService,
+  ) {}
 
-  async validateUser(profile: Profile): Promise<User | null> {
-    const email = profile.email.slice();
+  async validateUser(details: UserDetails): Promise<User | null> {
+    const email = details.email.slice();
     const user = await this.prisma.user.findUnique({
       where: {
         email,
@@ -17,11 +23,12 @@ export class AuthService {
 
     // If found, update user
     if (user) {
-      delete profile.email;
+      delete details.email;
+      delete details.displayName;
       return await this.prisma.user.update({
         data: {
-          username: profile.username.toLowerCase(),
-          ...profile,
+          username: details.username.toLowerCase(),
+          ...details,
         },
         where: {
           email,
@@ -33,13 +40,20 @@ export class AuthService {
     try {
       return await this.prisma.user.create({
         data: {
-          username: profile.username.toLowerCase(),
-          ...profile,
+          username: details.username.toLowerCase(),
+          ...details,
         },
       });
     } catch (error) {
       console.log(error);
       return null;
     }
+  }
+
+  async signToken(payload: TokenPayload): Promise<string> {
+    return this.jwt.signAsync(
+      { ...payload },
+      { secret: this.config.get('JWT_SECRET') },
+    );
   }
 }

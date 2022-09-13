@@ -1,8 +1,13 @@
 import { Controller, Get, UseGuards } from '@nestjs/common';
+import { User } from '@prisma/client';
+import { AuthService } from './auth.service';
+import { GetUser } from './decorator';
 import { FtAuthGuard } from './guards';
 
 @Controller('auth')
 export class AuthController {
+  constructor(private readonly authService: AuthService) {}
+
   @Get('ft/login')
   @UseGuards(FtAuthGuard)
   handleLogin() {
@@ -11,7 +16,14 @@ export class AuthController {
 
   @Get('ft/callback')
   @UseGuards(FtAuthGuard)
-  handleCallback() {
-    return { msg: '42 callback' };
+  async handleCallback(
+    @GetUser() user: User,
+  ): Promise<{ access_token: string }> {
+    return {
+      access_token: await this.authService.signToken({
+        sub: user.id,
+        displayName: user.displayName,
+      }),
+    };
   }
 }

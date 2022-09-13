@@ -10,7 +10,8 @@ import {
   Patch,
   Post,
 } from '@nestjs/common';
-import { Weather } from '@prisma/client';
+import { User, Weather } from '@prisma/client';
+import { GetUser } from '../auth/decorator';
 
 import { CreateWeatherDto, UpdateWeatherDto } from './dto';
 import { WeatherService } from './weather.service';
@@ -20,7 +21,8 @@ export class WeatherController {
   constructor(private readonly weatherService: WeatherService) {}
 
   @Get()
-  async getWeather(): Promise<Weather[]> {
+  async getWeather(@GetUser() user: User): Promise<Weather[]> {
+    console.log(user);
     return await this.weatherService.getWeather();
   }
 
