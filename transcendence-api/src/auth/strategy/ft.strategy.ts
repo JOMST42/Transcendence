@@ -3,6 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 import { User } from '@prisma/client';
 import { Profile, Strategy } from 'passport-42';
+
 import { AuthService } from '../auth.service';
 
 @Injectable()

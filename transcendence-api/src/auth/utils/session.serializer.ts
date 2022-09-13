@@ -1,7 +1,7 @@
 import { PassportSerializer } from '@nestjs/passport';
 import { User } from '@prisma/client';
 
-import { UserService } from '../user/user.service';
+import { UserService } from '../../user/user.service';
 
 export class SessionSerializer extends PassportSerializer {
   constructor(private readonly userService: UserService) {

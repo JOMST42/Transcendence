@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
+import { JwtModule } from '@nestjs/jwt';
 
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { FtStrategy, JwtStrategy } from './strategy';
-import { SessionSerializer } from './session.serializer';
-import { JwtModule } from '@nestjs/jwt';
+import { SessionSerializer } from './utils/session.serializer';
 import { UserModule } from '../user/user.module';
 
 @Module({
