@@ -1,4 +1,4 @@
 export const cookieConstants = {
-  maxAge: 15,
+  maxAge: 60000,
   httpOnly: true,
 };
