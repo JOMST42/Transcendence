@@ -5,18 +5,19 @@ import * as session from 'express-session';
 import * as passport from 'passport';
 
 import { AppModule } from './app.module';
+import { cookieConstants } from './auth/utils/auth.constants';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
   app.setGlobalPrefix('api');
+  const configService = app.get(ConfigService);
+
   app.enableCors({
-    origin: 'http://localhost:4200',
+    origin: configService.get('CLIENT_URL'),
     methods: '*',
     allowedHeaders: '*',
   });
-
-  const configService = app.get(ConfigService);
 
   app.use(
     session({
@@ -24,8 +25,8 @@ async function bootstrap() {
       saveUninitialized: false,
       resave: false,
       cookie: {
-        maxAge: 15,
-        httpOnly: true,
+        maxAge: cookieConstants.maxAge,
+        httpOnly: cookieConstants.httpOnly,
       },
     }),
   );
