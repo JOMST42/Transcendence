@@ -1,5 +1,6 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { Weather } from '@prisma/client';
+
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateWeatherDto, UpdateWeatherDto } from './dto';
 
