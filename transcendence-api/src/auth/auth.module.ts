@@ -4,8 +4,8 @@ import { JwtModule } from '@nestjs/jwt';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { FtStrategy, JwtStrategy } from './strategy';
-import { SessionSerializer } from './utils/session.serializer';
 import { UserModule } from '../user/user.module';
+import { SessionSerializer } from './utils';
 
 @Module({
   imports: [JwtModule.register({}), UserModule],

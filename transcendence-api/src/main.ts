@@ -5,7 +5,7 @@ import * as session from 'express-session';
 import * as passport from 'passport';
 
 import { AppModule } from './app.module';
-import { cookieConstants } from './auth/utils/auth.constants';
+import { cookieConstants } from './auth/utils';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);

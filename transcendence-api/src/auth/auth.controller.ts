@@ -13,7 +13,7 @@ import { Response } from 'express';
 import { AuthService } from './auth.service';
 import { GetUser } from './decorator';
 import { FtAuthGuard } from './guards';
-import { cookieConstants } from './utils/auth.constants';
+import { cookieConstants } from './utils';
 
 @Controller('auth')
 export class AuthController {
@@ -41,7 +41,7 @@ export class AuthController {
         sub: user.id,
         displayName: user.displayName,
       }),
-      { maxAge: cookieConstants.maxAge, httpOnly: cookieConstants.httpOnly },
+      { maxAge: cookieConstants.maxAge },
     );
     response.redirect(this.config.get('CLIENT_URL'));
   }
