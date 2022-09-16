@@ -8,5 +8,4 @@ export class UserDetails {
 
 export class TokenPayload {
   sub: number;
-  displayName: string;
 }

@@ -39,7 +39,6 @@ export class AuthController {
       'access_token',
       await this.authService.signToken({
         sub: user.id,
-        displayName: user.displayName,
       }),
       { maxAge: cookieConstants.maxAge, httpOnly: cookieConstants.httpOnly },
     );
