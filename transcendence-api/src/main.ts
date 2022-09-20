@@ -18,6 +18,7 @@ async function bootstrap() {
     origin: configService.get('CLIENT_URL'),
     methods: '*',
     allowedHeaders: '*',
+    credentials: true,
   });
 
   app.use(

@@ -10,4 +10,12 @@ export class HomeComponent implements OnInit {
   constructor(private readonly auth: AuthService) {}
 
   ngOnInit(): void {}
+
+  test() {
+    this.auth.refreshToken().subscribe({
+      next: (res) => {
+        console.log(res);
+      },
+    });
+  }
 }

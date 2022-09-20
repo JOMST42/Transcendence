@@ -11,17 +11,17 @@ export class BaseApiService {
 
   constructor(private readonly http: HttpClient) {}
 
-  getById<T>(path: string, params?: HttpParams): Observable<T> {
-    return this.http.get<T>(
-      this.baseApi + path,
-      params ? { params } : undefined
-    );
+  getOne<T>(path: string, params?: HttpParams): Observable<T> {
+    return this.http.get<T>(this.baseApi + path, {
+      params,
+      withCredentials: true,
+    });
   }
 
   getMany<T>(path: string, params?: HttpParams): Observable<T[]> {
-    return this.http.get<T[]>(
-      this.baseApi + path,
-      params ? { params } : undefined
-    );
+    return this.http.get<T[]>(this.baseApi + path, {
+      params,
+      withCredentials: true,
+    });
   }
 }
