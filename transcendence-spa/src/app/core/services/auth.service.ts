@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { Observable, ReplaySubject, take, switchMap, map } from 'rxjs';
 
 import { User } from '../../shared/models';
 import { BaseApiService } from './base-api.service';
+import { JwtService } from './jwt.service';
 import { UserService } from './user.service';
 
 @Injectable({
@@ -18,7 +18,7 @@ export class AuthService {
     private readonly baseApiService: BaseApiService,
     private readonly cookieService: CookieService,
     private readonly userService: UserService,
-    private readonly router: Router
+    private readonly jwtService: JwtService
   ) {}
 
   refreshToken(): Observable<void> {
@@ -30,11 +30,19 @@ export class AuthService {
   }
 
   login(): Observable<User | null> {
-    const token = this.cookieService.get('refresh_token');
+    const token =
+      localStorage.getItem('token') || this.cookieService.get('refresh_token');
     if (!token) {
       console.log('No refresh token');
       return this.user$;
     }
+
+    if (this.jwtService.isExpired(token)) {
+      this.logout();
+      return this.user$;
+    }
+
+    this.cookieService.set('refresh_token', token);
 
     return this.refreshToken().pipe(
       take(1),
