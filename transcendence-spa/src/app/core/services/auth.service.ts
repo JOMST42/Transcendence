@@ -49,6 +49,7 @@ export class AuthService {
       switchMap(() => {
         const newToken = this.cookieService.get('refresh_token');
         localStorage.setItem('token', newToken);
+        this.cookieService.delete('refresh_token');
         return this.userService.getProfile();
       }),
       map((user: User) => {
