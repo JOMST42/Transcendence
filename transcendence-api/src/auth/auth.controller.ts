@@ -13,7 +13,7 @@ import { Response } from 'express';
 import { AuthService } from './auth.service';
 import { GetUser } from './decorator';
 import { FtAuthGuard } from './guards';
-import { cookieConstants } from './utils/auth.constants';
+import { cookieConstants } from '../constants';
 
 @Controller('auth')
 export class AuthController {
@@ -39,7 +39,6 @@ export class AuthController {
       'access_token',
       await this.authService.signToken({
         sub: user.id,
-        displayName: user.displayName,
       }),
       { maxAge: cookieConstants.maxAge, httpOnly: cookieConstants.httpOnly },
     );

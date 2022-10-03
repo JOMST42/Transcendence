@@ -2,8 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { User } from '@prisma/client';
+import { jwtTokenConstants } from '../constants';
+
 import { PrismaService } from '../prisma/prisma.service';
-import { TokenPayload, UserDetails } from './utils/auth.model';
+import { TokenPayload, UserDetails } from './utils';
 
 @Injectable()
 export class AuthService {
@@ -53,7 +55,10 @@ export class AuthService {
   async signToken(payload: TokenPayload): Promise<string> {
     return this.jwt.signAsync(
       { ...payload },
-      { secret: this.config.get('JWT_SECRET') },
+      {
+        secret: this.config.get('JWT_SECRET'),
+        expiresIn: jwtTokenConstants.accessToken.expiresIn,
+      },
     );
   }
 }

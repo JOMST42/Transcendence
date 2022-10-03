@@ -1,8 +1,10 @@
+import { Injectable } from '@nestjs/common';
 import { PassportSerializer } from '@nestjs/passport';
 import { User } from '@prisma/client';
 
 import { UserService } from '../../user/user.service';
 
+@Injectable()
 export class SessionSerializer extends PassportSerializer {
   constructor(private readonly userService: UserService) {
     super();
@@ -10,16 +12,12 @@ export class SessionSerializer extends PassportSerializer {
 
   // eslint-disable-next-line @typescript-eslint/ban-types
   serializeUser(user: User, done: Function) {
-    console.log(user);
-
     done(null, user);
   }
 
   // eslint-disable-next-line @typescript-eslint/ban-types
   async deserializeUser(payload: any, done: Function) {
-    console.log(payload);
-    const user = await this.userService.findUser(payload.id);
-    console.log(user);
+    const user = await this.userService.getUserById(payload.id);
     return done(null, user);
   }
 }

@@ -9,9 +9,11 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  UseGuards,
 } from '@nestjs/common';
 import { User, Weather } from '@prisma/client';
 import { GetUser } from '../auth/decorator';
+import { JwtGuard } from '../auth/guards';
 
 import { CreateWeatherDto, UpdateWeatherDto } from './dto';
 import { WeatherService } from './weather.service';
@@ -21,6 +23,7 @@ export class WeatherController {
   constructor(private readonly weatherService: WeatherService) {}
 
   @Get()
+  @UseGuards(JwtGuard)
   async getWeather(@GetUser() user: User): Promise<Weather[]> {
     console.log(user);
     return await this.weatherService.getWeather();
