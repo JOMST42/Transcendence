@@ -9,6 +9,6 @@ export const jwtTokenConstants = {
     expiresIn: '15m',
   },
   refreshToken: {
-    expiresIn: '2d',
+    expiresIn: '1d',
   },
 };
