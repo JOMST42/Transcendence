@@ -50,5 +50,17 @@
       ]
     },
     "tests": []
+  },
+  {
+    "_id": "6f9e468e-5cd4-4258-8cd8-575f6a4f2d29",
+    "colId": "886984b4-4970-481e-ac92-7096b494b57d",
+    "containerId": "",
+    "name": "Refresh Token",
+    "url": "",
+    "method": "GET",
+    "sortNum": 10000,
+    "created": "2022-09-20T19:09:02.731Z",
+    "modified": "2022-09-20T19:09:02.731Z",
+    "headers": []
   }
 ]
