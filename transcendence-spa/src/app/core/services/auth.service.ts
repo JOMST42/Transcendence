@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
+import { JwtHelperService } from '@auth0/angular-jwt';
 import { CookieService } from 'ngx-cookie-service';
 import { Observable, ReplaySubject, take, switchMap, map } from 'rxjs';
 
 import { User } from '../../shared/models';
-import { BaseApiService } from './base-api.service';
-import { JwtService } from './jwt.service';
 import { UserService } from './user.service';
 
 @Injectable({
@@ -15,15 +14,10 @@ export class AuthService {
   private user$ = this.userSubject.asObservable();
 
   constructor(
-    private readonly baseApiService: BaseApiService,
     private readonly cookieService: CookieService,
     private readonly userService: UserService,
-    private readonly jwtService: JwtService
+    private readonly jwtService: JwtHelperService
   ) {}
-
-  refreshToken(): Observable<void> {
-    return this.baseApiService.getOne('/auth/refresh-token');
-  }
 
   getCurrentUser(): Observable<User | null> {
     return this.user$;
@@ -31,27 +25,24 @@ export class AuthService {
 
   login(): Observable<User | null> {
     const token =
-      localStorage.getItem('token') || this.cookieService.get('refresh_token');
+      this.cookieService.get('access_token') ||
+      localStorage.getItem('access_token');
+
     if (!token) {
-      console.log('No refresh token');
+      console.log('No access token');
       return this.user$;
     }
 
-    if (this.jwtService.isExpired(token)) {
+    if (this.jwtService.isTokenExpired(token)) {
       this.logout();
       return this.user$;
     }
 
-    this.cookieService.set('refresh_token', token);
+    localStorage.setItem('access_token', token);
+    this.cookieService.delete('access_token');
 
-    return this.refreshToken().pipe(
+    return this.userService.getProfile().pipe(
       take(1),
-      switchMap(() => {
-        const newToken = this.cookieService.get('refresh_token');
-        localStorage.setItem('token', newToken);
-        this.cookieService.delete('refresh_token');
-        return this.userService.getProfile();
-      }),
       map((user: User) => {
         this.userSubject.next(user);
         return user;
@@ -61,8 +52,7 @@ export class AuthService {
 
   logout(): void {
     this.cookieService.delete('access_token');
-    this.cookieService.delete('refresh_token');
     this.userSubject.next(null);
-    localStorage.removeItem('token');
+    localStorage.removeItem('access_token');
   }
 }

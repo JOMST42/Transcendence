@@ -12,6 +12,10 @@ const routes: Routes = [
     loadChildren: () => import('./user/user.module').then((m) => m.UserModule),
   },
   {
+    path: 'chat',
+    loadChildren: () => import('./chat/chat.module').then((m) => m.ChatModule),
+  },
+  {
     path: 'server-error',
     component: ServerErrorComponent,
   },

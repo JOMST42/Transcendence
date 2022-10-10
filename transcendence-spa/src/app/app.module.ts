@@ -7,6 +7,7 @@ import { SocketIoConfig, SocketIoModule } from 'ngx-socket-io';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CoreModule } from './core';
+import { CredentialsInterceptor } from './core/interceptors/credentials.interceptor';
 import { ErrorInterceptor } from './core/interceptors/error.interceptor';
 
 const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
@@ -21,6 +22,11 @@ const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
     SocketIoModule.forRoot(config),
   ],
   providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: CredentialsInterceptor,
+      multi: true,
+    },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: ErrorInterceptor,

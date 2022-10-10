@@ -61,14 +61,4 @@ export class AuthService {
       },
     );
   }
-
-  async getRefreshToken(payload: TokenPayload): Promise<string> {
-    return this.jwt.signAsync(
-      { ...payload },
-      {
-        secret: this.config.get('REFRESH_SECRET'),
-        expiresIn: jwtTokenConstants.refreshToken.expiresIn,
-      },
-    );
-  }
 }

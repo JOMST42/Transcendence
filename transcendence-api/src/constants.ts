@@ -6,9 +6,6 @@ export const cookieConstants = {
 
 export const jwtTokenConstants = {
   accessToken: {
-    expiresIn: '15m',
-  },
-  refreshToken: {
     expiresIn: '1d',
   },
 };

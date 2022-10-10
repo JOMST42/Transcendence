@@ -14,14 +14,12 @@ export class BaseApiService {
   getOne<T>(path: string, params?: HttpParams): Observable<T> {
     return this.http.get<T>(this.baseApi + path, {
       params,
-      withCredentials: true,
     });
   }
 
   getMany<T>(path: string, params?: HttpParams): Observable<T[]> {
     return this.http.get<T[]>(this.baseApi + path, {
       params,
-      withCredentials: true,
     });
   }
 }
