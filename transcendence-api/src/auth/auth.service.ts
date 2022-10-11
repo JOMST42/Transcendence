@@ -61,4 +61,10 @@ export class AuthService {
       },
     );
   }
+
+  async decodeToken(token: string): Promise<TokenPayload> {
+    return this.jwt.verifyAsync(token, {
+      secret: this.config.get('JWT_SECRET'),
+    });
+  }
 }

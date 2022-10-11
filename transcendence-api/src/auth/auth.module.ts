@@ -11,5 +11,6 @@ import { SessionSerializer } from './utils';
   imports: [JwtModule.register({}), UserModule],
   providers: [AuthService, FtStrategy, JwtStrategy, SessionSerializer],
   controllers: [AuthController],
+  exports: [AuthService],
 })
 export class AuthModule {}

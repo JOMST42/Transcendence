@@ -9,9 +9,6 @@ import { AppComponent } from './app.component';
 import { CoreModule } from './core';
 import { CredentialsInterceptor } from './core/interceptors/credentials.interceptor';
 import { ErrorInterceptor } from './core/interceptors/error.interceptor';
-
-const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
-
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -19,7 +16,6 @@ const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
     BrowserModule,
     BrowserAnimationsModule,
     CoreModule,
-    SocketIoModule.forRoot(config),
   ],
   providers: [
     {
