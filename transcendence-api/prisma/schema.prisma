@@ -29,8 +29,36 @@ model User {
   firstName   String
   lastName    String
 
+  rooms UserRoom[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@map("users")
+}
+
+model Room {
+  id   Int    @id @default(autoincrement())
+  name String
+
+  users UserRoom[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("rooms")
+}
+
+model UserRoom {
+  user   User @relation(fields: [userId], references: [id])
+  userId Int
+  room   Room @relation(fields: [roomId], references: [id])
+  roomId Int
+
+  isOwner Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@id([userId, roomId])
 }
