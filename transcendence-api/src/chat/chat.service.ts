@@ -1,10 +1,11 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { PrismaClient, Room } from '@prisma/client';
+import { Room } from '@prisma/client';
+import { PrismaService } from '../prisma/prisma.service';
 import { CreateRoomDto } from './dto';
 
 @Injectable()
 export class ChatService {
-  constructor(private readonly prisma: PrismaClient) {}
+  constructor(private readonly prisma: PrismaService) {}
 
   async createRoom(dto: CreateRoomDto): Promise<Room> {
     const owner = await this.prisma.user.findUnique({
@@ -17,7 +18,7 @@ export class ChatService {
       throw new BadRequestException("Room owner doesn't exist");
     }
 
-    const room = await this.prisma.room.create({
+    return this.prisma.room.create({
       data: {
         name: dto.name,
         users: {
@@ -25,11 +26,9 @@ export class ChatService {
         },
       },
     });
-
-    return room;
   }
 
-  async getRoomsForUser(userId): Promise<Room[]> {
+  async getRoomsForUser(userId: number): Promise<Room[]> {
     return this.prisma.room.findMany({
       where: { users: { some: { userId } } },
     });
