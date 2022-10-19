@@ -7,10 +7,10 @@ import { CreateRoomDto } from './dto';
 export class ChatService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async createRoom(dto: CreateRoomDto): Promise<Room> {
+  async createRoom(dto: CreateRoomDto, ownerId: number): Promise<Room> {
     const owner = await this.prisma.user.findUnique({
       where: {
-        id: dto.ownerId,
+        id: ownerId,
       },
     });
 
@@ -22,7 +22,7 @@ export class ChatService {
       data: {
         name: dto.name,
         users: {
-          create: [{ isOwner: true, user: { connect: owner.id } }],
+          create: [{ isOwner: true, user: { connect: { id: owner.id } } }],
         },
       },
     });

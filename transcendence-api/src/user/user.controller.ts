@@ -12,8 +12,6 @@ export class UserController {
   @UseGuards(JwtGuard)
   @Get('me')
   async getMe(@GetUser() user: User): Promise<User> {
-    delete user.createdAt;
-    delete user.updatedAt;
     return user;
   }
 }
