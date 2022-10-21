@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { Room } from '@prisma/client';
+import { Room, UserRoom } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateRoomDto } from './dto';
 
@@ -32,5 +32,9 @@ export class ChatService {
     return this.prisma.room.findMany({
       where: { users: { some: { userId } } },
     });
+  }
+
+  async addUserToRoom(userId: number, roomId: number): Promise<UserRoom> {
+    return this.prisma.userRoom.create({ data: { userId, roomId } });
   }
 }

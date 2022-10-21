@@ -2,12 +2,16 @@ import { Injectable } from '@angular/core';
 import { Socket } from 'ngx-socket-io';
 import { Observable, of } from 'rxjs';
 import { Room } from '../../shared/models';
+import { ToastService } from './toast.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ChatService {
-  constructor(private socket: Socket) {}
+  constructor(
+    private socket: Socket,
+    private readonly toastService: ToastService
+  ) {}
 
   sendMessage() {}
 
@@ -19,13 +23,8 @@ export class ChatService {
     return this.socket.fromEvent<Room[]>('rooms');
   }
 
-  createRoom() {
-    const room: Room = {
-      name: 'test',
-      users: [{ id: 1 }],
-    };
-
+  createRoom(room: Room) {
     this.socket.emit('createRoom', room);
-    0;
+    this.toastService.showSuccess('Success', `Room ${room.name} created`);
   }
 }
