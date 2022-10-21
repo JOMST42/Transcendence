@@ -5,6 +5,7 @@ declare module 'passport-42' {
     firstName: string;
     lastName: string;
     email: string;
+    avatarUrl: string;
     provider: string;
     _raw: string;
     _json: string;

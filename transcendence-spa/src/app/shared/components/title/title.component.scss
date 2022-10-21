@@ -1,0 +1,74 @@
+
+
+@font-face {
+
+	// font-family: "PowerRangers";
+	// src: local("PowerRangers"), url(../../../../assets/fonts/powerRangers.ttf);
+
+	font-family: "Monoton";
+	src: local("Monoton"), url(../../../../assets/fonts/Monoton.ttf);
+}
+
+.glow {
+
+// 	background: #FFB76B;
+// background: linear-gradient(to right, #FFB76B 0%, #FFA73D 30%, #FF7C00 60%, #FF7F04 100%);
+// background-clip: text;
+// -webkit-text-fill-color: transparent;
+// 	// color: orange;
+	font-weight: 50;
+
+	// font-family: "Monoton";
+	// font-size: 82px;
+//
+	font-family: "PowerRangers";
+	font-size: 482px;
+
+	// text-transform: uppercase;
+
+  	// text-shadow: 1px 1px 0px #474445,
+	// 	1px 1px 0px #4f4c4c,
+	// 	1px 1px 0px #201d1e,
+	// 	1px 1px 0px #d6cacc;
+
+	color: #aef033;
+  	// background-image: -webkit-linear-gradient(0deg, yellowgreen 0%, #e03ed0 100%);
+  	// background-clip: text;
+  	// -webkit-background-clip: text;
+  	// text-fill-color: transparent;
+  	// -webkit-text-fill-color: transparent;
+
+
+	  	// color: #ededed;
+		// background-image: -webkit-linear-gradient(0deg, yellowgreen 0%, #e03ed0 100%);
+		// background-clip: text;
+		// -webkit-background-clip: text;
+		// text-fill-color: transparent;
+		// -webkit-text-fill-color: transparent;
+
+		// -webkit-animation: glow 1s ease-in-out infinite alternate;
+		// -moz-animation: glow 1s ease-in-out infinite alternate;
+
+		// animation: glow 1s ease-in-out  infinite alternate;
+
+		text-shadow:
+    		0 0 7px #fff,
+    		0 0 10px #fff,
+    		0 0 21px #fff,
+    		0 0 42px #e60073,
+    		0 0 82px #e60073,
+    		0 0 92px #e60073,
+    		0 0 102px #e60073,
+    		0 0 151px #e60073;
+
+}
+
+// @keyframes glow {
+// 	from {
+// 	  text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #e60073, 0 0 40px #e60073, 0 0 50px #e60073, 0 0 60px #e60073, 0 0 70px #e60073;
+// 	}
+
+// 	to {
+// 	  text-shadow: 0 0 20px #fff, 0 0 30px #ff4da6, 0 0 40px #ff4da6, 0 0 50px #ff4da6, 0 0 60px #ff4da6, 0 0 70px #ff4da6, 0 0 80px #ff4da6;
+// 	}
+// }

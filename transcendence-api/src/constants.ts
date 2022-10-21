@@ -9,3 +9,5 @@ export const jwtTokenConstants = {
     expiresIn: '1d',
   },
 };
+
+export const CLOUDINARY = 'Cloudinary';

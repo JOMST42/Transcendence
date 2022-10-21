@@ -22,12 +22,13 @@ model Weather {
 }
 
 model User {
-  id          Int    @id @default(autoincrement())
-  username    String @unique
-  email       String @unique
+  id          Int     @id @default(autoincrement())
+  username    String  @unique
+  email       String  @unique
   displayName String
   firstName   String
   lastName    String
+  avatarUrl   String?
 
   rooms UserRoom[]
 

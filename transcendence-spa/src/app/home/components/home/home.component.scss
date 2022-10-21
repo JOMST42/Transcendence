@@ -1,0 +1,95 @@
+@font-face {
+	// src: "/Users/olabrecq/Project/Transcendence/transcendence-spa/font/NotoSansJP-Black.otf";
+	font-family: "PowerRangers";
+	src: local("PowerRangers"), url(../../../assets/fonts/powerRangers.ttf);
+}
+
+#title-section {
+	padding-left: 60px;
+	padding-bottom: 70px;
+	position: relative;
+	top: -00px;
+	// margin-bottom: 20%;
+	// padding-left: 80px;
+	// margin-left: auto;
+	// margin-right: auto;
+	text-align: center;
+}
+
+#container {
+	padding: 0;
+	margin: 0;
+	// background-color: greenyellow;
+	// min-height: 50%;
+	// position: relative;
+}
+
+#log-section {
+	margin: auto;
+  	position: absolute;
+  	top: 70%;
+	left: 50%;
+  	-ms-transform: translateY(-50%);
+  	transform: translateY(-50%);
+}
+
+p {
+	font-family: PowerRangers;
+	font-weight: 30;
+	font-size: 40px;
+	text-align: center;
+	margin-top: 200px;
+}
+
+// button {
+
+// 	text-align: center;
+// 	color: #ededed;
+// 	background-color: orange;
+// 	// position: absolute;
+// 	margin: 0;
+// 	top: 50%;
+
+// }
+
+
+
+.btn-grad {
+	// background-image: linear-gradient(to right, #FEAC5E 0%, #C779D0  51%, #FEAC5E  100%);
+	background-image: -webkit-linear-gradient(0deg, #9bd62c 0%, #e83990  0%, #e60073  100%);
+	margin: 10px;
+	padding: 15px 45px;
+	text-align: center;
+	text-transform: uppercase;
+	transition: 0.5s;
+	background-size: 200% auto;
+	color: white;
+	box-shadow: 0 0 20px #9bd62c;
+	border-radius: 10px;
+	display: block;
+	font-family: Monoton;
+	// font-family: PowerRangers;
+	font-weight: 50;
+	letter-spacing: 4px;
+
+// 	text-shadow:
+//     		0 0 7px #fff,
+//     		0 0 10px #fff,
+//     		0 0 21px #fff,
+//     		0 0 42px #e60073,
+//     		0 0 82px #e60073,
+//     		0 0 92px #e60073,
+//     		0 0 102px #e60073,
+//     		0 0 151px #e60073;
+  }
+
+  .btn-grad:hover {
+	background-image: -webkit-linear-gradient(0deg, #e60073 0%, #9bd62c  0%, #8ed903  100%);
+	background-position: right center; /* change the direction of the change here */
+	color: #fff;
+	text-decoration: none;
+	box-shadow: 0 0 20px #e60073;
+
+  }
+
+//   background-image: -webkit-linear-gradient(0deg, yellowgreen 0%, #e03ed0 100%);

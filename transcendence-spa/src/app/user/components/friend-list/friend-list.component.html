@@ -1,0 +1,37 @@
+<ul id="friend-list">
+  <li class="friend">
+    <img src="/assets/image/blueranger.jpg" />
+    <div class="name">Blue</div>
+  </li>
+  <li class="friend">
+    <img src="/assets/image/greenranger.jpg" />
+    <div class="name">Green</div>
+  </li>
+  <li class="friend">
+    <a [routerLink]="['/users/jbadia']">
+      <img src="/assets/image/pinkranger.jpg" />
+    </a>
+    <div class="name">
+      <a [routerLink]="['/users/jbadia']"> Pink </a>
+      <button
+        pButton
+        pRipple
+        type="button"
+        icon="pi pi-times"
+        class="ban-button p-button-rounded p-button-danger p-button-outlined"
+      ></button>
+    </div>
+  </li>
+  <li class="friend">
+    <img src="/assets/image/red-ranger.jpg" />
+    <div class="name">Red</div>
+  </li>
+  <li class="friend">
+    <img src="/assets/image/yellow-ranger.jpg" />
+    <div class="name">Yellow</div>
+  </li>
+  <li class="friend">
+    <img src="/assets/image/gabball.png" />
+    <div class="name">Gab Ball</div>
+  </li>
+</ul>

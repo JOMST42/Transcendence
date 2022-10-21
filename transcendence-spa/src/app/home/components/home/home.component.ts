@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../../../core/services';
+import { UserService } from 'src/app/core/services/user.service';
+import { User } from 'src/app/shared/models/user.model';
 
 @Component({
   selector: 'app-home',
@@ -7,11 +8,26 @@ import { AuthService } from '../../../core/services';
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit {
-  constructor(private readonly authService: AuthService) {}
+  user!: User;
 
-  ngOnInit(): void {}
+  constructor(private readonly userService: UserService) {}
 
-  test(): void {
-    this.authService.login();
+  handleClick() {
+    window.location.href = 'http://localhost:3000/api/auth/ft/login';
+  }
+
+  ngOnInit(): void {
+    this.getUser();
+  }
+
+  getUser() {
+    this.userService.getProfile().subscribe({
+      next: (user: User) => {
+        this.user = user;
+      },
+      error: (err) => {
+        console.log(err);
+      },
+    });
   }
 }
