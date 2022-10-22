@@ -1,3 +1,4 @@
+import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -20,5 +21,11 @@ export class UserService {
 
   getProfile(): Observable<User> {
     return this.baseApiService.getOne('/users/me');
+  }
+
+  findByDisplayName(displayName: string): Observable<User[]> {
+    const params = new HttpParams();
+    params.append('displayName', displayName);
+    return this.baseApiService.getMany('/users', params);
   }
 }

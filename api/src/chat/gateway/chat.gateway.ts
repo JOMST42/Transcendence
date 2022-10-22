@@ -27,6 +27,11 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     private readonly chatService: ChatService,
   ) {}
 
+  private disconnect(socket: Socket): void {
+    socket.emit('Error', new UnauthorizedException());
+    socket.disconnect();
+  }
+
   handleDisconnect(socket: Socket): void {
     console.log('Disconnect');
   }
@@ -52,18 +57,13 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     }
   }
 
-  @SubscribeMessage('message')
-  handleMessage(client: any, payload: any): string {
-    return 'Hello world!';
-  }
-
-  private disconnect(socket: Socket): void {
-    socket.emit('Error', new UnauthorizedException());
-    socket.disconnect();
-  }
-
   @SubscribeMessage('createRoom')
   async onCreateRoom(socket: Socket, room: CreateRoomDto): Promise<Room> {
     return this.chatService.createRoom(room, socket.data.user.id);
+  }
+
+  @SubscribeMessage('joinRoom')
+  async onJoinRoom(socket: Socket, roomId: number): Promise<Room> {
+    return this.chatService.addUserToRoom(socket.data.user.id, roomId);
   }
 }

@@ -34,7 +34,8 @@ export class ChatService {
     });
   }
 
-  async addUserToRoom(userId: number, roomId: number): Promise<UserRoom> {
-    return this.prisma.userRoom.create({ data: { userId, roomId } });
+  async addUserToRoom(userId: number, roomId: number): Promise<Room> {
+    await this.prisma.userRoom.create({ data: { userId, roomId } });
+    return this.prisma.room.findUnique({ where: { id: roomId } });
   }
 }
