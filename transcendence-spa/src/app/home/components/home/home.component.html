@@ -1,17 +1,21 @@
-<div id="container">
-  <div id="title-section">
-    <!-- <app-title></app-title> -->
+<section class="home-page" id="home">
+  <div class="card">
+    <div class="flex flex-column card-container">
+      <div class="title flex align-items-center justify-content-center m-2">
+        <h1 class="title"><span>!Transcendence!</span></h1>
+      </div>
+      <div class="flex align-items-center justify-content-center m-2">
+        <button
+          class="btn-grad"
+          pButton
+          type="button"
+          label="LOGIN"
+          (click)="handleClick()"
+        ></button>
+      </div>
+      <div class="fm-2">
+        <div class="ball"></div>
+      </div>
+    </div>
   </div>
-  <div id="log-section">
-    <!-- <p>login</p> -->
-    <button
-      class="btn-grad"
-      pButton
-      type="button"
-      label="LOGIN"
-      (click)="handleClick()"
-    ></button>
-  </div>
-</div>
-<p>{{ user?.displayName }}</p>
-<div><img src="{{ user?.avatarUrl }}" /></div>
+</section>

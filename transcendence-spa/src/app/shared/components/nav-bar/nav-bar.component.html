@@ -1,3 +1,56 @@
+<aside class="sidebar">
+  <!-- <div #ballWrap id="ball-wrapper" [@ballMove]="{value: selection, params: { topeBall: topBall, lefteBall: leftBall }}"> -->
+  <div #ballWrap id="ball-wrapper">
+    <!-- <div #ball class="ball" [ngStyle]="{'display':displayBall, 'top':topBall+'px', 'left':leftBall+'px'}"></div> -->
+    <!-- <div #ball class="ball" [ngStyle]="{'display':displayBall}" [@ballTest]="toggle"></div> -->
+    <div
+      #ball
+      class="ball"
+      [@ballMove]="{
+        value: selection,
+        params: { topBall: topBall, leftBall: leftBall }
+      }"
+    ></div>
+  </div>
+  <nav class="nav">
+    <ul>
+      <li
+        (mouseover)="select($any($event.target))"
+        (mouseout)="unselect($any($event.target))"
+        routerLink="/play"
+      >
+        <a>Play</a>
+      </li>
+      <li
+        (mouseover)="select($any($event.target))"
+        (mouseout)="unselect($any($event.target))"
+        routerLink="/watch"
+      >
+        <a>Watch</a>
+      </li>
+      <li
+        (mouseover)="select($any($event.target))"
+        (mouseout)="unselect($any($event.target))"
+        routerLink="/users"
+      >
+        <a>Users</a>
+      </li>
+      <li
+        (mouseover)="select($any($event.target))"
+        (mouseout)="unselect($any($event.target))"
+      >
+        <a routerLink="/stats">Stats</a>
+      </li>
+      <li
+        (mouseover)="select($any($event.target))"
+        (mouseout)="unselect($any($event.target))"
+      >
+        <a href="#">Settings</a>
+      </li>
+    </ul>
+  </nav>
+</aside>
+
 <!-- <div class="navbar_all">
 	<div class="container-nav">
 		<div class="navbar-header">
@@ -16,7 +69,7 @@
 <!-- <section class="tilte">
   <h1>TRANSCENDENCE</h1>
 </section> -->
-
+<!--
 <nav>
   <ul>
     <li>
@@ -51,4 +104,4 @@
       </div>
     </li>
   </ul>
-</nav>
+</nav> -->
