@@ -62,4 +62,5 @@ model UserRoom {
   updatedAt DateTime @updatedAt
 
   @@id([userId, roomId])
+  @@map("user_rooms")
 }
