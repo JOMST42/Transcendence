@@ -16,6 +16,7 @@ import { CreateRoomDto } from '../dto';
 
 @WebSocketGateway({
   cors: { origin: 'http://localhost:4200' },
+  namespace: '/chat',
 })
 export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @WebSocketServer()

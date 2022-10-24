@@ -8,6 +8,7 @@ import { PassportModule } from '@nestjs/passport';
 import { UserModule } from './user/user.module';
 import { ChatModule } from './chat/chat.module';
 import { CloudinaryModule } from './cloudinary/cloudinary.module';
+import { PongServerModule } from './pong-server/pong-server.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { CloudinaryModule } from './cloudinary/cloudinary.module';
     UserModule,
     ChatModule,
     CloudinaryModule,
+    PongServerModule,
   ],
   controllers: [],
 })

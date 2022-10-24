@@ -27,6 +27,15 @@ const routes: Routes = [
     ],
   },
   {
+    path: 'play',
+    loadChildren: () => import('./play/play.module').then((m) => m.PlayModule),
+  },
+  {
+    path: 'watch',
+    loadChildren: () =>
+      import('./watch/watch.module').then((m) => m.WatchModule),
+  },
+  {
     path: 'server-error',
     component: ServerErrorComponent,
   },
