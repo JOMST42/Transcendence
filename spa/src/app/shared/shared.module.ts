@@ -7,12 +7,27 @@ import { TableModule } from 'primeng/table';
 import {
   NavBarComponent,
   NotFoundComponent,
+  PongAudioComponent,
+  PongScreenComponent,
   ServerErrorComponent,
 } from './components';
 
 @NgModule({
-  declarations: [NotFoundComponent, ServerErrorComponent, NavBarComponent],
+  declarations: [
+    NotFoundComponent,
+    ServerErrorComponent,
+    NavBarComponent,
+    PongScreenComponent,
+    PongAudioComponent,
+  ],
   imports: [CommonModule, FormsModule, ButtonModule, TableModule],
-  exports: [CommonModule, FormsModule, ButtonModule, TableModule],
+  exports: [
+    CommonModule,
+    FormsModule,
+    ButtonModule,
+    TableModule,
+    PongScreenComponent,
+    PongAudioComponent,
+  ],
 })
 export class SharedModule {}

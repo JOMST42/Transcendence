@@ -1,0 +1,33 @@
+
+<app-pong-input></app-pong-input>
+
+<div #pongContainer id="roomPongDiv" class="center">
+	<!-- <app-room-list id="roomList"></app-room-list> -->
+	<!-- <canvas #game id="gameCanvas" (keydown)="onKeyDown($event)" (keyup)="onKeyUp($event)" width="600" height="400" tabindex="1" ></canvas> -->
+	<app-pong-screen></app-pong-screen>
+	<!-- <canvas #game id="gameCanvas" width="600" height="400" tabindex="1" ></canvas> -->
+
+
+		<!-- <button (click)="connect()">Connect</button> -->
+	<button (click)="joinQueue()">Join queue</button>
+	<button (click)="leaveQueue()">Leave queue</button>
+	<button (click)="readyToPlay()">Ready</button>
+	<!-- <button (click)="getRooms()">Get Rooms</button> -->
+	<button (click)="leaveGameRoom()">Leave all rooms</button>
+	
+	<!-- <form #chatForm="ngForm" (ngSubmit)="joinGameRoom()">
+		
+		<button type="submit">Join room</button>
+		<input name="room_id" [(ngModel)]="room_id"	type="text"/>
+		
+	</form> -->
+	
+	</div>
+	<div #debugLog id="debugLog" class="center">
+		<p [innerHtml]="DebugTxt">
+		</p>
+	</div>
+
+
+
+<!-- <img id="pongBall" src="../../assets/images/gabball.png" alt="Gabriel Collet Ball"> -->
