@@ -1,0 +1,30 @@
+[
+  {
+    "_id": "67f64b1a-ae96-4fb6-b682-1b9f9de83f2d",
+    "colName": "Weather",
+    "created": "2022-09-06T02:50:08.422Z",
+    "sortNum": 10000,
+    "folders": [],
+    "settings": {
+      "headers": [],
+      "tests": [],
+      "options": {
+        "baseUrl": "http://localhost:3000/api/weather"
+      }
+    }
+  },
+  {
+    "_id": "886984b4-4970-481e-ac92-7096b494b57d",
+    "colName": "Auth",
+    "created": "2022-09-20T19:08:36.749Z",
+    "sortNum": 20000,
+    "folders": [],
+    "settings": {
+      "headers": [],
+      "tests": [],
+      "options": {
+        "baseUrl": "http://localhost:3000/api/auth"
+      }
+    }
+  }
+]

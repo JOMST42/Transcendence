@@ -1,0 +1,100 @@
+<div class="card">
+  <div class="flex flex-column card-container img-card">
+    <!-- <app-profile-img></app-profile-img> -->
+    <img
+      class="profile-img"
+      src="https://res.cloudinary.com/transcendance/image/upload/dsgwcxac6uxww5juoywo.jpg"
+      alt="Image"
+    />
+
+    <!-- <advanced-image [cldImg]="img"></advanced-image> -->
+
+    <button
+      pButton
+      type="button"
+      class="p-button-raised p-button-outlined p-button-secondary edit-button"
+    >
+      EDIT
+    </button>
+  </div>
+</div>
+
+<ul class="flex-container">
+  <li class="flex-item"></li>
+
+  <li class="flex-item">
+    <div class="p-input-filled">
+      <div class="p-inputtext-lg label-style">
+        <span class="hovertext" data-hover="change display name">
+          <input
+            type="text"
+            style="font-weight: 300; color: yellow"
+            pInputText
+            class="transparent-background color-bottom-border input-font"
+            placeholder="{{ user?.displayName }}"
+            [(ngModel)]="displayName"
+            [ngModelOptions]="{ standalone: true }"
+          />
+        </span>
+      </div>
+      <!-- <button
+      pButton
+      pRipple
+      type="button"
+      label=""
+      icon="pi pi-check"
+      class="p-button-rounded p-button-outlined profile_button"
+      (onClick)="changeDisplayName()"
+    ></button> -->
+    </div>
+  </li>
+  <li class="flex-item">
+    <div class="p-input-filled">
+      <div class="p-inputtext-lg label-style label-nonclick">
+        <input
+          type="text"
+          pInputText
+          class="transparent-background color-bottom-border input-font"
+          placeholder="{{ user?.username }}"
+        />
+      </div>
+    </div>
+  </li>
+  <li class="flex-item">
+    <div class="p-input-filled">
+      <div class="p-inputtext-lg label-style label-nonclick">
+        <input
+          type="text"
+          pInputText
+          class="transparent-background color-bottom-border input-font"
+          placeholder="{{ user?.lastName }}"
+        />
+      </div>
+    </div>
+  </li>
+  <li class="flex-item">
+    <div class="p-input-filled">
+      <div class="p-inputtext-lg label-style label-nonclick">
+        <input
+          type="text"
+          pInputText
+          class="transparent-background color-bottom-border input-font"
+          placeholder="{{ user?.firstName }}"
+        />
+      </div>
+    </div>
+  </li>
+  <!-- <li class="flex-item"> EMAIL </li> -->
+</ul>
+
+<!-- <div id="container-flex-column">
+<app-friend-list></app-friend-list>
+</div> -->
+
+<p-fileUpload
+  name="avatar"
+  url="http://localhost:3000/api/users/upload"
+  accept="image/*"
+  (onUpload)="changeAvatar()"
+>
+</p-fileUpload>
