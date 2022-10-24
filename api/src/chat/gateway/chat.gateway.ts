@@ -6,11 +6,11 @@ import {
   WebSocketGateway,
   WebSocketServer,
 } from '@nestjs/websockets';
-import { Room } from '@prisma/client';
 import { Server, Socket } from 'socket.io';
 
 import { AuthService } from '../../auth/auth.service';
-import { UserService } from '../../user/user.service';
+import { UserConnectionService } from '../../user/services/user-connection.service';
+import { UserService } from '../../user/services/user.service';
 import { ChatService } from '../chat.service';
 import { CreateRoomDto } from '../dto';
 
@@ -25,6 +25,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     private readonly authService: AuthService,
     private readonly userService: UserService,
     private readonly chatService: ChatService,
+    private readonly userConnectionService: UserConnectionService,
   ) {}
 
   private disconnect(socket: Socket): void {
@@ -32,8 +33,9 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     socket.disconnect();
   }
 
-  handleDisconnect(socket: Socket): void {
-    console.log('Disconnect');
+  async handleDisconnect(socket: Socket): Promise<void> {
+    await this.userConnectionService.deleteBySocketId(socket.id);
+    socket.disconnect();
   }
 
   async handleConnection(socket: Socket): Promise<boolean> {
@@ -51,6 +53,11 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
       socket.data.user = user;
       const rooms = await this.chatService.getRoomsForUser(user.id);
 
+      await this.userConnectionService.create(user.id, {
+        socketId: socket.id,
+        type: 'CHAT',
+      });
+
       return this.server.to(socket.id).emit('rooms', rooms);
     } catch (e) {
       this.disconnect(socket);
@@ -58,12 +65,15 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   }
 
   @SubscribeMessage('createRoom')
-  async onCreateRoom(socket: Socket, room: CreateRoomDto): Promise<Room> {
-    return this.chatService.createRoom(room, socket.data.user.id);
+  async onCreateRoom(socket: Socket, room: CreateRoomDto): Promise<void> {
+    await this.chatService.createRoom(room, socket.data.user.id);
+    const rooms = await this.chatService.getRoomsForUser(socket.data.user.id);
+
+    this.server.to(socket.id).emit('rooms', rooms);
   }
 
   @SubscribeMessage('joinRoom')
-  async onJoinRoom(socket: Socket, roomId: number): Promise<Room> {
-    return this.chatService.addUserToRoom(socket.data.user.id, roomId);
+  async onJoinRoom(socket: Socket, roomId: number): Promise<void> {
+    await this.chatService.addUserToRoom(socket.data.user.id, roomId);
   }
 }

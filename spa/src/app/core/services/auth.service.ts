@@ -29,7 +29,6 @@ export class AuthService {
       localStorage.getItem('access_token');
 
     if (!token) {
-      console.log('No access token');
       return this.user$;
     }
 

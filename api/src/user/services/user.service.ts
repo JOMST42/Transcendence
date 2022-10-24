@@ -2,13 +2,12 @@ import {
   BadRequestException,
   ForbiddenException,
   Injectable,
-  Logger,
 } from '@nestjs/common';
 import { User } from '@prisma/client';
 import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 
-import { PrismaService } from '../prisma/prisma.service';
-import { UpdateUserDto } from './dto';
+import { PrismaService } from '../../prisma/prisma.service';
+import { UpdateUserDto } from '../dto';
 
 @Injectable()
 export class UserService {

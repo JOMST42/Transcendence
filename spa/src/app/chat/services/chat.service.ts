@@ -14,8 +14,6 @@ export class ChatService {
     private readonly toastService: ToastService
   ) {}
 
-  sendMessage() {}
-
   getMessage(): Observable<string> {
     return this.socket.fromEvent('message');
   }
@@ -24,8 +22,12 @@ export class ChatService {
     return this.socket.fromEvent<Room[]>('rooms');
   }
 
-  createRoom(room: Room) {
+  createRoom(room: Room): void {
     this.socket.emit('createRoom', room);
     this.toastService.showSuccess('Success', `Room ${room.name} created`);
+  }
+
+  joinRoom(roomId: number): void {
+    this.socket.emit('joinRoom', roomId);
   }
 }

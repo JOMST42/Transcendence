@@ -1,16 +1,19 @@
-<p>chat works!</p>
+<div *ngIf="rooms?.length; else noRooms">
+  <p-table [value]="rooms" responsiveLayout="scroll">
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Id</th>
+        <th>Name</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-room>
+      <tr>
+        <td>{{ room.id }}</td>
+        <td>{{ room.name }}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
+<ng-template #noRooms><div>You are not in any chat rooms</div></ng-template>
 
-<p-table [value]="rooms$ | async" responsiveLayout="scroll">
-  <ng-template pTemplate="header">
-    <tr>
-      <th>Id</th>
-      <th>Name</th>
-    </tr>
-  </ng-template>
-  <ng-template pTemplate="body" let-room>
-    <tr>
-      <td>{{ room.id }}</td>
-      <td>{{ room.name }}</td>
-    </tr>
-  </ng-template>
-</p-table>
+<p-button label="Create room" (onClick)="createRoom()"></p-button>

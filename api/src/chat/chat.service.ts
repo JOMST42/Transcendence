@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { Room, UserRoom } from '@prisma/client';
+import { Room } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateRoomDto } from './dto';
 

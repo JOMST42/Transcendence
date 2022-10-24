@@ -30,7 +30,8 @@ model User {
   lastName    String
   avatarUrl   String?
 
-  rooms UserRoom[]
+  rooms           UserRoom[]
+  userConnections UserConnection[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -63,4 +64,18 @@ model UserRoom {
 
   @@id([userId, roomId])
   @@map("user_rooms")
+}
+
+model UserConnection {
+  id       Int        @id @default(autoincrement())
+  socketId String     @unique
+  type     SocketType
+
+  user   User @relation(fields: [userId], references: [id])
+  userId Int
+}
+
+enum SocketType {
+  GAME
+  CHAT
 }

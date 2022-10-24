@@ -4,7 +4,7 @@ import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { User } from '@prisma/client';
 
-import { UserService } from '../../user/user.service';
+import { UserService } from '../../user/services/user.service';
 import { TokenPayload } from '../utils/auth.model';
 
 @Injectable()
