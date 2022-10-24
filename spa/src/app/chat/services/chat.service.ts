@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Socket } from 'ngx-socket-io';
 import { Observable } from 'rxjs';
+import { ChatSocket } from '../../core/core.module';
 
 import { ToastService } from '../../core/services';
 import { Room } from '../models';
@@ -10,7 +10,7 @@ import { Room } from '../models';
 })
 export class ChatService {
   constructor(
-    private socket: Socket,
+    private socket: ChatSocket,
     private readonly toastService: ToastService
   ) {}
 
