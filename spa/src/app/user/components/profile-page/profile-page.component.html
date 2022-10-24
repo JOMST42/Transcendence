@@ -3,7 +3,7 @@
     <!-- <app-profile-img></app-profile-img> -->
     <img
       class="profile-img"
-      src="https://res.cloudinary.com/transcendance/image/upload/dsgwcxac6uxww5juoywo.jpg"
+      [src]="user.avatarUrl"
       alt="Image"
     />
 
@@ -40,6 +40,7 @@
       <!-- <button
       pButton
       pRipple
+       *ngIf="!userme"
       type="button"
       label=""
       icon="pi pi-check"
@@ -95,6 +96,7 @@
   name="avatar"
   url="http://localhost:3000/api/users/upload"
   accept="image/*"
-  (onUpload)="changeAvatar()"
+  (onUpload)="refreshUser()"
+  
 >
 </p-fileUpload>

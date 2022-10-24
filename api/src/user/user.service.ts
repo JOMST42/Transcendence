@@ -2,7 +2,6 @@ import {
   BadRequestException,
   ForbiddenException,
   Injectable,
-  Logger,
 } from '@nestjs/common';
 import { User } from '@prisma/client';
 import { CloudinaryService } from 'src/cloudinary/cloudinary.service';

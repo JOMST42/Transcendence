@@ -50,15 +50,11 @@ export class UserController {
 	the request using the @UploadedFile() decorator.*/
   @Post('upload')
   @UseInterceptors(FileInterceptor('avatar'))
-  uploadImage(@UploadedFile() file: Express.Multer.File) {
-    return this.userService.uploadImageToCloudinary(file);
-  }
-
-  @Patch(':id')
-  async updateAvatarById(
-    @Param('id', ParseIntPipe) id: number,
-    @Body() dto: UpdateUserDto,
-  ): Promise<User> {
-    return await this.userService.updateUserById(id, dto);
+  async uploadImage(
+    @UploadedFile() file: Express.Multer.File,
+    @GetUser() user: User,
+  ) {
+    const res = await this.userService.uploadImageToCloudinary(file);
+    return this.userService.updateUserById(user.id, { avatarUrl: res.url });
   }
 }
