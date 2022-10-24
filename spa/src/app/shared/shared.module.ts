@@ -28,6 +28,7 @@ import {
     TableModule,
     PongScreenComponent,
     PongAudioComponent,
+    NavBarComponent,
   ],
 })
 export class SharedModule {}

@@ -1,0 +1,25 @@
+.play-page {
+	height: 100%;
+	width: 100%;
+	display: flex;
+}
+
+.card {
+	height: 100%;
+	width: 100%;
+}
+
+
+.card-container {
+	height: 70%;
+	width: 80%;
+	border-radius: 10px;
+	background-color: #68758A;
+	opacity: 0.3;
+	position: absolute;
+}
+
+img {
+	position: relative;
+	border-radius: 10px;
+}
