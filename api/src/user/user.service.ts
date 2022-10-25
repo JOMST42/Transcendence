@@ -33,6 +33,13 @@ export class UserService {
     if (!user) {
       throw new ForbiddenException('user not found');
     }
+    if (dto.displayName) {
+      this.prisma.user.findUnique({
+        where: {
+          normalizedName: dto.displayName.toLowerCase(),
+        },
+      });
+    }
     return this.prisma.user.update({
       where: {
         id: userId,

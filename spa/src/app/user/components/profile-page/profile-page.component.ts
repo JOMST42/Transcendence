@@ -55,34 +55,23 @@ export class ProfilePageComponent implements OnInit {
   }
 
   ngOnInit() {
-    const id = this.activatedRoute.snapshot.paramMap.get('id');
-    //console.log(id);
-    // this.activatedRoute.data.subscribe({
-    //   next: (data: User) => {
-    //     this.user = data;
-    //   },
-    // });
+
+    this.activatedRoute.data.subscribe({
+      next: (data) => {
+        this.user = data['user'];
+      },
+    });
 
     this.userService.getProfile().subscribe({
       next: (data) => {
         this.me = data;
+        if (this.me.id === this.user.id) {
+          this.userme = true;
+        }
       },
       error: (err) => {
         console.log(err);
       },
     });
-
-    this.userService.getUserById(Number(id)).subscribe({
-      next: (data) => {
-        this.user = data;
-      },
-      error: (err) => {
-        console.log(err);
-      },
-    });
-
-    if (this.me == this.user) {
-      this.userme = true;
-    }
   }
 }

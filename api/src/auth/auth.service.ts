@@ -30,6 +30,7 @@ export class AuthService {
       return await this.prisma.user.update({
         data: {
           username: details.username.toLowerCase(),
+          normalizedName: details.displayName.toLowerCase(),
           ...details,
         },
         where: {
@@ -43,6 +44,7 @@ export class AuthService {
       return await this.prisma.user.create({
         data: {
           username: details.username.toLowerCase(),
+          normalizedName: details.displayName.toLowerCase(),
           ...details,
         },
       });

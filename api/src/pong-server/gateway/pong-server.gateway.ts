@@ -42,9 +42,9 @@ export class PongServerGateway
   afterInit(server: Server) {
     this.logger.log('Server log: Socket is live');
     this.server.setMaxListeners(this.max_users); // WARNING need to read about it
-    setInterval(() => {
-      this.showServerInfo();
-    }, 10000);
+    // setInterval(() => {
+    //   this.showServerInfo();
+    // }, 10000);
     // setInterval(() => {
     //   this.updateRooms();
     // }, (1 / 60) * 1000); // FPS

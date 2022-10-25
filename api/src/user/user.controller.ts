@@ -9,6 +9,7 @@ import {
   Post,
   UseInterceptors,
   UploadedFile,
+  NotFoundException,
 } from '@nestjs/common';
 
 import { UpdateUserDto } from './dto';
@@ -34,7 +35,11 @@ export class UserController {
   async getUserById(
     @Param('id', ParseIntPipe) id: number,
   ): Promise<User | unknown> {
-    return (await this.userService.getUserById(id)) || {};
+    const user = await this.userService.getUserById(id);
+    if (!user) {
+      throw new NotFoundException();
+    }
+    return user;
   }
 
   @Patch(':id')

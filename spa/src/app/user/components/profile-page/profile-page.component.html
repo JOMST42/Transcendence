@@ -3,7 +3,7 @@
     <!-- <app-profile-img></app-profile-img> -->
     <img
       class="profile-img"
-      [src]="user.avatarUrl"
+      [src]="user?.avatarUrl"
       alt="Image"
     />
 
@@ -25,7 +25,7 @@
   <li class="flex-item">
     <div class="p-input-filled">
       <div class="p-inputtext-lg label-style">
-        <span class="hovertext" data-hover="change display name">
+        <div class="" data-hover="change display name">
           <input
             type="text"
             style="font-weight: 300; color: yellow"
@@ -33,20 +33,27 @@
             class="transparent-background color-bottom-border input-font"
             placeholder="{{ user?.displayName }}"
             [(ngModel)]="displayName"
+            #dname="ngModel"
             [ngModelOptions]="{ standalone: true }"
-          />
-        </span>
+            />
+            <button
+            *ngIf="userme"
+            pButton
+            pRipple
+            type="button"
+            label="Click"
+            icon="pi pi-check"
+            class="p-button-rounded p-button-outlined profile_button"
+            (click)="changeDisplayName()"
+            ></button>
+            <div *ngIf="dname.invalid && (dname.dirty || dname.touched)" class="ng-invalid ng-dirty">
+              <div *ngIf="dname.errors?.['required']">
+                Display name is required
+              </div>
+            </div>
+        </div>
+          
       </div>
-      <!-- <button
-      pButton
-      pRipple
-       *ngIf="!userme"
-      type="button"
-      label=""
-      icon="pi pi-check"
-      class="p-button-rounded p-button-outlined profile_button"
-      (onClick)="changeDisplayName()"
-    ></button> -->
     </div>
   </li>
   <li class="flex-item">
