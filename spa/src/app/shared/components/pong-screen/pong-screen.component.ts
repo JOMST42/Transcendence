@@ -9,9 +9,9 @@ import {
   useAnimation,
 } from '@angular/animations';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { GameInfo } from '../../../../../../api/src/pong-game/interfaces';
 import { AudioHandler } from '../../../play/class';
 import { PlayService } from '../../../play/play.service';
+import { GameInfo } from './interfaces';
 
 @Component({
   selector: 'app-pong-screen',

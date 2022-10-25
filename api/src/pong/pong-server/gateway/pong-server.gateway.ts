@@ -1,4 +1,4 @@
-import { forwardRef, Inject, Injectable, Logger, Module } from '@nestjs/common';
+import { forwardRef, Inject, Injectable, Logger } from '@nestjs/common';
 import {
   MessageBody,
   SubscribeMessage,
@@ -10,24 +10,21 @@ import {
   ConnectedSocket,
 } from '@nestjs/websockets';
 import { Socket, Server } from 'socket.io';
-import { GameInfo } from '../../pong-game/interfaces';
-import { PongRoom, User, Queue } from '../classes';
-import { RoomState } from '../enums';
+import { User } from '../classes';
 import { Response } from '../interfaces';
 import { PongRoomService } from '../services/pong-room.service';
 import { PongQueueService } from '../services/pong-queue.service';
+import { AuthService } from '../../../auth/auth.service';
+import { UserService } from '../../..//user/user.service';
 
-// @Module({
-//   imports: [PongGameModule],
-//   providers: [PongRoomService, PongQueueService],
-// })
 @Injectable({})
 @WebSocketGateway({ cors: 'true', namespace: '/pong' })
 export class PongServerGateway
   implements OnGatewayConnection, OnGatewayDisconnect, OnGatewayInit
 {
   private logger: Logger = new Logger('PongServerGateway');
-  private max_users = 200;
+  private maxEntries = 200;
+  private userId = 1; // TODO to be removed, test usage only
 
   @WebSocketServer()
   private server!: Server;
@@ -37,14 +34,16 @@ export class PongServerGateway
     private roomService: PongRoomService,
     @Inject(forwardRef(() => PongQueueService))
     private queueService: PongQueueService,
+    private authService: AuthService,
+    private userService: UserService,
   ) {}
 
   afterInit(server: Server) {
     this.logger.log('Server log: Socket is live');
-    this.server.setMaxListeners(this.max_users); // WARNING need to read about it
+    this.server.setMaxListeners(this.maxEntries); // WARNING need to read about it
     setInterval(() => {
       this.showServerInfo();
-    }, 10000);
+    }, 30000);
     // setInterval(() => {
     //   this.updateRooms();
     // }, (1 / 60) * 1000); // FPS
@@ -62,28 +61,44 @@ export class PongServerGateway
   }
 
   /********** EVENT SUBSCRIPTIONS **********/
-  handleConnection(client: Socket, ...args: any[]) {
+  async handleConnection(client: Socket, ...args: any[]) {
     let data = {
       event: 'connect-success',
       msg: 'you are now connected to the server.',
     };
 
-    if (this.roomService.users.length >= this.max_users) {
+    if (this.roomService.users.length >= this.maxEntries) {
       data = { event: 'connect-error', msg: 'server is full' };
     } else if (this.roomService.getUser(client)) {
       data = { event: 'connect-error', msg: 'you are already connected' };
     } else {
-      const user: User = new User(client);
-      // this.roomService.users.push(user);
-      this.roomService.addUser(user);
-      this.logger.log(
-        'Socket connecton: client connected with ip address ' +
-          client.handshake.address +
-          ' and added to users array. Current amount of users: ' +
-          this.roomService.users.length,
-      );
+      try {
+        const payload = await this.authService.decodeToken(
+          client.handshake.headers.authorization,
+        );
+        const user = await this.userService.getUserById(payload.sub);
+
+        if (!user) {
+          this.disconnectUser(client);
+          return;
+        }
+
+        // client.data.user = user;
+        const pongUser: User = new User(user.id, client);
+        // this.roomService.users.push(user);
+        this.roomService.addUser(pongUser);
+        this.logger.log(
+          'Socket connection: client connected with ip address ' +
+            user.displayName +
+            ' and added to users array. Current amount of users: ' +
+            this.roomService.users.length,
+        );
+        client.emit(data.event, data.msg);
+      } catch (e) {
+        this.disconnectUser(client);
+        return;
+      }
     }
-    client.emit(data.event, data.msg);
   }
 
   handleDisconnect(client: Socket) {
@@ -105,7 +120,7 @@ export class PongServerGateway
     @ConnectedSocket() client: Socket,
   ): Response {
     const user: User | undefined = this.roomService.getUser(client);
-    if (!user) return;
+    if (!user) return { code: 2, msg: 'you are not registered' };
     return this.roomService.userJoinRoom(id, user);
   }
 
@@ -115,6 +130,25 @@ export class PongServerGateway
 
   /********** END EVENT SUBSCRIPTIONS **********/
 
+  // TODO move it somewhere else or also warn queue and room service
+  private disconnectUser(client: User | Socket) {
+    let socket: Socket | undefined;
+    if (client instanceof User) {
+      socket = client.getSocket();
+    } else {
+      socket = client;
+    }
+    if (socket) {
+      socket.disconnect;
+      if (this.roomService.getUserAndIndex(socket)) {
+        this.roomService.users.splice(
+          this.roomService.getUserAndIndex(socket)![1],
+          1,
+        );
+      }
+    } //TODO remove from all room and matches??
+  }
+
   showServerInfo() {
     this.logger.log('***************');
     this.logger.log('* SERVER INFO *');
@@ -122,22 +156,5 @@ export class PongServerGateway
     this.logger.log('* Rooms: ' + this.roomService.getRoomCount());
     this.logger.log('* Queue: ' + this.queueService.getQueueSize());
     this.logger.log('***************');
-  }
-
-  // TODO move it somewhere else or also warn queue and room service
-  private disconnectUser(client: User | Socket) {
-    let socket: Socket | undefined;
-    if (client instanceof Socket) {
-      socket = client;
-    } else {
-      socket = client.getSocket();
-    }
-    if (socket) {
-      socket.disconnect;
-      this.roomService.users.splice(
-        this.roomService.getUserAndIndex(socket)![1],
-        1,
-      );
-    } //TODO remove from all room and matches??
   }
 }

@@ -10,7 +10,7 @@ import { CredentialsInterceptor, ErrorInterceptor } from './core/interceptors';
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [
+  imports: [ 
     AppRoutingModule,
     BrowserModule,
     BrowserAnimationsModule,

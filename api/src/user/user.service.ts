@@ -5,7 +5,7 @@ import {
   Logger,
 } from '@nestjs/common';
 import { User } from '@prisma/client';
-import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
+import { CloudinaryService } from '../cloudinary/cloudinary.service';
 
 import { PrismaService } from '../prisma/prisma.service';
 import { UpdateUserDto } from './dto';
@@ -42,6 +42,13 @@ export class UserService {
         ...dto,
       },
     });
+  }
+
+  async getUserByName(username: string): Promise<User | null> {
+    const user = await this.prisma.user.findUnique({
+      where: { username: username },
+    });
+    return user;
   }
 
   async uploadImageToCloudinary(file: Express.Multer.File) {

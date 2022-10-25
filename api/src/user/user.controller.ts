@@ -13,8 +13,8 @@ import {
 
 import { UpdateUserDto } from './dto';
 import { User } from '@prisma/client';
-import { GetUser } from 'src/auth/decorator';
-import { JwtGuard } from 'src/auth/guards';
+import { GetUser } from '../auth/decorator';
+import { JwtGuard } from '../auth/guards';
 import { UserService } from './user.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 
@@ -30,6 +30,7 @@ export class UserController {
     delete user.updatedAt;
     return user;
   }
+
   @Get(':id')
   async getUserById(
     @Param('id', ParseIntPipe) id: number,

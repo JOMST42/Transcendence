@@ -2,10 +2,12 @@ import { Socket } from 'socket.io';
 
 export class User {
   socket!: Socket;
+  private id!: number;
 
-  constructor(socket: Socket) {
+  constructor(id: number, socket: Socket) {
     // this.setPlayer(player);
-    if (socket) this.socket = socket;
+    this.socket = socket;
+    this.id = id;
   }
 
   compareUser(user: User): boolean {
@@ -20,5 +22,9 @@ export class User {
 
   getSocket(): Socket {
     return this.socket;
+  }
+
+  getId(): number {
+    return this.id;
   }
 }

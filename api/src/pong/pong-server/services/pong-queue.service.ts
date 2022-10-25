@@ -8,8 +8,8 @@ Injectable({});
 export class PongQueueService {
   private logger: Logger = new Logger('PongQueue');
 
-  private queue: Queue = new Queue();
-  private max_users = 100;
+  private queue: Queue<User> = new Queue();
+  private maxEntries = 100;
 
   constructor(
     @Inject(forwardRef(() => PongRoomService))
@@ -29,10 +29,10 @@ export class PongQueueService {
   // }
 
   private updateQueue() {
-    if (!this.queue.check_n_ready(2) || !this.roomService.canCreateGameRoom()) {
+    if (!this.queue.checkReady(2) || !this.roomService.canCreateGameRoom()) {
       return;
     }
-    const users = this.queue.pop_n_user(2);
+    const users = this.queue.popN(2);
     this.queueSuccess(users[0]);
     this.queueSuccess(users[1]);
     const room = this.roomService.createGameRoom(users[0], users[1]).payload;

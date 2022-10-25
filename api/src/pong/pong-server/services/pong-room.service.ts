@@ -12,13 +12,15 @@ import { PongRoom, User, Queue } from '../classes';
 import { RoomState } from '../enums';
 import { Response } from '../interfaces';
 import { PongServerGateway } from '../gateway/pong-server.gateway';
+import { PrismaService } from '../../../prisma/prisma.service';
+import { CreateGameDto } from '../dto';
 
 @Injectable({})
 export class PongRoomService {
   logger: Logger = new Logger('PongRoomService');
 
   users: User[] = [];
-  max_users = 200;
+  maxEntries = 200;
 
   next_room_id = '0';
   rooms: PongRoom[] = [];
@@ -48,6 +50,7 @@ export class PongRoomService {
   constructor(
     @Inject(forwardRef(() => PongServerGateway))
     private server: PongServerGateway,
+    private readonly prisma: PrismaService,
   ) {
     setInterval(() => {
       this.updateRooms();
@@ -63,6 +66,8 @@ export class PongRoomService {
       if (info) {
         this.server.to(room.getRoomId()).volatile.emit('game-update', info);
       }
+      if (room.getState() === RoomState.Finished) {
+      } // TODO
     }
   }
 
@@ -116,7 +121,7 @@ export class PongRoomService {
     for (let i = 0; i < this.rooms.length; i++) {
       room = this.rooms[i];
       plyr_i = room.isUserPlayer(user);
-      if (plyr_i == 1 || plyr_i == 2) {
+      if (plyr_i === 1 || plyr_i === 2) {
         const pongGame: PongGameModule | undefined = room.getGame();
         if (!pongGame) return;
         if (moveType === 'start') pongGame.movePad(plyr_i, direction);
@@ -151,6 +156,7 @@ export class PongRoomService {
     this.userJoinRoomAsPlayer(user1, room);
     this.userJoinRoomAsPlayer(user2, room);
     room.createGame(this.classic_set); // WARNING
+    this.prismaCreateGame(room);
     room.startReadying(); // WARNING
     this.room_count++;
     this.next_room_id = this.room_count.toString();
@@ -160,6 +166,27 @@ export class PongRoomService {
       msg: 'Game created with 2 users from the queue',
       payload: room,
     };
+  }
+
+  async prismaCreateGame(room: PongRoom): Promise<boolean> {
+    const dto = new CreateGameDto();
+    dto.player1Id = room.getUserPlayer1().getId();
+    dto.player2Id = 2;
+    // dto.player2Id = room.getUserPlayer1().getId();
+    dto.description = 'Game successfully created';
+    this.logger.log('Trying to add game to prisma... ');
+    try {
+      await this.prisma.game.create({
+        data: {
+          player1Id: dto.player1Id,
+          player2Id: dto.player2Id,
+          description: dto.description,
+        },
+      });
+    } catch (e) {
+      this.logger.debug(e);
+    }
+    return true;
   }
 
   private userJoinRoomAsPlayer(user: User, room: PongRoom) {

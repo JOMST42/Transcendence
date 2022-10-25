@@ -88,7 +88,7 @@ export class Ball extends Entity {
     let col: Collision | undefined;
     let pos_col: Vector3 | undefined;
 
-    if (pad.getId() == this.getLastHit()) return undefined;
+    if (pad.getId() === this.getLastHit()) return undefined;
     pos_col = checkCollisionBox(
       this.getPos(),
       { x: this.radius, y: this.radius },

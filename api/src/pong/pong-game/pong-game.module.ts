@@ -82,8 +82,8 @@ export class PongGameModule {
 
   movePad(i: number, dir: string) {
     if (!this.started) return;
-    if (dir == 'up') this.getPad(i)?.setMovingUp(true);
-    else if (dir == 'down') this.getPad(i)?.setMovingDown(true);
+    if (dir === 'up') this.getPad(i)?.setMovingUp(true);
+    else if (dir === 'down') this.getPad(i)?.setMovingDown(true);
   }
 
   stopPad(i: number, dir: string) {
