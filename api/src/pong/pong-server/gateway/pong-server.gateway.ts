@@ -10,7 +10,6 @@ import {
   ConnectedSocket,
 } from '@nestjs/websockets';
 import { Socket, Server } from 'socket.io';
-import { User } from '../classes';
 import { Response } from '../interfaces';
 import { PongRoomService } from '../services/pong-room.service';
 import { PongQueueService } from '../services/pong-queue.service';
@@ -61,7 +60,7 @@ export class PongServerGateway
   }
 
   /********** EVENT SUBSCRIPTIONS **********/
-  async handleConnection(client: Socket, ...args: any[]) {
+  async handleConnection(user: Socket, ...args: any[]) {
     let data = {
       event: 'connect-success',
       msg: 'you are now connected to the server.',
@@ -69,47 +68,44 @@ export class PongServerGateway
 
     if (this.roomService.users.length >= this.maxEntries) {
       data = { event: 'connect-error', msg: 'server is full' };
-    } else if (this.roomService.getUser(client)) {
+    } else if (this.roomService.getUser(user)) {
       data = { event: 'connect-error', msg: 'you are already connected' };
     } else {
       try {
         const payload = await this.authService.decodeToken(
-          client.handshake.headers.authorization,
+          user.handshake.headers.authorization,
         );
-        const user = await this.userService.getUserById(payload.sub);
+        const prismaUser = await this.userService.getUserById(payload.sub);
 
-        if (!user) {
-          this.disconnectUser(client);
+        if (!prismaUser) {
+          this.disconnectUser(user);
           return;
         }
 
-        // client.data.user = user;
-        const pongUser: User = new User(user.id, client);
+        user.data.user = prismaUser;
         // this.roomService.users.push(user);
-        this.roomService.addUser(pongUser);
+        this.roomService.addUser(user);
         this.logger.log(
-          'Socket connection: client connected with ip address ' +
-            user.displayName +
+          'Socket connection: user connected with ip address ' +
+            user.data.user.displayName +
             ' and added to users array. Current amount of users: ' +
             this.roomService.users.length,
         );
-        client.emit(data.event, data.msg);
+        user.emit(data.event, data.msg);
       } catch (e) {
-        this.disconnectUser(client);
+        this.disconnectUser(user);
         return;
       }
     }
   }
 
-  handleDisconnect(client: Socket) {
-    this.disconnectUser(client);
-    this.logger.log('Server log: client disconnected');
+  handleDisconnect(user: Socket) {
+    this.disconnectUser(user);
+    this.logger.log('Server log: user disconnected');
   }
 
   @SubscribeMessage('join-queue')
-  handleJoinQueue(@ConnectedSocket() client: Socket): Response {
-    const user: User | undefined = this.roomService.getUser(client);
-    if (!user) return { code: 2, msg: 'you are not registered' };
+  handleJoinQueue(@ConnectedSocket() user: Socket): Response {
     // TODO check if already in a game
     return this.queueService.userJoinQueue(user);
   }
@@ -117,35 +113,25 @@ export class PongServerGateway
   @SubscribeMessage('join-room')
   handleJoinRoom(
     @MessageBody() id: string,
-    @ConnectedSocket() client: Socket,
+    @ConnectedSocket() user: Socket,
   ): Response {
-    const user: User | undefined = this.roomService.getUser(client);
-    if (!user) return { code: 2, msg: 'you are not registered' };
     return this.roomService.userJoinRoom(id, user);
   }
 
   // TODO remove
   @SubscribeMessage('update-pong')
-  handleUpdatePong(@ConnectedSocket() client: Socket) {}
+  handleUpdatePong(@ConnectedSocket() user: Socket) {}
 
   /********** END EVENT SUBSCRIPTIONS **********/
 
   // TODO move it somewhere else or also warn queue and room service
-  private disconnectUser(client: User | Socket) {
-    let socket: Socket | undefined;
-    if (client instanceof User) {
-      socket = client.getSocket();
-    } else {
-      socket = client;
-    }
-    if (socket) {
-      socket.disconnect;
-      if (this.roomService.getUserAndIndex(socket)) {
-        this.roomService.users.splice(
-          this.roomService.getUserAndIndex(socket)![1],
-          1,
-        );
-      }
+  private disconnectUser(user: Socket) {
+    user.disconnect;
+    if (this.roomService.getUserAndIndex(user)) {
+      this.roomService.users.splice(
+        this.roomService.getUserAndIndex(user)![1],
+        1,
+      );
     } //TODO remove from all room and matches??
   }
 

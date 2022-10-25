@@ -1,6 +1,6 @@
 import { Logger } from '@nestjs/common';
 import { Socket } from 'socket.io';
-import { Player, User } from '.';
+import { Player } from '.';
 import { GameInfo, GameSettings } from '../../pong-game/interfaces';
 import { PongGameModule } from '../../pong-game/pong-game.module';
 import { RoomState, VictoryType } from '../enums';
@@ -11,11 +11,11 @@ export class PongRoom {
 
   private roomId: string;
   private state: RoomState = RoomState.Waiting;
-  private userP1?: User | undefined;
-  private userP2?: User | undefined;
+  private userP1?: Socket | undefined;
+  private userP2?: Socket | undefined;
   private p1!: Player;
   private p2!: Player;
-  private users: User[] = [];
+  private users: Socket[] = [];
   private game!: PongGameModule;
 
   private countdownId: NodeJS.Timer;
@@ -26,7 +26,11 @@ export class PongRoom {
   private readyingTimer = 0;
   private readyingTime = 10;
 
-  constructor(id: string, userP1: User | undefined, userP2: User | undefined) {
+  constructor(
+    id: string,
+    userP1: Socket | undefined,
+    userP2: Socket | undefined,
+  ) {
     this.roomId = id;
     this.setUserPlayer1(userP1);
     this.setUserPlayer2(userP2);
@@ -34,19 +38,18 @@ export class PongRoom {
     this.p2 = new Player();
   }
 
-  addUser(user: User): boolean {
+  addUser(user: Socket): boolean {
     if (this.findUser(user)) return false;
     this.users.push(user);
     return true;
   }
 
-  // Returns an User if found; undefined if not found
-  findUser(client: User | Socket): User | undefined {
+  // Returns an Socket if found; undefined if not found
+  findUser(user: Socket): Socket | undefined {
     for (let i = 0; i < this.users.length; i++) {
-      if (client instanceof User && this.users[i] === client)
+      if (this.users[i] === user) {
         return this.users[i];
-      else if (client instanceof Socket && this.users[i].getSocket() === client)
-        return this.users[i];
+      }
     }
     return undefined;
   }
@@ -146,7 +149,7 @@ export class PongRoom {
   }
 
   // return 0 if user is not a player. Else it returns 1 or 2 depending on which player they are.
-  isUserPlayer(user: User | undefined): number {
+  isUserPlayer(user: Socket | undefined): number {
     if (user === this.userP1) return 1;
     if (user === this.userP2) return 2;
     return 0;
@@ -156,11 +159,11 @@ export class PongRoom {
     this.game = game;
   }
 
-  setUserPlayer1(user: User | undefined) {
+  setUserPlayer1(user: Socket | undefined) {
     this.userP1 = user;
   }
 
-  setUserPlayer2(user: User | undefined) {
+  setUserPlayer2(user: Socket | undefined) {
     this.userP2 = user;
   }
 
@@ -176,15 +179,15 @@ export class PongRoom {
     return this.game;
   }
 
-  getUserPlayer1(): User | undefined {
+  getUserPlayer1(): Socket | undefined {
     return this.userP1;
   }
 
-  getUserPlayer2(): User | undefined {
+  getUserPlayer2(): Socket | undefined {
     return this.userP2;
   }
 
-  getUsers(): User[] {
+  getUsers(): Socket[] {
     return this.users;
   }
 }

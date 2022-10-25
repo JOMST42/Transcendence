@@ -8,7 +8,7 @@ import {
 import { Socket } from 'socket.io';
 import { PongGameModule } from '../../pong-game/pong-game.module';
 import { GameInfo, GameSettings } from '../../pong-game/interfaces';
-import { PongRoom, User, Queue } from '../classes';
+import { PongRoom } from '../classes';
 import { RoomState } from '../enums';
 import { Response } from '../interfaces';
 import { PongServerGateway } from '../gateway/pong-server.gateway';
@@ -19,7 +19,7 @@ import { CreateGameDto } from '../dto';
 export class PongRoomService {
   logger: Logger = new Logger('PongRoomService');
 
-  users: User[] = [];
+  users: Socket[] = [];
   maxEntries = 200;
 
   next_room_id = '0';
@@ -27,7 +27,7 @@ export class PongRoomService {
   max_rooms = 20;
   room_count = 0;
 
-  // queue: Queue = new Queue();
+  private disconnectListener: any;
 
   public classic_set: GameSettings = {
     score_to_win: 7,
@@ -71,7 +71,7 @@ export class PongRoomService {
     }
   }
 
-  userReadyToPlay(user: User): Response {
+  userReadyToPlay(user: Socket): Response {
     let room: PongRoom;
     let p_index: number;
 
@@ -86,27 +86,25 @@ export class PongRoomService {
     return { code: 1, msg: 'could not ready you' };
   }
 
-  userJoinRoom(id: string, user: User): Response {
+  userJoinRoom(id: string, user: Socket): Response {
     for (let i = 0; i < this.rooms.length; i++) {
       if (this.rooms[i].getRoomId() === id) {
         this.rooms[i].addUser(user);
         this.logger.log('user has joined room ' + id);
-        user.getSocket().join(this.rooms[i].getRoomId());
-        user
-          .getSocket()
-          .emit('game-joined', 'game id ' + id + ' has been joined');
+        user.join(this.rooms[i].getRoomId());
+        user.emit('game-joined', 'game id ' + id + ' has been joined');
         return { code: 0, msg: 'user has joined room ' + id };
       }
     }
     return { code: 1, msg: 'room ' + id + ' does not exist' };
   }
 
-  userLeaveRooms(user: User): Response {
-    user.getSocket().rooms.forEach((room) => user.getSocket().leave(room));
+  userLeaveRooms(user: Socket): Response {
+    user.rooms.forEach((room) => user.leave(room));
     return { code: 0, msg: 'you have left all game rooms' };
   }
 
-  userGetRooms(user: User): Response {
+  userGetRooms(user: Socket): Response {
     const rooms: string[] = [];
 
     for (let i = 0; i < this.rooms.length; i++) {
@@ -115,7 +113,7 @@ export class PongRoomService {
     return { code: 0, msg: 'rooms fetched', payload: rooms };
   }
 
-  handleMove(direction: string, user: User, moveType: string) {
+  handleMove(direction: string, user: Socket, moveType: string) {
     let room: PongRoom | undefined;
     let plyr_i = 0;
     for (let i = 0; i < this.rooms.length; i++) {
@@ -147,7 +145,7 @@ export class PongRoomService {
   }
 
   // Returned payload: created PongRoom
-  createGameRoom(user1: User, user2: User): Response {
+  createGameRoom(user1: Socket, user2: Socket): Response {
     if (this.rooms.length >= this.max_rooms) {
       return { code: 1, msg: 'too many games currently being played' };
     }
@@ -170,7 +168,7 @@ export class PongRoomService {
 
   async prismaCreateGame(room: PongRoom): Promise<boolean> {
     const dto = new CreateGameDto();
-    dto.player1Id = room.getUserPlayer1().getId();
+    dto.player1Id = room.getUserPlayer1().data.user.id;
     dto.player2Id = 2;
     // dto.player2Id = room.getUserPlayer1().getId();
     dto.description = 'Game successfully created';
@@ -189,29 +187,23 @@ export class PongRoomService {
     return true;
   }
 
-  private userJoinRoomAsPlayer(user: User, room: PongRoom) {
+  private userJoinRoomAsPlayer(user: Socket, room: PongRoom) {
     this.userLeaveRooms(user);
     this.userJoinRoom(room.getRoomId(), user);
     this.setInputListeners(user);
     this.setGameListeners(user);
   }
 
-  addUser(user: User) {
+  addUser(user: Socket) {
     this.users.push(user);
+    this.setDisconnectListener(user);
     this.setRoomListeners(user);
   }
 
-  disconnectUser(client: User | Socket) {
-    let socket: Socket | undefined;
-    if (client instanceof Socket) {
-      socket = client;
-    } else {
-      socket = client.getSocket();
-    }
-    if (socket) {
-      socket.disconnect;
-      this.users.splice(this.getUserAndIndex(socket)![1], 1);
-    } //TODO remove from all room and matches
+  disconnectUser(user: Socket) {
+    this.users.splice(this.users.indexOf(user), 1);
+    this.clearListeners(user);
+    //TODO remove from all room and matches
   }
 
   getUserCount(): number {
@@ -222,68 +214,76 @@ export class PongRoomService {
     return this.rooms.length;
   }
 
-  getUser(socket: Socket): User | undefined {
+  getUser(socket: Socket): Socket | undefined {
     for (let i = 0; i < this.users.length; i++) {
-      if (this.users[i].getSocket() === socket) return this.users[i];
+      if (this.users[i] === socket) return this.users[i];
     }
     return undefined;
   }
 
-  getUserIndex(user: User): number {
+  getUserIndex(user: Socket): number {
     for (let i = 0; i < this.users.length; i++) {
       if (this.users[i] === user) return i;
     }
     return -1;
   }
 
-  getUserAndIndex(socket: Socket): [User, number] | undefined {
+  getUserAndIndex(socket: Socket): [Socket, number] | undefined {
     for (let i = 0; i < this.users.length; i++) {
-      if (this.users[i].getSocket() === socket) return [this.users[i], i];
+      if (this.users[i] === socket) return [this.users[i], i];
     }
     return undefined;
   }
 
   /********** EVENT LISTENERS **********/
-  setGameListeners(user: User) {
-    user.socket?.on('ready-to-play', (args, callback) => {
+  setDisconnectListener(user: Socket) {
+    this.disconnectListener = () => {
+      this.disconnectUser(user);
+    };
+
+    user.on('disconnect', this.disconnectListener);
+  }
+
+  setGameListeners(user: Socket) {
+    user.on('ready-to-play', (args, callback) => {
       callback(this.userReadyToPlay(user));
     });
   }
 
-  setInputListeners(user: User) {
-    user.socket?.on('move-start', (direction: string, callback) => {
+  setInputListeners(user: Socket) {
+    user.on('move-start', (direction: string, callback) => {
       callback(this.handleMove(direction, user, 'start'));
     });
 
-    user.socket?.on('move-end', (direction: string, callback) => {
+    user.on('move-end', (direction: string, callback) => {
       callback(this.handleMove(direction, user, 'stop'));
     });
   }
 
-  setRoomListeners(user: User) {
-    user.socket?.on('leave-room', (id: string, callback) => {
+  setRoomListeners(user: Socket) {
+    user.on('leave-room', (id: string, callback) => {
       callback(this.userLeaveRooms(user));
     });
-    user.socket?.on('get-rooms', (args, callback) => {
+    user.on('get-rooms', (args, callback) => {
       callback(this.userGetRooms(user));
     });
   }
 
-  clearGameListeners(user: User) {
-    user.socket.removeAllListeners('ready-to-play');
+  clearGameListeners(user: Socket) {
+    user.removeAllListeners('ready-to-play');
   }
 
-  clearInputListeners(user: User) {
-    user.socket.removeAllListeners('move-start');
-    user.socket.removeAllListeners('move-end');
-    user.socket.removeAllListeners('get-rooms');
+  clearInputListeners(user: Socket) {
+    user.removeAllListeners('move-start');
+    user.removeAllListeners('move-end');
   }
 
-  clearRoomListeners(user: User) {
-    user.socket.removeAllListeners('get-rooms');
+  clearRoomListeners(user: Socket) {
+    user.removeAllListeners('get-rooms');
   }
 
-  clearListeners(user: User) {
+  clearListeners(user: Socket) {
+    user.off('disconnect', this.disconnectListener);
     this.clearGameListeners(user);
     this.clearInputListeners(user);
     this.clearRoomListeners(user);

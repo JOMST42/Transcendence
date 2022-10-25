@@ -1,9 +1,10 @@
 import { Logger } from '@nestjs/common';
+import { Socket } from 'socket.io';
 
-export class Queue<T> {
+export class Queue {
   private logger: Logger = new Logger('PongQueue');
 
-  private queue: T[] = [];
+  private queue: Socket[] = [];
   private maxEntries = 100;
 
   constructor() {}
@@ -12,75 +13,65 @@ export class Queue<T> {
     return this.queue.length;
   }
 
-  // Push to the front of the queue if there is space and user is not already in it
-  push(t: T): T | undefined {
+  // Push to the front of the queue if there is space and socket is not already in it
+  push(s: Socket): Socket | undefined {
     // TODO  throw Error(...)??
+    this.clean();
     if (this.queue.length >= this.maxEntries) return undefined;
-    if (this.queue.find((user) => user === t)) return undefined;
-    this.queue.push(t);
-    return t;
+    if (this.is_queued(s)) return undefined;
+    this.queue.push(s);
+    return s;
   }
 
   // Remove and return the front of the queue
-  pop(): T | undefined {
+  pop(): Socket | undefined {
+    this.clean();
     return this.queue.shift();
   }
 
-  popN(n: number): T[] | undefined {
-    const users: T[] = [];
+  popN(n: number): Socket[] | undefined {
+    this.clean();
+    const sockets: Socket[] = [];
     if (n <= 0) return undefined;
-    // this.cull_disconnected();
-    if (this.queue.length < n) return undefined;
-    while (n-- > 0) users.push(this.pop()!);
-    return users;
+    this.clean();
+    if (this.queue.length < n) n = this.queue.length;
+    while (n-- > 0) sockets.push(this.pop()!);
+    return sockets;
   }
 
-  // Clean the queue and return/remove the next available user
-  popNextUser(): T | undefined {
-    let user: T;
-
-    // this.cull_disconnected();
+  // Clean the queue and return/remove the next available socket
+  popNextUser(): Socket | undefined {
+    this.clean();
     return this.pop();
   }
 
-  // getNextTwo(): T[] | undefined {
-  //   // this.cull_disconnected();
-  // }
-
   checkReady(n: number): boolean {
-    // this.cull_disconnected();
+    this.clean();
     if (this.queue.length < n) return false;
     return true;
   }
 
-  unqueue(t: T): T | undefined {
-    const i = this.queue.indexOf(t);
+  unqueue(s: Socket): Socket | undefined {
+    this.clean();
+    const i = this.queue.indexOf(s);
     if (i >= 0) return this.queue.splice(i)[0];
     return undefined;
   }
 
   // Clean the queue (disconnection, etc.)
   clean() {
-    // this.cull_disconnected();
+    this.queue = this.queue.filter(this.is_connected);
   }
 
-  // Remove all disconnected users
-  // cull_disconnected() {
-  //   this.queue.filter(this.is_connected);
-  // }
-
-  is_queued(t: T): boolean {
-    if (this.queue.find((user) => user === t)) return true;
+  is_queued(s: Socket): boolean {
+    this.clean();
+    if (this.queue.find((socket) => socket.data.user.id === s.data.user.id))
+      return true;
     return false;
   }
 
-  filter(predicate: () => boolean): boolean {
-    this.queue = this.queue.filter(predicate);
+  private is_connected(s: Socket, i: number, arr: Socket[]): boolean {
+    if (s.connected) return true;
     return false;
   }
-
-  // private is_connected(t: T, i: number, arr: T[]): boolean {
-  //   if (t.getSocket().connected) return true;
-  //   return false;
-  // }
 }
