@@ -1,10 +1,10 @@
 <section class="log-page" id="log" *ngIf="!user; else loggedIn">
   <div class="card">
-    <div class="flex flex-column card-container">
+    <div class="container flex flex-column card-container">
       <div class="title-div flex align-items-center justify-content-center m-2">
         <h1 class="title-logpage">!Transcendence!</h1>
       </div>
-      <div class="flex align-items-center justify-content-center m-2">
+      <div class="button-div flex align-items-center justify-content-center m-2">
         <button
           class="btn-grad"
           pButton
@@ -13,7 +13,7 @@
           (click)="handleClick()"
         ></button>
       </div>
-      <div class="fm-2">
+      <div class="ball-div fm-2">
         <div class="ball"></div>
       </div>
     </div>
@@ -32,7 +32,25 @@
 			<img class="profile-img" src="../../../../assets/image/player-test.jpg" alt="Image"/>
 			<h3 class="player-name">Johnny Sins</h3> 
 		</div>
-		<div class="col-4 col-offset-1 h-4rem">
+		<div class="chat-div col-4 col-offset-1 h-4rem bg-red-600">
+		</div>
+		<div class="p-grid">
+			<div class="p-col-8">
+				<div class="p-grid">
+					<div class="p-col-6 bg-bluegray-100">
+						6
+					</div>
+					<div class="p-col-6 bg-cyan-500">
+						6
+					</div>
+					<div class="p-col-12 bg-orange-400">
+						12
+					</div>
+				</div>
+			</div>
+			<div class="p-col-4 bg-purple-300">
+				4
+			</div>
 		</div>
 	</div>
   </section>
