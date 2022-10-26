@@ -6,9 +6,9 @@ import {
   Collision,
   Event,
   Score,
-} from './interfaces';
-import { EventType } from './enums';
-import { Pad, Ball } from './classes';
+} from './data/interfaces';
+import { EventType } from './data/enums';
+import { Pad, Ball } from './data/classes';
 
 export class PongGameModule {
   private logger: Logger = new Logger('PongGameModule');

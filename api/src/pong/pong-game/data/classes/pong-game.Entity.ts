@@ -1,6 +1,6 @@
 import { Vector3, Collision } from '../interfaces';
 import { CollisionType } from '../enums';
-import { calculateVect3, checkCollisionBox } from '../pong-game.utils';
+import { calculateVect3, checkCollisionBox } from '../../pong-game.utils';
 
 export class Entity {
   protected pos!: Vector3;

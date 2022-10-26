@@ -7,13 +7,13 @@ import {
 } from '@nestjs/websockets';
 import { Socket } from 'socket.io';
 import { PongGameModule } from '../../pong-game/pong-game.module';
-import { GameInfo, GameSettings } from '../../pong-game/interfaces';
-import { PongRoom } from '../classes';
-import { RoomState } from '../enums';
-import { Response } from '../interfaces';
+import { GameInfo, GameSettings } from '../../pong-game/data/interfaces';
+import { PongRoom } from '../data/classes';
+import { RoomState } from '../data/enums';
+import { Response } from '../data/interfaces';
 import { PongServerGateway } from '../gateway/pong-server.gateway';
 import { PrismaService } from '../../../prisma/prisma.service';
-import { CreateGameDto } from '../dto';
+import { CreateGameDto } from '../data/dto';
 
 @Injectable({})
 export class PongRoomService {
@@ -71,21 +71,6 @@ export class PongRoomService {
     }
   }
 
-  userReadyToPlay(user: Socket): Response {
-    let room: PongRoom;
-    let p_index: number;
-
-    for (let i = 0; i < this.rooms.length; i++) {
-      room = this.rooms[i];
-      p_index = room.isUserPlayer(user);
-      if (p_index === 1 || p_index === 2) {
-        room.setReadyPlayer(p_index, true);
-        return { code: 0, msg: 'You are now considered ready' };
-      }
-    }
-    return { code: 1, msg: 'could not ready you' };
-  }
-
   userJoinRoom(id: string, user: Socket): Response {
     for (let i = 0; i < this.rooms.length; i++) {
       if (this.rooms[i].getRoomId() === id) {
@@ -111,22 +96,6 @@ export class PongRoomService {
       rooms.push(this.rooms[i].getRoomId());
     }
     return { code: 0, msg: 'rooms fetched', payload: rooms };
-  }
-
-  handleMove(direction: string, user: Socket, moveType: string) {
-    let room: PongRoom | undefined;
-    let plyr_i = 0;
-    for (let i = 0; i < this.rooms.length; i++) {
-      room = this.rooms[i];
-      plyr_i = room.isUserPlayer(user);
-      if (plyr_i === 1 || plyr_i === 2) {
-        const pongGame: PongGameModule | undefined = room.getGame();
-        if (!pongGame) return;
-        if (moveType === 'start') pongGame.movePad(plyr_i, direction);
-        if (moveType === 'stop') pongGame.stopPad(plyr_i, direction);
-        break;
-      }
-    }
   }
 
   getRoomUpdate(room?: PongRoom): GameInfo | undefined {
@@ -190,8 +159,6 @@ export class PongRoomService {
   private userJoinRoomAsPlayer(user: Socket, room: PongRoom) {
     this.userLeaveRooms(user);
     this.userJoinRoom(room.getRoomId(), user);
-    this.setInputListeners(user);
-    this.setGameListeners(user);
   }
 
   addUser(user: Socket) {
@@ -244,22 +211,6 @@ export class PongRoomService {
     user.on('disconnect', this.disconnectListener);
   }
 
-  setGameListeners(user: Socket) {
-    user.on('ready-to-play', (args, callback) => {
-      callback(this.userReadyToPlay(user));
-    });
-  }
-
-  setInputListeners(user: Socket) {
-    user.on('move-start', (direction: string, callback) => {
-      callback(this.handleMove(direction, user, 'start'));
-    });
-
-    user.on('move-end', (direction: string, callback) => {
-      callback(this.handleMove(direction, user, 'stop'));
-    });
-  }
-
   setRoomListeners(user: Socket) {
     user.on('leave-room', (id: string, callback) => {
       callback(this.userLeaveRooms(user));
@@ -269,23 +220,12 @@ export class PongRoomService {
     });
   }
 
-  clearGameListeners(user: Socket) {
-    user.removeAllListeners('ready-to-play');
-  }
-
-  clearInputListeners(user: Socket) {
-    user.removeAllListeners('move-start');
-    user.removeAllListeners('move-end');
-  }
-
   clearRoomListeners(user: Socket) {
     user.removeAllListeners('get-rooms');
   }
 
   clearListeners(user: Socket) {
     user.off('disconnect', this.disconnectListener);
-    this.clearGameListeners(user);
-    this.clearInputListeners(user);
     this.clearRoomListeners(user);
   }
   /********** END EVENT LISTENERS **********/

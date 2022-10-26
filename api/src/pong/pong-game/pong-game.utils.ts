@@ -1,4 +1,4 @@
-import { Vector3 } from './interfaces';
+import { Vector3 } from './data/interfaces';
 
 // return p1 if the symbol is invalid. Symbol: + - * /
 export function calculateVect3(

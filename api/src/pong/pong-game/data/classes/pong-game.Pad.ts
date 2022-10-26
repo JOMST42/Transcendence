@@ -1,5 +1,5 @@
 import { Vector3 } from '../interfaces';
-import { applyFPS } from '../pong-game.utils';
+import { applyFPS } from '../../pong-game.utils';
 import { Entity } from './index';
 
 export class Pad extends Entity {

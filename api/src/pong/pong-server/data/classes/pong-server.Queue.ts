@@ -18,7 +18,7 @@ export class Queue {
     // TODO  throw Error(...)??
     this.clean();
     if (this.queue.length >= this.maxEntries) return undefined;
-    if (this.is_queued(s)) return undefined;
+    // if (this.is_queued(s)) return undefined;
     this.queue.push(s);
     return s;
   }
@@ -65,7 +65,7 @@ export class Queue {
 
   is_queued(s: Socket): boolean {
     this.clean();
-    if (this.queue.find((socket) => socket.data.user.id === s.data.user.id))
+    if (this.queue.find((socket) => socket.data.user?.id === s.data.user?.id))
       return true;
     return false;
   }

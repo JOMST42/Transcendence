@@ -1,7 +1,7 @@
 import { Vector3, Collision } from '../interfaces';
 import { Entity, Pad } from '.';
 import { CollisionType } from '../enums';
-import { checkCollisionBox } from '../pong-game.utils';
+import { checkCollisionBox } from '../../pong-game.utils';
 
 export class Ball extends Entity {
   private speed_hit_multi: number;

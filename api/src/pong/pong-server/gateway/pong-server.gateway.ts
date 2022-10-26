@@ -10,11 +10,12 @@ import {
   ConnectedSocket,
 } from '@nestjs/websockets';
 import { Socket, Server } from 'socket.io';
-import { Response } from '../interfaces';
+import { Response } from '../data/interfaces';
 import { PongRoomService } from '../services/pong-room.service';
 import { PongQueueService } from '../services/pong-queue.service';
 import { AuthService } from '../../../auth/auth.service';
 import { UserService } from '../../..//user/user.service';
+import { UserState } from 'src/pong/data/enums';
 
 @Injectable({})
 @WebSocketGateway({ cors: 'true', namespace: '/pong' })
@@ -23,7 +24,10 @@ export class PongServerGateway
 {
   private logger: Logger = new Logger('PongServerGateway');
   private maxEntries = 200;
-  private userId = 1; // TODO to be removed, test usage only
+  private userStates: Map<number, { value: UserState }> = new Map<
+    number,
+    { value: UserState }
+  >();
 
   @WebSocketServer()
   private server!: Server;
@@ -60,87 +64,88 @@ export class PongServerGateway
   }
 
   /********** EVENT SUBSCRIPTIONS **********/
-  async handleConnection(user: Socket, ...args: any[]) {
-    let data = {
-      event: 'connect-success',
+  /* TODO
+   * Better management of await (with timeout and such).
+   * Mark the socket as authorized.
+   */
+  async handleConnection(socket: Socket, ...args: any[]) {
+    let data: Response = {
+      code: 0,
       msg: 'you are now connected to the server.',
     };
-
-    if (this.roomService.users.length >= this.maxEntries) {
-      data = { event: 'connect-error', msg: 'server is full' };
-    } else if (this.roomService.getUser(user)) {
-      data = { event: 'connect-error', msg: 'you are already connected' };
-    } else {
-      try {
+    tryBlock: try {
+      if (this.roomService.users.length >= this.maxEntries) {
+        data = { code: 1, msg: 'server is full' };
+      } else if (this.roomService.getUser(socket)) {
+        data = { code: 1, msg: 'you are already connected' };
+      } else {
         const payload = await this.authService.decodeToken(
-          user.handshake.headers.authorization,
+          socket.handshake.headers.authorization,
         );
         const prismaUser = await this.userService.getUserById(payload.sub);
-
+        socket.emit('connect-error', data);
         if (!prismaUser) {
-          this.disconnectUser(user);
-          return;
+          data = { code: 1, msg: 'you are not registered' };
+          break tryBlock;
         }
 
-        user.data.user = prismaUser;
-        // this.roomService.users.push(user);
-        this.roomService.addUser(user);
+        socket.data.user = prismaUser;
+        // this.roomService.users.push(socket);
+        this.roomService.addUser(socket);
+        if (!this.userStates.has(prismaUser.id)) {
+          this.userStates.set(prismaUser.id, { value: UserState.ONLINE });
+        }
+        socket.data.state = this.userStates.get(prismaUser.id);
         this.logger.log(
-          'Socket connection: user connected with ip address ' +
-            user.data.user.displayName +
-            ' and added to users array. Current amount of users: ' +
-            this.roomService.users.length,
+          'Socket connection: socket connected with nickname ' +
+            socket.data.user.displayName,
         );
-        user.emit(data.event, data.msg);
-      } catch (e) {
-        this.disconnectUser(user);
-        return;
+      }
+    } catch (e) {
+      data = { code: 1, msg: 'unknown connection exception' };
+    } finally {
+      if (data.code === 0) socket.emit('connect-success', data);
+      else {
+        socket.emit('connect-error', data);
+        socket.disconnect();
       }
     }
   }
 
-  handleDisconnect(user: Socket) {
-    this.disconnectUser(user);
-    this.logger.log('Server log: user disconnected');
+  handleDisconnect(socket: Socket) {
+    this.disconnectSocket(socket);
+    this.logger.log('Server log: socket disconnected');
   }
 
   @SubscribeMessage('join-queue')
-  handleJoinQueue(@ConnectedSocket() user: Socket): Response {
-    // TODO check if already in a game
-    return this.queueService.userJoinQueue(user);
+  handleJoinQueue(@ConnectedSocket() socket: Socket): Response {
+    return this.queueService.userJoinQueue(socket);
   }
 
   @SubscribeMessage('join-room')
   handleJoinRoom(
     @MessageBody() id: string,
-    @ConnectedSocket() user: Socket,
+    @ConnectedSocket() socket: Socket,
   ): Response {
-    return this.roomService.userJoinRoom(id, user);
+    return this.roomService.userJoinRoom(id, socket);
   }
-
-  // TODO remove
-  @SubscribeMessage('update-pong')
-  handleUpdatePong(@ConnectedSocket() user: Socket) {}
 
   /********** END EVENT SUBSCRIPTIONS **********/
 
-  // TODO move it somewhere else or also warn queue and room service
-  private disconnectUser(user: Socket) {
-    user.disconnect;
-    if (this.roomService.getUserAndIndex(user)) {
-      this.roomService.users.splice(
-        this.roomService.getUserAndIndex(user)![1],
-        1,
-      );
-    } //TODO remove from all room and matches??
+  /* TODO
+   * This is the "master disconnect".
+   * It needs to make sure everything is ok before disconnecting.
+   */
+  private disconnectSocket(socket: Socket) {
+    socket.disconnect;
   }
 
   showServerInfo() {
-    this.logger.log('***************');
-    this.logger.log('* SERVER INFO *');
+    this.logger.log('********************');
+    this.logger.log('* PONG SERVER INFO *');
     this.logger.log('* Users: ' + this.roomService.getUserCount());
     this.logger.log('* Rooms: ' + this.roomService.getRoomCount());
     this.logger.log('* Queue: ' + this.queueService.getQueueSize());
-    this.logger.log('***************');
+    this.logger.log('********************');
   }
 }

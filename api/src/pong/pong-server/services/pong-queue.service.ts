@@ -1,9 +1,11 @@
 import { forwardRef, Inject, Injectable, Logger } from '@nestjs/common';
 import { Socket } from 'socket.io';
-import { Queue } from '../classes';
+import { Queue } from '../data/classes';
 import { PongServerGateway } from '../gateway/pong-server.gateway';
-import { Response } from '../interfaces';
+import { Response } from '../data/interfaces';
 import { PongRoomService } from './pong-room.service';
+import { Timer } from 'src/pong/data/classes';
+import { TimerType, UserState } from 'src/pong/data/enums';
 
 Injectable({});
 export class PongQueueService {
@@ -24,6 +26,12 @@ export class PongQueueService {
     }, 2000); // every 2 seconds
   }
 
+  /* TODO
+   * Once the queue has 2 eligible players,
+   * it should ask the room service to create a game room.
+   *
+   * It should then wait for its return to unqueue the users successfully
+   */
   private updateQueue() {
     if (!this.queue.checkReady(2) || !this.roomService.canCreateGameRoom()) {
       return;
@@ -34,65 +42,74 @@ export class PongQueueService {
     const room = this.roomService.createGameRoom(users[0], users[1]).payload;
   }
 
-  setListeners(user: Socket) {
+  setListeners(socket: Socket) {
     this.disconnectListener = () => {
-      this.handleLeaveQueue(user);
+      this.handleLeaveQueue(socket);
     };
 
-    user.on('disconnect', this.disconnectListener);
+    socket.on('disconnect', this.disconnectListener);
 
-    user.on('leave-queue', (args, callback) => {
-      const response = this.handleLeaveQueue(user);
+    socket.on('leave-queue', (args, callback) => {
+      const response = this.handleLeaveQueue(socket);
       if (typeof callback === 'function') callback(response);
     });
 
-    user.on('update-queue', (args, callback) => {
-      const response = this.handleUpdateQueue(user);
+    socket.on('update-queue', (args, callback) => {
+      const response = this.handleUpdateQueue(socket);
       if (typeof callback === 'function') callback(response);
     });
   }
 
-  userJoinQueue(user: Socket): Response {
-    if (this.queue.is_queued(user)) {
-      this.logger.debug('join-queue event: Already queued.');
-      return { code: 1, msg: 'Already queued!' };
-    } else if (!this.queue.push(user)) {
-      this.logger.debug('join-queue event: Full queue.');
-      return { code: 1, msg: 'queue is full!' };
-    }
-    this.setListeners(user);
+  userJoinQueue(socket: Socket): Response {
+    // if (this.queue.is_queued(socket)) {
+    //   this.logger.debug('join-queue event: socket is already queued');
+    //   return { code: 1, msg: 'you are already queued' };
+    // } else if (!this.queue.push(socket)) {
+    //   this.logger.debug('join-queue event: Full queue.');
+    //   return { code: 1, msg: 'the queue is full' };
+    // } else if (socket.data.user?.state === UserState.INGAME) {
+    //   this.logger.debug('join-queue event: user is ingame.');
+    //   return { code: 1, msg: 'you are considered in a game' };
+    // }
+    this.queue.push(socket);
+    this.setListeners(socket);
+    socket.data.queueTimer = new Timer(TimerType.STOPWATCH, 0, 0);
+    // socket.data.state.value = UserState.QUEUED;
     this.logger.debug('join-queue event: Queue size: ' + this.queue.length());
+    this.logger.debug('added queue timer in socket.data.queueTimer.');
     return { code: 0, msg: 'you have joined the queue.' };
   }
 
-  handleUpdateQueue(user: Socket): Response {
+  handleUpdateQueue(socket: Socket): Response {
     //TODO
     return { code: 0, msg: 'queue update' };
   }
 
-  handleLeaveQueue(user: Socket): Response {
-    if (this.queue.unqueue(user)) {
-      this.clearListeners(user);
+  handleLeaveQueue(socket: Socket): Response {
+    if (this.queue.unqueue(socket)) {
+      this.clearListeners(socket);
       this.logger.log(
-        'user ' + user.data.user.displayName + ' has left the queue',
+        'socket ' + socket.data.user?.displayName + ' has left the queue',
       );
       return { code: 0, msg: 'you left the queue' };
     }
     return { code: 1, msg: 'you are not currently in a queue' };
   }
 
-  queueSuccess(user: Socket) {
-    user.emit('queue-success', 'Successfully matched');
-    this.clearListeners(user);
+  queueSuccess(socket: Socket) {
+    socket.emit('queue-success', 'Successfully matched');
+    this.clearListeners(socket);
   }
 
   getQueueSize(): number {
     return this.queue.length();
   }
 
-  clearListeners(user: Socket) {
-    user.off('disconnect', this.disconnectListener);
-    user.removeAllListeners('leave-queue');
-    user.removeAllListeners('update-queue');
+  clearListeners(socket: Socket) {
+    try {
+      socket.off('disconnect', this.disconnectListener);
+    } catch (e) {}
+    socket.removeAllListeners('leave-queue');
+    socket.removeAllListeners('update-queue');
   }
 }

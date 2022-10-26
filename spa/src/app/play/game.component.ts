@@ -46,25 +46,13 @@ export class GameComponent implements OnInit {
       // TODOshow countdown
     });
 
-    // this.server.listenGameUpdate().subscribe((info: GameInfo) => {
-    // this.refresh()
-    // this.context.fillStyle = "#FFFFFF";
-    // this.context.fillText(this.score[0], 250, 50);
-    // this.context.fillText(this.score[1], 350, 50);
-    // this.context.fillRect(info.p1_pos.x, info.p1_pos.y, info.p1_size.x, info.p1_size.y);
-    // this.context.fillRect(info.p2_pos.x, info.p2_pos.y, info.p2_size.x, info.p2_size.y);
-    // this.context.fillRect(info.b_pos.x - info.b_rad / 2, info.b_pos.y - info.b_rad, info.b_rad, info.b_rad);
-    // if (info.events)
-    // 	this.handleEvents(info.events);
-    // });
-
-    this.server.listenGameStart().then((info: string) => {
-      this.log(info + ' (game-start)');
+    this.server.listenGameStart().then((info: Response) => {
+      this.log(info.msg);
       // this.audio.playGame(true, true);
     });
 
-    this.server.listen('player-ready').subscribe((info: string) => {
-      this.log('player ' + info + ' is ready!');
+    this.server.listen('player-ready').subscribe((info: Response) => {
+      this.log(info.msg);
     });
   }
 
