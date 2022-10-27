@@ -220,7 +220,7 @@ p {
 
 .home-page {
 	overflow: hidden;
-	background-color: #404040;
+	// background-color: #404040;
 	margin: 0;
 	padding: 0;
 	height: 100%;
@@ -235,9 +235,27 @@ p {
 	// margin-bottom: 3rem;
 }
 
+@media  screen and (min-width: 500px) and (max-width: 650px) {
+	.title-home-div .title-homepage {
+		font-size: 7rem;
+	}
+}
+
+@media  screen and (min-width: 350px) and (max-width: 500px) {
+	.title-home-div .title-homepage {
+		font-size: 5rem;
+	}
+}
+
+@media  screen and (min-width: 0px) and (max-width: 350px) {
+	.title-home-div .title-homepage {
+		font-size: 3rem;
+	}
+}
+
 .title-homepage {
-	// top: 0;
-	margin-top: -0.1rem;
+	top: 0;
+	margin-top: -0.05rem;
 	font-family: "PowerRangers";
 	font-weight: 50;
 	font-size: 7rem;
@@ -255,16 +273,19 @@ p {
 }
 
 .player-info {
-	margin-top: 4rem;
+	// margin-top: 4rem;
+	margin-left: -6rem;
 }
 .profile-img {
+	width: 8rem;
+	height: 8rem;
 	border-radius: 50%;
 	opacity: 0.6;
 }
 
 .player-name {
-	position: static;
-	margin-right: 40px;
+	// position: static;
+	// margin-right: 40px;
 	margin-top: 0.6rem;
 	font-family: "monoton";
 	font-weight: 50;
@@ -279,3 +300,73 @@ p {
 	height: 75%;
 	width: 35%;
 }
+
+.item1 { 
+	grid-area: header;
+	margin-bottom: 0;
+	padding-bottom: 0;
+	height: auto;
+}
+
+.item2 { 
+	grid-area: menu;
+}
+
+.item3 { grid-area: main; }
+.item4 { grid-area: right; }
+.item5 { grid-area: footer; }
+
+
+.grid-container {
+	height: 100%;
+	display: grid;
+	grid-template-areas:
+	  'header header header header header header'
+	  'menu main main main right right'
+	  'menu footer footer footer footer footer';
+	gap: 10px;
+	grid-template-columns: auto auto auto;
+	// background-color: #404040;
+	padding: 10px;
+  }
+  
+
+.grid-container > div {
+	background-color: rgba(255, 255, 255, 0.8);
+	text-align: center;
+	padding: 20px 0;
+	font-size: 30px;
+  }
+
+  
+.menu-item ul {
+	margin-left: -2rem;
+	list-style-type: none;
+
+	a {
+		padding-bottom: 2px;
+		margin-bottom: 2rem;
+		font-size: 2.7rem;
+		line-height: 1em;
+		text-decoration: none;
+		font-family: Franchise;
+		display: block;
+		cursor: pointer;
+		transition: 0.3s;
+		color: #68758A;
+	}
+	a:hover {
+		scale: 1.2;
+		color: #ededed;
+		text-shadow:
+		// 0 0 7px #68758A,
+		// 0 0 10px #68758A,
+		// 0 0 21px #68758A,
+		// 0 0 42px #68758A,
+		0 0 82px #68758A,
+		0 0 92px #68758A,
+		// 0 0 102px #68758A,
+		// 0 0 151px #68758A;
+	}
+}
+	

@@ -22,36 +22,53 @@
 
 <ng-template #loggedIn>
   <section class="home-page" id="home">
-	<div class="grid flex align-items-center justify-content-center">
-		<div class="title-home-div">
-			<h1 class="title-homepage">!Transcendence!</h1>
-		</div>
-	</div>
-    <div class="player-info flex justify-content-around flex-wrap card-container ">
-		<div class="col-4 h-4rem justify-content-center">
-			<img class="profile-img" src="../../../../assets/image/player-test.jpg" alt="Image"/>
-			<h3 class="player-name">Johnny Sins</h3> 
-		</div>
-		<div class="chat-div col-4 col-offset-1 h-4rem bg-red-600">
-		</div>
-		<div class="p-grid">
-			<div class="p-col-8">
-				<div class="p-grid">
-					<div class="p-col-6 bg-bluegray-100">
-						6
-					</div>
-					<div class="p-col-6 bg-cyan-500">
-						6
-					</div>
-					<div class="p-col-12 bg-orange-400">
-						12
-					</div>
+	<div class="grid-container">
+		<div class="item1 header">
+			<div class="grid flex align-items-center justify-content-center">
+				<div class="title-home-div">
+					<!-- <h1 class="title-homepage">!Transcendence!</h1> -->
 				</div>
 			</div>
-			<div class="p-col-4 bg-purple-300">
-				4
+			<div class="col-4 h-6rem player-info">
+				<img class="profile-img" src="../../../../assets/image/player-test.jpg" alt="Image"/>
+				<h3 class="player-name">Johnny Sins</h3> 
 			</div>
 		</div>
+		<div class="item2 flex align-content-start justify-content-center">
+			<div class="menu-item">
+				<ul>
+					<li><a>PLAY</a></li>
+					<li><a>WATCH</a></li>
+					<li><a>CHATS</a></li>
+					<li><a>USERS</a></li>
+					<li><a>STATS</a></li>
+					<li><a>SETTING</a></li>
+				</ul>
+			</div>
+		</div>
+		<div class="item3">PLAY GAME</div>  
+		<div class="item4">CHATS WITH AMIGOS</div>
+		<div class="item5">WATCH GAME</div>
+	  </div>
+	<!--<div class="chat-div col-4 col-offset-1 h-4rem bg-red-600">
 	</div>
+	<div class="col grid col-offset-5">
+		<div class="p-col-8">
+			<div class="p-grid">
+				<div class="p-col-6 w-10rem h-10rem bg-bluegray-100">
+					<h2>SOMETHING AREA</h2>
+				</div>
+				<div class="p-col-6 w-10rem h-10rem bg-cyan-500">
+					<h2>SOMETHING AREA</h2>
+				</div>
+				<div class="p-col-12 w-10rem h-10rem bg-orange-400 mb-4">
+					<h2>WATCH GAME AREA</h2>
+				</div>
+			</div>
+		</div>
+		<div class="p-col-4 bg-green-300 m-5">
+			<h1>CHAT AREAN</h1>
+		</div>
+	</div> -->
   </section>
 </ng-template>

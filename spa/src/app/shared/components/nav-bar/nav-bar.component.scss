@@ -34,7 +34,7 @@
 	  a {
 		z-index: 0;
 		font-size: 1.7rem;
-		line-height: 5em;
+		line-height: 3.5em;
 		text-transform: uppercase;
 		text-decoration: none;
 		letter-spacing: 0.4em;
@@ -98,6 +98,21 @@
 		background-image: linear-gradient(to right, #68758A, #BABDBF)
 	}
   }
+}
+
+img {
+	height: 8rem;
+	width: 8rem;
+	border-radius: 50%;
+	opacity: 0.8;
+}
+
+h3 {
+	font-size: 1.5rem;
+	letter-spacing: 3px;
+	color: #68758A;
+	font-family: PowerRangers;
+
 }
 
 .ball {
@@ -171,7 +186,6 @@
 	padding: 15px 0;
 	border-bottom: 1px solid #dcdcdc;
 	width: 100%;
-	cursor: pointer;
 	&:last-child {
 	  border-bottom: none;
 	}
