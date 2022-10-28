@@ -10,6 +10,7 @@ import {
   UseInterceptors,
   UploadedFile,
   NotFoundException,
+  BadRequestException,
 } from '@nestjs/common';
 
 import { UpdateUserDto } from './dto';
@@ -47,6 +48,9 @@ export class UserController {
     @Param('id', ParseIntPipe) id: number,
     @Body() dto: UpdateUserDto,
   ): Promise<User> {
+    if (Object.keys(dto).length === 0) {
+      throw new BadRequestException('Empty body');
+    }
     return await this.userService.updateUserById(id, dto);
   }
 

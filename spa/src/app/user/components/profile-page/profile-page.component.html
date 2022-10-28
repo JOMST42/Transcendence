@@ -1,21 +1,68 @@
-<div class="card">
-  <div class="flex flex-column card-container img-card">
-    <!-- <app-profile-img></app-profile-img> -->
-    <img
-      class="profile-img"
-      [src]="user?.avatarUrl"
-      alt="Image"
-    />
-
-    <!-- <advanced-image [cldImg]="img"></advanced-image> -->
-
-    <button
-      pButton
-      type="button"
-      class="p-button-raised p-button-outlined p-button-secondary edit-button"
+<div class="container">
+  <div class="grid" style="background-color: yellow">
+    <div
+      class="lg:col-4 sm:col-12 md:12"
+      style="background-color: rgb(0, 242, 255)"
     >
-      EDIT
-    </button>
+      <app-user-img
+        [avatarUrl]="user?.avatarUrl"
+        [userIsMe]="userIsMe(user.id)"
+        (eventUpload)="refreshUser()"
+        style="overflow: hidden"
+      >
+      </app-user-img>
+    </div>
+    <div class="lg:col-8 sm:col-12 md:col-12">
+      <div class="grid">
+        <div
+          class="lg:col-6 sm:col-12 md:col-12"
+          style="background-color: blue"
+        >
+          <app-user-displayname [user]="user" [userIsMe]="userIsMe(user.id)"></app-user-displayname>
+        </div>
+        <div
+          class="lg:col-6 sm:col-12 md:12"
+          style="background-color: rgb(0, 255, 72)"
+        >
+          <input
+            type="text"
+            pInputText
+            class="transparent-background color-bottom-border input-font"
+            placeholder="{{ user?.username }}"
+          />
+        </div>
+        <div
+          class="lg:col-6 sm:col-12 md:12"
+          style="background-color: rgb(255, 102, 0)"
+        >
+          <input
+            type="text"
+            pInputText
+            class="transparent-background color-bottom-border input-font"
+            placeholder="{{ user?.lastName }}"
+          />
+        </div>
+        <div
+          class="lg:col-6 sm:col-12 md:12"
+          style="background-color: rgb(41, 39, 163)"
+        >
+          <input
+            type="text"
+            pInputText
+            class="transparent-background color-bottom-border input-font"
+            placeholder="{{ user?.firstName }}"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 
+<div class="card">
+  <div class="flex flex-column card-container img-card ">
+ 
+    <app-user-img></app-user-img>
   </div>
 </div>
 
@@ -23,38 +70,7 @@
   <li class="flex-item"></li>
 
   <li class="flex-item">
-    <div class="p-input-filled">
-      <div class="p-inputtext-lg label-style">
-        <div class="" data-hover="change display name">
-          <input
-            type="text"
-            style="font-weight: 300; color: yellow"
-            pInputText
-            class="transparent-background color-bottom-border input-font"
-            placeholder="{{ user?.displayName }}"
-            [(ngModel)]="displayName"
-            #dname="ngModel"
-            [ngModelOptions]="{ standalone: true }"
-            />
-            <button
-            *ngIf="userme"
-            pButton
-            pRipple
-            type="button"
-            label="Click"
-            icon="pi pi-check"
-            class="p-button-rounded p-button-outlined profile_button"
-            (click)="changeDisplayName()"
-            ></button>
-            <div *ngIf="dname.invalid && (dname.dirty || dname.touched)" class="ng-invalid ng-dirty">
-              <div *ngIf="dname.errors?.['required']">
-                Display name is required
-              </div>
-            </div>
-        </div>
-          
-      </div>
-    </div>
+       <app-user-displayname></app-user-displayname>
   </li>
   <li class="flex-item">
     <div class="p-input-filled">
@@ -92,18 +108,8 @@
       </div>
     </div>
   </li>
-  <!-- <li class="flex-item"> EMAIL </li> -->
-</ul>
+</ul> -->
 
 <!-- <div id="container-flex-column">
 <app-friend-list></app-friend-list>
 </div> -->
-
-<p-fileUpload
-  name="avatar"
-  url="http://localhost:3000/api/users/upload"
-  accept="image/*"
-  (onUpload)="refreshUser()"
-  
->
-</p-fileUpload>

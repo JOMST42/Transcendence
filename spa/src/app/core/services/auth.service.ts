@@ -23,6 +23,16 @@ export class AuthService {
     return this.user$;
   }
 
+  refreshProfile(): Observable<User | null> {
+    return this.userService.getProfile().pipe(
+      take(1),
+      map((user: User) => {
+        this.userSubject.next(user);
+        return user;
+      })
+    );
+  }
+
   login(): Observable<User | null> {
     const token =
       this.cookieService.get('access_token') ||
@@ -41,13 +51,7 @@ export class AuthService {
     localStorage.setItem('access_token', token);
     this.cookieService.delete('access_token');
 
-    return this.userService.getProfile().pipe(
-      take(1),
-      map((user: User) => {
-        this.userSubject.next(user);
-        return user;
-      })
-    );
+    return this.refreshProfile();
   }
 
   logout(): void {

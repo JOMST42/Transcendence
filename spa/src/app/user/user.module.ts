@@ -6,12 +6,16 @@ import { SharedModule } from '../shared/shared.module';
 import {
   FriendListComponent,
   ProfilePageComponent,
+  UserImgComponent,
+  UserDisplaynameComponent,
 } from './components';
 
 @NgModule({
   declarations: [
     FriendListComponent,
     ProfilePageComponent,
+    UserImgComponent,
+    UserDisplaynameComponent,
   ],
   imports: [SharedModule, UserRoutingModule, FileUploadModule],
 })

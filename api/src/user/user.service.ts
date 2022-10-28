@@ -24,7 +24,10 @@ export class UserService {
     return user;
   }
 
-  updateUserById(userId: number, dto: UpdateUserDto): Promise<User | null> {
+  async updateUserById(
+    userId: number,
+    dto: UpdateUserDto,
+  ): Promise<User | null> {
     const user = this.prisma.user.findUnique({
       where: {
         id: userId,
@@ -34,11 +37,15 @@ export class UserService {
       throw new ForbiddenException('user not found');
     }
     if (dto.displayName) {
-      this.prisma.user.findUnique({
+      const sameName = await this.prisma.user.findUnique({
         where: {
           normalizedName: dto.displayName.toLowerCase(),
         },
       });
+      if (sameName) {
+        throw new BadRequestException('Display name already taken');
+      }
+      dto.normalizedName = dto.displayName.toLowerCase();
     }
     return this.prisma.user.update({
       where: {

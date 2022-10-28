@@ -1,52 +1,41 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Subject, takeUntil } from 'rxjs';
 
 import { User } from '../../models';
 import { UserService } from '../../services';
+import { AuthService, ToastService } from '../../../core/services';
 
 @Component({
   selector: 'app-profile-page',
   templateUrl: './profile-page.component.html',
   styleUrls: ['profile-page.component.scss'],
 })
-export class ProfilePageComponent implements OnInit {
+export class ProfilePageComponent implements OnInit, OnDestroy {
+  unsubscribeAll$ = new Subject<void>();
+
   user!: User;
   me!: User;
-  userme: Boolean = false;
   displayName!: string;
 
   constructor(
     private readonly userService: UserService,
     private activatedRoute: ActivatedRoute,
-    private readonly router: Router,
-    private readonly route: ActivatedRoute
+    private readonly toast: ToastService,
+    private readonly auth: AuthService
   ) {}
-
-  // resetPage() {
-  //   this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-  //   this.router.onSameUrlNavigation = 'reload';
-  //   this.router.navigate(['./'], {
-  //     relativeTo: this.route,
-  //   });
-  // }
-
-  refreshUser(){
-    this.userService.getProfile().subscribe({
-      next: (data) => {
-        this.user = data;
-      },
-      error: (err) => {
-        console.log(err);
-      },
-    });
+  
+  userIsMe(id: number): boolean {
+    return id === this.me.id;
   }
 
-  changeDisplayName() {
-    this.userService
-      .updateUserById(this.user.id, { displayName: this.displayName })
+  refreshUser(): void {
+    this.auth
+      .refreshProfile()
+      .pipe(takeUntil(this.unsubscribeAll$))
       .subscribe({
         next: (data) => {
-          console.log(data);
+          this.user = data;
         },
         error: (err) => {
           console.log(err);
@@ -55,23 +44,26 @@ export class ProfilePageComponent implements OnInit {
   }
 
   ngOnInit() {
-
-    this.activatedRoute.data.subscribe({
+    this.activatedRoute.data.pipe(takeUntil(this.unsubscribeAll$)).subscribe({
       next: (data) => {
         this.user = data['user'];
       },
     });
 
-    this.userService.getProfile().subscribe({
-      next: (data) => {
-        this.me = data;
-        if (this.me.id === this.user.id) {
-          this.userme = true;
-        }
-      },
-      error: (err) => {
-        console.log(err);
-      },
-    });
+    this.auth
+      .getCurrentUser()
+      .pipe(takeUntil(this.unsubscribeAll$))
+      .subscribe({
+        next: (data) => {
+          this.me = data;
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribeAll$.next();
   }
 }

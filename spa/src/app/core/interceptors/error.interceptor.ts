@@ -26,6 +26,12 @@ export class ErrorInterceptor implements HttpInterceptor {
     return next.handle(request).pipe(
       catchError((error: HttpErrorResponse) => {
         switch (error.status) {
+          case HttpStatusCode.BadRequest:
+            this.toastService.showError(
+              error.statusText + ' 🤫',
+              error.error.message
+            );
+            break;
           case HttpStatusCode.Unauthorized:
             this.toastService.showError(
               error.status.toString(),

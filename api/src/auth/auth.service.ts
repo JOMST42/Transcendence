@@ -16,25 +16,22 @@ export class AuthService {
   ) {}
 
   async validateUser(details: UserDetails): Promise<User | null> {
-    const email = details.email.slice();
     const user = await this.prisma.user.findUnique({
       where: {
-        email,
+        email: details.email,
       },
     });
 
     // If found, update user
     if (user) {
-      delete details.email;
       delete details.displayName;
       return await this.prisma.user.update({
         data: {
           username: details.username.toLowerCase(),
-          normalizedName: details.displayName.toLowerCase(),
           ...details,
         },
         where: {
-          email,
+          email: details.email,
         },
       });
     }
