@@ -35,10 +35,9 @@ export class UserController implements OnModuleInit {
   @UseGuards(JwtGuard)
   @Get('me')
   async getMe(@GetUser() user: User): Promise<User> {
-    delete user.createdAt;
-    delete user.updatedAt;
     return user;
   }
+
   @Get(':id')
   async getUserById(
     @Param('id', ParseIntPipe) id: number,

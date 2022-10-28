@@ -24,16 +24,17 @@ const routes: Routes = [
         loadChildren: () =>
           import('./chat/chat.module').then((m) => m.ChatModule),
       },
+      {
+        path: 'play',
+        loadChildren: () =>
+          import('./play/play.module').then((m) => m.PlayModule),
+      },
+      {
+        path: 'watch',
+        loadChildren: () =>
+          import('./watch/watch.module').then((m) => m.WatchModule),
+      },
     ],
-  },
-  {
-    path: 'play',
-    loadChildren: () => import('./play/play.module').then((m) => m.PlayModule),
-  },
-  {
-    path: 'watch',
-    loadChildren: () =>
-      import('./watch/watch.module').then((m) => m.WatchModule),
   },
   {
     path: 'server-error',

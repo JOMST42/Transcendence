@@ -10,9 +10,7 @@ import {
   ConnectedSocket,
 } from '@nestjs/websockets';
 import { Socket, Server } from 'socket.io';
-import { GameInfo } from '../../pong-game/interfaces';
-import { PongRoom, User, Queue } from '../classes';
-import { RoomState } from '../enums';
+import { User } from '../classes';
 import { Response } from '../interfaces';
 import { PongRoomService } from '../services/pong-room.service';
 import { PongQueueService } from '../services/pong-queue.service';
@@ -42,9 +40,9 @@ export class PongServerGateway
   afterInit(server: Server) {
     this.logger.log('Server log: Socket is live');
     this.server.setMaxListeners(this.max_users); // WARNING need to read about it
-    setInterval(() => {
-      this.showServerInfo();
-    }, 10000);
+    // setInterval(() => {
+    //   this.showServerInfo();
+    // }, 10000);
     // setInterval(() => {
     //   this.updateRooms();
     // }, (1 / 60) * 1000); // FPS

@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { Room } from '@prisma/client';
-import { PrismaService } from '../prisma/prisma.service';
-import { CreateRoomDto } from './dto';
+import { PrismaService } from '../../prisma/prisma.service';
+import { CreateRoomDto } from '../dto';
 
 @Injectable()
 export class ChatService {
@@ -34,7 +34,7 @@ export class ChatService {
     });
   }
 
-  async addUserToRoom(userId: number, roomId: number): Promise<Room> {
+  async addUserToRoom(userId: number, roomId: string): Promise<Room> {
     await this.prisma.userRoom.create({ data: { userId, roomId } });
     return this.prisma.room.findUnique({ where: { id: roomId } });
   }

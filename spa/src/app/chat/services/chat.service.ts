@@ -1,22 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ChatSocket } from '../../core/core.module';
 
-import { ToastService } from '../../core/services';
-import { Room } from '../models';
+import { ChatSocket } from '../../core/core.module';
+import { ChatMessage, Room } from '../models';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ChatService {
-  constructor(
-    private socket: ChatSocket,
-    private readonly toastService: ToastService
-  ) {}
-
-  getMessage(): Observable<string> {
-    return this.socket.fromEvent('message');
-  }
+  constructor(private socket: ChatSocket) {}
 
   getRooms(): Observable<Room[]> {
     return this.socket.fromEvent<Room[]>('rooms');
@@ -24,10 +16,13 @@ export class ChatService {
 
   createRoom(room: Room): void {
     this.socket.emit('createRoom', room);
-    this.toastService.showSuccess('Success', `Room ${room.name} created`);
   }
 
   joinRoom(roomId: number): void {
     this.socket.emit('joinRoom', roomId);
+  }
+
+  sendMessage(message: ChatMessage): void {
+    this.socket.emit('sendMessage', message);
   }
 }

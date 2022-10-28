@@ -33,6 +33,7 @@ export class UserService {
     if (!user) {
       throw new ForbiddenException('user not found');
     }
+
     return this.prisma.user.update({
       where: {
         id: userId,

@@ -22,16 +22,18 @@ model Weather {
 }
 
 model User {
-  id          Int     @id @default(autoincrement())
-  username    String  @unique
-  email       String  @unique
+  id          Int        @id @default(autoincrement())
+  username    String     @unique
+  email       String     @unique
   displayName String
   firstName   String
   lastName    String
   avatarUrl   String?
+  status      UserStatus @default(OFFLINE)
 
-  rooms           UserRoom[]
-  userConnections UserConnection[]
+  rooms       UserRoom[]
+  connections UserConnection[]
+  messages    Message[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -40,10 +42,11 @@ model User {
 }
 
 model Room {
-  id   Int    @id @default(autoincrement())
+  id   String @id @default(uuid())
   name String
 
-  users UserRoom[]
+  users    UserRoom[]
+  messages Message[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -52,10 +55,10 @@ model Room {
 }
 
 model UserRoom {
-  user   User @relation(fields: [userId], references: [id])
+  user   User   @relation(fields: [userId], references: [id])
   userId Int
-  room   Room @relation(fields: [roomId], references: [id])
-  roomId Int
+  room   Room   @relation(fields: [roomId], references: [id])
+  roomId String
 
   isOwner Boolean @default(false)
 
@@ -73,9 +76,35 @@ model UserConnection {
 
   user   User @relation(fields: [userId], references: [id])
   userId Int
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("user_connections")
 }
 
 enum SocketType {
   GAME
   CHAT
+}
+
+enum UserStatus {
+  OFFLINE
+  ONLINE
+  IN_GAME
+  SPECTATING
+}
+
+model Message {
+  id       Int    @id @default(autoincrement())
+  content  String
+  author   User   @relation(fields: [authorId], references: [id])
+  authorId Int
+  room     Room   @relation(fields: [roomId], references: [id])
+  roomId   String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("messages")
 }
