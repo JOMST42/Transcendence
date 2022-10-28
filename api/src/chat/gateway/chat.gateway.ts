@@ -78,7 +78,9 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     @ConnectedSocket() socket: Socket,
   ): Promise<Room> {
     try {
-      return await this.chatService.createRoom(dto, socket.data.user.id);
+      const room = await this.chatService.createRoom(dto, socket.data.user.id);
+      this.server.to(socket.id).emit('newRoom', room);
+      return room;
     } catch (e) {
       this.server
         .to(socket.id)

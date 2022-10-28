@@ -2,20 +2,26 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { ChatSocket } from '../../core/core.module';
+import { ToastService } from '../../core/services';
 import { ChatMessage, Room } from '../models';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ChatService {
-  constructor(private socket: ChatSocket) {}
+  constructor(
+    private socket: ChatSocket,
+    private readonly toastService: ToastService
+  ) {}
 
   getRooms(): Observable<Room[]> {
     return this.socket.fromEvent<Room[]>('rooms');
   }
 
   createRoom(room: Room): void {
-    this.socket.emit('createRoom', room);
+    this.socket.emit('createRoom', room, (newRoom: Room) => {
+      this.toastService.showSuccess('Success', `Created room ${newRoom.name}`);
+    });
   }
 
   joinRoom(roomId: number): void {
