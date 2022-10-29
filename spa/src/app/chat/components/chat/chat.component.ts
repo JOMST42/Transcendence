@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { map } from 'rxjs';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { map, Subject, takeUntil } from 'rxjs';
+import { ToastService } from '../../../core/services';
 
 import { Room } from '../../models';
 import { ChatService } from '../../services';
@@ -9,23 +11,36 @@ import { ChatService } from '../../services';
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.scss'],
 })
-export class ChatComponent implements OnInit {
+export class ChatComponent implements OnInit, OnDestroy {
+  private unsubscribeAll$ = new Subject<void>();
   rooms: Room[];
 
-  constructor(private readonly chatService: ChatService) {}
+  constructor(
+    private readonly chatService: ChatService,
+    private readonly route: ActivatedRoute,
+    private readonly toastService: ToastService
+  ) {}
+
+  ngOnDestroy(): void {
+    this.unsubscribeAll$.next();
+  }
 
   ngOnInit(): void {
-    this.chatService
-      .getRooms()
-      .pipe(
-        map((rooms: Room[]) => {
-          return rooms.sort((a, b) => a.id - b.id);
-        })
-      )
-      .subscribe({ next: (rooms) => (this.rooms = rooms) });
+    this.route.data.pipe(takeUntil(this.unsubscribeAll$)).subscribe((data) => {
+      this.rooms = data['rooms'];
+    });
   }
 
   createRoom(): void {
-    this.chatService.createRoom({ name: 'test' });
+    this.chatService
+      .createRoom({ name: 'test' })
+      .pipe(takeUntil(this.unsubscribeAll$))
+      .subscribe((newRoom) => {
+        this.rooms.push(newRoom);
+        this.toastService.showSuccess(
+          'Success',
+          `Created chat room ${newRoom.name}`
+        );
+      });
   }
 }

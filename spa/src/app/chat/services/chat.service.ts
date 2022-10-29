@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { ChatSocket } from '../../core/core.module';
-import { ToastService } from '../../core/services';
+import { BaseApiService, ToastService } from '../../core/services';
 import { ChatMessage, Room } from '../models';
 
 @Injectable({
@@ -11,17 +11,20 @@ import { ChatMessage, Room } from '../models';
 export class ChatService {
   constructor(
     private socket: ChatSocket,
-    private readonly toastService: ToastService
+    private readonly toastService: ToastService,
+    private readonly baseApiService: BaseApiService
   ) {}
 
-  getRooms(): Observable<Room[]> {
-    return this.socket.fromEvent<Room[]>('rooms');
+  getChatRooms(): Observable<Room[]> {
+    return this.baseApiService.getMany<Room>('/chat-rooms');
   }
 
-  createRoom(room: Room): void {
-    this.socket.emit('createRoom', room, (newRoom: Room) => {
-      this.toastService.showSuccess('Success', `Created room ${newRoom.name}`);
-    });
+  getNewRoom(): Observable<Room> {
+    return this.socket.fromEvent<Room>('newRoom');
+  }
+
+  createRoom(room: Room): Observable<Room> {
+    return this.baseApiService.postOne<Room>('/chat-rooms', room);
   }
 
   joinRoom(roomId: number): void {

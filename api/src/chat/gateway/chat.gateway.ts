@@ -42,7 +42,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     socket.disconnect();
   }
 
-  async handleConnection(@ConnectedSocket() socket: Socket): Promise<boolean> {
+  async handleConnection(@ConnectedSocket() socket: Socket): Promise<void> {
     try {
       const payload = await this.authService.decodeToken(
         socket.handshake.headers.authorization,
@@ -55,36 +55,13 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
       }
 
       socket.data.user = user;
-      const rooms = await this.chatService.getRoomsForUser(user.id);
 
       await this.userConnectionService.create(user.id, {
         socketId: socket.id,
         type: 'CHAT',
       });
-
-      for (const room of rooms) {
-        socket.join(room.id);
-      }
-
-      return this.server.to(socket.id).emit('rooms', rooms);
     } catch (e) {
       this.disconnect(socket);
-    }
-  }
-
-  @SubscribeMessage('createRoom')
-  async onCreateRoom(
-    @MessageBody() dto: CreateRoomDto,
-    @ConnectedSocket() socket: Socket,
-  ): Promise<Room> {
-    try {
-      const room = await this.chatService.createRoom(dto, socket.data.user.id);
-      this.server.to(socket.id).emit('newRoom', room);
-      return room;
-    } catch (e) {
-      this.server
-        .to(socket.id)
-        .emit('socketError', { message: 'Failed to create room' });
     }
   }
 }
