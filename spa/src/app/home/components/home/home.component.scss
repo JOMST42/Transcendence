@@ -313,9 +313,46 @@ p {
 }
 
 .item3 { grid-area: main; }
-.item4 { grid-area: right; }
-.item5 { grid-area: footer; }
 
+.item4 { grid-area: right; }
+
+.item5 { 
+	grid-area: footer;
+	display: block;
+ }
+
+@media  screen and (min-width: 900px) and (max-width: 1200px) {
+	.home-page .grid-container {
+		grid-template-areas:
+		'main main main right right right'
+		'footer footer footer footer footer footer';
+	}
+
+	.home-page .item1 {
+		display: none !important;
+	}
+
+	.home-page .item2 {
+		display: none !important;
+	}
+}
+
+@media  screen and (min-width: 0px) and (max-width: 900px) {
+	.home-page .grid-container {
+		grid-template-areas:
+		'main main main main main main'
+		'right right right right right right'
+		'footer footer footer footer footer footer';
+	}
+
+	.home-page .item1 {
+		display: none !important;
+	}
+
+	.home-page .item2 {
+		display: none !important;
+	}
+}
 
 .grid-container {
 	height: 100%;
