@@ -14,8 +14,8 @@ import { AuthService } from '../../auth/auth.service';
 import { UserConnectionService } from '../../user/services/user-connection.service';
 import { UserService } from '../../user/services/user.service';
 import { ChatService } from '../services/chat.service';
-import { CreateRoomDto } from '../dto';
-import { Room } from '@prisma/client';
+import { ChatMessageWithAuthor, SendChatMessageDto } from '../dto/message.dto';
+import { MessageService } from '../services/message.service';
 
 @WebSocketGateway({
   cors: { origin: 'http://localhost:4200' },
@@ -30,10 +30,11 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     private readonly userService: UserService,
     private readonly chatService: ChatService,
     private readonly userConnectionService: UserConnectionService,
+    private readonly messageService: MessageService,
   ) {}
 
   private disconnect(socket: Socket): void {
-    socket.emit('Error', new UnauthorizedException());
+    socket.emit('socketError', { message: 'Unauthorized' });
     socket.disconnect();
   }
 
@@ -60,8 +61,36 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
         socketId: socket.id,
         type: 'CHAT',
       });
+
+      const rooms = await this.chatService.getRoomsForUser(user.id);
+
+      for (const room of rooms) {
+        socket.join(room.id);
+      }
     } catch (e) {
       this.disconnect(socket);
+    }
+  }
+
+  @SubscribeMessage('sendMessage')
+  async sendMessage(
+    @ConnectedSocket() socket: Socket,
+    @MessageBody() dto: SendChatMessageDto,
+  ): Promise<ChatMessageWithAuthor> {
+    try {
+      const msg = await this.messageService.createMessage(
+        socket.data.user.id,
+        dto.roomId,
+        { content: dto.content },
+      );
+
+      this.server.to(dto.roomId).emit('newMessage', msg);
+
+      return msg;
+    } catch (e) {
+      if (e instanceof UnauthorizedException) {
+        this.server.to(socket.id).emit('socketError', { message: e.message });
+      }
     }
   }
 }

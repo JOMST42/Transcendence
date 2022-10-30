@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { ChatSocket } from '../../core/core.module';
-import { BaseApiService, ToastService } from '../../core/services';
+import { BaseApiService } from '../../core/services';
 import { ChatMessage, Room } from '../models';
 
 @Injectable({
@@ -11,7 +11,6 @@ import { ChatMessage, Room } from '../models';
 export class ChatService {
   constructor(
     private socket: ChatSocket,
-    private readonly toastService: ToastService,
     private readonly baseApiService: BaseApiService
   ) {}
 
@@ -33,5 +32,9 @@ export class ChatService {
 
   sendMessage(message: ChatMessage): void {
     this.socket.emit('sendMessage', message);
+  }
+
+  getNewMessage(): Observable<ChatMessage> {
+    return this.socket.fromEvent<ChatMessage>('newMessage');
   }
 }

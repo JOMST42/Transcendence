@@ -1,7 +1,9 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { Message } from '@prisma/client';
 import { PrismaService } from '../../prisma/prisma.service';
-import { CreateMessageDto } from '../dto/message.dto';
+import {
+  CreateChatMessageDto,
+  ChatMessageWithAuthor,
+} from '../dto/message.dto';
 
 @Injectable()
 export class MessageService {
@@ -10,8 +12,8 @@ export class MessageService {
   async createMessage(
     userId: number,
     roomId: string,
-    message: CreateMessageDto,
-  ): Promise<Message> {
+    message: CreateChatMessageDto,
+  ): Promise<ChatMessageWithAuthor> {
     const room = await this.prisma.room.findUnique({
       where: { id: roomId },
       include: { users: true },
@@ -21,12 +23,13 @@ export class MessageService {
       throw new UnauthorizedException("You can't post in this chat room");
     }
 
-    return this.prisma.message.create({
+    return this.prisma.chatMessage.create({
       data: {
         ...message,
         author: { connect: { id: userId } },
         room: { connect: { id: roomId } },
       },
+      include: { author: true },
     });
   }
 }
