@@ -24,7 +24,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
     private readonly toast: ToastService,
     private readonly auth: AuthService
   ) {}
-  
+
   userIsMe(id: number): boolean {
     return id === this.me.id;
   }
@@ -41,6 +41,11 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
           console.log(err);
         },
       });
+  }
+
+  addFriend(): void {
+    console.log('friends added');
+    this.toast.showInfo('New friend !', 'Pouet is now your friend');
   }
 
   ngOnInit() {

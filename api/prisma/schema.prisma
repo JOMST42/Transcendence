@@ -32,6 +32,8 @@ model User {
   avatarUrl   String?
 
   rooms UserRoom[]
+  friendsRequests Friendship[] @relation("requester")
+  friendsInvitation Friendship[] @relation("receiver")
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -63,4 +65,17 @@ model UserRoom {
   updatedAt DateTime @updatedAt
 
   @@id([userId, roomId])
+}
+
+model Friendship{
+	requester User @relation("requester", fields:[requesterId], references: [id])
+	requesterId Int 
+	adressee User @relation("receiver", fields:[adresseeId], references: [id])
+	adresseeId Int
+
+	createdAt DateTime @default(now())
+	updatedAt DateTime @updatedAt
+	
+	@@id([requesterId, adresseeId])
+	@@map("friendships")
 }

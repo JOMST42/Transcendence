@@ -9,6 +9,9 @@ import { UserModule } from './user/user.module';
 import { ChatModule } from './chat/chat.module';
 import { CloudinaryModule } from './cloudinary/cloudinary.module';
 import { PongServerModule } from './pong-server/pong-server.module';
+import { FriendsListService } from './friends-list/friends-list.service';
+import { FriendsListController } from './friends-list/friends-list.controller';
+import { FriendsListModule } from './friends-list/friends-list.module';
 
 @Module({
   imports: [
@@ -21,7 +24,9 @@ import { PongServerModule } from './pong-server/pong-server.module';
     ChatModule,
     CloudinaryModule,
     PongServerModule,
+    FriendsListModule,
   ],
-  controllers: [],
+  controllers: [FriendsListController],
+  providers: [FriendsListService],
 })
 export class AppModule {}

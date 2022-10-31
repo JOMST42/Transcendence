@@ -11,6 +11,12 @@
         style="overflow: hidden"
       >
       </app-user-img>
+      <p-button
+        type="button"
+        icon="pi pi-user"
+        class="p-button-rounded p-button-info p-button-outlined"
+        (onClick)="(addFriend)"
+      ></p-button>
     </div>
     <div class="lg:col-8 sm:col-12 md:col-12">
       <div class="grid">
@@ -18,7 +24,10 @@
           class="lg:col-6 sm:col-12 md:col-12"
           style="background-color: blue"
         >
-          <app-user-displayname [user]="user" [userIsMe]="userIsMe(user.id)"></app-user-displayname>
+          <app-user-displayname
+            [user]="user"
+            [userIsMe]="userIsMe(user.id)"
+          ></app-user-displayname>
         </div>
         <div
           class="lg:col-6 sm:col-12 md:12"
