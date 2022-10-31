@@ -36,8 +36,8 @@ export class PongRoom {
     this.roomId = id;
     this.setUserPlayer(1, userP1);
     this.setUserPlayer(2, userP2);
-    this.p1 = new Player();
-    this.p2 = new Player();
+    this.p1 = new Player(userP1?.data.user.userId);
+    this.p2 = new Player(userP2?.data.user.userId);
 
     this.readyCountdown = new Timer(TimerType.COUNTDOWN, 10, 0);
     this.gameCountdown = new Timer(TimerType.COUNTDOWN, 3, 0);
@@ -79,7 +79,7 @@ export class PongRoom {
   }
 
   getGameUpdate(): GameInfo | undefined {
-    if (this.game.isFinished()) this.state = RoomState.Finished; // WARNING
+    if (this.game.isFinished()) this.state = RoomState.Finished; // TODO
     return this.getGame()?.getGameInfo();
   }
 
@@ -185,7 +185,9 @@ export class PongRoom {
 
   /********** EVENT LISTENERS **********/
   private setDisconnectListener(user: Socket) {
-    user.on('disconnect', () => {});
+    user.on('disconnect', () => {
+      this.clearListeners(user);
+    });
   }
 
   private setReadyListeners(user: Socket) {

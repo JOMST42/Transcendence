@@ -83,18 +83,17 @@ export class PongServerGateway
           socket.handshake.headers.authorization,
         );
         const prismaUser = await this.userService.getUserById(payload.sub);
-        socket.emit('connect-error', data);
         if (!prismaUser) {
           data = { code: 1, msg: 'you are not registered' };
           break tryBlock;
         }
 
         socket.data.user = prismaUser;
-        // this.roomService.users.push(socket);
         this.roomService.addUser(socket);
         if (!this.userStates.has(prismaUser.id)) {
           this.userStates.set(prismaUser.id, { value: UserState.ONLINE });
         }
+        // socket.setMaxListeners(Infinity); // TODO
         socket.data.state = this.userStates.get(prismaUser.id);
         this.logger.log(
           'Socket connection: socket connected with nickname ' +

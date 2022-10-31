@@ -49,14 +49,14 @@ export class NavBarComponent implements OnInit {
     this.selectRect = elem?.getBoundingClientRect();
     this.leftBall =
       this.selectRect.x + window.scrollX - +this.selection.style.width;
-    this.topBall = this.selectRect.y + window.scrollY + 60;
+    this.topBall = this.selectRect.y + window.scrollY + (+this.selection.style.height / 2); // TODO
   }
 
   unselect(elem: HTMLElement) {
     if (this.selection === elem) {
       this.selection = undefined;
       this.selectRect = undefined;
-      this.leftBall = -100;
+      this.leftBall = -300;
     }
   }
 

@@ -47,7 +47,7 @@ export class PongQueueService {
       this.handleLeaveQueue(socket);
     };
 
-    socket.on('disconnect', this.disconnectListener);
+    socket.once('disconnect', this.disconnectListener);
 
     socket.on('leave-queue', (args, callback) => {
       const response = this.handleLeaveQueue(socket);
