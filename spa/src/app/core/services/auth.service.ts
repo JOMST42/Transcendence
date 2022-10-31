@@ -29,6 +29,7 @@ export class AuthService {
       localStorage.getItem('access_token');
 
     if (!token) {
+      this.logout();
       return this.user$;
     }
 

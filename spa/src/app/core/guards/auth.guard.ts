@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, UrlTree } from '@angular/router';
+import { CanActivate, Router, UrlTree } from '@angular/router';
 import { map, Observable } from 'rxjs';
 import { AuthService, ToastService } from '../services';
 
@@ -9,7 +9,8 @@ import { AuthService, ToastService } from '../services';
 export class AuthGuard implements CanActivate {
   constructor(
     private readonly authService: AuthService,
-    private readonly toastService: ToastService
+    private readonly toastService: ToastService,
+    private readonly router: Router
   ) {}
 
   canActivate():
@@ -24,7 +25,7 @@ export class AuthGuard implements CanActivate {
         }
 
         this.toastService.showError('Unauthorized', 'You are not logged in');
-        return false;
+        return this.router.parseUrl('');
       })
     );
   }

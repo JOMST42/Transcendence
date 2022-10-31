@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { map, Subject, takeUntil } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 import { ToastService } from '../../../core/services';
 
 import { Room } from '../../models';
@@ -14,6 +14,7 @@ import { ChatService } from '../../services';
 export class ChatComponent implements OnInit, OnDestroy {
   private unsubscribeAll$ = new Subject<void>();
   rooms: Room[];
+  selectedRoom: Room;
 
   constructor(
     private readonly chatService: ChatService,
@@ -42,5 +43,13 @@ export class ChatComponent implements OnInit, OnDestroy {
           `Created chat room ${newRoom.name}`
         );
       });
+  }
+
+  onRowSelect(event) {
+    console.log(event);
+  }
+
+  onRowUnselect(event) {
+    console.log(event);
   }
 }

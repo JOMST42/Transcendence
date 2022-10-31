@@ -1,19 +1,29 @@
-<div *ngIf="rooms?.length; else noRooms">
-  <p-table [value]="rooms" responsiveLayout="scroll">
-    <ng-template pTemplate="header">
-      <tr>
-        <th>Id</th>
-        <th>Name</th>
-      </tr>
-    </ng-template>
-    <ng-template pTemplate="body" let-room>
-      <tr>
-        <td>{{ room.id }}</td>
-        <td>{{ room.name }}</td>
-      </tr>
-    </ng-template>
-  </p-table>
+<div class="flex justify-content-center">
+  <div *ngIf="rooms?.length; else noRooms" class="flex-grow-1 mb-4 mx-8">
+    <p-table
+      [value]="rooms"
+      selectionMode="single"
+      dataKey="id"
+      responsiveLayout="scroll"
+      [(selection)]="selectedRoom"
+      (onRowSelect)="onRowSelect($event)"
+      (onRowUnselect)="onRowUnselect($event)"
+    >
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Id</th>
+          <th>Name</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-room>
+        <tr>
+          <td>{{ room.id }}</td>
+          <td>{{ room.name }}</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+  <ng-template #noRooms><div>You are not in any chat rooms</div></ng-template>
 </div>
-<ng-template #noRooms><div>You are not in any chat rooms</div></ng-template>
 
-<p-button label="Create room" (onClick)="createRoom()"></p-button>
+<p-button class="ml-8" label="Create room" (onClick)="createRoom()"></p-button>

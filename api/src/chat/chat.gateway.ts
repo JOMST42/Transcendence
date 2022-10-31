@@ -10,11 +10,11 @@ import {
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
 
-import { AuthService } from '../../auth/auth.service';
-import { UserConnectionService } from '../../user/services/user-connection.service';
-import { UserService } from '../../user/services/user.service';
-import { ChatService } from '../chat.service';
-import { ChatMessageWithAuthor, SendChatMessageDto } from '../dto/message.dto';
+import { AuthService } from '../auth/auth.service';
+import { UserConnectionService } from '../user/services/user-connection.service';
+import { UserService } from '../user/services/user.service';
+import { ChatService } from './chat.service';
+import { ChatMessageWithAuthor, SendChatMessageDto } from './dto/message.dto';
 
 @WebSocketGateway({
   cors: { origin: 'http://localhost:4200' },
