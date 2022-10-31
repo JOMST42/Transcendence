@@ -126,18 +126,18 @@ export class PongServerGateway
 
   // TODO move it somewhere else or also warn queue and room service
   private disconnectUser(client: User | Socket) {
-    let socket: Socket | undefined;
-    if (client instanceof Socket) {
-      socket = client;
-    } else {
-      socket = client.getSocket();
-    }
-    if (socket) {
-      socket.disconnect;
-      this.roomService.users.splice(
-        this.roomService.getUserAndIndex(socket)![1],
-        1,
-      );
-    } //TODO remove from all room and matches??
+  //   let socket: Socket | undefined;
+  //   if (client instanceof Socket) {
+  //     socket = client;
+  //   } else {
+  //     socket = client?.getSocket();
+  //   }
+  //   if (socket) {
+  //     socket.disconnect;
+  //     this.roomService.users.splice(
+  //       this.roomService.getUserAndIndex(socket)![1],
+  //       1,
+  //     );
+  //   } //TODO remove from all room and matches??
   }
 }
