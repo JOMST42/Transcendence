@@ -1,25 +1,33 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
-import { Room, User } from '@prisma/client';
+import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
+import { ChatMessage, ChatRoom, User } from '@prisma/client';
 import { GetUser } from '../auth/decorator';
 import { JwtGuard } from '../auth/guards';
-import { CreateRoomDto } from './dto';
-import { ChatService } from './services/chat.service';
+import { CreateChatRoomDto } from './dto';
+import { ChatService } from './chat.service';
 
 @UseGuards(JwtGuard)
-@Controller('chat-rooms')
+@Controller('chatrooms')
 export class ChatController {
   constructor(private readonly chatService: ChatService) {}
 
   @Get()
-  async getChatRooms(@GetUser() user: User): Promise<Room[]> {
+  async getChatRooms(@GetUser() user: User): Promise<ChatRoom[]> {
     return await this.chatService.getRoomsForUser(user.id);
   }
 
   @Post()
   async createChatRoom(
     @GetUser() user: User,
-    @Body() dto: CreateRoomDto,
-  ): Promise<Room> {
+    @Body() dto: CreateChatRoomDto,
+  ): Promise<ChatRoom> {
     return await this.chatService.createRoom(dto, user.id);
+  }
+
+  @Get(':id')
+  async getChatRoomMessages(
+    @GetUser() user: User,
+    @Param('id') id: string,
+  ): Promise<ChatMessage[]> {
+    return await this.chatService.getMessages(user.id, id);
   }
 }

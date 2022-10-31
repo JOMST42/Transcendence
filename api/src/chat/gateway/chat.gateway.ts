@@ -13,9 +13,8 @@ import { Server, Socket } from 'socket.io';
 import { AuthService } from '../../auth/auth.service';
 import { UserConnectionService } from '../../user/services/user-connection.service';
 import { UserService } from '../../user/services/user.service';
-import { ChatService } from '../services/chat.service';
+import { ChatService } from '../chat.service';
 import { ChatMessageWithAuthor, SendChatMessageDto } from '../dto/message.dto';
-import { MessageService } from '../services/message.service';
 
 @WebSocketGateway({
   cors: { origin: 'http://localhost:4200' },
@@ -30,7 +29,6 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     private readonly userService: UserService,
     private readonly chatService: ChatService,
     private readonly userConnectionService: UserConnectionService,
-    private readonly messageService: MessageService,
   ) {}
 
   private disconnect(socket: Socket): void {
@@ -78,7 +76,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     @MessageBody() dto: SendChatMessageDto,
   ): Promise<ChatMessageWithAuthor> {
     try {
-      const msg = await this.messageService.createMessage(
+      const msg = await this.chatService.createMessage(
         socket.data.user.id,
         dto.roomId,
         { content: dto.content },

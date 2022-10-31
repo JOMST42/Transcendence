@@ -15,7 +15,7 @@ export class ChatService {
   ) {}
 
   getChatRooms(): Observable<Room[]> {
-    return this.baseApiService.getMany<Room>('/chat-rooms');
+    return this.baseApiService.getMany<Room>('/chatrooms');
   }
 
   getNewRoom(): Observable<Room> {
@@ -23,7 +23,7 @@ export class ChatService {
   }
 
   createRoom(room: Room): Observable<Room> {
-    return this.baseApiService.postOne<Room>('/chat-rooms', room);
+    return this.baseApiService.postOne<Room>('/chatrooms', room);
   }
 
   joinRoom(roomId: number): void {
