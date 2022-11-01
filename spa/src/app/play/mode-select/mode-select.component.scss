@@ -1,7 +1,7 @@
 .play-page {
 	height: 100%;
 	width: 100%;
-	display: flex;
+	// display: flex;
 }
 
 .card {
@@ -12,14 +12,36 @@
 
 .card-container {
 	height: 70%;
-	width: 80%;
+	// width:  auto;
+	background: rgb(104, 117, 138, 0.3);
 	border-radius: 10px;
-	background-color: #68758A;
-	opacity: 0.3;
+	border: 2px solid #ededed;
+
+}
+
+.card-container::before {
+	content: "";
 	position: absolute;
 }
 
 img {
 	position: relative;
 	border-radius: 10px;
+	max-height: 600px;
+	max-width: 800px;
+	border: 2px solid #ededed;
+}
+
+h2 {
+	position: relative;
+	// transform: translate(-50%, -50%);
+}
+
+@media  screen and (min-width: 0px) and (max-width: 1280px) {
+	.grid .separator {
+		display: none !important;
+	}
+	.grid .card-container {
+		display: flex-none;
+	}
 }

@@ -1,5 +1,5 @@
 <div id="screenContainer" class="watch-screen">
-	<canvas #game id="gameCanvas" width="600" height="400" tabindex="1" ></canvas>
+	<canvas #game id="gameCanvas" max-width="600" max-height="400" tabindex="1" ></canvas>
 	<span id="score1" class="score" [innerHTML]="score[0]"></span>
 	<span id="score2" class="score" [innerHTML]="score[1]"></span>
 	<span id="countdown" [@.disabled]="animDisabled" [@countdown]="{value: countdown}" [innerHTML]="countdown"></span>

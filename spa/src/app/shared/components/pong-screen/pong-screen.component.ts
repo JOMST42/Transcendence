@@ -52,7 +52,7 @@ export class PongScreenComponent implements OnInit {
   ngAfterViewInit() {
     this.context = this.gameCanvas.nativeElement.getContext('2d');
     this.setGameListener();
-    this.animDisabled = false;
+    // this.animDisabled = false;
   }
 
   setGameListener() {
