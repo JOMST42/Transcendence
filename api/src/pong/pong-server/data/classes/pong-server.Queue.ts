@@ -18,7 +18,7 @@ export class Queue {
     // TODO  throw Error(...)??
     this.clean();
     if (this.queue.length >= this.maxEntries) return undefined;
-    // if (this.is_queued(s)) return undefined;
+    // if (this.is_queued(s)) return undefined; // TODO
     this.queue.push(s);
     return s;
   }

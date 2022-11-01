@@ -2,11 +2,12 @@ import { TimerType } from '../enums';
 
 export class Timer {
   interval: NodeJS.Timer;
-  timer: number;
+  private timer: number;
   type: TimerType;
   startTime: number;
   endTime: number;
   private tickValue: number;
+  private tickTime = 10;
   callback?: Function;
 
   constructor(
@@ -24,24 +25,21 @@ export class Timer {
     }
     switch (this.type) {
       case TimerType.COUNTDOWN:
-        this.tickValue = -1;
+        this.tickValue = -(1 / (1000 / this.tickTime));
         break;
       default:
-        this.tickValue = 1;
+        this.tickValue = 0.01;
     }
   }
 
   start(callback: Function) {
     this.reset();
     if (callback !== undefined) this.callback = callback;
-    // callback.call(this);
-    // callback.;
-    this.interval = setInterval(() => this.tick(), 1000);
+    this.interval = setInterval(() => this.tick(), this.tickTime);
   }
 
   private tick() {
-    console.log(this.timer + ' '); // REMOVE
-    if (this.timer !== this.endTime || this.type === TimerType.STOPWATCH)
+    if (this.timer > this.endTime || this.type === TimerType.STOPWATCH)
       this.timer += this.tickValue;
     else this.stop(true);
   }
@@ -66,5 +64,9 @@ export class Timer {
   reset() {
     this.pause();
     this.timer = this.startTime;
+  }
+
+  getTime() {
+    return this.timer;
   }
 }

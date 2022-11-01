@@ -9,7 +9,7 @@ import {
   useAnimation,
 } from '@angular/animations';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { AudioHandler } from '../../../play/class';
+import { AudioHandler } from '../../../play/classes';
 import { PlayService } from '../../../play/play.service';
 import { GameInfo } from './interfaces';
 
@@ -42,7 +42,7 @@ export class PongScreenComponent implements OnInit {
   score: number[] = [0, 0];
   countdown: number = 0;
   countdownId?: NodeJS.Timer;
-  animDisabled?: boolean = true;
+  animDisabled?: boolean = false;
   private audio: AudioHandler = new AudioHandler(0.3, 1);
 
   constructor(private server: PlayService) {}
@@ -52,7 +52,7 @@ export class PongScreenComponent implements OnInit {
   ngAfterViewInit() {
     this.context = this.gameCanvas.nativeElement.getContext('2d');
     this.setGameListener();
-    this.animDisabled = false;
+    // this.animDisabled = false;
   }
 
   setGameListener() {

@@ -49,9 +49,9 @@ export function checkCollisionBox(
   const max_y2 = pos2.y + size2.y;
   const col_pos: Vector3 = { x: -1, y: -1 };
 
-  if (pos2.x > pos1.x && pos2.x < max_x1) col_pos.x = pos2.x;
+  if (pos1.x < pos2.x && max_x1 > pos2.x) col_pos.x = pos2.x;
   else if (pos1.x > pos2.x && pos1.x < max_x2) col_pos.x = pos1.x;
-  if (pos2.y > pos1.y && pos2.y < max_y1) col_pos.y = pos2.y;
+  if (pos1.y < pos2.y && max_y1 > pos2.y) col_pos.y = pos2.y;
   else if (pos1.y > pos2.y && pos1.y < max_y2) col_pos.y = pos1.y;
 
   if (col_pos.x === -1 || col_pos.y === -1) return undefined;

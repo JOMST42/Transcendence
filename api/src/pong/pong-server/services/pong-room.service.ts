@@ -124,7 +124,7 @@ export class PongRoomService {
     this.userJoinRoomAsPlayer(user2, room);
     room.createGame(this.classic_set); // WARNING
     this.prismaCreateGame(room);
-    room.startReadying(); // WARNING
+    room.startWaiting(); // WARNING
     this.room_count++;
     this.next_room_id = this.room_count.toString();
     this.logger.log('Room created and joined by 2 players');

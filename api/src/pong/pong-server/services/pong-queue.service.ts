@@ -23,7 +23,7 @@ export class PongQueueService {
   ) {
     setInterval(() => {
       this.updateQueue();
-    }, 2000); // every 2 seconds
+    }, 5000);
   }
 
   /* TODO
@@ -63,13 +63,14 @@ export class PongQueueService {
   userJoinQueue(socket: Socket): Response {
     // if (this.queue.is_queued(socket)) {
     //   this.logger.debug('join-queue event: socket is already queued');
-    //   return { code: 1, msg: 'you are already queued' };
+    //   return { code: 1, msg: 'You are already queued' };
     // } else if (!this.queue.push(socket)) {
-    //   this.logger.debug('join-queue event: Full queue.');
-    //   return { code: 1, msg: 'the queue is full' };
+    //   this.logger.debug('join-queue event: Full queue');
+    //   return { code: 1, msg: 'The queue is full' };
     // } else if (socket.data.user?.state === UserState.INGAME) {
+    //   //TODO
     //   this.logger.debug('join-queue event: user is ingame.');
-    //   return { code: 1, msg: 'you are considered in a game' };
+    //   return { code: 1, msg: 'You are currently considered in-game' };
     // }
     this.queue.push(socket);
     this.setListeners(socket);
@@ -91,9 +92,9 @@ export class PongQueueService {
       this.logger.log(
         'socket ' + socket.data.user?.displayName + ' has left the queue',
       );
-      return { code: 0, msg: 'you left the queue' };
+      return { code: 0, msg: 'You left the queue' };
     }
-    return { code: 1, msg: 'you are not currently in a queue' };
+    return { code: 1, msg: 'You are not currently in a queue' };
   }
 
   queueSuccess(socket: Socket) {

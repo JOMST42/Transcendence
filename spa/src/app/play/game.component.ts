@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 // TODO To be changed
 import { Response } from './interfaces';
 
-import { AudioHandler } from './class';
+import { AudioHandler } from './classes';
 import { PlayService } from './play.service';
 
 @Component({
@@ -54,22 +54,6 @@ export class GameComponent implements OnInit {
     this.server.listen('player-ready').subscribe((info: Response) => {
       this.log(info.msg);
     });
-  }
-
-  async joinQueue() {
-    this.server
-      .emit('join-queue', {})
-      .then((data: Response) =>
-        this.log('Join queue: ' + data.code + ' ' + data.msg)
-      );
-    this.log('Attempting to join queue...');
-  }
-
-  async leaveQueue() {
-    this.server
-      .emit('leave-queue', {})
-      .then((data: Response) => this.leaveQueueResponse(data));
-    this.log('Attempting to leave queue...');
   }
 
   private async leaveQueueResponse(data: Response) {

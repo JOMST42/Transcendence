@@ -9,6 +9,8 @@ import {
 } from './data/interfaces';
 import { EventType } from './data/enums';
 import { Pad, Ball } from './data/classes';
+import { Timer } from '../data/classes';
+import { TimerType } from '../data/enums';
 
 export class PongGameModule {
   private logger: Logger = new Logger('PongGameModule');
@@ -22,10 +24,14 @@ export class PongGameModule {
   private winner = 0;
   private events: Event[] = [];
 
+  private updateInterval: NodeJS.Timer;
+
   private started = false;
   private paused = false;
   private victory = false;
   private finished = false;
+
+  private gameTimer = new Timer(TimerType.STOPWATCH, 0, 0);
 
   constructor(set: GameSettings) {
     this.setPad1(
@@ -52,7 +58,8 @@ export class PongGameModule {
     if (ai_1) this.getPad1().setAI(true);
     if (ai_2) this.getPad2().setAI(true);
     this.started = true;
-    setInterval(() => {
+    clearInterval(this.updateInterval);
+    this.updateInterval = setInterval(() => {
       this.runGame();
     }, (1 / 60) * 1000); // FPS
   }
@@ -94,11 +101,11 @@ export class PongGameModule {
 
   updateBall() {
     const b: Ball = this.ball;
-    const new_pos: Vector3 = { x: 0, y: 0 };
+    // const new_pos: Vector3 = { x: 0, y: 0 };
     let col: Collision | undefined;
 
-    new_pos.x = b.getPos().x + b.getVel().x;
-    new_pos.y = b.getPos().y + b.getVel().y;
+    // new_pos.x = b.getPos().x + b.getVel().x;
+    // new_pos.y = b.getPos().y + b.getVel().y;
     col = b.checkPadCollision(this.getPad1());
     if (!col) {
       col = b.checkPadCollision(this.getPad2());
@@ -106,7 +113,7 @@ export class PongGameModule {
     if (col) {
       this.addCollisionEvent(col.pos, 'Pad');
     } else {
-      const player: number = this.checkScoreCollision(new_pos, b.getSize());
+      const player: number = this.checkScoreCollision(b.getPos(), b.getSize());
       if (player != 0) {
         this.updateScore(player, 1);
         b.reset();
@@ -139,11 +146,8 @@ export class PongGameModule {
       this.score[0] === this.score_to_win ||
       this.score[1] === this.score_to_win
     ) {
-      if (this.score[0] === this.score_to_win) this.winner = 1;
-      else this.winner = 2;
+      this.finish();
       this.addVictoryEvent(this.winner);
-      this.victory = true;
-      this.finished = true;
       return true;
     }
     return false;
@@ -202,14 +206,31 @@ export class PongGameModule {
 
   pause() {
     this.paused = true;
+    this.gameTimer.pause();
+    clearInterval(this.updateInterval);
   }
 
   resume() {
     this.paused = false;
+    clearInterval(this.updateInterval);
+    this.updateInterval = setInterval(() => {
+      this.runGame();
+    }, (1 / 60) * 1000); // FPS
+    this.gameTimer.resume();
   }
 
   finish() {
+    clearInterval(this.updateInterval);
     this.finished = true;
+    if (
+      this.score[0] >= this.score_to_win ||
+      this.score[1] >= this.score_to_win
+    ) {
+      this.victory = true;
+      if (this.score[0] >= this.score_to_win) this.winner = 1;
+      else this.winner = 2;
+    }
+    this.gameTimer.pause();
   }
 
   isStarted(): boolean {
@@ -260,5 +281,9 @@ export class PongGameModule {
 
   getWinner(): number {
     return this.winner;
+  }
+
+  getGameTime(): number {
+    return this.gameTimer.getTime();
   }
 }
