@@ -3,11 +3,10 @@
     <p-table
       [value]="rooms"
       selectionMode="single"
+      [(selection)]="selectedRoom"
       dataKey="id"
       responsiveLayout="scroll"
-      [(selection)]="selectedRoom"
       (onRowSelect)="onRowSelect($event)"
-      (onRowUnselect)="onRowUnselect($event)"
     >
       <ng-template pTemplate="header">
         <tr>
@@ -16,7 +15,7 @@
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-room>
-        <tr>
+        <tr [pSelectableRow]="room">
           <td>{{ room.id }}</td>
           <td>{{ room.name }}</td>
         </tr>

@@ -14,7 +14,7 @@ export class ChatService {
     private readonly baseApiService: BaseApiService
   ) {}
 
-  getChatRooms(): Observable<Room[]> {
+  getChatRoomList(): Observable<Room[]> {
     return this.baseApiService.getMany<Room>('/chatrooms');
   }
 
@@ -36,5 +36,9 @@ export class ChatService {
 
   getNewMessage(): Observable<ChatMessage> {
     return this.socket.fromEvent<ChatMessage>('newMessage');
+  }
+
+  getChatRoom(id: string): Observable<Room> {
+    return this.baseApiService.getOne(`/chatrooms/${id}`);
   }
 }

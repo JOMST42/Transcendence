@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 import { ToastService } from '../../../core/services';
 
@@ -19,7 +19,8 @@ export class ChatComponent implements OnInit, OnDestroy {
   constructor(
     private readonly chatService: ChatService,
     private readonly route: ActivatedRoute,
-    private readonly toastService: ToastService
+    private readonly toastService: ToastService,
+    private readonly router: Router
   ) {}
 
   ngOnDestroy(): void {
@@ -46,10 +47,6 @@ export class ChatComponent implements OnInit, OnDestroy {
   }
 
   onRowSelect(event) {
-    console.log(event);
-  }
-
-  onRowUnselect(event) {
-    console.log(event);
+    this.router.navigate(['chat', event.data.id]);
   }
 }
