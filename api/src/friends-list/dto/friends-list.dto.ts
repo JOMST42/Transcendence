@@ -1,4 +1,4 @@
-import { IsNumber } from 'class-validator';
+import { IsBoolean, IsNumber } from 'class-validator';
 
 export class UpdateFriendsListDto {
   @IsNumber()
@@ -6,4 +6,7 @@ export class UpdateFriendsListDto {
 
   @IsNumber()
   adresseeId: number;
+
+  @IsBoolean()
+  accepted: boolean;
 }

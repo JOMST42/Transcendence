@@ -12,7 +12,7 @@ import { AuthService, ToastService } from '../../../core/services';
   styleUrls: ['profile-page.component.scss'],
 })
 export class ProfilePageComponent implements OnInit, OnDestroy {
-  unsubscribeAll$ = new Subject<void>();
+  private unsubscribeAll$ = new Subject<void>();
 
   user!: User;
   me!: User;

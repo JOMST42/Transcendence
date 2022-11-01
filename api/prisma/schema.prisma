@@ -22,18 +22,18 @@ model Weather {
 }
 
 model User {
-  id          Int     @id @default(autoincrement())
-  username    String  @unique
-  email       String  @unique
-  displayName String
-  normalizedName String @unique
-  firstName   String
-  lastName    String
-  avatarUrl   String?
+  id             Int     @id @default(autoincrement())
+  username       String  @unique
+  email          String  @unique
+  displayName    String
+  normalizedName String  @unique
+  firstName      String
+  lastName       String
+  avatarUrl      String?
 
-  rooms UserRoom[]
+  rooms           UserRoom[]
   friendsRequests Friendship[] @relation("requester")
-  friendsInvitation Friendship[] @relation("receiver")
+  friendsAdressee Friendship[] @relation("adressee")
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -67,15 +67,18 @@ model UserRoom {
   @@id([userId, roomId])
 }
 
-model Friendship{
-	requester User @relation("requester", fields:[requesterId], references: [id])
-	requesterId Int 
-	adressee User @relation("receiver", fields:[adresseeId], references: [id])
-	adresseeId Int
+model Friendship {
+  requester   User    @relation("requester", fields: [requesterId], references: [id])
+  requesterId Int
+  adressee    User    @relation("adressee", fields: [adresseeId], references: [id])
+  adresseeId  Int
+  accepted     Boolean @default(false)
+  banned      Boolean @default(false)
 
-	createdAt DateTime @default(now())
-	updatedAt DateTime @updatedAt
-	
-	@@id([requesterId, adresseeId])
-	@@map("friendships")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@id([requesterId, adresseeId])
+  @@map("friendships")
 }
