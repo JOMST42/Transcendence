@@ -3,7 +3,7 @@ import { Friendship } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
-export class FriendsListService {
+export class FriendService {
   constructor(private readonly prisma: PrismaService) {}
 
   async createFriendship(
@@ -74,26 +74,49 @@ export class FriendsListService {
     });
   }
 
-  async getFriendship(adresseeId: number, userId: number): Promise<boolean> {
-    const adressee = await this.prisma.user.findUnique({
+  async getFriendship(
+    adresseeId: number,
+    requesterId: number,
+  ): Promise<Friendship> {
+    return await this.prisma.friendship.findUnique({
       where: {
-        id: adresseeId,
+        requesterId_adresseeId: {
+          requesterId,
+          adresseeId,
+        },
       },
     });
-    if (!adressee) {
-      throw new BadRequestException('Cannot find user');
-    }
-    if (
-      this.prisma.friendship.findFirst({
-        where: {
-          adresseeId: adressee.id,
-          requesterId: userId,
-          accepted: true,
-        },
-      })
-    ) {
-      return true;
-    }
-    return false;
+  }
+
+  async getFriendships(userId: number): Promise<Friendship[]> {
+    return await this.prisma.friendship.findMany({
+      where: {
+        OR: [
+          {
+            adresseeId: userId,
+          },
+          {
+            requesterId: userId,
+          },
+        ],
+      },
+    });
+  }
+
+  async getPendingInvitation(userId: number): Promise<Friendship[]> {
+    return await this.prisma.friendship.findMany({
+      where: {
+        OR: [
+          {
+            adresseeId: userId,
+            accepted: false,
+          },
+          {
+            requesterId: userId,
+            accepted: false,
+          },
+        ],
+      },
+    });
   }
 }

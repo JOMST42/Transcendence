@@ -14,16 +14,20 @@ import {
 } from '@nestjs/common';
 
 import { UpdateUserDto } from './dto';
-import { User } from '@prisma/client';
+import { Friendship, User } from '@prisma/client';
 import { GetUser } from 'src/auth/decorator';
 import { JwtGuard } from 'src/auth/guards';
 import { UserService } from './user.service';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { FriendService } from '../friends-list/friends-list.service';
 
 @UseGuards(JwtGuard)
 @Controller('users')
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly userService: UserService,
+    private readonly friendService: FriendService,
+  ) {}
 
   @UseGuards(JwtGuard)
   @Get('me')
@@ -63,5 +67,44 @@ export class UserController {
   ) {
     const res = await this.userService.uploadImageToCloudinary(file);
     return this.userService.updateUserById(user.id, { avatarUrl: res.url });
+  }
+
+  @Get(':id/friends')
+  async getFriendships(
+    @Param('id', ParseIntPipe) id: number,
+  ): Promise<Friendship[]> {
+    return await this.friendService.getFriendships(id);
+  }
+
+  @Get(':id/friend')
+  async getFriendship(
+    @Param('id', ParseIntPipe) id: number,
+    @GetUser() user: User,
+  ): Promise<Friendship> {
+    return await this.friendService.getFriendship(id, user.id);
+  }
+
+  @Patch(':id/friend/:adresseeId')
+  async updateFriendship(
+    adresseeId: number,
+    requesterId: number,
+  ): Promise<Friendship> {
+    return await this.friendService.updateFriendship(adresseeId, requesterId);
+  }
+
+  @Patch('friendship')
+  async removeFriendship(
+    adresseeId: number,
+    requesterId: number,
+  ): Promise<Friendship> {
+    return await this.friendService.removeFriendship(adresseeId, requesterId);
+  }
+
+  @Post('friendship')
+  async createFrienship(
+    adresseeId: number,
+    requesterId: number,
+  ): Promise<Friendship> {
+    return await this.friendService.createFriendship(adresseeId, requesterId);
   }
 }

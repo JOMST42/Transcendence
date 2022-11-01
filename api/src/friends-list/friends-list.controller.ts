@@ -1,15 +1,14 @@
 import { Controller, Get, Patch, Post } from '@nestjs/common';
 import { Friendship } from '@prisma/client';
-import { FriendsListService } from './friends-list.service';
+import { FriendService } from './friends-list.service';
 
 @Controller('friendsList')
 export class FriendsListController {
-  constructor(private readonly friendList: FriendsListService) {}
+  constructor(private readonly friendList: FriendService) {}
 
   @Get('friendship')
   async getFriendship(
-    adresseeId: number,
-    requesterId: number,
+    id: number,
   ): Promise<boolean> {
     return await this.friendList.getFriendship(adresseeId, requesterId);
   }

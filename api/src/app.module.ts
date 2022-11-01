@@ -9,7 +9,7 @@ import { UserModule } from './user/user.module';
 import { ChatModule } from './chat/chat.module';
 import { CloudinaryModule } from './cloudinary/cloudinary.module';
 import { PongServerModule } from './pong-server/pong-server.module';
-import { FriendsListService } from './friends-list/friends-list.service';
+import { FriendService } from './friends-list/friends-list.service';
 import { FriendsListController } from './friends-list/friends-list.controller';
 import { FriendsListModule } from './friends-list/friends-list.module';
 
@@ -27,6 +27,6 @@ import { FriendsListModule } from './friends-list/friends-list.module';
     FriendsListModule,
   ],
   controllers: [FriendsListController],
-  providers: [FriendsListService],
+  providers: [FriendService],
 })
 export class AppModule {}
