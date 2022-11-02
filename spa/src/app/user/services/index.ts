@@ -1,2 +1,2 @@
 export * from './user.service';
-export * from './friend-list.service';
+export * from './friend.service';

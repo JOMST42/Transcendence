@@ -16,7 +16,7 @@ import { Subject, takeUntil } from 'rxjs';
   styleUrls: ['./user-img.component.scss'],
 })
 export class UserImgComponent implements OnInit, OnDestroy, OnChanges {
-  unsubscribeAll$ = new Subject<void>();
+  private unsubscribeAll$ = new Subject<void>();
   @Input() avatarUrl: string;
   @Input() userIsMe!: boolean;
   @Output() eventUpload = new EventEmitter<void>();

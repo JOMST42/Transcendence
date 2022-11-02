@@ -8,9 +8,7 @@ import { UpdateUserDto, User } from '../models';
   providedIn: 'root',
 })
 export class UserService {
-
   constructor(private readonly baseApiService: BaseApiService) {}
-  me!: User;
 
   getUserById(id: number): Observable<User> {
     return this.baseApiService.getOne(`/users/${id}`);
@@ -23,6 +21,4 @@ export class UserService {
   getProfile(): Observable<User> {
     return this.baseApiService.getOne('/users/me');
   }
-
-  
 }

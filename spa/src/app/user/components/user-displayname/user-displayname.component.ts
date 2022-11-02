@@ -12,14 +12,14 @@ import { UserService } from '../../services';
   styleUrls: ['./user-displayname.component.scss'],
 })
 export class UserDisplaynameComponent implements OnInit, OnDestroy {
-  unsubscribeAll$ = new Subject<void>();
+  private unsubscribeAll$ = new Subject<void>();
   displayName!: string;
   @Input() user!: User;
   @Input() userIsMe!: boolean;
 
   constructor(
     private readonly toast: ToastService,
-    private readonly userService: UserService,
+    private readonly userService: UserService
   ) {}
 
   inputValidator(): boolean {

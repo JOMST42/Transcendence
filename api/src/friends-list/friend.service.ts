@@ -18,7 +18,6 @@ export class FriendService {
     if (!adressee) {
       throw new BadRequestException('Cannot fint user');
     }
-
     return await this.prisma.friendship.create({
       data: {
         adressee: { connect: { id: adressee.id } },
@@ -103,7 +102,7 @@ export class FriendService {
     });
   }
 
-  async getPendingInvitation(userId: number): Promise<Friendship[]> {
+  async getPendingInvitations(userId: number): Promise<Friendship[]> {
     return await this.prisma.friendship.findMany({
       where: {
         OR: [
