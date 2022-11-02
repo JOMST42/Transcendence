@@ -1,17 +1,22 @@
 import {
   trigger,
   transition,
-  query,
   style,
-  stagger,
   animate,
-  keyframes,
   useAnimation,
   state,
 } from '@angular/animations';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { ballAnimation } from './animations/nav-bar.ball';
+import {
+  SidebarOpenAnimation,
+  SidebarCloseAnimation,
+} from './animations/side-nav.nav';
+
+const animationParams = {
+  menuWidth: '250px',
+  animationStyle: '500ms ease',
+};
 
 @Component({
   selector: 'app-nav-bar',
@@ -24,9 +29,27 @@ import { ballAnimation } from './animations/nav-bar.ball';
       }),
       transition('*=>*', animate('0.6s ease')),
     ]),
+    trigger('sideMenu', [
+      transition(':enter', [
+        useAnimation(SidebarOpenAnimation, {
+          params: {
+            ...animationParams,
+          },
+        }),
+      ]),
+      transition(':leave', [
+        useAnimation(SidebarCloseAnimation, {
+          params: {
+            ...animationParams,
+          },
+        }),
+      ]),
+    ]),
   ],
 })
 export class NavBarComponent implements OnInit {
+  isOpen = false;
+
   @ViewChild('ball')
   private ball!: ElementRef;
 

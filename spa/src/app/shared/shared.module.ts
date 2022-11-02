@@ -21,7 +21,6 @@ import { EventButtonComponent } from './components/event-button/event-button.com
     PongScreenComponent,
     PongAudioComponent,
     EventButtonComponent,
-		EventButtonComponent,
   ],
   imports: [CommonModule, FormsModule, ButtonModule, TableModule],
   exports: [
@@ -32,6 +31,7 @@ import { EventButtonComponent } from './components/event-button/event-button.com
     PongScreenComponent,
     PongAudioComponent,
 		EventButtonComponent,
+    NavBarComponent,
   ],
 })
 export class SharedModule {}
