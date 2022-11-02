@@ -11,6 +11,7 @@ import { Room } from '../../models';
 export class ChatRoomComponent implements OnInit, OnDestroy {
   private unsubscribeAll$ = new Subject<void>();
   room: Room;
+  messages: any[];
 
   constructor(private readonly route: ActivatedRoute) {}
 
@@ -26,4 +27,6 @@ export class ChatRoomComponent implements OnInit, OnDestroy {
       },
     });
   }
+
+  sendMessage(event) {}
 }

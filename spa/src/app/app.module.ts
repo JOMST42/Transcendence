@@ -8,6 +8,8 @@ import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
 import { CredentialsInterceptor, ErrorInterceptor } from './core/interceptors';
 import { SharedModule } from './shared/shared.module';
+import { NbThemeModule, NbLayoutModule } from '@nebular/theme';
+import { NbEvaIconsModule } from '@nebular/eva-icons';
 
 @NgModule({
   declarations: [AppComponent],
@@ -17,6 +19,9 @@ import { SharedModule } from './shared/shared.module';
     BrowserAnimationsModule,
     CoreModule,
     SharedModule,
+    NbThemeModule.forRoot({ name: 'dark' }),
+    NbLayoutModule,
+    NbEvaIconsModule,
   ],
   providers: [
     {
