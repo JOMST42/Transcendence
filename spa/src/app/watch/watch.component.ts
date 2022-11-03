@@ -12,4 +12,16 @@ export class WatchComponent implements OnInit {
   ngOnInit(): void {
   }
 
+	logDefault() {
+		return console.log('default');
+	}
+
+	logProcess() {
+		return console.log('process');
+	}
+
+	logSuccess() {
+		return console.log('Success');
+	}
+
 }

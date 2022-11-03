@@ -1,0 +1,19 @@
+<p-button (click)="showPositionDialog('Your game is ready!')" icon="pi" label="Show game invite" styleClass="p-button-warning"></p-button>
+
+
+<p-dialog 
+	header="Your game is ready!" 
+	[(visible)]="displayPosition" 
+	[position]="position" [modal]="false" 
+	[style]="{'min-width': '200px'}" 
+	[baseZIndex]="10000"
+  [draggable]="true" 
+	[resizable]="false"
+	[closable]="false">
+    <!-- <p>Accept: Move you to the game room</p> -->
+        <ng-template pTemplate="footer">
+            <p-button icon="pi pi-check" (click)="displayPosition=false" label="Join" class="p-button-text"></p-button>
+            <!-- <p-button icon="pi pi-times" (click)="displayPosition=false" label="Hide"></p-button> -->
+						<p-button icon="pi pi-times" (click)="displayPosition=false" label="Cancel"></p-button>
+        </ng-template>
+</p-dialog>

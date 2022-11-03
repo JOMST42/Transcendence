@@ -32,8 +32,13 @@ model User {
 
   rooms UserRoom[]
 
+  GamesAsPlayer1	Game[] @relation("gameP1")
+  GamesAsPlayer2	Game[] @relation("gameP2")
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+
 
   @@map("users")
 }
@@ -62,4 +67,30 @@ model UserRoom {
   updatedAt DateTime @updatedAt
 
   @@id([userId, roomId])
+}
+
+enum Winner {
+  PLAYER1
+  PLAYER2
+  NONE
+}
+
+model Game {
+	id				Int					@id	@default(autoincrement())
+	startTime	DateTime?
+	endTime		DateTime?
+	player1		User				@relation(name: "gameP1", fields: [player1Id], references: [id])
+	player1Id	Int					
+	player2		User				@relation(name: "gameP2", fields: [player2Id], references: [id])
+	player2Id	Int					
+
+	winner				Winner	@default(NONE)
+	scorePlayer1	Int			@default(0)
+	scorePlayer2	Int			@default(0)
+	ballBounce		Int			@default(0)
+	longestRally	Int			@default(0)
+	description		String	@default("")
+
+	CreatedAt	DateTime		@default(now())
+  updatedAt	DateTime		@updatedAt
 }

@@ -11,6 +11,7 @@ import {
   PongScreenComponent,
   ServerErrorComponent,
 } from './components';
+import { EventButtonComponent } from './components/event-button/event-button.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import {
     NavBarComponent,
     PongScreenComponent,
     PongAudioComponent,
+    EventButtonComponent,
   ],
   imports: [CommonModule, FormsModule, ButtonModule, TableModule],
   exports: [
@@ -28,6 +30,7 @@ import {
     TableModule,
     PongScreenComponent,
     PongAudioComponent,
+		EventButtonComponent,
     NavBarComponent,
   ],
 })

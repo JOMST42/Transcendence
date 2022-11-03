@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 // TODO To be changed
 import { Response } from './interfaces';
 
-import { AudioHandler } from './class';
+import { AudioHandler } from './classes';
 import { PlayService } from './play.service';
 
 @Component({
@@ -46,42 +46,18 @@ export class GameComponent implements OnInit {
       // TODOshow countdown
     });
 
-    // this.server.listenGameUpdate().subscribe((info: GameInfo) => {
-    // this.refresh()
-    // this.context.fillStyle = "#FFFFFF";
-    // this.context.fillText(this.score[0], 250, 50);
-    // this.context.fillText(this.score[1], 350, 50);
-    // this.context.fillRect(info.p1_pos.x, info.p1_pos.y, info.p1_size.x, info.p1_size.y);
-    // this.context.fillRect(info.p2_pos.x, info.p2_pos.y, info.p2_size.x, info.p2_size.y);
-    // this.context.fillRect(info.b_pos.x - info.b_rad / 2, info.b_pos.y - info.b_rad, info.b_rad, info.b_rad);
-    // if (info.events)
-    // 	this.handleEvents(info.events);
-    // });
+		this.server.listen('queue-success').subscribe((info: string)=> {
+			this.log('queue success!');
+		});
 
-    this.server.listenGameStart().then((info: string) => {
-      this.log(info + ' (game-start)');
+    this.server.listenGameStart().then((info: Response) => {
+      this.log(info.msg);
       // this.audio.playGame(true, true);
     });
 
-    this.server.listen('player-ready').subscribe((info: string) => {
-      this.log('player ' + info + ' is ready!');
+    this.server.listen('player-ready').subscribe((info: Response) => {
+      this.log(info.msg);
     });
-  }
-
-  async joinQueue() {
-    this.server
-      .emit('join-queue', {})
-      .then((data: Response) =>
-        this.log('Join queue: ' + data.code + ' ' + data.msg)
-      );
-    this.log('Attempting to join queue...');
-  }
-
-  async leaveQueue() {
-    this.server
-      .emit('leave-queue', {})
-      .then((data: Response) => this.leaveQueueResponse(data));
-    this.log('Attempting to leave queue...');
   }
 
   private async leaveQueueResponse(data: Response) {

@@ -6,6 +6,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { Socket, SocketIoModule } from 'ngx-socket-io';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
+import { DialogModule } from 'primeng/dialog';
 
 const tokenGetter = () => localStorage.getItem('access_token');
 
@@ -51,6 +52,6 @@ export class ChatSocket extends Socket {
     }),
   ],
   providers: [MessageService, CookieService, PongSocket, ChatSocket],
-  exports: [ToastModule],
+  exports: [ToastModule, DialogModule],
 })
 export class CoreModule {}

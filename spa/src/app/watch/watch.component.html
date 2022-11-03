@@ -1,3 +1,13 @@
 <app-room-list></app-room-list>
 <app-pong-screen></app-pong-screen>
+<app-event-button 
+	[defaultLabel]="'Join queue'"
+	[processLabel]="'waiting...'"
+	[successLabel]="'Leave queue'"
+	[defaultFct]="logDefault"
+	[processFct]="logProcess"
+	[successFct]="logSuccess"
+>
+
+</app-event-button>
 <!-- <app-title></app-title> -->

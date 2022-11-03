@@ -9,6 +9,7 @@ import { PongSocket } from '../core/core.module';
 export class PlayService {
   constructor(private socket: PongSocket) {}
 
+	private inQueue
   // public connect(address: string) : Socket {
   // 	this.socket?.disconnect();
   // 	this.socket = io("http://localhost:3000/pong");
@@ -24,8 +25,8 @@ export class PlayService {
 
     return new Promise((resolve, reject) => {
       this.socket.emit(eventName, data, (response: any) => {
-        if (!response) {
-          reject(undefined);
+        if (!response || response.code !== 0) {
+          reject(response);
         } else {
           resolve(response);
         }

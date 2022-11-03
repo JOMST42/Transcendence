@@ -1,0 +1,29 @@
+{
+	"editor.defaultFormatter": "rvest.vs-code-prettier-eslint",
+	"editor.formatOnPaste": false, // required
+	"editor.formatOnType": false, // required
+	"editor.formatOnSave": true, // optional
+	"editor.formatOnSaveMode": "file", // required to format on save
+	"files.autoSave": "onFocusChange", // optional but recommended
+  
+	/* File formatting */
+	"[javascript]": {
+	  "editor.tabSize": 2
+	},
+  
+	"[html]": {
+	  "editor.tabSize": 2
+	},
+  
+	"[typescript]": {
+	  "editor.tabSize": 2
+	},
+  
+	"[scss]": {
+	  "editor.tabSize": 2
+	},
+  
+	"[css]": {
+	  "editor.tabSize": 2
+	}
+  }
