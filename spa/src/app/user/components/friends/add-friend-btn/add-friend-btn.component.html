@@ -1,0 +1,26 @@
+<p-button
+*ngIf="!userIsMe"
+  type="button"
+  icon="pi pi-user"
+  class="p-button-rounded p-button-info p-button-outlined"
+  (onClick)="addFriend()"
+></p-button>
+
+
+<p-button
+*ngIf="!userIsMe"
+  type="button"
+  icon="pi pi-check"
+  class="p-button-rounded p-button-info p-button-outlined"
+ 
+  (onClick)="acceptNewFriend()"
+></p-button>
+
+<p-button
+*ngIf="!userIsMe"
+  type="button"
+  icon="pi pi-times"
+  class="p-button-rounded p-button-info p-button-outlined"
+ 
+  (onClick)="removeFriend()"
+></p-button>

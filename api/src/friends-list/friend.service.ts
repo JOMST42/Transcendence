@@ -36,7 +36,7 @@ export class FriendService {
       },
     });
     if (!adressee) {
-      throw new BadRequestException('Cannot fint user');
+      throw new BadRequestException('Cannot find user');
     }
     return await this.prisma.friendship.update({
       where: {

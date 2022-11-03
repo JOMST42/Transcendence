@@ -11,12 +11,11 @@
         style="overflow: hidden"
       >
       </app-user-img>
-      <p-button
-        type="button"
-        icon="pi pi-user"
-        class="p-button-rounded p-button-info p-button-outlined"
-        (onClick)="addFriend()"
-      ></p-button>
+      <app-add-friend-btn
+        [userIsMe]="userIsMe(user.id)"
+        [me]="me"
+        [user]="user"
+      ></app-add-friend-btn>
     </div>
     <div class="lg:col-8 sm:col-12 md:col-12">
       <div class="grid">

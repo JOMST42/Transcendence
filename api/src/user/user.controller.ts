@@ -70,7 +70,7 @@ export class UserController {
     return this.userService.updateUserById(user.id, { avatarUrl: res.url });
   }
 
-  @Get(':id/friends_list')
+  @Get(':id/friendsList')
   async getFriendships(
     @Param('id', ParseIntPipe) userId: number,
   ): Promise<Friendship[]> {
@@ -85,37 +85,29 @@ export class UserController {
     return await this.friendService.getFriendship(dto.adresseeId, userId);
   }
 
-  @Get(':id/pending_friends')
+  @Get(':id/pendingFriends')
   async getPendingInvitations(
     @Param('id', ParseIntPipe) userId: number,
   ): Promise<Friendship[]> {
     return await this.friendService.getPendingInvitations(userId);
   }
 
-  @Patch(':id/addfriend/friend_id')
+  @Patch(':id/addfriend/:friendId')
   async updateFriendship(
-    dto: UpdateFriendsDto,
+    @Param('friendId', ParseIntPipe) adresseeId: number,
     @Param('id', ParseIntPipe) userId: number,
   ): Promise<Friendship> {
-    return await this.friendService.updateFriendship(dto.adresseeId, userId);
+    return await this.friendService.updateFriendship(adresseeId, userId);
   }
 
-  @Patch(':id/removefriend/friend_id')
+  @Patch(':id/removefriend/:friendId')
   async removeFriendship(
-    dto: UpdateFriendsDto,
+    @Param('friendId', ParseIntPipe) adresseeId: number,
     @Param('id', ParseIntPipe) userId: number,
   ): Promise<Friendship> {
-    return await this.friendService.removeFriendship(dto.adresseeId, userId);
+    return await this.friendService.removeFriendship(adresseeId, userId);
   }
 
-  //   @Post(':id/createfriend')
-  //   async createFrienship(
-  //     dto: UpdateFriendsDto,
-  //     @Param('id', ParseIntPipe) userId: number,
-  //   ): Promise<Friendship> {
-  //     console.log('dans controlleur du back');
-  //     return await this.friendService.createFriendship(dto.adresseeId, userId);
-  //   }
   @Post(':id/createfriend/:friendId')
   async createFrienship(
     @Param('friendId', ParseIntPipe) adresseeId: number,

@@ -9,22 +9,12 @@ import { UpdateFriendsDto } from '../models';
 export class FriendService {
   constructor(private readonly baseApiService: BaseApiService) {}
 
-  //     updateFriendship(adresseeId: number, userId: number): Observable<UpdateFriendsDto> {
-  //       return this.baseApiService.patchOne(`users/${userId}`, {
-  //         adresseeId,
-  //         userId,
-  //       });c
-  //   }
-  //   getFriend(userId: number): Observable<UpdateFriendsDto> {
-  //     return this.baseApiService.getOne(`users/${userId}/friend`);
-  //   }
-
   getFriends(userId: number): Observable<UpdateFriendsDto[]> {
-    return this.baseApiService.getMany(`users/${userId}/friends_list`);
+    return this.baseApiService.getMany(`/users/${userId}/friends_list`);
   }
 
   getPendingInvitations(userId: number): Observable<UpdateFriendsDto[]> {
-    return this.baseApiService.getMany(`users/${userId}/pending_friends`);
+    return this.baseApiService.getMany(`/users/${userId}/pending_friends`);
   }
 
   updateFriendship(
@@ -32,7 +22,7 @@ export class FriendService {
     userId: number
   ): Observable<UpdateFriendsDto> {
     return this.baseApiService.patchOne(
-      `users/${userId}/addfriend/friend_id`,
+      `/users/${userId}/addfriend/${dto.adresseeId}`,
       dto
     );
   }
@@ -42,27 +32,19 @@ export class FriendService {
     userId: number
   ): Observable<UpdateFriendsDto> {
     return this.baseApiService.patchOne(
-      `users/${userId}/removefriend/friend_id`,
+      `/users/${userId}/removefriend/${dto.adresseeId}`,
       dto
     );
   }
 
-  //   createFriendship(
-  //     dto: UpdateFriendsDto,
-  //     userId: number
-  //   ): Observable<UpdateFriendsDto> {
-  //     console.log('service user infront');
-  //     return this.baseApiService.postOne(`users/${userId}/createfriend`, dto);
-  //   }
-
   createFriendship(
-    adresseeId: number,
+    dto: UpdateFriendsDto,
     userId: number
   ): Observable<UpdateFriendsDto> {
     console.log('service user infront');
     return this.baseApiService.postOne(
-      `users/${userId}/createfriend`,
-      adresseeId
+      `/users/${userId}/createfriend/${dto.adresseeId}`,
+      dto
     );
   }
 }
