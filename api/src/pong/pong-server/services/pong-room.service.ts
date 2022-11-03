@@ -6,14 +6,13 @@ import {
   ConnectedSocket,
 } from '@nestjs/websockets';
 import { Socket } from 'socket.io';
-import { PongGameModule } from '../../pong-game/pong-game.module';
-import { GameInfo, GameSettings } from '../../pong-game/data/interfaces';
+import { GameSettings, GameInfo } from 'src/pong/pong-game/data/interfaces';
+import { PrismaService } from 'src/prisma/prisma.service';
 import { PongRoom } from '../data/classes';
+import { CreateGameDto } from '../data/dto';
 import { RoomState } from '../data/enums';
 import { Response } from '../data/interfaces';
 import { PongServerGateway } from '../gateway/pong-server.gateway';
-import { PrismaService } from '../../../prisma/prisma.service';
-import { CreateGameDto } from '../data/dto';
 
 @Injectable({})
 export class PongRoomService {
@@ -123,7 +122,7 @@ export class PongRoomService {
     this.userJoinRoomAsPlayer(user1, room);
     this.userJoinRoomAsPlayer(user2, room);
     room.createGame(this.classic_set); // WARNING
-    this.prismaCreateGame(room);
+    this.prismaCreateGame(room); // TODO
     room.startWaiting(); // WARNING
     this.room_count++;
     this.next_room_id = this.room_count.toString();

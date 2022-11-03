@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { PlayService } from '../../play.service';
 import { Response } from '../../interfaces';
-import {ButtonModule} from 'primeng/button'
 import { ToastService } from 'src/app/core/services';
 
 enum ButtonState {

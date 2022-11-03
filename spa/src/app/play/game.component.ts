@@ -46,6 +46,10 @@ export class GameComponent implements OnInit {
       // TODOshow countdown
     });
 
+		this.server.listen('queue-success').subscribe((info: string)=> {
+			this.log('queue success!');
+		});
+
     this.server.listenGameStart().then((info: Response) => {
       this.log(info.msg);
       // this.audio.playGame(true, true);

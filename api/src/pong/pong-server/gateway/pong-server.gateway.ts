@@ -1,4 +1,10 @@
-import { forwardRef, Inject, Injectable, Logger } from '@nestjs/common';
+import {
+  forwardRef,
+  Inject,
+  Injectable,
+  Logger,
+  UseInterceptors,
+} from '@nestjs/common';
 import {
   MessageBody,
   SubscribeMessage,
@@ -16,8 +22,10 @@ import { PongQueueService } from '../services/pong-queue.service';
 import { AuthService } from '../../../auth/auth.service';
 import { UserService } from '../../..//user/user.service';
 import { UserState } from 'src/pong/data/enums';
+import { PongServerInterceptor } from '../pong-server.interceptor';
 
 @Injectable({})
+@UseInterceptors(new PongServerInterceptor())
 @WebSocketGateway({ cors: 'true', namespace: '/pong' })
 export class PongServerGateway
   implements OnGatewayConnection, OnGatewayDisconnect, OnGatewayInit
@@ -77,7 +85,7 @@ export class PongServerGateway
       if (this.roomService.users.length >= this.maxEntries) {
         data = { code: 1, msg: 'server is full' };
       } else if (this.roomService.getUser(socket)) {
-        data = { code: 1, msg: 'you are already connected' };
+        data = { code: 1, msg: 'you are already connected' }; // TODO remove?
       } else {
         const payload = await this.authService.decodeToken(
           socket.handshake.headers.authorization,
@@ -89,6 +97,8 @@ export class PongServerGateway
         }
 
         socket.data.user = prismaUser;
+        socket.data.userRoom = <string>('u' + prismaUser.id);
+        socket.join(socket.data.userRoom);
         this.roomService.addUser(socket);
         if (!this.userStates.has(prismaUser.id)) {
           this.userStates.set(prismaUser.id, { value: UserState.ONLINE });

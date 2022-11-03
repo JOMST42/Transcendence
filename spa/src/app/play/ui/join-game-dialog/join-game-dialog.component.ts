@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
 import { PrimeNGConfig } from 'primeng/api';
+import { PlayService } from '../../play.service';
+import { Response } from '../../interfaces';
+import { ToastService } from 'src/app/core/services';
 
 @Component({
   selector: 'app-join-game-dialog',
@@ -27,7 +30,7 @@ import { PrimeNGConfig } from 'primeng/api';
 })
 export class JoinGameDialogComponent { 
 
-    constructor(private primengConfig: PrimeNGConfig) {}
+    constructor(private server: PlayService, private primengConfig: PrimeNGConfig) {}
 
     ngOnInit() {
       this.primengConfig.ripple = true;

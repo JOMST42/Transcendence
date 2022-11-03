@@ -98,7 +98,9 @@ export class PongQueueService {
   }
 
   queueSuccess(socket: Socket) {
-    socket.emit('queue-success', 'Successfully matched');
+    socket
+      .to(socket.data.userRoom)
+      .emit('queue-success', 'Successfully matched');
     this.clearListeners(socket);
   }
 
