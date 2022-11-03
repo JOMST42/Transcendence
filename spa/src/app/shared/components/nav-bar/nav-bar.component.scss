@@ -18,7 +18,7 @@
 // }
 
 .nav {
-	
+	z-index: 5;
 	position: absolute;
 	margin: 0 15%;
 	text-align: right;
@@ -33,7 +33,7 @@
 	//   margin: 3.2em 0;
 
 	  a {
-		z-index: 0;
+		z-index: 1;
 		font-size: 1.7rem;
 		line-height: 3.5em;
 		text-transform: uppercase;
@@ -117,7 +117,7 @@ h3 {
 }
 
 .ball {
-	z-index: 1;
+	z-index: 0;
 	position: absolute;
 	animation: float 3.5s ease-in-out infinite;
 	height: 80px;

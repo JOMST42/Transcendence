@@ -223,10 +223,26 @@ p {
 	// background-color: #404040;
 	margin: 0;
 	padding: 0;
-	height: 100%;
+	// height: 100%;
 	width: 100%;
 	margin: 0  0;
+	
 }
+
+// .home-page::before {
+//     content: "";
+//     background-image: url('../../../../assets/image/pong-gif.jpeg');
+//     background-position: top center;
+//     background-size: cover;
+//     background-repeat: no-repeat;
+//     background-color: #666666;
+//     position: absolute;
+//     top: 0px;
+//     right: 0px;
+//     bottom: 0px;
+//     left: 0px;
+//     opacity: 15%;
+// }
 
 .title-home-div {
 	// background-color: #fff;
@@ -376,7 +392,15 @@ p {
 	font-size: 30px;
   }
 
-  
+h2 {
+	font-family: Franchise;
+	color: #68758A;
+}
+
+img {
+	border-radius: 10px;
+	border: 2px solid #68758A;
+}
 .menu-item ul {
 	top: 0;
 	margin-left: -2rem;

@@ -31,6 +31,7 @@ img {
 	max-height: 600px;
 	max-width: 800px;
 	border: 2px solid #68758A;
+	z-index: -1;
 }
 
 .title {
@@ -53,7 +54,11 @@ img {
 
 h2 {
 	position: relative;
-	// transform: translate(-50%, -50%);
+	font-family: monospace;
+	// font-family: PowerRangers;
+	font-weight: 40;
+	color: #68758A;
+	// letter-spacing: 0.5rem;
 }
 
 @media  screen and (min-width: 0px) and (max-width: 1280px) {
