@@ -1,31 +1,42 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Subject, takeUntil } from 'rxjs';
 
 import { User } from '../../models';
-import { UserService } from '../../services';
+import { FriendService, UserService } from '../../services';
+import { AuthService, ToastService } from '../../../core/services';
 
 @Component({
   selector: 'app-profile-page',
   templateUrl: './profile-page.component.html',
   styleUrls: ['profile-page.component.scss'],
 })
-export class ProfilePageComponent implements OnInit {
+export class ProfilePageComponent implements OnInit, OnDestroy {
+  private unsubscribeAll$ = new Subject<void>();
+
   user!: User;
+  me!: User;
   displayName!: string;
-  newAvatarUrl!: string;
-  data: any;
 
   constructor(
     private readonly userService: UserService,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private readonly toastService: ToastService,
+    private readonly authService: AuthService,
+    private readonly friendService: FriendService
   ) {}
 
-  changeDisplayName() {
-    this.userService
-      .updateUserById(this.user.id, { displayName: this.displayName })
+  userIsMe(id: number): boolean {
+    return id === this.me.id;
+  }
+
+  refreshUser(): void {
+    this.authService
+      .refreshProfile()
+      .pipe(takeUntil(this.unsubscribeAll$))
       .subscribe({
         next: (data) => {
-          console.log(data);
+          this.user = data;
         },
         error: (err) => {
           console.log(err);
@@ -33,36 +44,39 @@ export class ProfilePageComponent implements OnInit {
       });
   }
 
-  changeAvatar() {
-    this.userService
-      .updateUserById(this.user.id, { avatarUrl: this.newAvatarUrl })
-      .subscribe({
-        next: (data) => {
-          console.log(data);
-        },
-        error: (err) => {
-          console.log(err);
-        },
-      });
+  addFriend() {
+    console.log('user id = ' + this.user.id);
+    console.log('me id = ' + this.me.id);
+
+    this.friendService.createFriendship(this.user.id, this.me.id);
+    console.log('friends added');
+    this.toastService.showInfo(
+      'New friend !',
+      this.user.firstName + ' is now your friend'
+    );
   }
 
   ngOnInit() {
-    const id = this.activatedRoute.snapshot.paramMap.get('id');
-    //console.log(id);
-    // this.activatedRoute.data.subscribe({
-    //   next: (data: User) => {
-    //     this.user = data;
-    //   },
-    // });
-
-    this.userService.getUserById(Number(id)).subscribe({
+    this.activatedRoute.data.pipe(takeUntil(this.unsubscribeAll$)).subscribe({
       next: (data) => {
-        this.user = data;
-        //console.log(data);
-      },
-      error: (err) => {
-        console.log(err);
+        this.user = data['user'];
       },
     });
+
+    this.authService
+      .getCurrentUser()
+      .pipe(takeUntil(this.unsubscribeAll$))
+      .subscribe({
+        next: (data) => {
+          this.me = data;
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribeAll$.next();
   }
 }

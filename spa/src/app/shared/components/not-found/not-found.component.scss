@@ -1,0 +1,23 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex: none;
+}
+
+.img-lost {
+  width: 500px;
+  height: auto;
+}
+
+.title-blink {
+  animation: blinker 2s linear infinite;
+  font-size: 100px;
+}
+
+@keyframes blinker {
+  50% {
+    opacity: 0;
+  }
+}

@@ -5,15 +5,17 @@ import { UserRoutingModule } from './user-routing.module';
 import { SharedModule } from '../shared/shared.module';
 import {
   FriendListComponent,
-  ProfileImgComponent,
   ProfilePageComponent,
+  UserImgComponent,
+  UserDisplaynameComponent,
 } from './components';
 
 @NgModule({
   declarations: [
     FriendListComponent,
-    ProfileImgComponent,
     ProfilePageComponent,
+    UserImgComponent,
+    UserDisplaynameComponent,
   ],
   imports: [SharedModule, UserRoutingModule, FileUploadModule],
 })

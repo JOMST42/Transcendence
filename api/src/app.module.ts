@@ -23,5 +23,6 @@ import { PongModule } from './pong/pong.module';
     PongModule,
   ],
   controllers: [],
+  providers: [],
 })
 export class AppModule {}
