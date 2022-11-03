@@ -1,4 +1,5 @@
 <section class="log-page" id="log" *ngIf="!user; else loggedIn">
+
   <div class="card">
     <div class="container flex flex-column card-container">
       <div class="title-div flex align-items-center justify-content-center m-2">
@@ -23,12 +24,12 @@
 
 <ng-template #loggedIn>
 	<section class="home-page" id="home">
-		<div class="grid flex-grow-1 h-auto">
-			<div class="col-12 border-solid border-primary:#68758A h-auto">
+		<div class="grid flex-grow-1 h-auto w-auto">
+			<div class="user-card xl:col-12 lg:col-12 md:col-12 sm:col-12 xs:col-12 border-solid border-primary:#68758A h-auto">
 				<img class="profile-img" src="../../../../assets/image/player-test.jpg" alt="Image"/>
 				<h3 class="player-name">Johnny Sins</h3>
 			</div>
-			<div class="col-2 flex justify-content-center border-solid border-color:#68758A h-auto">
+			<div class="menu-card xl:col-2 lg:col-2 md:col-hidden xs:col-hidden flex justify-content-center border-solid border-color:#68758A h-auto">
 				<div class="menu-item">
 					<ul>
 						<li><a>PLAY</a></li>
@@ -42,19 +43,31 @@
 			</div>
 			<div class="col-10 border-solid border-color:#68758A">
 				<div class="grid">
-					<div class="col-6 border-solid border-color:#68758A flex justify-content-center align-items-center">
+					<div class="xl:col-6 lg:col-6 md:col-12 sm:col-12 xs:col-12 border-solid border-color:#68758A flex justify-content-center align-items-center">
 						<div class="grid">
-							<div class="col-6">
-								<h2 class="text-center">CLASSIC</h2>
-								<a routerLink="./classic" PLAY GAME><img  width="250"  src="assets/image/pong_classic.svg" alt="classic mode image and queue join"/></a>
+							<div class="game-card xl:col-6 lg:col-6 md:col-12 sm:col-12 xs:col-12 flex justify-content-center align-items-center">
+								<div class="grid">
+									<div class="col-12">
+										<h2 class="text-center">CLASSIC</h2>
+									</div>
+									<div class="col-12 flex justify-content-center align-items-center">
+										<a routerLink="./classic" PLAY GAME><img  width="250"  src="assets/image/pong_classic.svg" alt="classic mode image and queue join"/></a>
+									</div>
+								</div>
 							</div>
-							<div class="col-6">
-								<h2 class="text-center">CUSTOM</h2>
-								<a routerLink="./classic"><img width="250" src="assets/image/custom-pong.svg" alt="classic mode image and queue join"/></a>
+							<div class="xl:col-6 lg:col-7 md:col-12 sm:col-12 xs:col-12 flex justify-content-center align-items-center">
+								<div class="grid">
+									<div class="col-12">
+										<h2 class="text-center">CUSTOM</h2>
+									</div>
+									<div class="col-12 flex justify-content-center align-items-center">
+										<a routerLink="./classic"><img width="250" src="assets/image/custom-pong.svg" alt="classic mode image and queue join"/></a>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
-					<div class="col-6 border-solid border-color:#68758A h-auto flex justify-content-center align-items-center">
+					<div class="xl:col-6 lg:col-6 md:col-12 sm:col-12 xs:col-12 border-solid border-color:#68758A h-auto flex justify-content-center align-items-center">
 						<div class="grid">
 							<div class="col-12">
 								<h2 class="text-center">WATCH</h2>
