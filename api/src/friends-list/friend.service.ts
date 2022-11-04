@@ -9,21 +9,25 @@ export class FriendService {
   async createFriendship(
     adresseeId: number,
     userId: number,
-  ): Promise<Friendship> {
+  ): Promise<Friendship | null> {
     const adressee = await this.prisma.user.findUnique({
       where: {
         id: adresseeId,
       },
     });
     if (!adressee) {
-      throw new BadRequestException('Cannot fint user');
+      throw new BadRequestException('Cannot find user');
     }
-    return await this.prisma.friendship.create({
-      data: {
-        adressee: { connect: { id: adressee.id } },
-        requester: { connect: { id: userId } },
-      },
-    });
+    const friend = await this.getFriendship(adresseeId, userId);
+    if (!friend) {
+      return await this.prisma.friendship.create({
+        data: {
+          adressee: { connect: { id: adressee.id } },
+          requester: { connect: { id: userId } },
+        },
+      });
+    }
+    return null;
   }
 
   async updateFriendship(
@@ -77,12 +81,18 @@ export class FriendService {
     adresseeId: number,
     requesterId: number,
   ): Promise<Friendship> {
-    return await this.prisma.friendship.findUnique({
+    return await this.prisma.friendship.findFirst({
       where: {
-        requesterId_adresseeId: {
-          requesterId,
-          adresseeId,
-        },
+        OR: [
+          {
+            adresseeId: adresseeId,
+            requesterId: requesterId,
+          },
+          {
+            adresseeId: requesterId,
+            requesterId: adresseeId,
+          },
+        ],
       },
     });
   }

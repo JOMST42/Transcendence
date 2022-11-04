@@ -20,8 +20,6 @@ import { JwtGuard } from 'src/auth/guards';
 import { UserService } from './user.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { FriendService } from '../friends-list/friend.service';
-import { UpdateFriendsDto } from 'src/friends-list/dto';
-
 @UseGuards(JwtGuard)
 @Controller('users')
 export class UserController {
@@ -77,12 +75,12 @@ export class UserController {
     return await this.friendService.getFriendships(userId);
   }
 
-  @Get(':id/friend')
+  @Get(':id/friend/:friendId')
   async getFriendship(
-    @Body() dto: UpdateFriendsDto,
+    @Param('friendId', ParseIntPipe) adresseeId: number,
     @Param('id', ParseIntPipe) userId: number,
   ): Promise<Friendship> {
-    return await this.friendService.getFriendship(dto.adresseeId, userId);
+    return await this.friendService.getFriendship(adresseeId, userId);
   }
 
   @Get(':id/pendingFriends')
@@ -92,10 +90,11 @@ export class UserController {
     return await this.friendService.getPendingInvitations(userId);
   }
 
+  // lorsqu'on accepte une invitation, l'adressee est nous meme et le user est le friend
   @Patch(':id/addfriend/:friendId')
   async updateFriendship(
-    @Param('friendId', ParseIntPipe) adresseeId: number,
-    @Param('id', ParseIntPipe) userId: number,
+    @Param('friendId', ParseIntPipe) userId: number,
+    @Param('id', ParseIntPipe) adresseeId: number,
   ): Promise<Friendship> {
     return await this.friendService.updateFriendship(adresseeId, userId);
   }
