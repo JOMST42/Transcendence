@@ -1,15 +1,15 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { observable, Subject, take } from 'rxjs';
+import { take } from 'rxjs';
 import { ToastService } from '../../../../core/services';
 import { UpdateFriendsDto, User } from '../../../models';
 import { FriendService } from '../../../services';
 
 @Component({
-  selector: 'app-add-friend-btn',
-  templateUrl: './add-friend-btn.component.html',
-  styleUrls: ['./add-friend-btn.component.scss'],
+  selector: 'app-friend-btn',
+  templateUrl: './friend-btn.component.html',
+  styleUrls: ['./friend-btn.component.scss'],
 })
-export class AddFriendBtnComponent implements OnInit {
+export class FriendBtnComponent implements OnInit {
   constructor(
     private readonly friendService: FriendService,
     private readonly toastService: ToastService
@@ -21,15 +21,10 @@ export class AddFriendBtnComponent implements OnInit {
 
   state: 'ADD' | 'ACCEPT' | 'REMOVE' | 'DISABLE' = 'DISABLE';
 
-  /*Check if there is a pending invitation (accepted = false)
-  Dans ce cas l'adressee a un bnt accept et
-  le requester à le btn add mais en grisé*/
-  friendshipPending: boolean;
-
   async initButton() {
-    await this.checkFriendship()
+    await this.friendService
+      .checkFriendship(this.user.id, this.me.id)
       .then((data) => {
-        console.log(data.accepted);
         if (data.accepted === false) {
           if (data.requesterId == this.me.id) {
             this.state = 'DISABLE';
@@ -54,7 +49,7 @@ export class AddFriendBtnComponent implements OnInit {
   friendButton(state: 'ADD' | 'ACCEPT' | 'REMOVE' | 'DISABLE') {
     switch (state) {
       case 'ADD': {
-        this.addFriend();
+        this.friendService.addFriend(this.user.id, this.me.id);
         break;
       }
       case 'ACCEPT': {
@@ -69,48 +64,6 @@ export class AddFriendBtnComponent implements OnInit {
         break;
       }
     }
-  }
-
-  /*Check if there is a relation created between 2 users*/
-  async checkFriendship(): Promise<UpdateFriendsDto> {
-    return new Promise((resolve, reject) => {
-      this.friendService
-        .getFriend({ adresseeId: this.user.id }, this.me.id)
-        .pipe(take(1))
-        .subscribe({
-          next: (data) => {
-            if (data) {
-              resolve(data);
-              console.log(data);
-            }
-            console.log(data);
-            reject(null);
-          },
-        });
-    });
-  }
-
-  async addFriend() {
-    console.log(this.user.id + ' adressee ID');
-    console.log(this.me.id + ' me ID');
-    const friend = await this.checkFriendship()
-      .then((data) => {
-        this.toastService.showInfo(
-          'Wait !',
-          "You've already send an invitation..."
-        );
-      })
-      .catch((err) => {
-        this.friendService
-          .createFriendship({ adresseeId: this.user.id }, this.me.id)
-          .pipe(take(1))
-          .subscribe({
-            next: (data) => {
-              console.log(data);
-            },
-          });
-        this.toastService.showInfo(' !', 'Friend invitation send');
-      });
   }
 
   acceptNewFriend() {

@@ -1,6 +1,7 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { Friendship } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { UpdateFriendsDto } from './dto';
 
 @Injectable()
 export class FriendService {
@@ -73,6 +74,31 @@ export class FriendService {
           requesterId: userId,
           adresseeId: adressee.id,
         },
+      },
+    });
+  }
+
+  async blockedFriend(
+    dto: UpdateFriendsDto,
+    userId: number,
+  ): Promise<Friendship> {
+    const adressee = await this.prisma.user.findUnique({
+      where: {
+        id: dto.adresseeId,
+      },
+    });
+    if (!adressee) {
+      throw new BadRequestException('Cannot find user');
+    }
+    return await this.prisma.friendship.update({
+      where: {
+        requesterId_adresseeId: {
+          requesterId: userId,
+          adresseeId: adressee.id,
+        },
+      },
+      data: {
+        blocked: dto.blocked,
       },
     });
   }

@@ -20,6 +20,7 @@ import { JwtGuard } from 'src/auth/guards';
 import { UserService } from './user.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { FriendService } from '../friends-list/friend.service';
+import { UpdateFriendsDto } from '../friends-list/dto';
 @UseGuards(JwtGuard)
 @Controller('users')
 export class UserController {
@@ -105,6 +106,14 @@ export class UserController {
     @Param('id', ParseIntPipe) userId: number,
   ): Promise<Friendship> {
     return await this.friendService.removeFriendship(adresseeId, userId);
+  }
+
+  @Patch(':id/blockedfriend/:friendId')
+  async blockedFriend(
+    @Param('friendId', ParseIntPipe) adresseeId: UpdateFriendsDto,
+    @Param('id', ParseIntPipe) userId: number,
+  ): Promise<Friendship> {
+    return await this.friendService.blockedFriend(adresseeId, userId);
   }
 
   @Post(':id/createfriend/:friendId')

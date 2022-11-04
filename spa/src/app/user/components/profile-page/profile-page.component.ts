@@ -3,8 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Subject, take, takeUntil } from 'rxjs';
 
 import { User } from '../../models';
-import { FriendService, UserService } from '../../services';
-import { AuthService, ToastService } from '../../../core/services';
+import { AuthService } from '../../../core/services';
 
 @Component({
   selector: 'app-profile-page',
@@ -19,10 +18,8 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
   displayName!: string;
 
   constructor(
-    private readonly userService: UserService,
     private activatedRoute: ActivatedRoute,
-    private readonly toastService: ToastService,
-    private readonly authService: AuthService,
+    private readonly authService: AuthService
   ) {}
 
   userIsMe(id: number): boolean {

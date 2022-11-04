@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, take } from 'rxjs';
 import { BaseApiService } from 'src/app/core/services';
 import { UpdateFriendsDto, UpdateUserDto } from '../models';
 
@@ -9,8 +9,13 @@ import { UpdateFriendsDto, UpdateUserDto } from '../models';
 export class FriendService {
   constructor(private readonly baseApiService: BaseApiService) {}
 
-  getFriend(dto: UpdateFriendsDto, userId: number): Observable<UpdateFriendsDto>{
-    return this.baseApiService.getOne(`/users/${userId}/friend/${dto.adresseeId}`);
+  getFriend(
+    dto: UpdateFriendsDto,
+    userId: number
+  ): Observable<UpdateFriendsDto> {
+    return this.baseApiService.getOne(
+      `/users/${userId}/friend/${dto.adresseeId}`
+    );
   }
 
   getFriends(userId: number): Observable<UpdateFriendsDto[]> {
@@ -41,6 +46,16 @@ export class FriendService {
     );
   }
 
+  blockedFriend(
+    dto: UpdateFriendsDto,
+    userId: number
+  ): Observable<UpdateFriendsDto> {
+    return this.baseApiService.patchOne(
+      `/users/${userId}/blockedfriend/${dto.adresseeId}`,
+      dto
+    );
+  }
+
   createFriendship(
     dto: UpdateFriendsDto,
     userId: number
@@ -49,5 +64,44 @@ export class FriendService {
       `/users/${userId}/createfriend/${dto.adresseeId}`,
       dto
     );
+  }
+
+  /*Check if there is a relation created between 2 users*/
+  async checkFriendship(
+    userId: number,
+    meId: number
+  ): Promise<UpdateFriendsDto> {
+    return new Promise((resolve, reject) => {
+      this.getFriend({ adresseeId: userId }, meId)
+        .pipe(take(1))
+        .subscribe({
+          next: (data) => {
+            if (data) {
+              resolve(data);
+              console.log(data);
+            }
+            console.log(data);
+            reject(null);
+          },
+        });
+    });
+  }
+
+  async addFriend(userId: number, meId: number) {
+    console.log(userId + ' adressee ID');
+    console.log(meId + ' me ID');
+    const friend = await this.checkFriendship(userId, meId)
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((err) => {
+        this.createFriendship({ adresseeId: userId }, meId)
+          .pipe(take(1))
+          .subscribe({
+            next: (data) => {
+              console.log(data);
+            },
+          });
+      });
   }
 }

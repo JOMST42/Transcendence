@@ -11,11 +11,16 @@
         style="overflow: hidden"
       >
       </app-user-img>
-      <app-add-friend-btn
+      <app-friend-btn
         [userIsMe]="userIsMe(user.id)"
         [me]="me"
         [user]="user"
-      ></app-add-friend-btn>
+      ></app-friend-btn>
+      <app-blocked-btn
+        [userIsMe]="userIsMe(user.id)"
+        [me]="me"
+        [user]="user"
+      ></app-blocked-btn>
     </div>
     <div class="lg:col-8 sm:col-12 md:col-12">
       <div class="grid">
@@ -65,58 +70,6 @@
     </div>
   </div>
 </div>
-
-<!-- 
-<div class="card">
-  <div class="flex flex-column card-container img-card ">
- 
-    <app-user-img></app-user-img>
-  </div>
-</div>
-
-<ul class="flex-container">
-  <li class="flex-item"></li>
-
-  <li class="flex-item">
-       <app-user-displayname></app-user-displayname>
-  </li>
-  <li class="flex-item">
-    <div class="p-input-filled">
-      <div class="p-inputtext-lg label-style label-nonclick">
-        <input
-          type="text"
-          pInputText
-          class="transparent-background color-bottom-border input-font"
-          placeholder="{{ user?.username }}"
-        />
-      </div>
-    </div>
-  </li>
-  <li class="flex-item">
-    <div class="p-input-filled">
-      <div class="p-inputtext-lg label-style label-nonclick">
-        <input
-          type="text"
-          pInputText
-          class="transparent-background color-bottom-border input-font"
-          placeholder="{{ user?.lastName }}"
-        />
-      </div>
-    </div>
-  </li>
-  <li class="flex-item">
-    <div class="p-input-filled">
-      <div class="p-inputtext-lg label-style label-nonclick">
-        <input
-          type="text"
-          pInputText
-          class="transparent-background color-bottom-border input-font"
-          placeholder="{{ user?.firstName }}"
-        />
-      </div>
-    </div>
-  </li>
-</ul> -->
 
 <!-- <div id="container-flex-column">
 <app-friend-list></app-friend-list>
