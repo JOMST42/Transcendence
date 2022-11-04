@@ -26,10 +26,10 @@ export class GameComponent implements OnInit {
 
   ngOnInit() {
     this.audio.setSoundColPad('src/assets/sound/hit_paddle.m4a');
-    this.audio.setSoundColWall('../../assets/sound/hit_wall.m4a');
-    this.audio.setSoundScore('../../assets/sound/score.m4a');
-    this.audio.setMusicGame('../../assets/music/game.mp3');
-    this.audio.setMusicVictory('../../assets/music/victory.mp3');
+    this.audio.setSoundColWall('src/assets/sound/hit_wall.m4a');
+    this.audio.setSoundScore('src/assets/sound/score.m4a');
+    this.audio.setMusicGame('src/assets/music/game.mp3');
+    this.audio.setMusicVictory('src/assets/music/victory.mp3');
   }
 
   ngAfterViewInit() {
