@@ -32,7 +32,7 @@ export class Timer {
     }
   }
 
-  start(callback: Function) {
+  start(callback?: Function) {
     this.reset();
     if (callback !== undefined) this.callback = callback;
     this.interval = setInterval(() => this.tick(), this.tickTime);

@@ -5,9 +5,11 @@ export class Queue {
   private logger: Logger = new Logger('PongQueue');
 
   private queue: Socket[] = [];
-  private maxEntries = 100;
+  private maxEntries!: number;
 
-  constructor() {}
+  constructor(maxSize: number) {
+    this.maxEntries = maxSize;
+  }
 
   length(): number {
     return this.queue.length;
@@ -21,6 +23,11 @@ export class Queue {
     // if (this.is_queued(s)) return undefined; // TODO
     this.queue.push(s);
     return s;
+  }
+
+  // Return n elements from the start without popping them
+  fetchN(n: number): Socket[] {
+    return this.queue.slice(0, n);
   }
 
   // Remove and return the front of the queue
@@ -56,6 +63,25 @@ export class Queue {
     const i = this.queue.indexOf(s);
     if (i >= 0) return this.queue.splice(i)[0];
     return undefined;
+  }
+
+  isFull(): boolean {
+    return this.length() === this.maxEntries;
+  }
+
+  // Return if the queue will be over capacity after pushing <entriesToAdd> elements.
+  getFullStatus(entriesToAdd = 0): {
+    isFull: boolean;
+    nToFull: number;
+  } {
+    if (this.isFull()) {
+      return { isFull: true, nToFull: 0 };
+    }
+    const nToFull = this.maxEntries - (entriesToAdd + this.length());
+    if (nToFull < entriesToAdd) {
+      return { isFull: true, nToFull: nToFull };
+    }
+    return { isFull: false, nToFull: nToFull };
   }
 
   // Clean the queue (disconnection, etc.)

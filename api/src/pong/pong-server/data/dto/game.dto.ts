@@ -50,6 +50,13 @@ export class CreateGameDto {
   @IsString()
   @IsOptional()
   description?: string;
+
+  constructor(p1ID?: number, p2ID?: number, description?: string) {
+    if (p1ID !== undefined) this.player1Id = p1ID;
+    if (p2ID !== undefined) this.player2Id = p2ID;
+    if (description === undefined) description = '';
+    this.description = description;
+  }
 }
 
 export class StartGameDto {

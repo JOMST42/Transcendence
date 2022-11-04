@@ -1,4 +1,10 @@
-import { forwardRef, Inject, Injectable, Logger } from '@nestjs/common';
+import {
+  BadRequestException,
+  forwardRef,
+  Inject,
+  Injectable,
+  Logger,
+} from '@nestjs/common';
 import {
   SubscribeMessage,
   WebSocketGateway,
@@ -13,6 +19,7 @@ import { CreateGameDto } from '../data/dto';
 import { RoomState } from '../data/enums';
 import { Response } from '../data/interfaces';
 import { PongServerGateway } from '../gateway/pong-server.gateway';
+import { Game, User } from '@prisma/client';
 
 @Injectable({})
 export class PongRoomService {
@@ -113,46 +120,60 @@ export class PongRoomService {
   }
 
   // Returned payload: created PongRoom
-  createGameRoom(user1: Socket, user2: Socket): Response {
+  async createGameRoom(user1: Socket, user2: Socket): Promise<Response> {
     if (this.rooms.length >= this.max_rooms) {
       return { code: 1, msg: 'too many games currently being played' };
     }
-    const room: PongRoom = new PongRoom(this.next_room_id, user1, user2);
-    this.rooms.push(room);
-    this.userJoinRoomAsPlayer(user1, room);
-    this.userJoinRoomAsPlayer(user2, room);
-    room.createGame(this.classic_set); // WARNING
-    this.prismaCreateGame(room); // TODO
-    room.startWaiting(); // WARNING
-    this.room_count++;
-    this.next_room_id = this.room_count.toString();
-    this.logger.log('Room created and joined by 2 players');
-    return {
-      code: 0,
-      msg: 'Game created with 2 users from the queue',
-      payload: room,
-    };
+    await this.prismaCreateGame(user1.data.user, user2.data.user)
+      .then((game: Game) => {
+        const room: PongRoom = new PongRoom(
+          this.next_room_id,
+          user1,
+          user2,
+          game,
+        );
+        this.rooms.push(room);
+        this.userJoinRoomAsPlayer(user1, room);
+        this.userJoinRoomAsPlayer(user2, room);
+        room.createGame(this.classic_set); // WARNING
+        room.startWaiting(); // WARNING
+        user1.emit('game-waiting', room.getRoomId());
+        user2.emit('game-waiting', room.getRoomId());
+        this.room_count++;
+        this.next_room_id = this.room_count.toString();
+        this.logger.log('Room created and joined by 2 players');
+        return {
+          code: 0,
+          msg: 'Game created with 2 users from the queue',
+          payload: room,
+        };
+      })
+      .catch((game) => {
+        return { code: 1, msg: 'Could not create game in the database' };
+      });
   }
 
-  async prismaCreateGame(room: PongRoom): Promise<boolean> {
+  async prismaCreateGame(p1: User, p2: User): Promise<Game> {
     const dto = new CreateGameDto();
-    dto.player1Id = room.getUserPlayer1().data.user.id;
+    dto.player1Id = p1.id;
     dto.player2Id = 2;
-    // dto.player2Id = room.getUserPlayer1().getId();
     dto.description = 'Game successfully created';
+    // dto.player2Id = p2.id; // TODO
+
     this.logger.log('Trying to add game to prisma... ');
     try {
-      await this.prisma.game.create({
+      return await this.prisma.game.create({
         data: {
           player1Id: dto.player1Id,
           player2Id: dto.player2Id,
           description: dto.description,
+          timePlayed: 0,
         },
       });
     } catch (e) {
       this.logger.debug(e);
     }
-    return true;
+    throw new BadRequestException('Could not create game');
   }
 
   private userJoinRoomAsPlayer(user: Socket, room: PongRoom) {

@@ -9,6 +9,7 @@ import { Response } from '../../data/interfaces';
 import { Countdown } from '../interfaces/pong-server.Countdown';
 import { Victory } from '../interfaces/pong-server.Victory';
 import { TimerType } from '../../../data/enums';
+import { Game } from '@prisma/client';
 
 export class PongRoom {
   private logger: Logger = new Logger('PongServerModule');
@@ -21,6 +22,7 @@ export class PongRoom {
   private p2!: Player;
   private users: Socket[] = [];
   private game!: PongGameModule;
+  private prismaGame!: Game;
 
   private readyCountdown: Timer;
   private gameCountdown: Timer;
@@ -32,12 +34,14 @@ export class PongRoom {
     id: string,
     userP1: Socket | undefined,
     userP2: Socket | undefined,
+    prismaGame: Game,
   ) {
     this.roomId = id;
     this.setUserPlayer(1, userP1);
     this.setUserPlayer(2, userP2);
     this.p1 = new Player(userP1?.data.user.userId);
     this.p2 = new Player(userP2?.data.user.userId);
+    this.prismaGame = prismaGame;
 
     this.waitCountdown = new Timer(TimerType.COUNTDOWN, 60, 0);
     this.readyCountdown = new Timer(TimerType.COUNTDOWN, 20, 0);
@@ -66,6 +70,7 @@ export class PongRoom {
   }
 
   startGame(ai_1?: boolean, ai_2?: boolean) {
+    this.prismaGame.startTime = new Date();
     this.getGame()?.startGame(ai_1, ai_2);
     this.state = RoomState.Playing;
   }
@@ -199,6 +204,10 @@ export class PongRoom {
     return this.roomId;
   }
 
+  getPrismaGame(): Game {
+    return this.prismaGame;
+  }
+
   getState(): RoomState {
     return this.state;
   }
@@ -267,7 +276,7 @@ export class PongRoom {
         if (response.code === 0) {
           user
             .to(this.roomId)
-            .emit('player-ready', 'player ' + playerIndex + ' is ready!');
+            .emit('player-ready', user.data.user.displayName + ' is ready!');
         }
       });
       user.on('unready-to-play', (args, callback) => {
@@ -276,7 +285,7 @@ export class PongRoom {
         if (response.code === 0) {
           user
             .to(this.roomId)
-            .emit('player-unready', 'player ' + playerIndex + ' unreadied!');
+            .emit('player-unready', user.data.user.displayName + ' unreadied!');
         }
       });
     }

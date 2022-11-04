@@ -58,6 +58,7 @@ export class PongGameModule {
     if (ai_1) this.getPad1().setAI(true);
     if (ai_2) this.getPad2().setAI(true);
     this.started = true;
+    this.gameTimer.start();
     clearInterval(this.updateInterval);
     this.updateInterval = setInterval(() => {
       this.runGame();
