@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { PrimeNGConfig } from 'primeng/api';
-import { PlayService } from '../../play.service';
-import { Response } from '../../interfaces';
+import { PlayService } from '../../../play/play.service';
+import { Response } from '../../../play/interfaces';
 import { ToastService } from 'src/app/core/services';
 import { Router } from '@angular/router';
 
@@ -106,7 +106,6 @@ export class JoinGameDialogComponent {
       .emit('join-game', {})
       .then((data: Response) => {
 				this.changeToDisabled();
-				this.displayPosition = false;
 				this.router.navigate(['play/classic']);
 				this.toast.showSuccess('Join success', 'You joined the game');
 			}, (data: Response | undefined) => {
@@ -150,6 +149,7 @@ export class JoinGameDialogComponent {
 	private changeToDisabled() {
 		this.disabled = true;
 		this.isProcessing = false;
+		this.displayPosition = false;
 		this.labelJoinButton = this.labelDisabled;
 		this.labelLeaveButton = this.labelDisabled;
 		this.state = ButtonState.DISABLED;

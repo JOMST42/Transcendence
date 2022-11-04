@@ -25,7 +25,7 @@ export class GameComponent implements OnInit {
   constructor(private server: PlayService) {}
 
   ngOnInit() {
-    this.audio.setSoundColPad('../../assets/sound/hit_paddle.m4a');
+    this.audio.setSoundColPad('src/assets/sound/hit_paddle.m4a');
     this.audio.setSoundColWall('../../assets/sound/hit_wall.m4a');
     this.audio.setSoundScore('../../assets/sound/score.m4a');
     this.audio.setMusicGame('../../assets/music/game.mp3');

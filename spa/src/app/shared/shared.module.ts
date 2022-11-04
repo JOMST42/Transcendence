@@ -3,8 +3,10 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { TableModule } from 'primeng/table';
+import { DialogModule } from 'primeng/dialog';
 
 import {
+	JoinGameDialogComponent,
   NavBarComponent,
   NotFoundComponent,
   PongAudioComponent,
@@ -21,8 +23,9 @@ import { EventButtonComponent } from './components/event-button/event-button.com
     PongScreenComponent,
     PongAudioComponent,
     EventButtonComponent,
+		JoinGameDialogComponent
   ],
-  imports: [CommonModule, FormsModule, ButtonModule, TableModule],
+  imports: [CommonModule, FormsModule, ButtonModule, TableModule, DialogModule],
   exports: [
     CommonModule,
     FormsModule,
@@ -32,6 +35,7 @@ import { EventButtonComponent } from './components/event-button/event-button.com
     PongAudioComponent,
 		EventButtonComponent,
     NavBarComponent,
+		JoinGameDialogComponent
   ],
 })
 export class SharedModule {}
