@@ -11,7 +11,7 @@ import {
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { AudioHandler } from '../../../play/classes';
 import { PlayService } from '../../../play/play.service';
-import { GameInfo } from './interfaces';
+import { GameInfo, Vector3 } from './interfaces';
 
 @Component({
   selector: 'app-pong-screen',
@@ -43,6 +43,11 @@ export class PongScreenComponent implements OnInit {
   countdown: number = 0;
   countdownId?: NodeJS.Timer;
   animDisabled?: boolean = false;
+
+	afterImage: Vector3[] = [];
+	afterTimer = {frames:0, reset:5}; 
+
+
   private audio: AudioHandler = new AudioHandler(0.3, 1);
 
   constructor(private server: PlayService) {}
@@ -51,46 +56,83 @@ export class PongScreenComponent implements OnInit {
 
   ngAfterViewInit() {
     this.context = this.gameCanvas.nativeElement.getContext('2d');
+		this.audio.setSoundColPad('assets/sound/hit_paddle.m4a');
+    this.audio.setSoundColWall('assets/sound/hit_wall.m4a');
+    this.audio.setSoundScore('assets/sound/score.m4a');
+    this.audio.setMusicGame('assets/music/game.mp3');
+    this.audio.setMusicVictory('assets/music/victory.mp3');
     this.setGameListener();
     // this.animDisabled = false;
   }
 
   setGameListener() {
-    this.server.listenGameUpdate().subscribe((info: GameInfo) => {
+    this.server.listenGameUpdate().subscribe((info: GameInfo | undefined | null) => {
+			if (!info) return;
       this.refresh();
       this.context.fillStyle = '#FFFFFF';
       // this.context.fillText(this.score[0], 250, 50);
       // this.context.fillText(this.score[1], 350, 50);
+			// this.afterImage.push(info.b_pos);
+			// this.drawAfterImage(info.b_rad);
+			// if (this.afterTimer.frames-- <= 0){
+				
+			// 		this.afterTimer.frames = this.afterTimer.reset;
+			// 	}
+				
+			// }
+			if (this.afterImage.length >= 10){
+				this.afterImage.shift();
+			}
+			this.afterImage.push(info.b_pos);
+			this.drawAfterImage(info.b_rad); // TODO
+
       this.context.fillRect(
-        info.p1_pos.x,
-        info.p1_pos.y,
+        info.p1_pos.x * 600,
+        info.p1_pos.y * 400,
         info.p1_size.x,
         info.p1_size.y
       );
       this.context.fillRect(
-        info.p2_pos.x,
-        info.p2_pos.y,
+        info.p2_pos.x * 600,
+        info.p2_pos.y * 400,
         info.p2_size.x,
         info.p2_size.y
       );
       this.context.fillRect(
-        info.b_pos.x - info.b_rad / 2,
-        info.b_pos.y - info.b_rad,
+        // info.b_pos.x - info.b_rad / 2,
+        // info.b_pos.y - info.b_rad,
+				info.b_pos.x * 600 - info.b_rad / 2,
+				info.b_pos.y * 400 - info.b_rad / 2,
         info.b_rad,
         info.b_rad
       );
       if (info.events) this.handleEvents(info.events);
     });
 
-    // this.server.listenGameStart().then((info: string) => {
-    // 	this.log(info + ' (game-start)');
-    // 	// this.audio.playGame(true, true);
-    // });
+    this.server.listenGameStart().then((info: string) => {
+    	this.audio.playGame(true, true);
+    });
 
     // this.server.listen("player-ready").subscribe((info: string) => {
     // 	this.log('player ' + info + ' is ready!');
     // });
   }
+
+	drawAfterImage(size: number) {
+		let multi = 1;
+		let afterCount = this.afterImage.length;
+		let i: number = 0;
+		while (i < afterCount)
+		{
+			this.context.fillRect(
+        this.afterImage[i].x * 600 - size / 2,
+        this.afterImage[i].y * 400 - size / 2,
+        size * (i / afterCount),
+        size * (i / afterCount)
+      );
+			i++;
+		}
+	}
 
   handleEvents(events: any[]) {
     if (events.length > 0) {

@@ -25,11 +25,11 @@ export class GameComponent implements OnInit {
   constructor(private server: PlayService) {}
 
   ngOnInit() {
-    this.audio.setSoundColPad('src/assets/sound/hit_paddle.m4a');
-    this.audio.setSoundColWall('src/assets/sound/hit_wall.m4a');
-    this.audio.setSoundScore('src/assets/sound/score.m4a');
-    this.audio.setMusicGame('src/assets/music/game.mp3');
-    this.audio.setMusicVictory('src/assets/music/victory.mp3');
+    this.audio.setSoundColPad('assets/sound/hit_paddle.m4a');
+    this.audio.setSoundColWall('assets/sound/hit_wall.m4a');
+    this.audio.setSoundScore('assets/sound/score.m4a');
+    this.audio.setMusicGame('assets/music/game.mp3');
+    this.audio.setMusicVictory('assets/music/victory.mp3');
   }
 
   ngAfterViewInit() {
@@ -51,12 +51,12 @@ export class GameComponent implements OnInit {
 		});
 
     this.server.listenGameStart().then((info: Response) => {
-      this.log(info.msg);
+      this.log(info?.msg);
       // this.audio.playGame(true, true);
     });
 
     this.server.listen('player-ready').subscribe((info: Response) => {
-      this.log(info.msg);
+      this.log(info?.msg);
     });
   }
 

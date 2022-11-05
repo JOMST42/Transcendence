@@ -72,6 +72,8 @@ export class PongRoom {
   startGame(ai_1?: boolean, ai_2?: boolean) {
     this.prismaGame.startTime = new Date();
     this.getGame()?.startGame(ai_1, ai_2);
+    this.getUserPlayer1().emit('game-start');
+    this.getUserPlayer2().emit('game-start');
     this.state = RoomState.Playing;
   }
 

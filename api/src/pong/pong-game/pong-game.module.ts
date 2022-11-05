@@ -75,10 +75,25 @@ export class PongGameModule {
 
   getGameInfo(): GameInfo {
     let pong_info: GameInfo;
+    const pos1 = this.getPad1().getPos();
+    const pos2 = this.getPad2().getPos();
+    const bPos = this.ball.getPos();
+    const pos1Pct = {
+      x: pos1.x / this.dimension.x,
+      y: pos1.y / this.dimension.y,
+    };
+    const pos2Pct = {
+      x: pos2.x / this.dimension.x,
+      y: pos2.y / this.dimension.y,
+    };
+    const ballPct = {
+      x: bPos.x / this.dimension.x,
+      y: bPos.y / this.dimension.y,
+    };
     pong_info = {
-      b_pos: this.ball.getPos(),
-      p1_pos: this.getPad1().getPos(),
-      p2_pos: this.getPad2().getPos(),
+      b_pos: ballPct,
+      p1_pos: pos1Pct,
+      p2_pos: pos2Pct,
       b_rad: this.ball.getRadius(),
       p1_size: this.getPad1().getSize(),
       p2_size: this.getPad2().getSize(),
