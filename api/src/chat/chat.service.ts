@@ -3,9 +3,9 @@ import {
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
-import { ChatMessage, ChatRoom } from '@prisma/client';
+import { ChatRoom } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
-import { CreateChatRoomDto } from './dto';
+import { ChatRoomWithMessages, CreateChatRoomDto } from './dto';
 import { ChatMessageWithAuthor, CreateChatMessageDto } from './dto/message.dto';
 
 @Injectable()
@@ -76,16 +76,34 @@ export class ChatService {
     });
   }
 
-  async getMessages(userId: number, roomId: string): Promise<ChatMessage[]> {
+  async getRoomWithMessages(
+    userId: number,
+    roomId: string,
+  ): Promise<ChatRoomWithMessages> {
     this.validateUserForRoom(userId, roomId);
 
-    return this.prisma.chatMessage.findMany({
+    const room = await this.prisma.chatRoom.findUnique({
       where: {
-        roomId,
+        id: roomId,
       },
-      orderBy: {
-        createdAt: 'asc',
+      include: {
+        messages: {
+          include: { author: true },
+          orderBy: {
+            createdAt: 'asc',
+          },
+        },
+        users: {
+          include: {
+            user: true,
+          },
+        },
       },
     });
+
+    return {
+      messages: room.messages,
+      ...room,
+    };
   }
 }

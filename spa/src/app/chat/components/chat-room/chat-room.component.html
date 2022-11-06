@@ -1,1 +1,4 @@
-<p>chat-room works!</p>
+<div *ngFor="let user of room.users">
+  <p>{{ user.user.displayName }}</p>
+  <p>{{ user.isOwner }}</p>
+</div>
