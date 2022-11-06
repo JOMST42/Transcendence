@@ -29,18 +29,20 @@ export class ChatRoomComponent implements OnInit, OnDestroy {
         console.log(this.room);
       },
     });
+
+    this.chatService
+      .getNewMessage()
+      .pipe(takeUntil(this.unsubscribeAll$))
+      .subscribe((msg) => {
+        this.room.messages.push(msg);
+        console.log(msg);
+      });
   }
 
   sendMessage(event: any): void {
-    this.chatService.sendMessage(
-      {
-        roomId: this.room.id,
-        message: 'this is a message',
-      },
-      (msg: ChatMessage) => {
-        this.room.messages.push(msg);
-        console.log(msg);
-      }
-    );
+    this.chatService.sendMessage({
+      roomId: this.room.id,
+      message: 'this is a message',
+    });
   }
 }
