@@ -2,3 +2,11 @@
   <p>{{ user.user.displayName }}</p>
   <p>{{ user.isOwner }}</p>
 </div>
+
+<div>
+  <p-button label="Send" (onClick)="sendMessage($event)"></p-button>
+</div>
+
+<div class="messages">
+  <span *ngFor="let m of room.messages">{{ m.message }}</span>
+</div>
