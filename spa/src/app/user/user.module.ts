@@ -18,5 +18,13 @@ import {
     UserDisplaynameComponent,
   ],
   imports: [SharedModule, UserRoutingModule, FileUploadModule],
+  exports: [
+    UserDisplaynameComponent,
+    UserImgComponent,
+    FileUploadModule,
+    UserRoutingModule,
+    ProfilePageComponent,
+    FriendListComponent
+  ]
 })
 export class UserModule {}

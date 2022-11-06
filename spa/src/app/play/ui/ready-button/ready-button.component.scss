@@ -1,0 +1,24 @@
+.p-button-raised {
+	background-color: transparent;
+	padding: 15px 45px;
+	text-align: center;
+	text-transform: uppercase;
+	transition: 0.3s;
+	color: #68758A;
+	box-shadow: 0 0 20px #404040;
+	border-radius: 10px;
+	font-family: Monoton;
+	font-weight: 50;
+	letter-spacing: 4px;
+	border-color: #68758A;
+	font-size: 1rem;
+  }
+
+.p-button-raised:hover {
+	background-color: #68758A;
+	background-position: right center; /* change the direction of the change here */
+	color: #ededed;
+	text-decoration: none;
+	box-shadow: 0 0 20px #404040;
+	border-color: #ededed;
+  }

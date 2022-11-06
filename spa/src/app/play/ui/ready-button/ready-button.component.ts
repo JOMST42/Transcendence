@@ -13,7 +13,7 @@ enum ButtonState {
 @Component({
   selector: 'app-ready-button',
   templateUrl: './ready-button.component.html',
-	styles: ['#readyButton { min-width: 200px; }'],
+	styleUrls: ['./ready-button.component.scss'],
 })
 export class ReadyButtonComponent {
 

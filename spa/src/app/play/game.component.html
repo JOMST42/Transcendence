@@ -1,15 +1,11 @@
 
-
-
-<div #pongContainer id="roomPongDiv">
-	<app-pong-screen></app-pong-screen>
-	
-	
-	<app-queue-button></app-queue-button>
-	<app-join-game-button></app-join-game-button>
-	<app-ready-button></app-ready-button>
-	<app-join-game-dialog></app-join-game-dialog>
-	
+<div #pongContainer id="roomPongDiv" class="grid">
+	<div class="col-12 flex align-items-center justify-content-center">
+		<app-pong-screen></app-pong-screen>
+	</div>
+	<div class="col-12 flex align-items-center justify-content-center">
+		<app-ready-button></app-ready-button>
+	</div>
 </div>
 
 <app-pong-input></app-pong-input>

@@ -4,6 +4,7 @@
     <div class="container flex flex-column card-container">
       <div class="title-div flex align-items-center justify-content-center m-2">
         <h1 class="title-logpage">!Transcendence!</h1>
+		<!-- <h3 class="text-center">PONG GAME BY JOMST</h3> -->
       </div>
       <div class="button-div flex align-items-center justify-content-center m-2">
         <button
@@ -26,8 +27,10 @@
 	<section class="home-page" id="home">
 		<div class="grid flex-grow-1 h-auto w-auto">
 			<div class="user-card xl:col-12 lg:col-12 md:col-12 sm:col-12 xs:col-12 border-solid border-primary:#68758A h-auto">
-				<img class="profile-img" src="../../../../assets/image/player-test.jpg" alt="Image"/>
-				<h3 class="player-name">Johnny Sins</h3>
+				<!-- <img class="profile-img" src="../../../../assets/image/player-test.jpg" alt="Image"/> -->
+				<!-- <h3 class="player-name">Johnny Sins</h3> -->
+				<app-user-displayname></app-user-displayname>
+				<app-user-img></app-user-img>
 			</div>
 			<div class="menu-card xl:col-2 lg:col-2 md:col-hidden xs:col-hidden flex justify-content-center border-solid border-color:#68758A h-auto">
 				<div class="menu-item">
@@ -51,7 +54,7 @@
 										<h2 class="text-center">CLASSIC</h2>
 									</div>
 									<div class="col-12 flex justify-content-center align-items-center">
-										<a routerLink="./classic" PLAY GAME><img  width="250"  src="assets/image/pong_classic.svg" alt="classic mode image and queue join"/></a>
+										<a routerLink="./classic" PLAY GAME><img  width="350"  src="assets/image/pong_classic.svg" alt="classic mode image and queue join"/></a>
 									</div>
 								</div>
 							</div>
@@ -61,7 +64,7 @@
 										<h2 class="text-center">CUSTOM</h2>
 									</div>
 									<div class="col-12 flex justify-content-center align-items-center">
-										<a routerLink="./classic"><img width="250" src="assets/image/custom-pong.svg" alt="classic mode image and queue join"/></a>
+										<a routerLink="./classic"><img width="350" src="assets/image/custom-pong.svg" alt="classic mode image and queue join"/></a>
 									</div>
 								</div>
 							</div>
@@ -71,7 +74,10 @@
 						<div class="grid">
 							<div class="col-12">
 								<h2 class="text-center">WATCH</h2>
-								<app-pong-screen class="sm:w-150 sm:h-100"></app-pong-screen>
+								<div class="flex-shrink-1 w-8">
+									<app-pong-screen></app-pong-screen>
+
+								</div>
 							</div>
 						</div>
 					</div>

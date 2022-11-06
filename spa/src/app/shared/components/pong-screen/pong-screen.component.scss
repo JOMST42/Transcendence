@@ -3,17 +3,45 @@
 	display: inline-block;
 }
 
+.watch-screen {
+	height: 100%;
+	width: 100%;
+
+}
+
 #gameCanvas {
 	// margin-right: 100px;
-	border: 1px solid white;
+	border: 3px solid #68758A;
 	background-color: black;
 	z-index: 5;
 	border-radius: 10px;
-	// width:  auto;
-	// height: auto;
+	width:  80%;
+	height: 60%;
 }
 
-#screenContainer .score {
+@media  screen and (min-width: 500px) and (max-width: 800px) {
+	.watch-screen #gameCanvas {
+		width:  500px;
+		height: auto;
+	}
+	.watch-screen .score {
+		font-size: 60px;
+	}
+}
+
+@media  screen and (min-width: 0px) and (max-width: 500px) {
+	.watch-screen #gameCanvas {
+		width:  250px;
+		height: auto;
+	}
+	.watch-screen .score {
+		font-size: 40px;
+	}
+}
+
+
+.score {
+	color: #68758A;
 	position: absolute;
 	font-size: 100px;
 	z-index: 10;

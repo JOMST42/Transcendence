@@ -12,9 +12,10 @@
 .log-page::before {
     content: "";
     background-image: url('../../../../assets/image/pong-gif.jpeg');
-    background-position: top center;
+    background-position: center center;
     background-size: cover;
     background-repeat: no-repeat;
+	background-attachment: fixed;
     background-color: #666666;
     position: absolute;
     top: 0px;
@@ -333,3 +334,8 @@ img {
 }
 
 // https://css-tricks.com/snippets/css/complete-guide-grid/
+
+.canvas {
+	width: 400px;
+}
+//idee pour le backgroud est dwe le faire rotate 90deg quand height > width
