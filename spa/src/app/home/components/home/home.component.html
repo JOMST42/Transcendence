@@ -1,25 +1,26 @@
 <section class="log-page" id="log" *ngIf="!user; else loggedIn">
-
-  <div class="card">
-    <div class="container flex flex-column card-container">
-      <div class="title-div flex align-items-center justify-content-center m-2">
-        <h1 class="title-logpage">!Transcendence!</h1>
-		<!-- <h3 class="text-center">PONG GAME BY JOMST</h3> -->
-      </div>
-      <div class="button-div flex align-items-center justify-content-center m-2">
-        <button
-          class="btn-grad"
-          pButton
-          type="button"
-          label="LOGIN"
-          (click)="handleClick()"
-        ></button>
-      </div>
-      <div class="ball-div fm-2">
-        <div class="ball"></div>
-      </div>
-    </div>
-  </div>
+	<div class="grid">
+		<div class="title-div flex col-12 align-items-center justify-content-center m-2">
+			<div class="grid">
+				<div class="col-12 mb-5">
+					<h1 class="block text-center title-logpage">!Transcendence!</h1>
+					<!-- <h3 class="block text-center">PONG GAME BY JOMST</h3> -->
+				</div>
+			</div>
+		</div>
+		<div class="col-12 button-div flex align-items-center justify-content-center">
+			<button
+			class="btn-grad"
+			pButton
+			type="button"
+			label="LOGIN"
+			(click)="handleClick()"
+			></button>
+		</div>
+		<!-- <div class="ball-div fm-2">
+			<div class="ball"></div>
+		</div> -->
+	</div>
 </section>
 
 
