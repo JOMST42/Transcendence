@@ -30,8 +30,16 @@ export class ChatService {
     this.socket.emit('joinRoom', roomId);
   }
 
+  leaveRoom(roomId: number): void {
+    this.socket.emit('leaveRoom', roomId);
+  }
+
   sendMessage(message: ChatMessage, callback?: any): void {
-    this.socket.emit('sendMessage', message, (data: any) => callback(data));
+    this.socket.emit('sendMessage', message, (data: any) => {
+      if (callback) {
+        callback(data);
+      }
+    });
   }
 
   getNewMessage(): Observable<ChatMessage> {

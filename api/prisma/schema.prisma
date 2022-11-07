@@ -30,9 +30,15 @@ model User {
   @@map("users")
 }
 
+enum ChatRoomVisibility {
+  PUBLIC
+  PRIVATE
+}
+
 model ChatRoom {
-  id   String @id @default(uuid())
-  name String
+  id         String             @id @default(uuid())
+  name       String
+  visibility ChatRoomVisibility @default(PUBLIC)
 
   users    UserChatRoom[]
   messages ChatMessage[]

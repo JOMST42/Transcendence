@@ -59,12 +59,6 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
         socketId: socket.id,
         type: 'CHAT',
       });
-
-      const rooms = await this.chatService.getRoomsForUser(user.id);
-
-      for (const room of rooms) {
-        socket.join(room.id);
-      }
     } catch (e) {
       this.disconnect(socket);
     }
@@ -90,7 +84,27 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
       if (e instanceof UnauthorizedException) {
         this.server.to(socket.id).emit('socketError', { message: e.message });
+      } else {
+        this.server
+          .to(socket.id)
+          .emit('socketError', { message: 'Unknown error' });
       }
     }
+  }
+
+  @SubscribeMessage('joinRoom')
+  joinRoom(
+    @ConnectedSocket() socket: Socket,
+    @MessageBody() roomId: string,
+  ): void {
+    socket.join(roomId);
+  }
+
+  @SubscribeMessage('leaveRoom')
+  leaveRoom(
+    @ConnectedSocket() socket: Socket,
+    @MessageBody() roomId: string,
+  ): void {
+    socket.leave(roomId);
   }
 }

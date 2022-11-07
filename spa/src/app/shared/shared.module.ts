@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { TableModule } from 'primeng/table';
+import { InputTextModule } from 'primeng/inputtext';
 
 import {
   NavBarComponent,
@@ -20,7 +21,13 @@ import {
     PongScreenComponent,
     PongAudioComponent,
   ],
-  imports: [CommonModule, FormsModule, ButtonModule, TableModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    ButtonModule,
+    TableModule,
+    InputTextModule,
+  ],
   exports: [
     CommonModule,
     FormsModule,
@@ -29,6 +36,7 @@ import {
     PongScreenComponent,
     PongAudioComponent,
     NavBarComponent,
+    InputTextModule,
   ],
 })
 export class SharedModule {}
