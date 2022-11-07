@@ -2,6 +2,6 @@ import { User } from '../../user/models';
 
 export interface ChatMessage {
   roomId: number;
-  message: string;
+  content: string;
   author?: User;
 }

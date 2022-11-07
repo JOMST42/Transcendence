@@ -64,13 +64,13 @@ export class ChatService {
     roomId: string,
     message: CreateChatMessageDto,
   ): Promise<ChatMessageWithAuthor> {
-    await this.validateUserForRoom(userId, roomId);
+    const room = await this.validateUserForRoom(userId, roomId);
 
     return this.prisma.chatMessage.create({
       data: {
         ...message,
         author: { connect: { id: userId } },
-        room: { connect: { id: roomId } },
+        room: { connect: { id: room.id } },
       },
       include: { author: true },
     });

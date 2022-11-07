@@ -86,6 +86,8 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
       return msg;
     } catch (e) {
+      console.log(e);
+
       if (e instanceof UnauthorizedException) {
         this.server.to(socket.id).emit('socketError', { message: e.message });
       }

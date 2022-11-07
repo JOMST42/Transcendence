@@ -42,7 +42,7 @@ export class ChatRoomComponent implements OnInit, OnDestroy {
   sendMessage(event: any): void {
     this.chatService.sendMessage({
       roomId: this.room.id,
-      message: 'this is a message',
+      content: 'this is a message',
     });
   }
 }

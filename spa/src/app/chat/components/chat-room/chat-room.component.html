@@ -6,5 +6,5 @@
 <p-button label="Send" (onClick)="sendMessage($event)"></p-button>
 
 <div class="messages">
-  <span *ngFor="let m of room.messages">{{ m.message }}</span>
+  <span *ngFor="let m of room.messages">{{ m.content }}</span>
 </div>
