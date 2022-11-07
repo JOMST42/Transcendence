@@ -1,0 +1,24 @@
+#roomPongDiv {
+	// background-color: aliceblue;
+}
+.profile-img {
+	width: 6rem;
+	height: 5rem;
+	border-radius: 16px;
+}
+
+@media  screen and (min-width: 992px) {
+	.small-window-player-info {
+		display: none !important;
+	}
+}
+
+
+@media  screen and (min-width: 0px) and (max-width: 992px)  {
+	.player-info {
+		display: none !important;
+	}
+
+}
+
+

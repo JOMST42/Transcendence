@@ -1,7 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/core/services';
 import { User } from '../../../user/models';
 import { UserService } from '../../../user/services';
+
+import { Subject, takeUntil } from 'rxjs';
+
 
 @Component({
   selector: 'app-home',
@@ -9,7 +12,7 @@ import { UserService } from '../../../user/services';
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit {
-  user!: User | null;
+  @Input()user!: User | null;
 
   constructor(
     private readonly userService: UserService,
@@ -35,4 +38,5 @@ export class HomeComponent implements OnInit {
       },
     });
   }
+
 }

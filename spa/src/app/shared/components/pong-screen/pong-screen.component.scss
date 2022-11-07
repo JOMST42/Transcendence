@@ -1,12 +1,12 @@
-#screenContainer {
-	position: relative;
-	display: inline-block;
-}
-
-.watch-screen {
+.pong-game {
 	height: 100%;
 	width: 100%;
 
+}
+
+#screenContainer {
+	position: relative;
+	display: inline-block;
 }
 
 #gameCanvas {
@@ -15,9 +15,11 @@
 	background-color: black;
 	z-index: 5;
 	border-radius: 10px;
-	width:  80%;
-	height: 60%;
+	width:  800px;
+	height: auto;
 }
+
+
 
 @media  screen and (min-width: 500px) and (max-width: 800px) {
 	.watch-screen #gameCanvas {

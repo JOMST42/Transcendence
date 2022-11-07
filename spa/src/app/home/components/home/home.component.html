@@ -15,7 +15,7 @@
 			type="button"
 			label="LOGIN"
 			(click)="handleClick()"
-			></button>
+			></button>	
 		</div>
 		<!-- <div class="ball-div fm-2">
 			<div class="ball"></div>
@@ -28,10 +28,10 @@
 	<section class="home-page" id="home">
 		<div class="grid flex-grow-1 h-auto w-auto">
 			<div class="user-card xl:col-12 lg:col-12 md:col-12 sm:col-12 xs:col-12 border-solid border-primary:#68758A h-auto">
-				<!-- <img class="profile-img" src="../../../../assets/image/player-test.jpg" alt="Image"/> -->
-				<!-- <h3 class="player-name">Johnny Sins</h3> -->
-				<app-user-displayname></app-user-displayname>
-				<app-user-img></app-user-img>
+				<img class="profile-img" src="../../../../assets/image/player-test.jpg" alt="Image"/>
+				<h3 class="player-name">Johnny Sins</h3>
+				<!-- <app-user-displayname></app-user-displayname> -->
+				<!-- <app-user-img [avatarUrl]="user?.avatarUrl" [userIsMe]="userIsMe(user.id)" (eventUpload)="refreshUser()" style="overflow: hidden"></app-user-img> -->
 			</div>
 			<div class="menu-card xl:col-2 lg:col-2 md:col-hidden xs:col-hidden flex justify-content-center border-solid border-color:#68758A h-auto">
 				<div class="menu-item">
