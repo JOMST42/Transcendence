@@ -3,7 +3,7 @@ import {
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
-import { ChatRoom } from '@prisma/client';
+import { ChatRoom, ChatRoomVisibility } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 import { ChatRoomWithMessages, CreateChatRoomDto } from './dto';
 import { ChatMessageWithAuthor, CreateChatMessageDto } from './dto/message.dto';
@@ -35,7 +35,12 @@ export class ChatService {
 
   async getRoomsForUser(userId: number): Promise<ChatRoom[]> {
     return this.prisma.chatRoom.findMany({
-      where: { users: { some: { userId } } },
+      where: {
+        OR: [
+          { users: { some: { userId } } },
+          { visibility: ChatRoomVisibility.PUBLIC },
+        ],
+      },
     });
   }
 
