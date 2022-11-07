@@ -28,20 +28,25 @@
 	<section class="home-page" id="home">
 		<div class="grid flex-grow-1 h-auto w-auto">
 			<div class="user-card xl:col-12 lg:col-12 md:col-12 sm:col-12 xs:col-12 border-solid border-primary:#68758A h-auto">
-				<img class="profile-img" src="../../../../assets/image/player-test.jpg" alt="Image"/>
-				<h3 class="player-name">Johnny Sins</h3>
-				<!-- <app-user-displayname></app-user-displayname> -->
-				<!-- <app-user-img [avatarUrl]="user?.avatarUrl" [userIsMe]="userIsMe(user.id)" (eventUpload)="refreshUser()" style="overflow: hidden"></app-user-img> -->
+				<div class="col-4">
+					<!-- <img class="profile-img" src="../../../../assets/image/player-test.jpg" alt="Image"/>
+					<h3 class="player-name">Johnny Sins</h3> -->
+					<app-user-img [avatarUrl]="user?.avatarUrl" [userIsMe]="userService.userIsMe(user.id, user.id)" (eventUpload)="refreshUser()"></app-user-img>
+					<app-user-displayname [user]="user" [userIsMe]="userService.userIsMe(user.id, user.id)"></app-user-displayname>
+				</div>
+				<div col-8>
+					<h1 class="title-homepage text-center">!Transcendence!</h1>
+				</div>
 			</div>
 			<div class="menu-card xl:col-2 lg:col-2 md:col-hidden xs:col-hidden flex justify-content-center border-solid border-color:#68758A h-auto">
 				<div class="menu-item">
 					<ul>
-						<li><a>PLAY</a></li>
-						<li><a>WATCH</a></li>
-						<li><a>CHATS</a></li>
-						<li><a>USERS</a></li>
-						<li><a>STATS</a></li>
-						<li><a>SETTINGS</a></li>
+						<li><a routerLink="/play">PLAY</a></li>
+						<li><a routerLink="/watch">WATCH</a></li>
+						<li><a routerLink="/chats">CHATS</a></li>
+						<li><a routerLink="/users/id">USERS</a></li>
+						<li><a routerLink="/stats">STATS</a></li>
+						<li><a routerLink="/settings">SETTINGS</a></li>
 					</ul>
 				</div>
 			</div>

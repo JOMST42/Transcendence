@@ -20,8 +20,7 @@ import { JwtGuard } from 'src/auth/guards';
 import { UserService } from './user.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { FriendService } from '../friends-list/friend.service';
-import { UpdateFriendsDto } from 'src/friends-list/dto';
-
+import { UpdateFriendsDto } from '../friends-list/dto';
 @UseGuards(JwtGuard)
 @Controller('users')
 export class UserController {
@@ -71,52 +70,53 @@ export class UserController {
     return this.userService.updateUserById(user.id, { avatarUrl: res.url });
   }
 
-  @Get(':id/friends_list')
+  @Get(':id/friendsList')
   async getFriendships(
     @Param('id', ParseIntPipe) userId: number,
   ): Promise<Friendship[]> {
     return await this.friendService.getFriendships(userId);
   }
 
-  @Get(':id/friend')
+  @Get(':id/friend/:friendId')
   async getFriendship(
-    @Body() dto: UpdateFriendsDto,
+    @Param('friendId', ParseIntPipe) adresseeId: number,
     @Param('id', ParseIntPipe) userId: number,
   ): Promise<Friendship> {
-    return await this.friendService.getFriendship(dto.adresseeId, userId);
+    return await this.friendService.getFriendship(adresseeId, userId);
   }
 
-  @Get(':id/pending_friends')
+  @Get(':id/pendingFriends')
   async getPendingInvitations(
     @Param('id', ParseIntPipe) userId: number,
   ): Promise<Friendship[]> {
     return await this.friendService.getPendingInvitations(userId);
   }
 
-  @Patch(':id/addfriend/friend_id')
+  // lorsqu'on accepte une invitation, l'adressee est nous meme et le user est le friend
+  @Patch(':id/addfriend/:friendId')
   async updateFriendship(
-    dto: UpdateFriendsDto,
-    @Param('id', ParseIntPipe) userId: number,
+    @Param('friendId', ParseIntPipe) userId: number,
+    @Param('id', ParseIntPipe) adresseeId: number,
   ): Promise<Friendship> {
-    return await this.friendService.updateFriendship(dto.adresseeId, userId);
+    return await this.friendService.updateFriendship(adresseeId, userId);
   }
 
-  @Patch(':id/removefriend/friend_id')
+  @Patch(':id/removefriend/:friendId')
   async removeFriendship(
-    dto: UpdateFriendsDto,
+    @Param('friendId', ParseIntPipe) adresseeId: number,
     @Param('id', ParseIntPipe) userId: number,
   ): Promise<Friendship> {
-    return await this.friendService.removeFriendship(dto.adresseeId, userId);
+    return await this.friendService.removeFriendship(adresseeId, userId);
   }
 
-  //   @Post(':id/createfriend')
-  //   async createFrienship(
-  //     dto: UpdateFriendsDto,
-  //     @Param('id', ParseIntPipe) userId: number,
-  //   ): Promise<Friendship> {
-  //     console.log('dans controlleur du back');
-  //     return await this.friendService.createFriendship(dto.adresseeId, userId);
-  //   }
+  @Patch(':id/blockedfriend/:friendId')
+  async blockedFriend(
+    @Param('friendId', ParseIntPipe) adresseeId: UpdateFriendsDto,
+    @Param('id', ParseIntPipe) userId: number,
+  ): Promise<Friendship> {
+    return await this.friendService.blockedFriend(adresseeId, userId);
+  }
+
   @Post(':id/createfriend/:friendId')
   async createFrienship(
     @Param('friendId', ParseIntPipe) adresseeId: number,

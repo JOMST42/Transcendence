@@ -1,14 +1,19 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { map, Observable, Subject, take, takeUntil } from 'rxjs';
 
-import { BaseApiService } from '../../core/services';
+import { AuthService, BaseApiService } from '../../core/services';
 import { UpdateUserDto, User } from '../models';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
-  constructor(private readonly baseApiService: BaseApiService) {}
+  constructor(
+    private readonly baseApiService: BaseApiService,
+    private readonly authService: AuthService
+  ) {}
+  private unsubscribeAll$ = new Subject<void>();
+  user!: User;
 
   getUserById(id: number): Observable<User> {
     return this.baseApiService.getOne(`/users/${id}`);
@@ -18,7 +23,8 @@ export class UserService {
     return this.baseApiService.patchOne(`/users/${id}`, dto);
   }
 
-  getProfile(): Observable<User> {
-    return this.baseApiService.getOne('/users/me');
+  userIsMe(id: number, meId: number): boolean {
+    return id === meId;
   }
+
 }

@@ -9,6 +9,8 @@ import {
   UserImgComponent,
   UserDisplaynameComponent,
 } from './components';
+import { FriendBtnComponent } from './components/friends/friend-btn/friend-btn.component';
+import { BlockedBtnComponent } from './components/friends/blocked-btn/blocked-btn.component';
 
 @NgModule({
   declarations: [
@@ -16,6 +18,8 @@ import {
     ProfilePageComponent,
     UserImgComponent,
     UserDisplaynameComponent,
+    FriendBtnComponent,
+    BlockedBtnComponent,
   ],
   imports: [SharedModule, UserRoutingModule, FileUploadModule],
   exports: [

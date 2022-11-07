@@ -1,0 +1,33 @@
+<div [ngSwitch]="state" *ngIf="!userIsMe">
+  <p-button
+    *ngSwitchCase="'ADD'"
+    type="button"
+    icon="pi pi-user"
+    class="p-button-rounded p-button-info p-button-outlined"
+    (onClick)="friendButton('ADD')"
+  ></p-button>
+
+  <p-button
+    *ngSwitchCase="'ACCEPT'"
+    type="button"
+    icon="pi pi-check"
+    class="p-button-rounded p-button-info p-button-outlined"
+    (onClick)="friendButton('ACCEPT')"
+  ></p-button>
+
+  <p-button
+    *ngSwitchCase="'REMOVE'"
+    type="button"
+    icon="pi pi-times"
+    class="p-button-rounded p-button-info p-button-outlined"
+    (onClick)="friendButton('REMOVE')"
+  ></p-button>
+
+  <p-button
+    *ngSwitchCase="'DISABLE'"
+    type="button"
+    [disabled]="true"
+    icon="pi pi-times"
+    class="p-button-rounded p-button-info p-button-outlined"
+  ></p-button>
+</div>

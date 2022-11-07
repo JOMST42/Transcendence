@@ -103,7 +103,7 @@ model Friendship {
   adressee    User    @relation("adressee", fields: [adresseeId], references: [id])
   adresseeId  Int
   accepted     Boolean @default(false)
-  banned      Boolean @default(false)
+  blocked      Boolean @default(false)
 
 
   createdAt DateTime @default(now())

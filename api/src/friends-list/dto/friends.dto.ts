@@ -11,5 +11,5 @@ export class UpdateFriendsDto {
   accepted: boolean;
 
   @IsBoolean()
-  banned: boolean;
+  blocked: boolean;
 }

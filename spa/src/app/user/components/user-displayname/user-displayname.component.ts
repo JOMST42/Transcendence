@@ -1,6 +1,6 @@
 import { InvokeFunctionExpr } from '@angular/compiler';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, take, takeUntil } from 'rxjs';
 
 import { AuthService, ToastService } from '../../../core/services';
 import { User } from '../../models';
@@ -35,7 +35,7 @@ export class UserDisplaynameComponent implements OnInit, OnDestroy {
     if (this.inputValidator()) {
       this.userService
         .updateUserById(this.user.id, { displayName: this.displayName })
-        .pipe(takeUntil(this.unsubscribeAll$))
+        .pipe(take(1))
         .subscribe({
           next: (data) => {
             this.toast.showSuccess(

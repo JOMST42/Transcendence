@@ -25,7 +25,6 @@ export class BaseApiService {
   }
 
   postOne<T>(path: string, body: any): Observable<T> {
-    console.log('dans bas api');
     return this.http.post<T>(this.baseApi + path, body);
   }
 

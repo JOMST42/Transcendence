@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { TableModule } from 'primeng/table';
+import { RouterModule } from '@angular/router';
 
 import {
   NavBarComponent,
@@ -22,7 +23,7 @@ import { EventButtonComponent } from './components/event-button/event-button.com
     PongAudioComponent,
     EventButtonComponent,
   ],
-  imports: [CommonModule, FormsModule, ButtonModule, TableModule],
+  imports: [CommonModule, FormsModule, ButtonModule, TableModule, RouterModule],
   exports: [
     CommonModule,
     FormsModule,

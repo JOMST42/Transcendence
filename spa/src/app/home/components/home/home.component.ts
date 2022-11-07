@@ -2,9 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/core/services';
 import { User } from '../../../user/models';
 import { UserService } from '../../../user/services';
-
 import { Subject, takeUntil } from 'rxjs';
-
 
 @Component({
   selector: 'app-home',
@@ -12,16 +10,20 @@ import { Subject, takeUntil } from 'rxjs';
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit {
+	private unsubscribeAll$ = new Subject<void>();
   @Input()user!: User | null;
+//   me!: User;
+  avatarUrl: string;
+  userIsMe: boolean;
 
   constructor(
-    private readonly userService: UserService,
+    public readonly userService: UserService,
     private readonly authService: AuthService
   ) {}
 
   handleClick() {
     window.location.href = 'http://localhost:3000/api/auth/ft/login';
-    // this.authService.login();
+    this.authService.login();
   }
 
   ngOnInit(): void {
@@ -37,6 +39,20 @@ export class HomeComponent implements OnInit {
         console.log(err);
       },
     });
+  }
+
+  refreshUser(): void {
+    this.authService
+      .refreshProfile()
+      .pipe(takeUntil(this.unsubscribeAll$))
+      .subscribe({
+        next: (data) => {
+          this.user = data;
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      });
   }
 
 }

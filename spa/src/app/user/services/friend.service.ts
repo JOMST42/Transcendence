@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, take } from 'rxjs';
 import { BaseApiService } from 'src/app/core/services';
-import { UpdateFriendsDto } from '../models';
+import { UpdateFriendsDto, UpdateUserDto } from '../models';
 
 @Injectable({
   providedIn: 'root',
@@ -9,22 +9,21 @@ import { UpdateFriendsDto } from '../models';
 export class FriendService {
   constructor(private readonly baseApiService: BaseApiService) {}
 
-  //     updateFriendship(adresseeId: number, userId: number): Observable<UpdateFriendsDto> {
-  //       return this.baseApiService.patchOne(`users/${userId}`, {
-  //         adresseeId,
-  //         userId,
-  //       });c
-  //   }
-  //   getFriend(userId: number): Observable<UpdateFriendsDto> {
-  //     return this.baseApiService.getOne(`users/${userId}/friend`);
-  //   }
+  getFriend(
+    dto: UpdateFriendsDto,
+    userId: number
+  ): Observable<UpdateFriendsDto> {
+    return this.baseApiService.getOne(
+      `/users/${userId}/friend/${dto.adresseeId}`
+    );
+  }
 
   getFriends(userId: number): Observable<UpdateFriendsDto[]> {
-    return this.baseApiService.getMany(`users/${userId}/friends_list`);
+    return this.baseApiService.getMany(`/users/${userId}/friends_list`);
   }
 
   getPendingInvitations(userId: number): Observable<UpdateFriendsDto[]> {
-    return this.baseApiService.getMany(`users/${userId}/pending_friends`);
+    return this.baseApiService.getMany(`/users/${userId}/pending_friends`);
   }
 
   updateFriendship(
@@ -32,7 +31,7 @@ export class FriendService {
     userId: number
   ): Observable<UpdateFriendsDto> {
     return this.baseApiService.patchOne(
-      `users/${userId}/addfriend/friend_id`,
+      `/users/${userId}/addfriend/${dto.adresseeId}`,
       dto
     );
   }
@@ -42,27 +41,67 @@ export class FriendService {
     userId: number
   ): Observable<UpdateFriendsDto> {
     return this.baseApiService.patchOne(
-      `users/${userId}/removefriend/friend_id`,
+      `/users/${userId}/removefriend/${dto.adresseeId}`,
       dto
     );
   }
 
-  //   createFriendship(
-  //     dto: UpdateFriendsDto,
-  //     userId: number
-  //   ): Observable<UpdateFriendsDto> {
-  //     console.log('service user infront');
-  //     return this.baseApiService.postOne(`users/${userId}/createfriend`, dto);
-  //   }
-
-  createFriendship(
-    adresseeId: number,
+  blockedFriend(
+    dto: UpdateFriendsDto,
     userId: number
   ): Observable<UpdateFriendsDto> {
-    console.log('service user infront');
-    return this.baseApiService.postOne(
-      `users/${userId}/createfriend`,
-      adresseeId
+    return this.baseApiService.patchOne(
+      `/users/${userId}/blockedfriend/${dto.adresseeId}`,
+      dto
     );
+  }
+
+  createFriendship(
+    dto: UpdateFriendsDto,
+    userId: number
+  ): Observable<UpdateFriendsDto> {
+    return this.baseApiService.postOne(
+      `/users/${userId}/createfriend/${dto.adresseeId}`,
+      dto
+    );
+  }
+
+  /*Check if there is a relation created between 2 users*/
+  async checkFriendship(
+    userId: number,
+    meId: number
+  ): Promise<UpdateFriendsDto> {
+    return new Promise((resolve, reject) => {
+      this.getFriend({ adresseeId: userId }, meId)
+        .pipe(take(1))
+        .subscribe({
+          next: (data) => {
+            if (data) {
+              resolve(data);
+              console.log(data);
+            }
+            console.log(data);
+            reject(null);
+          },
+        });
+    });
+  }
+
+  async addFriend(userId: number, meId: number) {
+    console.log(userId + ' adressee ID');
+    console.log(meId + ' me ID');
+    const friend = await this.checkFriendship(userId, meId)
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((err) => {
+        this.createFriendship({ adresseeId: userId }, meId)
+          .pipe(take(1))
+          .subscribe({
+            next: (data) => {
+              console.log(data);
+            },
+          });
+      });
   }
 }

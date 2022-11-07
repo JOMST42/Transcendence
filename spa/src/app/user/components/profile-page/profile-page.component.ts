@@ -1,10 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, take, takeUntil } from 'rxjs';
 
 import { User } from '../../models';
-import { FriendService, UserService } from '../../services';
-import { AuthService, ToastService } from '../../../core/services';
+import { AuthService } from '../../../core/services';
+import { UserService } from '../../services';
 
 @Component({
   selector: 'app-profile-page',
@@ -19,16 +19,10 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
   displayName!: string;
 
   constructor(
-    private readonly userService: UserService,
     private activatedRoute: ActivatedRoute,
-    private readonly toastService: ToastService,
-    private readonly authService: AuthService,
-    private readonly friendService: FriendService
+    public readonly authService: AuthService,
+    public readonly userService: UserService
   ) {}
-
-  userIsMe(id: number): boolean {
-    return id === this.me.id;
-  }
 
   refreshUser(): void {
     this.authService
@@ -44,18 +38,6 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
       });
   }
 
-  addFriend() {
-    console.log('user id = ' + this.user.id);
-    console.log('me id = ' + this.me.id);
-
-    this.friendService.createFriendship(this.user.id, this.me.id);
-    console.log('friends added');
-    this.toastService.showInfo(
-      'New friend !',
-      this.user.firstName + ' is now your friend'
-    );
-  }
-
   ngOnInit() {
     this.activatedRoute.data.pipe(takeUntil(this.unsubscribeAll$)).subscribe({
       next: (data) => {
@@ -64,7 +46,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
     });
 
     this.authService
-      .getCurrentUser()
+      .getCurrentUser()               
       .pipe(takeUntil(this.unsubscribeAll$))
       .subscribe({
         next: (data) => {
