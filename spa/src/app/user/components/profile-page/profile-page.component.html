@@ -6,18 +6,18 @@
     >
       <app-user-img
         [avatarUrl]="user?.avatarUrl"
-        [userIsMe]="userIsMe(user.id)"
+        [userIsMe]="userService.userIsMe(user.id, me.id)"
         (eventUpload)="refreshUser()"
         style="overflow: hidden"
       >
       </app-user-img>
       <app-friend-btn
-        [userIsMe]="userIsMe(user.id)"
+      [userIsMe]="userService.userIsMe(user.id, me.id)"
         [me]="me"
         [user]="user"
       ></app-friend-btn>
       <app-blocked-btn
-        [userIsMe]="userIsMe(user.id)"
+      [userIsMe]="userService.userIsMe(user.id, me.id)"
         [me]="me"
         [user]="user"
       ></app-blocked-btn>
@@ -30,7 +30,7 @@
         >
           <app-user-displayname
             [user]="user"
-            [userIsMe]="userIsMe(user.id)"
+            [userIsMe]="userService.userIsMe(user.id, me.id)"
           ></app-user-displayname>
         </div>
         <div

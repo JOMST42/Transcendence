@@ -30,6 +30,7 @@ export class UserImgComponent implements OnInit, OnDestroy, OnChanges {
   getUrl(): string {
     return this.avatarUrl;
   }
+  
   ngOnInit(): void {}
 
   ngOnDestroy(): void {

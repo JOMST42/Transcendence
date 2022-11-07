@@ -4,6 +4,7 @@ import { Subject, take, takeUntil } from 'rxjs';
 
 import { User } from '../../models';
 import { AuthService } from '../../../core/services';
+import { UserService } from '../../services';
 
 @Component({
   selector: 'app-profile-page',
@@ -19,12 +20,9 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
 
   constructor(
     private activatedRoute: ActivatedRoute,
-    private readonly authService: AuthService
+    public readonly authService: AuthService,
+    public readonly userService: UserService
   ) {}
-
-  userIsMe(id: number): boolean {
-    return id === this.me.id;
-  }
 
   refreshUser(): void {
     this.authService
