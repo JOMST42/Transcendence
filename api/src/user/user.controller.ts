@@ -108,12 +108,20 @@ export class UserController {
     return await this.friendService.removeFriendship(adresseeId, userId);
   }
 
-  @Patch(':id/blockedfriend/:friendId')
-  async blockedFriend(
-    @Param('friendId', ParseIntPipe) adresseeId: UpdateFriendsDto,
+  @Patch(':id/blockfriend/:friendId')
+  async blockFriend(
+    @Param('id', ParseIntPipe) userId: number,
+    @Param('friendId', ParseIntPipe) adresseeId: number,
+  ): Promise<Friendship> {
+    return await this.friendService.blockFriend(adresseeId, userId);
+  }
+
+  @Patch(':id/unblockfriend/:friendId')
+  async unblockFriend(
+    @Param('friendId', ParseIntPipe) adresseeId: number,
     @Param('id', ParseIntPipe) userId: number,
   ): Promise<Friendship> {
-    return await this.friendService.blockedFriend(adresseeId, userId);
+    return await this.friendService.unblockFriend(adresseeId, userId);
   }
 
   @Post(':id/createfriend/:friendId')
@@ -121,7 +129,6 @@ export class UserController {
     @Param('friendId', ParseIntPipe) adresseeId: number,
     @Param('id', ParseIntPipe) userId: number,
   ) {
-    console.log('dans controlleur du back');
     return await this.friendService.createFriendship(adresseeId, userId);
   }
 }

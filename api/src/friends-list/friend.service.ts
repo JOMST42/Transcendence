@@ -78,13 +78,11 @@ export class FriendService {
     });
   }
 
-  async blockedFriend(
-    dto: UpdateFriendsDto,
-    userId: number,
-  ): Promise<Friendship> {
+  async blockFriend(adresseeId: number, userId: number): Promise<Friendship> {
+    console.log('dans blocked friend back');
     const adressee = await this.prisma.user.findUnique({
       where: {
-        id: dto.adresseeId,
+        id: adresseeId,
       },
     });
     if (!adressee) {
@@ -98,7 +96,29 @@ export class FriendService {
         },
       },
       data: {
-        blocked: dto.blocked,
+        blocked: true,
+      },
+    });
+  }
+
+  async unblockFriend(adresseeId: number, userId: number): Promise<Friendship> {
+    const adressee = await this.prisma.user.findUnique({
+      where: {
+        id: adresseeId,
+      },
+    });
+    if (!adressee) {
+      throw new BadRequestException('Cannot find user');
+    }
+    return await this.prisma.friendship.update({
+      where: {
+        requesterId_adresseeId: {
+          requesterId: userId,
+          adresseeId: adressee.id,
+        },
+      },
+      data: {
+        blocked: false,
       },
     });
   }

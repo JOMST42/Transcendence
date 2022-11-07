@@ -46,13 +46,22 @@ export class FriendService {
     );
   }
 
-  blockedFriend(
-    dto: UpdateFriendsDto,
+  blockFriend(
+    adresseeId: number,
+    userId: number
+  ): Observable<UpdateFriendsDto> {
+    console.log('dans service front');
+    return this.baseApiService.patchOne(
+      `/users/${userId}/blockfriend/${adresseeId}`
+    );
+  }
+
+  unblockFriend(
+    adresseeId: number,
     userId: number
   ): Observable<UpdateFriendsDto> {
     return this.baseApiService.patchOne(
-      `/users/${userId}/blockedfriend/${dto.adresseeId}`,
-      dto
+      `/users/${userId}/unblockfriend/${adresseeId}`
     );
   }
 
