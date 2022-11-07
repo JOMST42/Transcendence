@@ -6,6 +6,31 @@ import { Response } from './interfaces';
 import { AudioHandler } from './classes';
 import { PlayService } from './play.service';
 
+export interface Score {
+	p1: number,
+	p2: number,
+}
+
+export interface Vector3 {
+	x: number,
+	y: number,
+	z?: number,
+}
+
+export interface EntityInfo {
+  pos: Vector3;
+  size: Vector3;
+}
+
+export interface GameInfo {
+  ball: EntityInfo;
+  pad1: EntityInfo;
+  pad2: EntityInfo;
+  score: Score;
+  state: any;
+  events: Event[];
+}
+
 @Component({
   selector: 'app-game',
   templateUrl: './game.component.html',
@@ -16,7 +41,7 @@ export class GameComponent implements OnInit {
   // @ViewChild("game")
   // private gameCanvas!: ElementRef;
   private context: any;
-  private score: number[] = [0, 0];
+  private score: Score = {p1:0,p2:0};
   private audio: AudioHandler = new AudioHandler(0.3, 1);
   room_id: string = '';
   DebugTxt: string = '';
@@ -42,9 +67,6 @@ export class GameComponent implements OnInit {
   // }
 
   setGameListener() {
-    this.server.listen('game-countdown').subscribe((info: number) => {
-      // TODOshow countdown
-    });
 
 		this.server.listen('queue-success').subscribe((info: string)=> {
 			this.log('queue success!');
@@ -58,10 +80,6 @@ export class GameComponent implements OnInit {
     this.server.listen('player-ready').subscribe((info: Response) => {
       this.log(info?.msg);
     });
-  }
-
-  private async leaveQueueResponse(data: Response) {
-    this.log('leave queue: ' + data.code + ' ' + data.msg);
   }
 
   async readyToPlay() {

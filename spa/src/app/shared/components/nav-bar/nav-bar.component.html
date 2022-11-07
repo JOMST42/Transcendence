@@ -31,7 +31,7 @@
             (mouseout)="unselect($any($event.target))"
             routerLink="/watch"
           >
-            <a>Watch</a>
+            <a routerLink="/watch" >Watch</a>
           </li>
           <li
             (mouseover)="select($any($event.target))"
@@ -57,7 +57,7 @@
             (mouseover)="select($any($event.target))"
             (mouseout)="unselect($any($event.target))"
           >
-            <a href="#">Settings</a>
+            <a>Settings</a>
           </li>
         </ul>
       </div>

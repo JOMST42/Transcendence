@@ -1,5 +1,5 @@
+import { Winner } from '@prisma/client';
 import { IsDate, IsInt, IsOptional, IsString } from 'class-validator';
-import { Winner } from '../enums';
 
 // export class UpdateGameDto {
 //   @IsDate()
@@ -73,6 +73,8 @@ export class EndGameDto {
   @IsDate()
   @IsOptional()
   endTime?: Date;
+
+  timePlayed: number;
 
   @IsOptional()
   winner?: Winner;

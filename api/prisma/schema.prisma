@@ -77,9 +77,9 @@ enum Winner {
 
 model Game {
 	id					Int		@id	@default(autoincrement())
-	startTime		DateTime?
+	startTime		DateTime	@default(now())
 	endTime			DateTime?
-	timePlayed 	Int		@default(0)
+	timePlayed 	Float	@default(0)
 	player1			User	@relation(name: "gameP1", fields: [player1Id], references: [id])
 	player1Id		Int					
 	player2			User	@relation(name: "gameP2", fields: [player2Id], references: [id])

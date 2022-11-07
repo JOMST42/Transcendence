@@ -11,7 +11,31 @@ import {
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { AudioHandler } from '../../../play/classes';
 import { PlayService } from '../../../play/play.service';
-import { GameInfo, Vector3 } from './interfaces';
+
+export interface Score {
+	p1: number,
+	p2: number,
+}
+
+export interface Vector3 {
+	x: number,
+	y: number,
+	z?: number,
+}
+
+export interface EntityInfo {
+  pos: Vector3;
+  size: Vector3;
+}
+
+export interface GameInfo {
+  ball: EntityInfo;
+  pad1: EntityInfo;
+  pad2: EntityInfo;
+  score: Score;
+  state: any;
+  events: Event[];
+}
 
 @Component({
   selector: 'app-pong-screen',
@@ -39,7 +63,7 @@ export class PongScreenComponent implements OnInit {
   @ViewChild('game')
   private gameCanvas!: ElementRef;
   private context: any;
-  score: number[] = [0, 0];
+  score: Score = {p1:0, p2:0};
   countdown: number = 0;
   countdownId?: NodeJS.Timer;
   animDisabled?: boolean = false;
@@ -72,8 +96,8 @@ export class PongScreenComponent implements OnInit {
       this.context.fillStyle = '#FFFFFF';
       // this.context.fillText(this.score[0], 250, 50);
       // this.context.fillText(this.score[1], 350, 50);
-			// this.afterImage.push(info.b_pos);
-			// this.drawAfterImage(info.b_rad);
+			// this.afterImage.push(info.ball.pos);
+			// this.drawAfterImage(info.ball.size.x);
 			// if (this.afterTimer.frames-- <= 0){
 				
 			// 		this.afterTimer.frames = this.afterTimer.reset;
@@ -83,29 +107,31 @@ export class PongScreenComponent implements OnInit {
 			if (this.afterImage.length >= 10){
 				this.afterImage.shift();
 			}
-			this.afterImage.push(info.b_pos);
-			this.drawAfterImage(info.b_rad); // TODO
+			this.afterImage.push(info.ball.pos);
+			this.drawAfterImage(info.ball.size.x); // TODO
 
       this.context.fillRect(
-        info.p1_pos.x * 600,
-        info.p1_pos.y * 400,
-        info.p1_size.x,
-        info.p1_size.y
+        info.pad1.pos.x * 600,
+        info.pad1.pos.y * 400,
+        info.pad1.size.x,
+        info.pad1.size.y
       );
       this.context.fillRect(
-        info.p2_pos.x * 600,
-        info.p2_pos.y * 400,
-        info.p2_size.x,
-        info.p2_size.y
+        info.pad2.pos.x * 600,
+        info.pad2.pos.y * 400,
+        info.pad2.size.x,
+        info.pad2.size.y
       );
       this.context.fillRect(
-        // info.b_pos.x - info.b_rad / 2,
-        // info.b_pos.y - info.b_rad,
-				info.b_pos.x * 600 - info.b_rad / 2,
-				info.b_pos.y * 400 - info.b_rad / 2,
-        info.b_rad,
-        info.b_rad
+        // info.ball.pos.x - info.ball.size.x / 2,
+        // info.ball.pos.y - info.ball.size.x,
+				info.ball.pos.x * 600 - info.ball.size.x / 2,
+				info.ball.pos.y * 400 - info.ball.size.x / 2,
+        info.ball.size.x,
+        info.ball.size.x
       );
+			this.score.p1 = info.score.p1;
+			this.score.p2 = info.score.p2;
       if (info.events) this.handleEvents(info.events);
     });
 

@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { TableModule } from 'primeng/table';
 import { DialogModule } from 'primeng/dialog';
+import { RouterModule } from '@angular/router';
 
 import {
 	JoinGameDialogComponent,
@@ -25,7 +26,7 @@ import { EventButtonComponent } from './components/event-button/event-button.com
     EventButtonComponent,
 		JoinGameDialogComponent
   ],
-  imports: [CommonModule, FormsModule, ButtonModule, TableModule, DialogModule],
+  imports: [CommonModule, FormsModule, ButtonModule, TableModule, DialogModule, RouterModule],
   exports: [
     CommonModule,
     FormsModule,
