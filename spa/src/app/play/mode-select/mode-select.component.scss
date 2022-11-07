@@ -3,6 +3,7 @@
 	// width: 100%;
 	// display: flex;
 	overflow-x: hidden;
+	z-index: -1;
 }
 
 // .card {
@@ -53,7 +54,7 @@ img {
 }
 
 h2 {
-	position: relative;
+	// position: relative;
 	font-family: monospace;
 	// font-family: PowerRangers;
 	font-weight: 40;

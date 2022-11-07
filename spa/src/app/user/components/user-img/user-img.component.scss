@@ -2,6 +2,7 @@
 .container{
   position: relative;
   width: 100%;
+  z-index: -1;
 }
 
 .container img{
@@ -18,7 +19,7 @@
 .profile-img {
     overflow: hidden;
     border-radius: 0px;
-    width: 100%;
+    width: 45px;
     height: auto;
     max-width: 150px;
     min-height: auto;
@@ -29,6 +30,7 @@
     0 0 0.8rem #000002,
     inset 0 0 1.3rem #010105;
     float: left;
+	border-radius: 16px;
   }
   @media screen and (max-width:800px){
     .profile-img{

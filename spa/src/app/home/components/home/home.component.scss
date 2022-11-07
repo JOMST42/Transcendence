@@ -265,6 +265,29 @@ p {
 //     opacity: 15%;
 // }
 
+.user-card {
+	border: 3px solid #202329;
+	padding-top: 0;
+	padding-bottom: 0;
+	margin-bottom: 0;
+}
+
+.menu-card {
+	border: 3px solid #202329;
+}
+
+.game-card {
+	border: 3px solid #202329;
+}
+
+.watch-card {
+	border: 3px solid #202329;
+}
+
+.chats-card {
+	border: 3px solid #202329;
+}
+
 .player-info {
 	// margin-top: 4rem;
 	margin-left: -6rem;
@@ -288,16 +311,15 @@ p {
 }
 
 .title-homepage {
-	margin-top: -0.4rem;
-	font-family: "PowerRangers";
+	font-family: Franchise;
 	font-weight: 50;
 	font-size: 10rem;
 	color: #68758A;
 	transition: 0.3s;
-		text-shadow:
-    		0 0 7px #fff,
-    		0 0 10px #fff,
-    		0 0 21px #68758A,
+		// text-shadow:
+    		// 0 0 7px #fff,
+    		// 0 0 10px #fff,
+    		// 0 0 21px #68758A,
     		// 0 0 42px #68758A,
     		// 0 0 82px #0c1013,
     		// 0 0 92px #0c1013,
