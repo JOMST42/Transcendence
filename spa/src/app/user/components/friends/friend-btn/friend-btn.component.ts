@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { take } from 'rxjs';
 import { ToastService } from '../../../../core/services';
 import { UpdateFriendsDto, User } from '../../../models';
@@ -19,7 +19,12 @@ export class FriendBtnComponent implements OnInit {
   @Input() user!: User;
   @Input() me!: User;
   @Input() userIsMe!: boolean;
-  state: ButtonState = 'DISABLE';
+state: ButtonState = 'DISABLE';
+@Output() stateChange = new EventEmitter<ButtonState>();
+
+stateChanged(state: ButtonState) {
+  this.stateChange.emit();
+}
 
   async initButton() {
     await this.friendService
