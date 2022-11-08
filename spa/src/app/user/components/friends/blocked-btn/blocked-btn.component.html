@@ -5,7 +5,7 @@
     class="p-button-rounded p-button-info p-button-outlined"
     (onClick)="friendButton('BLOCK')"
   >
-    <img  src="/assets/image/BLOCK_FRIEND.png" width="50px"
+    <img src="/assets/image/BLOCK_FRIEND.png" width="50px"
   /></p-button>
 
   <p-button
@@ -14,17 +14,6 @@
     class="p-button-rounded p-button-info p-button-outlined"
     (onClick)="friendButton('UNBLOCK')"
   >
-    <img
-      src="/assets/image/UNBLOCK_FRIEND.png"
-      width="50px"
+    <img src="/assets/image/UNBLOCK_FRIEND.png" width="50px"
   /></p-button>
-
-  <p-button
-    *ngSwitchCase="'DISABLE'"
-    type="button"
-    [disabled]="true"
-    icon="pi pi-times"
-    class="p-button-rounded p-button-info p-button-outlined"
-  >
- </p-button>
 </div>

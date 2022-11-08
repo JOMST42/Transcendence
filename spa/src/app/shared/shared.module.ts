@@ -11,6 +11,7 @@ import {
   PongScreenComponent,
   ServerErrorComponent,
 } from './components';
+import { UserModule } from '../user/user.module';
 
 @NgModule({
   declarations: [

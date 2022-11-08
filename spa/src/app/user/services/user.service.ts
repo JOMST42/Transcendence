@@ -22,9 +22,4 @@ export class UserService {
   updateUserById(id: number, dto: UpdateUserDto): Observable<User> {
     return this.baseApiService.patchOne(`/users/${id}`, dto);
   }
-
-  userIsMe(id: number, meId: number): boolean {
-    return id === meId;
-  }
-
 }

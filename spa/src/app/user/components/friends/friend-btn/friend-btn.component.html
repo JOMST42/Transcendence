@@ -2,36 +2,29 @@
   <p-button
     *ngSwitchCase="'ADD'"
     type="button"
-    icon="pi pi-user"
     class="p-button-rounded p-button-info p-button-outlined"
     (onClick)="friendButton('ADD')"
-  ></p-button>
+  >
+    <img src="/assets/image/ADD_FRIEND.png" width="50px"
+  /></p-button>
 
   <p-button
     *ngSwitchCase="'ACCEPT'"
     type="button"
-    icon="pi pi-check"
     class="p-button-rounded p-button-info p-button-outlined"
     (onClick)="friendButton('ACCEPT')"
   >
-  <img
-  src="/assets/image/ADD_FRIEND.png"
-  width="50px"
-/>
-</p-button>
+    <img src="/assets/image/ADD_FRIEND.png" width="50px" />
+  </p-button>
 
   <p-button
     *ngSwitchCase="'REMOVE'"
     type="button"
-    icon="pi pi-times"
     class="p-button-rounded p-button-info p-button-outlined"
     (onClick)="friendButton('REMOVE')"
   >
-  <img
-  src="/assets/image/REMOVE_FRIEND.png"
-  width="50px"
-/>
-</p-button>
+    <img src="/assets/image/REMOVE_FRIEND.png" width="50px" />
+  </p-button>
 
   <p-button
     *ngSwitchCase="'DISABLE'"
@@ -40,5 +33,5 @@
     icon="pi pi-times"
     class="p-button-rounded p-button-info p-button-outlined"
   >
-</p-button>
+  </p-button>
 </div>

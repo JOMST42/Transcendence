@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, take } from 'rxjs';
 import { BaseApiService } from 'src/app/core/services';
-import { UpdateFriendsDto, UpdateUserDto } from '../models';
+import { UpdateFriendsDto } from '../models';
 
 @Injectable({
   providedIn: 'root',
@@ -9,13 +9,8 @@ import { UpdateFriendsDto, UpdateUserDto } from '../models';
 export class FriendService {
   constructor(private readonly baseApiService: BaseApiService) {}
 
-  getFriend(
-    dto: UpdateFriendsDto,
-    userId: number
-  ): Observable<UpdateFriendsDto> {
-    return this.baseApiService.getOne(
-      `/users/${userId}/friend/${dto.adresseeId}`
-    );
+  getFriend(adresseeId: number, userId: number): Observable<UpdateFriendsDto> {
+    return this.baseApiService.getOne(`/users/${userId}/friend/${adresseeId}`);
   }
 
   getFriends(userId: number): Observable<UpdateFriendsDto[]> {
@@ -27,22 +22,20 @@ export class FriendService {
   }
 
   updateFriendship(
-    dto: UpdateFriendsDto,
+    adresseeId: number,
     userId: number
   ): Observable<UpdateFriendsDto> {
     return this.baseApiService.patchOne(
-      `/users/${userId}/addfriend/${dto.adresseeId}`,
-      dto
+      `/users/${userId}/addfriend/${adresseeId}`
     );
   }
 
   removeFriendship(
-    dto: UpdateFriendsDto,
+    adresseeId: number,
     userId: number
   ): Observable<UpdateFriendsDto> {
     return this.baseApiService.patchOne(
-      `/users/${userId}/removefriend/${dto.adresseeId}`,
-      dto
+      `/users/${userId}/removefriend/${adresseeId}`
     );
   }
 
@@ -66,12 +59,11 @@ export class FriendService {
   }
 
   createFriendship(
-    dto: UpdateFriendsDto,
+    adresseeId: number,
     userId: number
   ): Observable<UpdateFriendsDto> {
     return this.baseApiService.postOne(
-      `/users/${userId}/createfriend/${dto.adresseeId}`,
-      dto
+      `/users/${userId}/createfriend/${adresseeId}`
     );
   }
 
@@ -81,7 +73,7 @@ export class FriendService {
     meId: number
   ): Promise<UpdateFriendsDto> {
     return new Promise((resolve, reject) => {
-      this.getFriend({ adresseeId: userId }, meId)
+      this.getFriend(userId, meId)
         .pipe(take(1))
         .subscribe({
           next: (data) => {
@@ -97,14 +89,12 @@ export class FriendService {
   }
 
   async addFriend(userId: number, meId: number) {
-    console.log(userId + ' adressee ID');
-    console.log(meId + ' me ID');
     const friend = await this.checkFriendship(userId, meId)
       .then((data) => {
         console.log(data);
       })
       .catch((err) => {
-        this.createFriendship({ adresseeId: userId }, meId)
+        this.createFriendship(userId, meId)
           .pipe(take(1))
           .subscribe({
             next: (data) => {

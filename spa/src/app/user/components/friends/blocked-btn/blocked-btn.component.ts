@@ -19,31 +19,44 @@ export class BlockedBtnComponent implements OnInit {
   state: ButtonState = 'BLOCK';
 
   async initButton() {
-    await this.friendService
-      .checkFriendship(this.user.id, this.me.id)
-      .then((data) => {
-        if (data.blocked === true) {
-          this.state = 'UNBLOCK';
-        }
-        if (data.blocked === false) {
-          this.state = 'BLOCK';
-        }
-        console.log(this.state);
-      }); // faire le catch ou on créait la friendship si elle n'exsite pas
+    if (this.me.id != this.user.id) {
+      await this.friendService
+        .checkFriendship(this.user.id, this.me.id)
+        .then((data) => {
+          if (data.blocked === true) {
+            this.state = 'UNBLOCK';
+          }
+          if (data.blocked === false) {
+            this.state = 'BLOCK';
+          }
+        })
+        .catch((data) => {
+          this.friendService
+            .createFriendship(this.user.id, this.me.id)
+            .pipe(take(1))
+            .subscribe({
+              next: (data) => {
+                if (data.blocked === true) {
+                  this.state = 'UNBLOCK';
+                }
+                if (data.blocked === false) {
+                  this.state = 'BLOCK';
+                }
+                console.log(data);
+              },
+            });
+        });
+    }
   }
 
   friendButton(state: ButtonState) {
     switch (state) {
       case 'BLOCK': {
         this.blockFriend(this.user.id, this.me.id);
-        console.log(this.user.id + ' ' + this.me.id);
         break;
       }
       case 'UNBLOCK': {
         this.unblockFriend(this.user.id, this.me.id);
-        break;
-      }
-      case 'DISABLE': {
         break;
       }
     }
@@ -56,6 +69,7 @@ export class BlockedBtnComponent implements OnInit {
       .subscribe({
         next: (data) => {
           console.log(data);
+          this.state = 'UNBLOCK';
         },
       });
   }
@@ -67,6 +81,7 @@ export class BlockedBtnComponent implements OnInit {
       .subscribe({
         next: (data) => {
           console.log(data);
+          this.state = 'BLOCK';
         },
       });
   }

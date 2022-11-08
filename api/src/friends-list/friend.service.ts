@@ -1,7 +1,6 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { Friendship } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { UpdateFriendsDto } from './dto';
 
 @Injectable()
 export class FriendService {
@@ -79,7 +78,6 @@ export class FriendService {
   }
 
   async blockFriend(adresseeId: number, userId: number): Promise<Friendship> {
-    console.log('dans blocked friend back');
     const adressee = await this.prisma.user.findUnique({
       where: {
         id: adresseeId,

@@ -20,7 +20,6 @@ import { JwtGuard } from 'src/auth/guards';
 import { UserService } from './user.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { FriendService } from '../friends-list/friend.service';
-import { UpdateFriendsDto } from '../friends-list/dto';
 @UseGuards(JwtGuard)
 @Controller('users')
 export class UserController {
