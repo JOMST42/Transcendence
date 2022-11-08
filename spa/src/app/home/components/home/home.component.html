@@ -30,13 +30,11 @@
 			<div class="user-card col-12">
 				<div class="grid">
 					<div class="flex sm:col-12 md:col-12 lg:col-3 xl:col-3 align-items-center justify-content-center">
-						<!-- <ig class="profile-img" src="../../../../assets/image/player-test.jpg" alt="Image"/>
-						<h3 class="player-name">Johnny Sins</h3> -->
 						<app-user-img [avatarUrl]="user?.avatarUrl" [userIsMe]="userService.userIsMe(user.id, user.id)" (eventUpload)="refreshUser()"></app-user-img>
 						<app-user-displayname [user]="user" [userIsMe]="userService.userIsMe(user.id, user.id)"></app-user-displayname>
 					</div>
 					<div class="flex sm:col-12 md:col-12 lg:col-8 xl:col-8 align-items-center justify-content-center">
-						<p class="title-homepage">!Transcendence!</p>
+						<h2 class="title-homepage">!Transcendence!</h2>
 					</div>
 				</div>
 			</div>
@@ -97,3 +95,5 @@
 		</div>
 	</section>
 </ng-template>
+
+<!-- https://www.learmoreseekmore.com/2020/12/angular-ngx-device-detector-library.html -->

@@ -4,3 +4,7 @@
 4. Faire la mise en page de la page User
 5. Checker sur portable sa resemble a quoi
 6. Trouver solution pour la homepage (watch)
+
+1. cacher le side nav dans les pages ou les width no desirer
+2. arranger le watch
+3. importer le user img partout (side nav, game, stats)

@@ -1,7 +1,9 @@
 .container {
-	z-index: -1;
+	z-index: 0;
+	position: absolute;
 }
 
 .p-button-rounded {
-	z-index: -1;
+	z-index: 0;
+	position: absolute;
 }
