@@ -23,12 +23,12 @@
                 [user]="user"
                 (stateChange)="resetPage()"
               ></app-friend-btn>
-              <!-- <app-blocked-btn
+              <app-blocked-btn
                   [userIsMe]="user.id === me.id"
                   [me]="me"
                   [user]="user"
-                  
-                ></app-blocked-btn> -->
+                  (stateChange)="resetPage()"
+                ></app-blocked-btn>
             </div>
           </div>
         </div>

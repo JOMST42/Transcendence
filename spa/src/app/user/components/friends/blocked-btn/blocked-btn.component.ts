@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { take } from 'rxjs';
 import { User } from '../../../models';
 import { FriendService } from '../../../services';
@@ -15,9 +15,14 @@ export class BlockedBtnComponent implements OnInit {
   @Input() user!: User;
   @Input() me!: User;
   @Input() userIsMe!: boolean;
+  @Output() stateChange = new EventEmitter<ButtonState>();
 
   state: ButtonState = 'BLOCK';
 
+  stateChanged(state: ButtonState) {
+    this.stateChange.emit();
+  }
+  
   async initButton() {
     if (this.me.id != this.user.id) {
       await this.friendService

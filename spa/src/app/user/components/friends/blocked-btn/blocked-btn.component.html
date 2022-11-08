@@ -3,7 +3,7 @@
     *ngSwitchCase="'BLOCK'"
     type="button"
     class="p-button-rounded p-button-info p-button-outlined"
-    (onClick)="friendButton('BLOCK')"
+    (onClick)="friendButton('BLOCK'); stateChanged('BLOCK')"
   >
     <img src="/assets/image/BLOCK_FRIEND.png" width="50px"
   /></p-button>
@@ -12,7 +12,7 @@
     *ngSwitchCase="'UNBLOCK'"
     type="button"
     class="p-button-rounded p-button-info p-button-outlined"
-    (onClick)="friendButton('UNBLOCK')"
+    (onClick)="friendButton('UNBLOCK'); stateChanged('UNBLOCK')"
   >
     <img src="/assets/image/UNBLOCK_FRIEND.png" width="50px"
   /></p-button>
