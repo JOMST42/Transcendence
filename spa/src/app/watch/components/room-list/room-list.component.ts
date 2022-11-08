@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Socket } from 'socket.io-client';
-import { Response } from '../../play/interfaces';
+import { Response } from '../../../play/interfaces';
 import {
   trigger,
   state,
@@ -12,7 +12,7 @@ import {
 	keyframes,
   // ...
 } from '@angular/animations';
-import { PlayService } from '../../play/play.service';
+import { PlayService } from '../../../play/play.service';
 
 @Component({
   selector: 'app-room-list',

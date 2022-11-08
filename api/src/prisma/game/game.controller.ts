@@ -59,14 +59,14 @@ export class GameController {
     return (await this.gameService.getGamesByUserId(id)) || {};
   }
 
-  @Get(':id/all')
+  @Get(':id/won')
   async getGamesWonByUserId(
     @Param('id', ParseIntPipe) id: number,
   ): Promise<Game[] | unknown> {
     return (await this.gameService.getGamesWonByUserId(id)) || {};
   }
 
-  @Get(':id/all')
+  @Get(':id/lost')
   async getGamesLostByUserId(
     @Param('id', ParseIntPipe) id: number,
   ): Promise<Game[] | unknown> {
