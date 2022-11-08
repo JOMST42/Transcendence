@@ -56,6 +56,14 @@
   </div>
 </div>
 
+<app-friend-card
+  [userIsMe]="user.id === me.id"
+  [me]="me"
+  [user]="user"
+></app-friend-card>
+
+
+
 <!-- <div id="container-flex-column">
 <app-friend-list></app-friend-list>
 </div> -->
