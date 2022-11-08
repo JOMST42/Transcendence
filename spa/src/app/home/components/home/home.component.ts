@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/core/services';
-import { User } from '../../../user/models';
 import { UserService } from '../../../user/services';
+import { User } from '../../../user/models';
 import { Subject, takeUntil } from 'rxjs';
 
 @Component({
