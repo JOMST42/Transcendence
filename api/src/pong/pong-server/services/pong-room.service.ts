@@ -15,7 +15,7 @@ import { Socket } from 'socket.io';
 import { GameSettings, GameInfo } from 'src/pong/pong-game/data/interfaces';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { PongRoom } from '../data/classes';
-import { CreateGameDto, EndGameDto } from '../data/dto';
+import { CreateGameDto, EndGameDto } from '../../../prisma/game/dto';
 import { RoomState } from '../data/enums';
 import { Response, RoomInfo } from '../data/interfaces';
 import { PongServerGateway } from '../gateway/pong-server.gateway';
