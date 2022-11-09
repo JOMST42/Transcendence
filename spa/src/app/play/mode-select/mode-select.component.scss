@@ -1,25 +1,129 @@
 .play-page {
-	height: 100%;
-	width: 100%;
-	display: flex;
+	// height: 100%;
+	// width: 100%;
+	// display: flex;
+	overflow-x: hidden;
+	z-index: -1;
 }
 
-.card {
-	height: 100%;
-	width: 100%;
-}
+// .card {
+// 	// height: 100%;
+// 	// width: 100%;
+// }
 
 
 .card-container {
-	height: 70%;
-	width: 80%;
+	background: rgb(104, 117, 138, 0.15);
+	height: 70% auto;
+	// width:  60%;
 	border-radius: 10px;
-	background-color: #68758A;
-	opacity: 0.3;
+	border: 2px solid #68758A;
+
+}
+
+.card-container::before {
+	content: "";
 	position: absolute;
 }
 
 img {
 	position: relative;
 	border-radius: 10px;
+	max-height: 600px;
+	max-width: 800px;
+	border: 2px solid #68758A;
+	z-index: -1;
+}
+
+.title {
+	margin-top: -0.4rem;
+	font-family: "PowerRangers";
+	font-weight: 50;
+	font-size: 10rem;
+	color: #68758A;
+	transition: 0.3s;
+		text-shadow:
+    		0 0 7px #fff,
+    		0 0 10px #fff,
+    		0 0 21px #68758A,
+    		0 0 42px #68758A,
+    		// 0 0 82px #0c1013,
+    		// 0 0 92px #0c1013,
+    		// 0 0 102px #68758A,
+    		// 0 0 151px #68758A;
+}
+
+h2 {
+	// position: relative;
+	font-family: monospace;
+	// font-family: PowerRangers;
+	font-weight: 40;
+	color: #68758A;
+	// letter-spacing: 0.5rem;
+}
+
+@media  screen and (min-width: 0px) and (max-width: 1280px) {
+	// .grid .card-container {
+	// 	display: flex-none;
+	// }
+}
+
+@media  screen and (min-width: 0px) and (max-width: 910px) {
+	.grid .separator {
+		display: none !important;
+	}
+	.grid .card-container {
+		display: flex-none;
+	}
+	.grid .title {
+		font-size: 5rem;
+	}
+}
+
+@media  screen and (min-width: 1160px) and (max-width: 1320px) {
+	.grid img {
+		width: 500px;
+		// height: 300px;
+	}
+}
+
+@media  screen and (min-width: 880px) and (max-width: 1160px) {
+	.grid img {
+		width: 400px;
+		// height: 250px;
+	}
+}
+
+@media  screen and (min-width: 600px) and (max-width: 880px) {
+	.grid img {
+		width: 360px;
+		// height: 300px;
+	}
+}
+
+@media  screen and (min-width: 0px) and (max-width: 770px) {
+	.grid .separator-1 {
+		display: none !important;
+	}
+}
+
+@media  screen and (min-width: 400px) and (max-width: 600px) {
+	.grid img {
+		width: 360px;
+		// height: 200px;
+	}
+	.grid .title {
+		font-size: 3rem;
+	}
+
+}
+
+@media  screen and (min-width: 0px) and (max-width: 400px) {
+	.grid img {
+		width: 200px;
+		// height: 100px;
+	}
+	.grid .title {
+		font-size: 2rem;
+	}
 }

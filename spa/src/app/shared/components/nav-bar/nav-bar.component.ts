@@ -6,12 +6,14 @@ import {
   useAnimation,
   state,
 } from '@angular/animations';
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import {
   SidebarOpenAnimation,
   SidebarCloseAnimation,
 } from './animations/side-nav.nav';
+import { User } from '../../../user/models';
+import { Subject, takeUntil } from 'rxjs';
 
 const animationParams = {
   menuWidth: '250px',
@@ -48,6 +50,13 @@ const animationParams = {
   ],
 })
 export class NavBarComponent implements OnInit {
+
+	private unsubscribeAll$ = new Subject<void>();
+  @Input()user!: User | null;
+//   me!: User;
+  avatarUrl: string;
+  userIsMe: boolean;
+
   isOpen = false;
 
   @ViewChild('ball')
@@ -72,14 +81,14 @@ export class NavBarComponent implements OnInit {
     this.selectRect = elem?.getBoundingClientRect();
     this.leftBall =
       this.selectRect.x + window.scrollX - +this.selection.style.width;
-    this.topBall = this.selectRect.y + window.scrollY + 60;
+    this.topBall = this.selectRect.y + window.scrollY + (+this.selection.style.height / 2); // TODO
   }
 
   unselect(elem: HTMLElement) {
     if (this.selection === elem) {
       this.selection = undefined;
       this.selectRect = undefined;
-      this.leftBall = -100;
+      this.leftBall = -300;
     }
   }
 
@@ -91,4 +100,6 @@ export class NavBarComponent implements OnInit {
     this.router.navigate(['users/jbadia']);
   }
   // moveBall()
+
+  
 }

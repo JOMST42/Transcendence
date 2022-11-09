@@ -4,14 +4,19 @@ import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { TableModule } from 'primeng/table';
 import { InputTextModule } from 'primeng/inputtext';
+import { DialogModule } from 'primeng/dialog';
+import { AvatarModule } from 'primeng/avatar';
 
 import {
+  JoinGameDialogComponent,
   NavBarComponent,
   NotFoundComponent,
   PongAudioComponent,
   PongScreenComponent,
   ServerErrorComponent,
 } from './components';
+import { EventButtonComponent } from './components/event-button/event-button.component';
+import { UserModule } from '../user/user.module';
 
 @NgModule({
   declarations: [
@@ -20,6 +25,8 @@ import {
     NavBarComponent,
     PongScreenComponent,
     PongAudioComponent,
+    EventButtonComponent,
+    JoinGameDialogComponent,
   ],
   imports: [
     CommonModule,
@@ -27,6 +34,8 @@ import {
     ButtonModule,
     TableModule,
     InputTextModule,
+    DialogModule,
+    AvatarModule,
   ],
   exports: [
     CommonModule,
@@ -35,8 +44,11 @@ import {
     TableModule,
     PongScreenComponent,
     PongAudioComponent,
+    EventButtonComponent,
     NavBarComponent,
     InputTextModule,
+    JoinGameDialogComponent,
+    AvatarModule,
   ],
 })
 export class SharedModule {}

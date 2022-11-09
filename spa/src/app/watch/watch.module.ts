@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { WatchRoutingModule } from './watch-routing.module';
 import { WatchComponent } from './watch.component';
 import { SharedModule } from '../shared/shared.module';
-import { RoomListComponent } from './room-list/room-list.component';
+import { RoomListComponent } from './components/room-list/room-list.component';
 
 @NgModule({
   declarations: [WatchComponent, RoomListComponent],

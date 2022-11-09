@@ -19,10 +19,14 @@
     <nav class="nav">
       <div class="menu-item">
         <ul>
+          <li>
+            <!-- <app-user-img [avatarUrl]="user?.avatarUrl" [userIsMe]="userService.userIsMe(user.id, user.id)" (eventUpload)="refreshUser()"></app-user-img>
+			<app-user-displayname [user]="user" [userIsMe]="userService.userIsMe(user.id, user.id)"></app-user-displayname> -->
+          </li>
           <li
             (mouseover)="select($any($event.target))"
             (mouseout)="unselect($any($event.target))"
-            routerLink="/play"
+            routerLink="play"
           >
             <a>Play</a>
           </li>
@@ -31,7 +35,7 @@
             (mouseout)="unselect($any($event.target))"
             routerLink="/watch"
           >
-            <a>Watch</a>
+            <a routerLink="/watch" >Watch</a>
           </li>
           <li
             (mouseover)="select($any($event.target))"
@@ -43,7 +47,7 @@
           <li
             (mouseover)="select($any($event.target))"
             (mouseout)="unselect($any($event.target))"
-            routerLink="/users"
+            routerLink="/users/id"
           >
             <a>Users</a>
           </li>
@@ -57,7 +61,7 @@
             (mouseover)="select($any($event.target))"
             (mouseout)="unselect($any($event.target))"
           >
-            <a href="#">Settings</a>
+            <a>Settings</a>
           </li>
         </ul>
       </div>

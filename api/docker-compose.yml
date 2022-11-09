@@ -5,7 +5,7 @@ services:
     image: postgres:latest
     restart: always
     ports:
-      - 5432:5432
+      - 5554:5432
     environment:
       POSTGRES_USER: ${DEV_DB_USER}
       POSTGRES_PASSWORD: ${DEV_DB_PASSWORD}

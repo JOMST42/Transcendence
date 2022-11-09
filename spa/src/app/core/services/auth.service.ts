@@ -5,6 +5,7 @@ import { Observable, ReplaySubject, take, map } from 'rxjs';
 
 import { User } from '../../user/models';
 import { UserService } from '../../user/services';
+import { BaseApiService } from './base-api.service';
 
 @Injectable({
   providedIn: 'root',
@@ -15,12 +16,31 @@ export class AuthService {
 
   constructor(
     private readonly cookieService: CookieService,
-    private readonly userService: UserService,
-    private readonly jwtService: JwtHelperService
+    private readonly jwtService: JwtHelperService,
+    private readonly baseApiService: BaseApiService
   ) {}
 
   getCurrentUser(): Observable<User | null> {
     return this.user$;
+  }
+
+  setCurrentUser(user: User): void {
+    this.userSubject.next(user);
+  }
+
+  refreshProfile(): Observable<User | null> {
+    return this.getProfile().pipe(
+      take(1),
+      map((user: User) => {
+        this.userSubject.next(user);
+        return user;
+      })
+    );
+  }
+
+
+  getProfile(): Observable<User> {
+    return this.baseApiService.getOne('/users/me');
   }
 
   login(): Observable<User | null> {
@@ -41,13 +61,7 @@ export class AuthService {
     localStorage.setItem('access_token', token);
     this.cookieService.delete('access_token');
 
-    return this.userService.getProfile().pipe(
-      take(1),
-      map((user: User) => {
-        this.userSubject.next(user);
-        return user;
-      })
-    );
+    return this.refreshProfile();
   }
 
   logout(): void {

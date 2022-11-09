@@ -1,100 +1,54 @@
-<div class="card">
-  <div class="flex flex-column card-container img-card">
-    <!-- <app-profile-img></app-profile-img> -->
-    <img
-      class="profile-img"
-      src="https://res.cloudinary.com/transcendance/image/upload/dsgwcxac6uxww5juoywo.jpg"
-      alt="Image"
-    />
-
-    <!-- <advanced-image [cldImg]="img"></advanced-image> -->
-
-    <button
-      pButton
-      type="button"
-      class="p-button-raised p-button-outlined p-button-secondary edit-button"
-    >
-      EDIT
-    </button>
+<div class="container">
+  <div class="grid">
+    <div class="lg:col-4 sm:col-12 md:12">
+      <app-user-img
+        [avatarUrl]="user?.avatarUrl"
+        [userIsMe]="user.id === me.id"
+        (eventUpload)="refreshUser()"
+        style="overflow: hidden"
+      >
+      </app-user-img>
+      <app-friend-btn
+        [userIsMe]="user.id === me.id"
+        [me]="me"
+        [user]="user"
+      ></app-friend-btn>
+      <app-blocked-btn
+        [userIsMe]="user.id === me.id"
+        [me]="me"
+        [user]="user"
+      ></app-blocked-btn>
+    </div>
+    <div class="lg:col-8 sm:col-12 md:col-12">
+      <div class="grid">
+        <div class="lg:col-6 sm:col-12 md:col-12">
+          <app-user-displayname
+            [user]="user"
+            [userIsMe]="user.id === me.id"
+          ></app-user-displayname>
+        </div>
+        <div class="lg:col-6 sm:col-12 md:12" style="background-color: rgb(0, 255, 72)">
+          <input type="text" pInputText class="transparent-background color-bottom-border input-font" placeholder="{{ user?.username }}"/>
+        </div>
+        <div class="lg:col-6 sm:col-12 md:12" style="background-color: rgb(255, 102, 0)">
+          <input type="text" pInputText class="transparent-background color-bottom-border input-font" placeholder="{{ user?.lastName }}"/>
+        </div>
+        <div class="lg:col-6 sm:col-12 md:12" style="background-color: rgb(41, 39, 163)" >
+          <input type="text" pInputText class="transparent-background color-bottom-border input-font" placeholder="{{ user?.firstName }}"/>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
-<ul class="flex-container">
-  <li class="flex-item"></li>
+<app-friend-card
+  [userIsMe]="user.id === me.id"
+  [me]="me"
+  [user]="user"
+></app-friend-card>
 
-  <li class="flex-item">
-    <div class="p-input-filled">
-      <div class="p-inputtext-lg label-style">
-        <span class="hovertext" data-hover="change display name">
-          <input
-            type="text"
-            style="font-weight: 300; color: yellow"
-            pInputText
-            class="transparent-background color-bottom-border input-font"
-            placeholder="{{ user?.displayName }}"
-            [(ngModel)]="displayName"
-            [ngModelOptions]="{ standalone: true }"
-          />
-        </span>
-      </div>
-      <!-- <button
-      pButton
-      pRipple
-      type="button"
-      label=""
-      icon="pi pi-check"
-      class="p-button-rounded p-button-outlined profile_button"
-      (onClick)="changeDisplayName()"
-    ></button> -->
-    </div>
-  </li>
-  <li class="flex-item">
-    <div class="p-input-filled">
-      <div class="p-inputtext-lg label-style label-nonclick">
-        <input
-          type="text"
-          pInputText
-          class="transparent-background color-bottom-border input-font"
-          placeholder="{{ user?.username }}"
-        />
-      </div>
-    </div>
-  </li>
-  <li class="flex-item">
-    <div class="p-input-filled">
-      <div class="p-inputtext-lg label-style label-nonclick">
-        <input
-          type="text"
-          pInputText
-          class="transparent-background color-bottom-border input-font"
-          placeholder="{{ user?.lastName }}"
-        />
-      </div>
-    </div>
-  </li>
-  <li class="flex-item">
-    <div class="p-input-filled">
-      <div class="p-inputtext-lg label-style label-nonclick">
-        <input
-          type="text"
-          pInputText
-          class="transparent-background color-bottom-border input-font"
-          placeholder="{{ user?.firstName }}"
-        />
-      </div>
-    </div>
-  </li>
-  <!-- <li class="flex-item"> EMAIL </li> -->
-</ul>
+
 
 <!-- <div id="container-flex-column">
 <app-friend-list></app-friend-list>
 </div> -->
-
-<p-fileUpload
-  name="avatar"
-  url="http://localhost:3000/api/users/upload"
-  accept="image/*"
-  (onUpload)="changeAvatar()"
->
-</p-fileUpload>

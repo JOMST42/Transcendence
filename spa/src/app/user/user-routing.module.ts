@@ -8,7 +8,7 @@ const routes: Routes = [
   {
     path: ':id',
     component: ProfilePageComponent,
-    resolve: { data: UserResolver },
+    resolve: { user: UserResolver },
   },
 ];
 

@@ -11,18 +11,24 @@ datasource db {
 }
 
 model User {
-  id          Int        @id @default(autoincrement())
-  username    String     @unique
-  email       String     @unique
-  displayName String
-  firstName   String
-  lastName    String
-  avatarUrl   String?
-  status      UserStatus @default(OFFLINE)
+  id             Int        @id @default(autoincrement())
+  username       String     @unique
+  email          String     @unique
+  displayName    String
+  normalizedName String     @unique
+  firstName      String
+  lastName       String
+  avatarUrl      String?
+  status         UserStatus @default(OFFLINE)
 
-  rooms       UserChatRoom[]
-  connections UserConnection[]
-  messages    ChatMessage[]
+  rooms           UserChatRoom[]
+  connections     UserConnection[]
+  messages        ChatMessage[]
+  friendsRequests Friendship[]     @relation("requester")
+  friendsAdressee Friendship[]     @relation("adressee")
+
+  GamesAsPlayer1 Game[] @relation("gameP1")
+  GamesAsPlayer2 Game[] @relation("gameP2")
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -102,4 +108,46 @@ model ChatMessage {
   updatedAt DateTime @updatedAt
 
   @@map("chat_messages")
+}
+
+enum Winner {
+  PLAYER1
+  PLAYER2
+  NONE
+}
+
+model Game {
+  id         Int       @id @default(autoincrement())
+  startTime  DateTime  @default(now())
+  endTime    DateTime?
+  timePlayed Float     @default(0)
+  player1    User      @relation(name: "gameP1", fields: [player1Id], references: [id])
+  player1Id  Int
+  player2    User      @relation(name: "gameP2", fields: [player2Id], references: [id])
+  player2Id  Int
+
+  winner       Winner @default(NONE)
+  scorePlayer1 Int    @default(0)
+  scorePlayer2 Int    @default(0)
+  ballBounce   Int    @default(0)
+  longestRally Int    @default(0)
+  description  String @default("")
+
+  CreatedAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Friendship {
+  requester   User    @relation("requester", fields: [requesterId], references: [id])
+  requesterId Int
+  adressee    User    @relation("adressee", fields: [adresseeId], references: [id])
+  adresseeId  Int
+  accepted    Boolean @default(false)
+  blocked     Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@id([requesterId, adresseeId])
+  @@map("friendships")
 }

@@ -1,0 +1,28 @@
+<div [ngSwitch]="state">
+<button
+	*ngSwitchCase="'DEFAULT'"
+	class="btn-grad"
+	pButton
+	type="button"
+	label={{defaultLabel}}
+	(click)="doFunction('DEFAULT')"
+></button>
+
+<button
+	*ngSwitchCase="'PROCESS'"
+	class="btn-grad"
+	pButton
+	type="button"
+	label={{processLabel}}
+	(click)="doFunction('PROCESS')"
+></button>
+
+<button
+	*ngSwitchCase="'SUCCESS'"
+	class="btn-grad"
+	pButton
+	type="button"
+	label={{successLabel}}
+	(click)="doFunction('SUCCESS')"
+></button>
+</div>

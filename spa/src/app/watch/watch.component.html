@@ -1,3 +1,29 @@
 <app-room-list></app-room-list>
+
+<button (click)="getGames()">Get games</button>
+
+<div [@stagger]="games.length" class="rooms">
+  <div *ngFor="let game of games">
+    <button type="button">
+      <span class="badge">{{game.id}}</span>
+      <!-- <span class="name">{{room.name}}</span> -->
+    </button>
+  </div>
+</div>
+
+<!-- <div *ngIf="selectedRoom">
+  <h2>{{selectedRoom.name | uppercase}} Details</h2>
+  <div>id: {{selectedRoom.id}}</div>
+  <div>
+    <label for="hero-name">Hero name: </label>
+    <input id="hero-name" [(ngModel)]="selectedRoom.name" placeholder="name">
+  </div>
+</div> -->
+
+<!-- <ul [@roomListState] #roomList id="roomList">
+	{{RoomList}}
+</ul> -->
 <app-pong-screen></app-pong-screen>
+
+
 <!-- <app-title></app-title> -->

@@ -1,0 +1,50 @@
+
+.container{
+  position: relative;
+  width: 100%;
+  z-index: 0;
+}
+
+.container img{
+  width:100%;
+  height: auto;
+}
+
+.container .upload{
+  position: absolute;
+  top: 80%;
+  left: 80%;
+}
+
+
+.profile-img {
+    overflow: hidden;
+    border-radius: 0px;
+    width: 45px;
+    height: auto;
+    max-width: 150px;
+    min-height: auto;
+    margin: 0rem 2rem 2rem 2rem;
+    box-shadow: 0 0 .2rem rgb(0, 0, 0),
+    0 0 .2rem rgb(6, 3, 3),
+    0 0 2rem #0a0a0a,
+    0 0 0.8rem #000002,
+    inset 0 0 1.3rem #010105;
+    float: left;
+	border-radius: 16px;
+  }
+  
+  @media screen and (max-width:800px){
+    .profile-img{
+      width: auto;
+      max-width: 300px;
+      float: none;
+      display: table-column;
+      margin: 2rem 0rem 0rem 2rem;
+    }
+  }
+
+//   ::ng-deep .p-selectbutton .p-button.p-highlight {
+//     color: #68758A !important;
+//     font-weight: 700;
+//   }

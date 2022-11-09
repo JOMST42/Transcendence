@@ -4,8 +4,8 @@ import {
   Injectable,
 } from '@nestjs/common';
 import { User } from '@prisma/client';
-import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 
+import { CloudinaryService } from '../../cloudinary/cloudinary.service';
 import { PrismaService } from '../../prisma/prisma.service';
 import { UpdateUserDto } from '../dto';
 
@@ -24,7 +24,10 @@ export class UserService {
     return user;
   }
 
-  updateUserById(userId: number, dto: UpdateUserDto): Promise<User | null> {
+  async updateUserById(
+    userId: number,
+    dto: UpdateUserDto,
+  ): Promise<User | null> {
     const user = this.prisma.user.findUnique({
       where: {
         id: userId,
@@ -33,7 +36,17 @@ export class UserService {
     if (!user) {
       throw new ForbiddenException('user not found');
     }
-
+    if (dto.displayName) {
+      const sameName = await this.prisma.user.findUnique({
+        where: {
+          normalizedName: dto.displayName.toLowerCase(),
+        },
+      });
+      if (sameName) {
+        throw new BadRequestException('Display name already taken');
+      }
+      dto.normalizedName = dto.displayName.toLowerCase();
+    }
     return this.prisma.user.update({
       where: {
         id: userId,
@@ -42,6 +55,13 @@ export class UserService {
         ...dto,
       },
     });
+  }
+
+  async getUserByName(username: string): Promise<User | null> {
+    const user = await this.prisma.user.findUnique({
+      where: { username: username },
+    });
+    return user;
   }
 
   async uploadImageToCloudinary(file: Express.Multer.File) {

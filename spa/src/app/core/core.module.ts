@@ -7,6 +7,8 @@ import { Socket } from 'ngx-socket-io';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { Subject, takeUntil } from 'rxjs';
+import { DialogModule } from 'primeng/dialog';
+
 import { SocketError } from './models';
 import { ToastService } from './services';
 
@@ -66,6 +68,6 @@ export class ChatSocket extends Socket implements OnDestroy {
     }),
   ],
   providers: [MessageService, CookieService, PongSocket, ChatSocket],
-  exports: [ToastModule],
+  exports: [ToastModule, DialogModule],
 })
 export class CoreModule {}
