@@ -1,0 +1,41 @@
+
+.container{
+  position: relative;
+  width: 100%;
+}
+
+.container img{
+  width:100%;
+  height: auto;
+}
+
+.container .upload{
+  position: absolute;
+  top: 80%;
+  left: 80%;
+}
+
+.profile-img {
+    overflow: hidden;
+    border-radius: 0px;
+    width: 100%;
+    height: auto;
+    max-width: 150px;
+    min-height: auto;
+    margin: 0rem 2rem 2rem 2rem;
+    box-shadow: 0 0 .2rem rgb(0, 0, 0),
+    0 0 .2rem rgb(6, 3, 3),
+    0 0 2rem #0a0a0a,
+    0 0 0.8rem #000002,
+    inset 0 0 1.3rem #010105;
+    float: left;
+  }
+  @media screen and (max-width:800px){
+    .profile-img{
+      width: auto;
+      max-width: 300px;
+      float: none;
+      display: table-column;
+      margin: 2rem 0rem 0rem 2rem;
+    }
+  }

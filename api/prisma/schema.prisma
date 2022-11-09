@@ -22,15 +22,18 @@ model Weather {
 }
 
 model User {
-  id          Int     @id @default(autoincrement())
-  username    String  @unique
-  email       String  @unique
-  displayName String
-  firstName   String
-  lastName    String
-  avatarUrl   String?
+  id             Int     @id @default(autoincrement())
+  username       String  @unique
+  email          String  @unique
+  displayName    String
+  normalizedName String  @unique
+  firstName      String
+  lastName       String
+  avatarUrl      String?
 
-  rooms UserRoom[]
+  rooms           UserRoom[]
+  friendsRequests Friendship[] @relation("requester")
+  friendsAdressee Friendship[] @relation("adressee")
 
   GamesAsPlayer1	Game[] @relation("gameP1")
   GamesAsPlayer2	Game[] @relation("gameP2")
@@ -94,4 +97,20 @@ model Game {
 
 	CreatedAt	DateTime		@default(now())
   updatedAt	DateTime		@updatedAt
+}
+
+model Friendship {
+  requester   User    @relation("requester", fields: [requesterId], references: [id])
+  requesterId Int
+  adressee    User    @relation("adressee", fields: [adresseeId], references: [id])
+  adresseeId  Int
+  accepted     Boolean @default(false)
+  blocked      Boolean @default(false)
+
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@id([requesterId, adresseeId])
+  @@map("friendships")
 }

@@ -5,15 +5,23 @@ import { UserRoutingModule } from './user-routing.module';
 import { SharedModule } from '../shared/shared.module';
 import {
   FriendListComponent,
-  ProfileImgComponent,
   ProfilePageComponent,
+  UserImgComponent,
+  UserDisplaynameComponent,
 } from './components';
+import { FriendBtnComponent } from './components/friends/friend-btn/friend-btn.component';
+import { BlockedBtnComponent } from './components/friends/blocked-btn/blocked-btn.component';
+import { FriendCardComponent } from './components/friends/friend-card/friend-card.component';
 
 @NgModule({
   declarations: [
     FriendListComponent,
-    ProfileImgComponent,
     ProfilePageComponent,
+    UserImgComponent,
+    UserDisplaynameComponent,
+    FriendBtnComponent,
+    BlockedBtnComponent,
+    FriendCardComponent,
   ],
   imports: [SharedModule, UserRoutingModule, FileUploadModule],
 })

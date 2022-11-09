@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Subject, take, takeUntil } from 'rxjs';
 
 import { User } from '../../models';
+import { AuthService } from '../../../core/services';
 import { UserService } from '../../services';
 
 @Component({
@@ -9,36 +11,25 @@ import { UserService } from '../../services';
   templateUrl: './profile-page.component.html',
   styleUrls: ['profile-page.component.scss'],
 })
-export class ProfilePageComponent implements OnInit {
+export class ProfilePageComponent implements OnInit, OnDestroy {
+  private unsubscribeAll$ = new Subject<void>();
+
   user!: User;
+  me!: User;
   displayName!: string;
-  newAvatarUrl!: string;
-  data: any;
 
   constructor(
-    private readonly userService: UserService,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private readonly authService: AuthService
   ) {}
 
-  changeDisplayName() {
-    this.userService
-      .updateUserById(this.user.id, { displayName: this.displayName })
+  refreshUser(): void {
+    this.authService
+      .refreshProfile()
+      .pipe(takeUntil(this.unsubscribeAll$))
       .subscribe({
         next: (data) => {
-          console.log(data);
-        },
-        error: (err) => {
-          console.log(err);
-        },
-      });
-  }
-
-  changeAvatar() {
-    this.userService
-      .updateUserById(this.user.id, { avatarUrl: this.newAvatarUrl })
-      .subscribe({
-        next: (data) => {
-          console.log(data);
+          this.user = data;
         },
         error: (err) => {
           console.log(err);
@@ -47,22 +38,26 @@ export class ProfilePageComponent implements OnInit {
   }
 
   ngOnInit() {
-    const id = this.activatedRoute.snapshot.paramMap.get('id');
-    //console.log(id);
-    // this.activatedRoute.data.subscribe({
-    //   next: (data: User) => {
-    //     this.user = data;
-    //   },
-    // });
-
-    this.userService.getUserById(Number(id)).subscribe({
+    this.activatedRoute.data.pipe(takeUntil(this.unsubscribeAll$)).subscribe({
       next: (data) => {
-        this.user = data;
-        //console.log(data);
-      },
-      error: (err) => {
-        console.log(err);
+        this.user = data['user'];
       },
     });
+
+    this.authService
+      .getCurrentUser()
+      .pipe(takeUntil(this.unsubscribeAll$))
+      .subscribe({
+        next: (data) => {
+          this.me = data;
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribeAll$.next();
   }
 }

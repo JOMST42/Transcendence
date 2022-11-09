@@ -1,0 +1,14 @@
+<div class="container">
+  <img [src]="avatarUrl" alt="Image" class="profile-img"/>
+  <span>
+    <p-fileUpload
+    *ngIf="userIsMe"
+    mode="basic"
+      name="avatar"
+      url="http://localhost:3000/api/users/upload"
+      accept="image/*"
+      (onUpload)="onUpload()"
+    ></p-fileUpload>
+  </span>
+</div>
+

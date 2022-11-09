@@ -5,6 +5,7 @@ import { ButtonModule } from 'primeng/button';
 import { TableModule } from 'primeng/table';
 import { DialogModule } from 'primeng/dialog';
 import { RouterModule } from '@angular/router';
+import { AvatarModule } from 'primeng/avatar';
 
 import {
 	JoinGameDialogComponent,
@@ -15,6 +16,7 @@ import {
   ServerErrorComponent,
 } from './components';
 import { EventButtonComponent } from './components/event-button/event-button.component';
+import { UserModule } from '../user/user.module';
 
 @NgModule({
   declarations: [
@@ -26,7 +28,7 @@ import { EventButtonComponent } from './components/event-button/event-button.com
     EventButtonComponent,
 		JoinGameDialogComponent
   ],
-  imports: [CommonModule, FormsModule, ButtonModule, TableModule, DialogModule, RouterModule],
+  imports: [CommonModule, FormsModule, ButtonModule, TableModule, DialogModule, RouterModule, AvatarModule],
   exports: [
     CommonModule,
     FormsModule,
@@ -36,7 +38,8 @@ import { EventButtonComponent } from './components/event-button/event-button.com
     PongAudioComponent,
 		EventButtonComponent,
     NavBarComponent,
-		JoinGameDialogComponent
+		JoinGameDialogComponent,
+    AvatarModule,
   ],
 })
 export class SharedModule {}

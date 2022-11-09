@@ -9,25 +9,28 @@ import {
   Post,
   UseInterceptors,
   UploadedFile,
+  NotFoundException,
+  BadRequestException,
 } from '@nestjs/common';
 
 import { UpdateUserDto } from './dto';
-import { User } from '@prisma/client';
-import { GetUser } from '../auth/decorator';
-import { JwtGuard } from '../auth/guards';
+import { Friendship, User } from '@prisma/client';
+import { GetUser } from 'src/auth/decorator';
+import { JwtGuard } from 'src/auth/guards';
 import { UserService } from './user.service';
 import { FileInterceptor } from '@nestjs/platform-express';
-
+import { FriendService } from '../friends-list/friend.service';
 @UseGuards(JwtGuard)
 @Controller('users')
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly userService: UserService,
+    private readonly friendService: FriendService,
+  ) {}
 
   @UseGuards(JwtGuard)
   @Get('me')
   async getMe(@GetUser() user: User): Promise<User> {
-    delete user.createdAt;
-    delete user.updatedAt;
     return user;
   }
 
@@ -35,7 +38,11 @@ export class UserController {
   async getUserById(
     @Param('id', ParseIntPipe) id: number,
   ): Promise<User | unknown> {
-    return (await this.userService.getUserById(id)) || {};
+    const user = await this.userService.getUserById(id);
+    if (!user) {
+      throw new NotFoundException();
+    }
+    return user;
   }
 
   @Patch(':id')
@@ -43,6 +50,9 @@ export class UserController {
     @Param('id', ParseIntPipe) id: number,
     @Body() dto: UpdateUserDto,
   ): Promise<User> {
+    if (Object.keys(dto).length === 0) {
+      throw new BadRequestException('Empty body');
+    }
     return await this.userService.updateUserById(id, dto);
   }
 
@@ -51,15 +61,74 @@ export class UserController {
 	the request using the @UploadedFile() decorator.*/
   @Post('upload')
   @UseInterceptors(FileInterceptor('avatar'))
-  uploadImage(@UploadedFile() file: Express.Multer.File) {
-    return this.userService.uploadImageToCloudinary(file);
+  async uploadImage(
+    @UploadedFile() file: Express.Multer.File,
+    @GetUser() user: User,
+  ) {
+    const res = await this.userService.uploadImageToCloudinary(file);
+    return this.userService.updateUserById(user.id, { avatarUrl: res.url });
   }
 
-  @Patch(':id')
-  async updateAvatarById(
-    @Param('id', ParseIntPipe) id: number,
-    @Body() dto: UpdateUserDto,
-  ): Promise<User> {
-    return await this.userService.updateUserById(id, dto);
+  @Get(':id/friendsList')
+  async getFriendships(
+    @Param('id', ParseIntPipe) userId: number,
+  ): Promise<Friendship[]> {
+    return await this.friendService.getFriendships(userId);
+  }
+
+  @Get(':id/friend/:friendId')
+  async getFriendship(
+    @Param('friendId', ParseIntPipe) adresseeId: number,
+    @Param('id', ParseIntPipe) userId: number,
+  ): Promise<Friendship> {
+    return await this.friendService.getFriendship(adresseeId, userId);
+  }
+
+  @Get(':id/pendingFriends')
+  async getPendingInvitations(
+    @Param('id', ParseIntPipe) userId: number,
+  ): Promise<Friendship[]> {
+    return await this.friendService.getPendingInvitations(userId);
+  }
+
+  // lorsqu'on accepte une invitation, l'adressee est nous meme et le user est le friend
+  @Patch(':id/addfriend/:friendId')
+  async updateFriendship(
+    @Param('friendId', ParseIntPipe) userId: number,
+    @Param('id', ParseIntPipe) adresseeId: number,
+  ): Promise<Friendship> {
+    return await this.friendService.updateFriendship(adresseeId, userId);
+  }
+
+  @Patch(':id/removefriend/:friendId')
+  async removeFriendship(
+    @Param('friendId', ParseIntPipe) adresseeId: number,
+    @Param('id', ParseIntPipe) userId: number,
+  ): Promise<Friendship> {
+    return await this.friendService.removeFriendship(adresseeId, userId);
+  }
+
+  @Patch(':id/blockfriend/:friendId')
+  async blockFriend(
+    @Param('id', ParseIntPipe) userId: number,
+    @Param('friendId', ParseIntPipe) adresseeId: number,
+  ): Promise<Friendship> {
+    return await this.friendService.blockFriend(adresseeId, userId);
+  }
+
+  @Patch(':id/unblockfriend/:friendId')
+  async unblockFriend(
+    @Param('friendId', ParseIntPipe) adresseeId: number,
+    @Param('id', ParseIntPipe) userId: number,
+  ): Promise<Friendship> {
+    return await this.friendService.unblockFriend(adresseeId, userId);
+  }
+
+  @Post(':id/createfriend/:friendId')
+  async createFrienship(
+    @Param('friendId', ParseIntPipe) adresseeId: number,
+    @Param('id', ParseIntPipe) userId: number,
+  ) {
+    return await this.friendService.createFriendship(adresseeId, userId);
   }
 }

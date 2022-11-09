@@ -24,7 +24,11 @@ export class BaseApiService {
     });
   }
 
-  patchOne<T>(path: string, body: any): Observable<T> {
+  postOne<T>(path: string, body?: any): Observable<T> {
+    return this.http.post<T>(this.baseApi + path, body);
+  }
+
+  patchOne<T>(path: string, body?: any): Observable<T> {
     return this.http.patch<T>(this.baseApi + path, body);
   }
 }
