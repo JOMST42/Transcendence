@@ -49,13 +49,26 @@ export class ChatService {
     return this.prisma.chatRoom.findUnique({ where: { id: roomId } });
   }
 
-  private async validateUserForRoom(
-    userId: number,
-    roomId: string,
-  ): Promise<ChatRoom> {
-    const room = await this.prisma.chatRoom.findFirst({
-      where: { AND: { id: roomId, users: { some: { userId } } } },
+  async validateUserForRoom(userId: number, roomId: string): Promise<ChatRoom> {
+    let room = await this.prisma.chatRoom.findFirst({
+      where: {
+        AND: {
+          id: roomId,
+          users: {
+            some: { userId },
+          },
+        },
+      },
     });
+
+    if (!room) {
+      room = await this.prisma.chatRoom.findFirst({
+        where: { id: roomId, visibility: ChatRoomVisibility.PUBLIC },
+      });
+      if (room) {
+        await this.addUserToRoom(userId, roomId);
+      }
+    }
 
     if (!room) {
       throw new UnauthorizedException("You can't access this chatroom");
@@ -85,9 +98,9 @@ export class ChatService {
     userId: number,
     roomId: string,
   ): Promise<ChatRoomWithMessages> {
-    this.validateUserForRoom(userId, roomId);
+    await this.validateUserForRoom(userId, roomId);
 
-    const room = await this.prisma.chatRoom.findUnique({
+    return this.prisma.chatRoom.findUnique({
       where: {
         id: roomId,
       },
@@ -105,10 +118,5 @@ export class ChatService {
         },
       },
     });
-
-    return {
-      messages: room.messages,
-      ...room,
-    };
   }
 }
