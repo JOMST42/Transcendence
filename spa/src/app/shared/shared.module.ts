@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { TableModule } from 'primeng/table';
+import { InputTextModule } from 'primeng/inputtext';
 import { DialogModule } from 'primeng/dialog';
 import { AvatarModule } from 'primeng/avatar';
-import { RouterModule } from '@angular/router';
+
 import {
-	JoinGameDialogComponent,
+  JoinGameDialogComponent,
   NavBarComponent,
   NotFoundComponent,
   PongAudioComponent,
@@ -25,9 +26,17 @@ import { UserModule } from '../user/user.module';
     PongScreenComponent,
     PongAudioComponent,
     EventButtonComponent,
-		JoinGameDialogComponent
+    JoinGameDialogComponent,
   ],
-  imports: [CommonModule, FormsModule, ButtonModule, TableModule, DialogModule, RouterModule, AvatarModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    ButtonModule,
+    TableModule,
+    InputTextModule,
+    DialogModule,
+    AvatarModule,
+  ],
   exports: [
     CommonModule,
     FormsModule,
@@ -35,9 +44,10 @@ import { UserModule } from '../user/user.module';
     TableModule,
     PongScreenComponent,
     PongAudioComponent,
-	EventButtonComponent,
+    EventButtonComponent,
     NavBarComponent,
-		JoinGameDialogComponent,
+    InputTextModule,
+    JoinGameDialogComponent,
     AvatarModule,
   ],
 })

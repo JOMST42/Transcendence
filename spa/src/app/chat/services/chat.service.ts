@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ChatSocket } from '../../core/core.module';
 
-import { ToastService } from '../../core/services';
-import { Room } from '../models';
+import { ChatSocket } from '../../core/core.module';
+import { BaseApiService } from '../../core/services';
+import { ChatMessage, Room } from '../models';
 
 @Injectable({
   providedIn: 'root',
@@ -11,21 +11,42 @@ import { Room } from '../models';
 export class ChatService {
   constructor(
     private socket: ChatSocket,
-    private readonly toastService: ToastService
+    private readonly baseApiService: BaseApiService
   ) {}
 
-  sendMessage() {}
-
-  getMessage(): Observable<string> {
-    return this.socket.fromEvent('message');
+  getChatRoomList(): Observable<Room[]> {
+    return this.baseApiService.getMany<Room>('/chatrooms');
   }
 
-  getRooms(): Observable<Room[]> {
-    return this.socket.fromEvent<Room[]>('rooms');
+  getNewRoom(): Observable<Room> {
+    return this.socket.fromEvent<Room>('newRoom');
   }
 
-  createRoom(room: Room) {
-    this.socket.emit('createRoom', room);
-    this.toastService.showSuccess('Success', `Room ${room.name} created`);
+  createRoom(room: Room): Observable<Room> {
+    return this.baseApiService.postOne<Room>('/chatrooms', room);
+  }
+
+  joinRoom(roomId: number): void {
+    this.socket.emit('joinRoom', roomId);
+  }
+
+  leaveRoom(roomId: number): void {
+    this.socket.emit('leaveRoom', roomId);
+  }
+
+  sendMessage(message: ChatMessage, callback?: any): void {
+    this.socket.emit('sendMessage', message, (data: any) => {
+      if (callback) {
+        callback(data);
+      }
+    });
+  }
+
+  getNewMessage(): Observable<ChatMessage> {
+    return this.socket.fromEvent<ChatMessage>('newMessage');
+  }
+
+  getChatRoom(id: string): Observable<Room> {
+    return this.baseApiService.getOne(`/chatrooms/${id}`);
   }
 }

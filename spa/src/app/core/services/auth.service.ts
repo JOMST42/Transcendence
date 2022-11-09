@@ -49,7 +49,7 @@ export class AuthService {
       localStorage.getItem('access_token');
 
     if (!token) {
-      console.log('No access token');
+      this.logout();
       return this.user$;
     }
 

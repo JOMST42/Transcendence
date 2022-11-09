@@ -4,10 +4,10 @@ import {
   Injectable,
 } from '@nestjs/common';
 import { User } from '@prisma/client';
-import { CloudinaryService } from '../cloudinary/cloudinary.service';
 
-import { PrismaService } from '../prisma/prisma.service';
-import { UpdateUserDto } from './dto';
+import { CloudinaryService } from '../../cloudinary/cloudinary.service';
+import { PrismaService } from '../../prisma/prisma.service';
+import { UpdateUserDto } from '../dto';
 
 @Injectable()
 export class UserService {

@@ -27,6 +27,7 @@
     "editor.tabSize": 2
   },
   "[prisma]": {
-    "editor.tabSize": 2
+    "editor.tabSize": 2,
+    "editor.defaultFormatter": "Prisma.prisma"
   }
 }
