@@ -93,10 +93,18 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   }
 
   @SubscribeMessage('joinRoom')
-  joinRoom(
+  async joinRoom(
     @ConnectedSocket() socket: Socket,
     @MessageBody() roomId: string,
-  ): void {
+  ): Promise<void> {
+    if (
+      !(await this.chatService.validateUserForRoom(socket.data.user.id, roomId))
+    ) {
+      this.server.emit('socketError', {
+        message: "You can't join this chat room",
+      });
+      return;
+    }
     socket.join(roomId);
   }
 
