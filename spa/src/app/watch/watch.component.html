@@ -3,12 +3,11 @@
 <button (click)="getGames()">Get games</button>
 
 <div [@stagger]="games.length" class="rooms">
-  <div *ngFor="let game of games">
-    <button type="button">
-      <span class="badge">{{game.id}}</span>
+	<ul>
+  <li *ngFor="let game of games">
+		{{game.id}} p1:{{game.player1Id}} p2:{{game.player2Id}} score:{{game.scorePlayer1}} | {{game.scorePlayer2}} winner:{{game.winner}}
       <!-- <span class="name">{{room.name}}</span> -->
-    </button>
-  </div>
+	</ul>
 </div>
 
 <!-- <div *ngIf="selectedRoom">

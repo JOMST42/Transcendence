@@ -6,6 +6,7 @@ export interface Game {
   endTime?: Date;
   scorePlayer1: number;
 	scorePlayer2: number;
+	winner?: string;
   firstName?: string;
 	timePlayed?: number;
   description?: string;
