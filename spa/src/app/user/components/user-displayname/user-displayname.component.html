@@ -1,8 +1,8 @@
 
-<div class="" data-hover="change display name">
+<div class="container align-items-center justify-content-center" data-hover="change display name">
     <input
       type="text"
-      style="font-weight: 300; color: yellow"
+      style="font-weight: 300; color: #68758A"
       pInputText
       class="transparent-background color-bottom-border input-font"
       placeholder="{{ user?.displayName }}"
@@ -10,15 +10,15 @@
       #dname="ngModel"
       [ngModelOptions]="{ standalone: true }"
       ngFormControl="control"
+	  
       />
       <button
       *ngIf="userIsMe"
       pButton
       pRipple
       type="button"
-      label="Click"
       icon="pi pi-check"
-      class="p-button-rounded p-button-outlined profile_button"
+      class="p-button p-button-outlined profile_button"
       (click)="changeDisplayName()"
       ></button>
       <div *ngIf="dname.invalid && (dname.dirty || dname.touched)" class="ng-invalid ng-dirty">

@@ -4,9 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { TableModule } from 'primeng/table';
 import { DialogModule } from 'primeng/dialog';
-import { RouterModule } from '@angular/router';
 import { AvatarModule } from 'primeng/avatar';
-
+import { RouterModule } from '@angular/router';
 import {
 	JoinGameDialogComponent,
   NavBarComponent,
@@ -36,7 +35,7 @@ import { UserModule } from '../user/user.module';
     TableModule,
     PongScreenComponent,
     PongAudioComponent,
-		EventButtonComponent,
+	EventButtonComponent,
     NavBarComponent,
 		JoinGameDialogComponent,
     AvatarModule,

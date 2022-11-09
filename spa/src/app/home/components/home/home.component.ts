@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/core/services';
-import { User } from '../../../user/models';
 import { UserService } from '../../../user/services';
+import { User } from '../../../user/models';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -9,16 +10,20 @@ import { UserService } from '../../../user/services';
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit {
-  user!: User | null;
+	private unsubscribeAll$ = new Subject<void>();
+  @Input()user!: User | null;
+//   me!: User;
+  avatarUrl: string;
+  userIsMe: boolean;
 
   constructor(
-    private readonly userService: UserService,
+    public readonly userService: UserService,
     private readonly authService: AuthService
   ) {}
 
   handleClick() {
     window.location.href = 'http://localhost:3000/api/auth/ft/login';
-    // this.authService.login();
+    this.authService.login();
   }
 
   ngOnInit(): void {
@@ -35,4 +40,19 @@ export class HomeComponent implements OnInit {
       },
     });
   }
+
+  refreshUser(): void {
+    this.authService
+      .refreshProfile()
+      .pipe(takeUntil(this.unsubscribeAll$))
+      .subscribe({
+        next: (data) => {
+          this.user = data;
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      });
+  }
+
 }

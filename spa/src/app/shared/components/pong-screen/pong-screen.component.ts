@@ -9,6 +9,7 @@ import {
   useAnimation,
 } from '@angular/animations';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { UserService } from 'src/app/user/services';
 import { AudioHandler } from '../../../play/classes';
 import { PlayService } from '../../../play/play.service';
 
@@ -60,6 +61,8 @@ export interface GameInfo {
   ],
 })
 export class PongScreenComponent implements OnInit {
+
+	
   @ViewChild('game')
   private gameCanvas!: ElementRef;
   private context: any;
@@ -74,7 +77,10 @@ export class PongScreenComponent implements OnInit {
 
   private audio: AudioHandler = new AudioHandler(0.3, 1);
 
-  constructor(private server: PlayService) {}
+  constructor(
+	private server: PlayService,
+	public readonly userService: UserService
+	) {}
 
   ngOnInit(): void {}
 
@@ -219,4 +225,5 @@ export class PongScreenComponent implements OnInit {
     this.countdown--;
     console.log('ticking');
   }
+
 }
