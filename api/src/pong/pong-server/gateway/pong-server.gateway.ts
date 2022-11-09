@@ -20,11 +20,11 @@ import { Response } from '../data/interfaces';
 import { PongRoomService } from '../services/pong-room.service';
 import { PongQueueService } from '../services/pong-queue.service';
 import { AuthService } from '../../../auth/auth.service';
-import { UserService } from '../../..//user/user.service';
 import { UserState } from 'src/pong/data/enums';
 import { PongServerInterceptor } from '../pong-server.interceptor';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { User } from '@prisma/client';
+import { UserService } from '../../../user/services/user.service';
 
 @Injectable({})
 @UseInterceptors(new PongServerInterceptor())
