@@ -57,11 +57,11 @@ export class PongServerGateway
     this.server.setMaxListeners(Infinity); // WARNING need to read about it
 
     // WARNING test purpose
-    this.initTestServer();
+    // this.initTestServer();
 
-    setInterval(() => {
-      this.showServerInfo();
-    }, 30000);
+    // setInterval(() => {
+    //   this.showServerInfo();
+    // }, 30000);
     // setInterval(() => {
     //   this.updateRooms();
     // }, (1 / 60) * 1000); // FPS

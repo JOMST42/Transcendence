@@ -32,17 +32,17 @@ export class GameController {
   //   return user;
   // }
 
+	@Get('all')
+  async getGames(): Promise<Game[] | unknown> {
+    console.log('get all games');
+    return (await this.gameService.getGames()) || {};
+  }
+
   @Get(':id')
   async getGameById(
     @Param('id', ParseIntPipe) id: number,
   ): Promise<Game | unknown> {
     return (await this.gameService.getGameById(id)) || {};
-  }
-
-  @Get('all')
-  async getGames(): Promise<Game[] | unknown> {
-    console.log('get all games');
-    return (await this.gameService.getGames()) || {};
   }
 
   @Get(':id1/vs/:id2')

@@ -940,6 +940,13 @@
     "@types/connect" "*"
     "@types/node" "*"
 
+"@types/buffer-to-stream@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@types/buffer-to-stream/-/buffer-to-stream-1.0.0.tgz#d070d55d053f1b0a4838836030cc421b7fa81ad0"
+  integrity sha512-3PRBkAOminPRNg3F+5mKrY1f7ZlJ+iN4GY8TQjl7bIKcB2ldSKYpsohcVK/yVTRGr0iRoa9UXHdOUM87X+XS4Q==
+  dependencies:
+    "@types/node" "*"
+
 "@types/connect@*":
   version "3.4.35"
   resolved "https://registry.npmjs.org/@types/connect/-/connect-3.4.35.tgz"
