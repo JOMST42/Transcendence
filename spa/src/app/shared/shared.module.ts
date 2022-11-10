@@ -6,7 +6,6 @@ import { TableModule } from 'primeng/table';
 import { InputTextModule } from 'primeng/inputtext';
 import { DialogModule } from 'primeng/dialog';
 import { AvatarModule } from 'primeng/avatar';
-import { DialogModule } from 'primeng/dialog';
 
 import {
   JoinGameDialogComponent,
@@ -37,7 +36,7 @@ import { RouterModule } from '@angular/router';
     InputTextModule,
     DialogModule,
     AvatarModule,
-		RouterModule,
+    RouterModule,
   ],
   exports: [
     CommonModule,
