@@ -10,6 +10,11 @@ const routes: Routes = [
     component: ProfilePageComponent,
     resolve: { user: UserResolver },
   },
+	{
+    path: '',
+    component: ProfilePageComponent,
+    resolve: { user: UserResolver },
+  },
 ];
 
 @NgModule({

@@ -1,14 +1,4 @@
 <aside class="sidebar">
-  <div #ballWrap id="ball-wrapper">
-    <div
-      #ball
-      class="ball"
-      [@ballMove]="{
-        value: selection,
-        params: { topBall: topBall, leftBall: leftBall }
-      }"
-    ></div>
-  </div>
   <div class="menu-trigger" (click)="isOpen = !isOpen">
     <i class="gg-menu-boxed"></i>
   </div>
@@ -19,50 +9,12 @@
     <nav class="nav">
       <div class="menu-item">
         <ul>
-          <li>
-            <!-- <app-user-img [avatarUrl]="user?.avatarUrl" [userIsMe]="userService.userIsMe(user.id, user.id)" (eventUpload)="refreshUser()"></app-user-img>
-			<app-user-displayname [user]="user" [userIsMe]="userService.userIsMe(user.id, user.id)"></app-user-displayname> -->
-          </li>
-          <li
-            (mouseover)="select($any($event.target))"
-            (mouseout)="unselect($any($event.target))"
-            routerLink="play"
-          >
-            <a>Play</a>
-          </li>
-          <li
-            (mouseover)="select($any($event.target))"
-            (mouseout)="unselect($any($event.target))"
-            routerLink="/watch"
-          >
-            <a routerLink="/watch" >Watch</a>
-          </li>
-          <li
-            (mouseover)="select($any($event.target))"
-            (mouseout)="unselect($any($event.target))"
-            routerLink="/chats"
-          >
-            <a>Chats</a>
-          </li>
-          <li
-            (mouseover)="select($any($event.target))"
-            (mouseout)="unselect($any($event.target))"
-            routerLink="/users/id"
-          >
-            <a>Users</a>
-          </li>
-          <li
-            (mouseover)="select($any($event.target))"
-            (mouseout)="unselect($any($event.target))"
-          >
-            <a routerLink="/stats">Stats</a>
-          </li>
-          <li
-            (mouseover)="select($any($event.target))"
-            (mouseout)="unselect($any($event.target))"
-          >
-            <a>Settings</a>
-          </li>
+          <li><a routerLink="/play">PLAY</a></li>
+					<li><a routerLink="/watch">WATCH</a></li>
+					<li><a routerLink="/chats">CHATS</a></li>
+					<li><a routerLink="/users/id">USERS</a></li>
+					<li><a routerLink="/stats">STATS</a></li>
+					<li><a routerLink="/settings">SETTINGS</a></li>
         </ul>
       </div>
     </nav>
