@@ -68,7 +68,7 @@ export class UserController {
     return this.userService.updateUserById(user.id, { avatarUrl: res.url });
   }
 
-  @Get(':id/friendsList')
+  @Get(':id/friends_list')
   async getFriendships(
     @Param('id', ParseIntPipe) userId: number,
   ): Promise<Friendship[]> {

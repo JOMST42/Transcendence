@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { TableModule } from 'primeng/table';
 import { AvatarModule } from 'primeng/avatar';
+import { DialogModule } from 'primeng/dialog';
 
 import {
   NavBarComponent,
@@ -31,6 +32,7 @@ import { UserModule } from '../user/user.module';
     PongScreenComponent,
     PongAudioComponent,
     AvatarModule,
+    DialogModule,
   ],
 })
 export class SharedModule {}
