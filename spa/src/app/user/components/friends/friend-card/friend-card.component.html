@@ -1,0 +1,38 @@
+<div class="card">
+  <div class="grid formgrid">
+    <div class="field col-12 md:col-6 md:pr-6 pr-0">
+      <div
+        class="custom-skeleton p-4"
+        style="background-color: rgb(48, 42, 42)"
+      >
+        <div class="flex mb-3">
+          <p-avatar
+            class="avatar"
+            [image]="user?.avatarUrl"
+            alt="Image"
+            shape="circle"
+            size="xlarge"
+          ></p-avatar>
+          <div>
+            <div>{{ user?.displayName }}</div>
+            <div>
+              set de bouton
+              <app-friend-btn
+                [userIsMe]="user.id === me.id"
+                [me]="me"
+                [user]="user"
+                (stateChange)="resetPage()"
+              ></app-friend-btn>
+              <app-blocked-btn
+                  [userIsMe]="user.id === me.id"
+                  [me]="me"
+                  [user]="user"
+                  (stateChange)="resetPage()"
+                ></app-blocked-btn>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

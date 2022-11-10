@@ -1,4 +1,10 @@
-import { forwardRef, Inject, Injectable, Logger } from '@nestjs/common';
+import {
+  BadRequestException,
+  forwardRef,
+  Inject,
+  Injectable,
+  Logger,
+} from '@nestjs/common';
 import {
   SubscribeMessage,
   WebSocketGateway,
@@ -9,10 +15,12 @@ import { Socket } from 'socket.io';
 import { GameSettings, GameInfo } from 'src/pong/pong-game/data/interfaces';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { PongRoom } from '../data/classes';
-import { CreateGameDto } from '../data/dto';
+import { CreateGameDto, EndGameDto } from '../../../prisma/game/dto';
 import { RoomState } from '../data/enums';
-import { Response } from '../data/interfaces';
+import { Response, RoomInfo } from '../data/interfaces';
 import { PongServerGateway } from '../gateway/pong-server.gateway';
+import { Game, User } from '@prisma/client';
+import { EventEmitter2, OnEvent } from '@nestjs/event-emitter';
 
 @Injectable({})
 export class PongRoomService {
@@ -21,15 +29,13 @@ export class PongRoomService {
   users: Socket[] = [];
   maxEntries = 200;
 
-  next_room_id = '0';
   rooms: PongRoom[] = [];
   max_rooms = 20;
-  room_count = 0;
 
   private disconnectListener: any;
 
   public classic_set: GameSettings = {
-    score_to_win: 7,
+    score_to_win: 1,
     ball_radius: 10,
     pad_size: 50,
     pad_speed: 600,
@@ -50,6 +56,7 @@ export class PongRoomService {
     @Inject(forwardRef(() => PongServerGateway))
     private server: PongServerGateway,
     private readonly prisma: PrismaService,
+    private eventEmitter: EventEmitter2,
   ) {
     setInterval(() => {
       this.updateRooms();
@@ -66,8 +73,15 @@ export class PongRoomService {
         this.server.to(room.getRoomId()).volatile.emit('game-update', info);
       }
       if (room.getState() === RoomState.Finished) {
+        this.logger.debug('finish');
+        this.endRoom(room);
       } // TODO
     }
+  }
+
+  @OnEvent('game.finish') // TODO
+  handleOrderCreatedEvent(payload: GameInfo) {
+    this.logger.debug('finish event');
   }
 
   userJoinRoom(id: string, user: Socket): Response {
@@ -97,52 +111,55 @@ export class PongRoomService {
     return { code: 0, msg: 'rooms fetched', payload: rooms };
   }
 
-  getRoomUpdate(room?: PongRoom): GameInfo | undefined {
-    let info: GameInfo | undefined;
-    info = room?.getGameUpdate();
-    if (info) return info;
-    return undefined;
-    // if (room.getState() === RoomState.Finished) {
-    //   this.logger.log(room.getVictoryInfo()?.winner);
-    // }
-  }
-
   canCreateGameRoom(): boolean {
     if (this.rooms.length >= this.max_rooms) return false;
     return true;
   }
 
   // Returned payload: created PongRoom
-  createGameRoom(user1: Socket, user2: Socket): Response {
+  async createGameRoom(user1: Socket, user2: Socket): Promise<Response> {
     if (this.rooms.length >= this.max_rooms) {
       return { code: 1, msg: 'too many games currently being played' };
     }
-    const room: PongRoom = new PongRoom(this.next_room_id, user1, user2);
-    this.rooms.push(room);
-    this.userJoinRoomAsPlayer(user1, room);
-    this.userJoinRoomAsPlayer(user2, room);
-    room.createGame(this.classic_set); // WARNING
-    this.prismaCreateGame(room); // TODO
-    room.startWaiting(); // WARNING
-    this.room_count++;
-    this.next_room_id = this.room_count.toString();
-    this.logger.log('Room created and joined by 2 players');
-    return {
-      code: 0,
-      msg: 'Game created with 2 users from the queue',
-      payload: room,
-    };
+    await this.prismaCreateGame(user1.data.user, user2.data.user)
+      .then((game) => {
+        const room: PongRoom = new PongRoom(
+          game.id,
+          'g' + game.id,
+          user1,
+          user2,
+          game,
+        );
+        this.rooms.push(room);
+        this.userJoinRoomAsPlayer(user1, room);
+        this.userJoinRoomAsPlayer(user2, room);
+        room.createGame(this.classic_set); // WARNING
+        room.startWaiting(); // WARNING
+        user1.emit('game-waiting', room.getRoomId());
+        user2.emit('game-waiting', room.getRoomId());
+
+        this.logger.log('Room created and joined by 2 players');
+        return {
+          code: 0,
+          msg: 'Game created with 2 users from the queue',
+          payload: room,
+        };
+      })
+      .catch((game) => {
+        this.logger.log('failed to add game to prisma... ' + game.id);
+        return { code: 1, msg: 'Could not create game in the database' };
+      });
   }
 
-  async prismaCreateGame(room: PongRoom): Promise<boolean> {
+  async prismaCreateGame(p1: User, p2: User): Promise<Game> {
     const dto = new CreateGameDto();
-    dto.player1Id = room.getUserPlayer1().data.user.id;
-    dto.player2Id = 2;
-    // dto.player2Id = room.getUserPlayer1().getId();
+    dto.player1Id = p1.id;
+    dto.player2Id = p2.id;
     dto.description = 'Game successfully created';
+
     this.logger.log('Trying to add game to prisma... ');
     try {
-      await this.prisma.game.create({
+      return await this.prisma.game.create({
         data: {
           player1Id: dto.player1Id,
           player2Id: dto.player2Id,
@@ -152,7 +169,42 @@ export class PongRoomService {
     } catch (e) {
       this.logger.debug(e);
     }
-    return true;
+    throw new BadRequestException('Could not create game');
+  }
+
+  async endRoom(room: PongRoom) {
+    const roomInfo: RoomInfo = room.getRoomInfo();
+    room.endRoom();
+    // const dto: EndGameDto = {
+    //   scorePlayer1: roomInfo.score.p1,
+    //   scorePlayer2: roomInfo.score.p2,
+    //   description: 'Game is done',
+    //   timePlayed: roomInfo.time,
+    //   endTime: new Date(),
+    //   winner: roomInfo.winner,
+    // };
+    // dto.player2Id = p2.id; // TODO
+
+    this.logger.log('Trying to update game to prisma... ');
+    try {
+      return await this.prisma.game.update({
+        where: {
+          id: roomInfo.prismaId,
+        },
+        data: {
+          scorePlayer1: roomInfo.score.p1,
+          scorePlayer2: roomInfo.score.p2,
+          description: 'Game is done',
+          timePlayed: roomInfo.time,
+          endTime: new Date(),
+          winner: roomInfo.winner,
+        },
+      });
+    } catch (e) {
+      this.logger.debug(e);
+    }
+    throw new BadRequestException('Could not update game');
+    // handle and process "OrderCreatedEvent" event
   }
 
   private userJoinRoomAsPlayer(user: Socket, room: PongRoom) {

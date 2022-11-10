@@ -10,59 +10,56 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Weather {
-  id          Int     @id @default(autoincrement())
-  value       String
-  description String?
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@map("weather")
-}
-
 model User {
-  id             Int     @id @default(autoincrement())
-  username       String  @unique
-  email          String  @unique
+  id             Int        @id @default(autoincrement())
+  username       String     @unique
+  email          String     @unique
   displayName    String
-  normalizedName String  @unique
+  normalizedName String     @unique
   firstName      String
   lastName       String
   avatarUrl      String?
+  status         UserStatus @default(OFFLINE)
 
-  rooms           UserRoom[]
-  friendsRequests Friendship[] @relation("requester")
-  friendsAdressee Friendship[] @relation("adressee")
+  rooms           UserChatRoom[]
+  connections     UserConnection[]
+  messages        ChatMessage[]
+  friendsRequests Friendship[]     @relation("requester")
+  friendsAdressee Friendship[]     @relation("adressee")
 
-  GamesAsPlayer1	Game[] @relation("gameP1")
-  GamesAsPlayer2	Game[] @relation("gameP2")
+  GamesAsPlayer1 Game[] @relation("gameP1")
+  GamesAsPlayer2 Game[] @relation("gameP2")
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-
 
   @@map("users")
 }
 
-model Room {
-  id   Int    @id @default(autoincrement())
-  name String
+enum ChatRoomVisibility {
+  PUBLIC
+  PRIVATE
+}
 
-  users UserRoom[]
+model ChatRoom {
+  id         String             @id @default(uuid())
+  name       String
+  visibility ChatRoomVisibility @default(PUBLIC)
+
+  users    UserChatRoom[]
+  messages ChatMessage[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@map("rooms")
+  @@map("chatrooms")
 }
 
-model UserRoom {
-  user   User @relation(fields: [userId], references: [id])
+model UserChatRoom {
+  user   User     @relation(fields: [userId], references: [id])
   userId Int
-  room   Room @relation(fields: [roomId], references: [id])
-  roomId Int
+  room   ChatRoom @relation(fields: [roomId], references: [id])
+  roomId String
 
   isOwner Boolean @default(false)
 
@@ -70,6 +67,47 @@ model UserRoom {
   updatedAt DateTime @updatedAt
 
   @@id([userId, roomId])
+  @@map("user_chatrooms")
+}
+
+model UserConnection {
+  id       Int        @id @default(autoincrement())
+  socketId String     @unique
+  type     SocketType
+
+  user   User @relation(fields: [userId], references: [id])
+  userId Int
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("user_connections")
+}
+
+enum SocketType {
+  GAME
+  CHAT
+}
+
+enum UserStatus {
+  OFFLINE
+  ONLINE
+  IN_GAME
+  SPECTATING
+}
+
+model ChatMessage {
+  id       Int      @id @default(autoincrement())
+  content  String
+  author   User     @relation(fields: [authorId], references: [id])
+  authorId Int
+  room     ChatRoom @relation(fields: [roomId], references: [id])
+  roomId   String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("chat_messages")
 }
 
 enum Winner {
@@ -79,32 +117,33 @@ enum Winner {
 }
 
 model Game {
-	id				Int					@id	@default(autoincrement())
-	startTime	DateTime?
-	endTime		DateTime?
-	player1		User				@relation(name: "gameP1", fields: [player1Id], references: [id])
-	player1Id	Int					
-	player2		User				@relation(name: "gameP2", fields: [player2Id], references: [id])
-	player2Id	Int					
+  id         Int       @id @default(autoincrement())
+  startTime  DateTime  @default(now())
+  endTime    DateTime?
+  timePlayed Float     @default(0)
+  player1    User      @relation(name: "gameP1", fields: [player1Id], references: [id])
+  player1Id  Int
+  player2    User      @relation(name: "gameP2", fields: [player2Id], references: [id])
+  player2Id  Int
 
-	winner				Winner	@default(NONE)
-	scorePlayer1	Int			@default(0)
-	scorePlayer2	Int			@default(0)
-	ballBounce		Int			@default(0)
-	longestRally	Int			@default(0)
-	description		String	@default("")
+  winner       Winner @default(NONE)
+  scorePlayer1 Int    @default(0)
+  scorePlayer2 Int    @default(0)
+  ballBounce   Int    @default(0)
+  longestRally Int    @default(0)
+  description  String @default("")
 
-	CreatedAt	DateTime		@default(now())
-  updatedAt	DateTime		@updatedAt
+  CreatedAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
+
 model Friendship {
   requester   User    @relation("requester", fields: [requesterId], references: [id])
   requesterId Int
   adressee    User    @relation("adressee", fields: [adresseeId], references: [id])
   adresseeId  Int
-  accepted     Boolean @default(false)
-  blocked      Boolean @default(false)
-
+  accepted    Boolean @default(false)
+  blocked     Boolean @default(false)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

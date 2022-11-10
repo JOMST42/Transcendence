@@ -1,3 +1,4 @@
+import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable, Subject, take, takeUntil } from 'rxjs';
 
@@ -23,8 +24,9 @@ export class UserService {
     return this.baseApiService.patchOne(`/users/${id}`, dto);
   }
 
-  userIsMe(id: number, meId: number): boolean {
-    return id === meId;
+  findByDisplayName(displayName: string): Observable<User[]> {
+    const params = new HttpParams();
+    params.append('displayName', displayName);
+    return this.baseApiService.getMany('/users', params);
   }
-
 }

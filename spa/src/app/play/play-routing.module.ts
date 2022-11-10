@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { GameComponent } from './game.component';
 import { ModeSelectComponent } from './mode-select/mode-select.component';
-import { RoomListComponent } from '../watch/room-list/room-list.component';
+import { RoomListComponent } from '../watch/components/room-list/room-list.component';
 
 const routes: Routes = [
 	{

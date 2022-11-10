@@ -12,7 +12,31 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { UserService } from 'src/app/user/services';
 import { AudioHandler } from '../../../play/classes';
 import { PlayService } from '../../../play/play.service';
-import { GameInfo } from './interfaces';
+
+export interface Score {
+	p1: number,
+	p2: number,
+}
+
+export interface Vector3 {
+	x: number,
+	y: number,
+	z?: number,
+}
+
+export interface EntityInfo {
+  pos: Vector3;
+  size: Vector3;
+}
+
+export interface GameInfo {
+  ball: EntityInfo;
+  pad1: EntityInfo;
+  pad2: EntityInfo;
+  score: Score;
+  state: any;
+  events: Event[];
+}
 
 @Component({
   selector: 'app-pong-screen',
@@ -42,10 +66,15 @@ export class PongScreenComponent implements OnInit {
   @ViewChild('game')
   private gameCanvas!: ElementRef;
   private context: any;
-  score: number[] = [0, 0];
+  score: Score = {p1:0, p2:0};
   countdown: number = 0;
   countdownId?: NodeJS.Timer;
   animDisabled?: boolean = false;
+
+	afterImage: Vector3[] = [];
+	afterTimer = {frames:0, reset:5}; 
+
+
   private audio: AudioHandler = new AudioHandler(0.3, 1);
 
   constructor(
@@ -57,46 +86,85 @@ export class PongScreenComponent implements OnInit {
 
   ngAfterViewInit() {
     this.context = this.gameCanvas.nativeElement.getContext('2d');
+		this.audio.setSoundColPad('assets/sound/hit_paddle.m4a');
+    this.audio.setSoundColWall('assets/sound/hit_wall.m4a');
+    this.audio.setSoundScore('assets/sound/score.m4a');
+    this.audio.setMusicGame('assets/music/game.mp3');
+    this.audio.setMusicVictory('assets/music/victory.mp3');
     this.setGameListener();
     // this.animDisabled = false;
   }
 
   setGameListener() {
-    this.server.listenGameUpdate().subscribe((info: GameInfo) => {
+    this.server.listenGameUpdate().subscribe((info: GameInfo | undefined | null) => {
+			if (!info) return;
       this.refresh();
       this.context.fillStyle = '#FFFFFF';
       // this.context.fillText(this.score[0], 250, 50);
       // this.context.fillText(this.score[1], 350, 50);
+			// this.afterImage.push(info.ball.pos);
+			// this.drawAfterImage(info.ball.size.x);
+			// if (this.afterTimer.frames-- <= 0){
+				
+			// 		this.afterTimer.frames = this.afterTimer.reset;
+			// 	}
+				
+			// }
+			if (this.afterImage.length >= 10){
+				this.afterImage.shift();
+			}
+			this.afterImage.push(info.ball.pos);
+			this.drawAfterImage(info.ball.size.x); // TODO
+
       this.context.fillRect(
-        info.p1_pos.x,
-        info.p1_pos.y,
-        info.p1_size.x,
-        info.p1_size.y
+        info.pad1.pos.x * 600,
+        info.pad1.pos.y * 400,
+        info.pad1.size.x,
+        info.pad1.size.y
       );
       this.context.fillRect(
-        info.p2_pos.x,
-        info.p2_pos.y,
-        info.p2_size.x,
-        info.p2_size.y
+        info.pad2.pos.x * 600,
+        info.pad2.pos.y * 400,
+        info.pad2.size.x,
+        info.pad2.size.y
       );
       this.context.fillRect(
-        info.b_pos.x - info.b_rad / 2,
-        info.b_pos.y - info.b_rad,
-        info.b_rad,
-        info.b_rad
+        // info.ball.pos.x - info.ball.size.x / 2,
+        // info.ball.pos.y - info.ball.size.x,
+				info.ball.pos.x * 600 - info.ball.size.x / 2,
+				info.ball.pos.y * 400 - info.ball.size.x / 2,
+        info.ball.size.x,
+        info.ball.size.x
       );
+			this.score.p1 = info.score.p1;
+			this.score.p2 = info.score.p2;
       if (info.events) this.handleEvents(info.events);
     });
 
-    // this.server.listenGameStart().then((info: string) => {
-    // 	this.log(info + ' (game-start)');
-    // 	// this.audio.playGame(true, true);
-    // });
+    this.server.listenGameStart().then((info: string) => {
+    	this.audio.playGame(true, true);
+    });
 
     // this.server.listen("player-ready").subscribe((info: string) => {
     // 	this.log('player ' + info + ' is ready!');
     // });
   }
+
+	drawAfterImage(size: number) {
+		let multi = 1;
+		let afterCount = this.afterImage.length;
+		let i: number = 0;
+		while (i < afterCount)
+		{
+			this.context.fillRect(
+        this.afterImage[i].x * 600 - size / 2,
+        this.afterImage[i].y * 400 - size / 2,
+        size * (i / afterCount),
+        size * (i / afterCount)
+      );
+			i++;
+		}
+	}
 
   handleEvents(events: any[]) {
     if (events.length > 0) {

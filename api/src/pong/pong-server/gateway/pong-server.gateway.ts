@@ -20,9 +20,11 @@ import { Response } from '../data/interfaces';
 import { PongRoomService } from '../services/pong-room.service';
 import { PongQueueService } from '../services/pong-queue.service';
 import { AuthService } from '../../../auth/auth.service';
-import { UserService } from '../../..//user/user.service';
 import { UserState } from 'src/pong/data/enums';
 import { PongServerInterceptor } from '../pong-server.interceptor';
+import { PrismaService } from 'src/prisma/prisma.service';
+import { User } from '@prisma/client';
+import { UserService } from 'src/user/services/user.service';
 
 @Injectable({})
 @UseInterceptors(new PongServerInterceptor())
@@ -47,20 +49,97 @@ export class PongServerGateway
     private queueService: PongQueueService,
     private authService: AuthService,
     private userService: UserService,
+    private prisma: PrismaService,
   ) {}
 
   afterInit(server: Server) {
     this.logger.log('Server log: Socket is live');
-    this.server.setMaxListeners(this.maxEntries); // WARNING need to read about it
-    setInterval(() => {
-      this.showServerInfo();
-    }, 30000);
+    this.server.setMaxListeners(Infinity); // WARNING need to read about it
+
+    // WARNING test purpose
+    // this.initTestServer();
+
+    // setInterval(() => {
+    //   this.showServerInfo();
+    // }, 30000);
     // setInterval(() => {
     //   this.updateRooms();
     // }, (1 / 60) * 1000); // FPS
     // setInterval(() => {
     //   this.updateQueue();
     // }, 2000); // every 2 seconds
+  }
+
+  async initTestServer() {
+    let i = 100;
+    const users: User[] = [];
+    try {
+      this.logger.debug('starting test user creation');
+      users.push(
+        await this.prisma.user.create({
+          data: {
+            username: 'fousse',
+            email: 'foussemail',
+            displayName: 'foussypuss',
+            normalizedName: 'foussypuss'.toLowerCase(),
+            firstName: 'seb',
+            lastName: 'fou',
+          },
+        }),
+      );
+      users.push(
+        await this.prisma.user.create({
+          data: {
+            username: 'justincase',
+            email: 'justinmail',
+            displayName: 'justincase',
+            normalizedName: 'justincase'.toLowerCase(),
+            firstName: 'justin',
+            lastName: 'badia',
+          },
+        }),
+      );
+      users.push(
+        await this.prisma.user.create({
+          data: {
+            username: 'olala',
+            email: 'olalamail',
+            displayName: 'olalalalao',
+            normalizedName: 'olalalalao'.toLowerCase(),
+            firstName: 'Oli',
+            lastName: 'Lab',
+          },
+        }),
+      );
+      users.push(
+        await this.prisma.user.create({
+          data: {
+            username: 'Mikastiv',
+            email: 'mikmail',
+            displayName: 'sk8terboi',
+            normalizedName: 'sk8terboi'.toLowerCase(),
+            firstName: 'mik',
+            lastName: 'mika',
+          },
+        }),
+      );
+    } catch (e) {}
+    while (i++ < 200) {
+      try {
+        await this.prisma.game.create({
+          data: {
+            player1Id: users[Math.floor(Math.random() * 2)].id,
+            player2Id: users[Math.floor(Math.random() * 2 + 2)].id,
+            scorePlayer1: Math.ceil(Math.random() * 7),
+            scorePlayer2: Math.ceil(Math.random() * 7),
+            description: 'Game is done',
+            timePlayed: Math.random() * 200,
+            endTime: new Date(),
+            winner: Math.random() < 0.5 ? 'PLAYER1' : 'PLAYER2',
+          },
+        });
+      } catch (e) {}
+    }
   }
 
   getServer(): Server {

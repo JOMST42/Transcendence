@@ -1,11 +1,15 @@
-import { Vector3, Event } from '.';
+import { Vector3, Event, Score } from '.';
+
+export interface EntityInfo {
+  pos: Vector3;
+  size: Vector3;
+}
 
 export interface GameInfo {
-  b_pos: Vector3;
-  p1_pos: Vector3;
-  p2_pos: Vector3;
-  b_rad: number;
-  p1_size: Vector3;
-  p2_size: Vector3;
+  ball: EntityInfo;
+  pad1: EntityInfo;
+  pad2: EntityInfo;
+  score: Score;
+  state: any;
   events: Event[];
 }

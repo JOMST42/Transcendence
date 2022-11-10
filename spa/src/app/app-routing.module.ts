@@ -1,12 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+
+import { AuthGuard } from './core/guards';
 import { NotFoundComponent, ServerErrorComponent } from './shared/components';
 
 const routes: Routes = [
-  {
-    path: '',
-    loadChildren: () => import('./home/home.module').then((m) => m.HomeModule),
-  },
   {
     path: 'users',
     loadChildren: () => import('./user/user.module').then((m) => m.UserModule),
@@ -23,6 +21,11 @@ const routes: Routes = [
     path: 'watch',
     loadChildren: () =>
       import('./watch/watch.module').then((m) => m.WatchModule),
+  },
+	{
+    path: '',
+    loadChildren: () => import('./home/home.module').then((m) => m.HomeModule),
+		pathMatch: 'full',
   },
   {
     path: 'server-error',

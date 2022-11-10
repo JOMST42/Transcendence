@@ -9,7 +9,7 @@ import { PongSocket } from '../core/core.module';
 export class PlayService {
   constructor(private socket: PongSocket) {}
 
-	private inQueue
+	// private inQueue
   // public connect(address: string) : Socket {
   // 	this.socket?.disconnect();
   // 	this.socket = io("http://localhost:3000/pong");
@@ -32,6 +32,10 @@ export class PlayService {
         }
       });
     });
+  }
+
+	public listenGameWaiting(): Promise<any> {
+    return this.socket.fromOneTimeEvent('game-waiting');
   }
 
   public listenGameStart(): Promise<any> {

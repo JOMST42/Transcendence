@@ -65,7 +65,6 @@ export class EventButtonComponent implements OnInit {
 	private changeState(state: ('DEFAULT' | 'PROCESS' | 'SUCCESS')) {
 		this.previousState = state
 		this.state = state;
-
 	}
 
 

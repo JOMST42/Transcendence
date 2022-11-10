@@ -10,14 +10,14 @@ import { Subject, takeUntil } from 'rxjs';
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit {
-	private unsubscribeAll$ = new Subject<void>();
-  @Input()user!: User | null;
-//   me!: User;
+  private unsubscribeAll$ = new Subject<void>();
+  @Input() user!: User | null;
+  //   me!: User;
   avatarUrl: string;
   userIsMe: boolean;
 
   constructor(
-    public readonly userService: UserService,
+    private readonly userService: UserService,
     private readonly authService: AuthService
   ) {}
 
@@ -54,5 +54,4 @@ export class HomeComponent implements OnInit {
         },
       });
   }
-
 }

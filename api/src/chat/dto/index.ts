@@ -1,1 +1,1 @@
-export * from './room.dto';
+export * from './chatroom.dto';

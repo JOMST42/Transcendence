@@ -11,9 +11,7 @@ import { QueueButtonComponent } from './ui/queue-button/queue-button.component';
 import { JoinGameButtonComponent } from './ui/join-game-button/join-game-button.component';
 import { QueueWidjetComponent } from './ui/queue-widjet/queue-widjet.component';
 import { ReadyButtonComponent } from './ui/ready-button/ready-button.component';
-import { JoinGameDialogComponent } from './ui/join-game-dialog/join-game-dialog.component';
 import { CoreModule } from '../core/core.module';
-import { DialogModule } from 'primeng/dialog';
 
 @NgModule({
   declarations: [
@@ -24,9 +22,8 @@ import { DialogModule } from 'primeng/dialog';
 		JoinGameButtonComponent,
 		QueueWidjetComponent,
 		ReadyButtonComponent,
-		JoinGameDialogComponent
 	],
-  imports: [CommonModule, GameRoutingModule, FormsModule, SharedModule, DialogModule],
+  imports: [CommonModule, GameRoutingModule, FormsModule, SharedModule],
   providers: [],
 })
 export class PlayModule {}

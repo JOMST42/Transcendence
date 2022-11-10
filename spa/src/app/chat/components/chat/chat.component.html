@@ -1,16 +1,28 @@
-<p>chat works!</p>
+<div class="flex justify-content-center">
+  <div *ngIf="rooms?.length; else noRooms" class="flex-grow-1 mb-4 mx-8">
+    <p-table
+      [value]="rooms"
+      selectionMode="single"
+      [(selection)]="selectedRoom"
+      dataKey="id"
+      responsiveLayout="scroll"
+      (onRowSelect)="onRowSelect($event)"
+    >
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Id</th>
+          <th>Name</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-room>
+        <tr [pSelectableRow]="room">
+          <td>{{ room.id }}</td>
+          <td>{{ room.name }}</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+  <ng-template #noRooms><div>You are not in any chat rooms</div></ng-template>
+</div>
 
-<p-table [value]="rooms$ | async" responsiveLayout="scroll">
-  <ng-template pTemplate="header">
-    <tr>
-      <th>Id</th>
-      <th>Name</th>
-    </tr>
-  </ng-template>
-  <ng-template pTemplate="body" let-room>
-    <tr>
-      <td>{{ room.id }}</td>
-      <td>{{ room.name }}</td>
-    </tr>
-  </ng-template>
-</p-table>
+<p-button class="ml-8" label="Create room" (onClick)="createRoom()"></p-button>

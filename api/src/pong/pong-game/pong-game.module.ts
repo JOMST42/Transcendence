@@ -19,7 +19,7 @@ export class PongGameModule {
   private ball: Ball;
   private dimension: Vector3 = { x: 600, y: 400 };
   private center: Vector3 = { x: 300, y: 200 };
-  private score: number[] = [0, 0];
+  private score: Score = { p1: 0, p2: 0 };
   private score_to_win: number;
   private winner = 0;
   private events: Event[] = [];
@@ -58,6 +58,7 @@ export class PongGameModule {
     if (ai_1) this.getPad1().setAI(true);
     if (ai_2) this.getPad2().setAI(true);
     this.started = true;
+    this.gameTimer.start();
     clearInterval(this.updateInterval);
     this.updateInterval = setInterval(() => {
       this.runGame();
@@ -74,13 +75,35 @@ export class PongGameModule {
 
   getGameInfo(): GameInfo {
     let pong_info: GameInfo;
+    const pos1 = this.getPad1().getPos();
+    const pos2 = this.getPad2().getPos();
+    const bPos = this.ball.getPos();
+    const pos1Pct = {
+      x: pos1.x / this.dimension.x,
+      y: pos1.y / this.dimension.y,
+    };
+    const pos2Pct = {
+      x: pos2.x / this.dimension.x,
+      y: pos2.y / this.dimension.y,
+    };
+    const ballPct = {
+      x: bPos.x / this.dimension.x,
+      y: bPos.y / this.dimension.y,
+    };
     pong_info = {
-      b_pos: this.ball.getPos(),
-      p1_pos: this.getPad1().getPos(),
-      p2_pos: this.getPad2().getPos(),
-      b_rad: this.ball.getRadius(),
-      p1_size: this.getPad1().getSize(),
-      p2_size: this.getPad2().getSize(),
+      ball: {
+        pos: ballPct,
+        size: { x: this.ball.getRadius(), y: this.ball.getRadius() },
+      },
+      pad1: { pos: pos1Pct, size: this.getPad1().getSize() },
+      pad2: { pos: pos2Pct, size: this.getPad2().getSize() },
+      score: { p1: this.score.p1, p2: this.score.p2 },
+      state: {
+        started: this.started,
+        paused: this.paused,
+        victory: this.victory,
+        finished: this.finished,
+      },
       events: this.events,
     };
     this.events = [];
@@ -135,16 +158,16 @@ export class PongGameModule {
 
   checkScoreCollision(pos: Vector3, size: Vector3): number {
     if (pos.x > this.dimension.x - size.x || pos.x < 0) {
-      if (pos.x < 0) return 1;
-      return 2;
+      if (pos.x < 0) return 2;
+      return 1;
     }
     return 0;
   }
 
   checkVictory(): boolean {
     if (
-      this.score[0] === this.score_to_win ||
-      this.score[1] === this.score_to_win
+      this.score.p1 === this.score_to_win ||
+      this.score.p2 === this.score_to_win
     ) {
       this.finish();
       this.addVictoryEvent(this.winner);
@@ -175,7 +198,8 @@ export class PongGameModule {
 
   updateScore(player_num: number, n: number) {
     if (player_num >= 1 && player_num <= 2) {
-      this.score[player_num - 1]++;
+      if (player_num === 1) this.score.p1++;
+      else this.score.p2++;
       this.addScoreEvent();
       this.checkVictory();
     }
@@ -196,7 +220,7 @@ export class PongGameModule {
   addScoreEvent() {
     this.addEvent({
       type: EventType.Score,
-      payload: { p1: this.score[0], p2: this.score[1] },
+      payload: { p1: this.score.p1, p2: this.score.p2 },
     });
   }
 
@@ -223,11 +247,11 @@ export class PongGameModule {
     clearInterval(this.updateInterval);
     this.finished = true;
     if (
-      this.score[0] >= this.score_to_win ||
-      this.score[1] >= this.score_to_win
+      this.score.p1 >= this.score_to_win ||
+      this.score.p2 >= this.score_to_win
     ) {
       this.victory = true;
-      if (this.score[0] >= this.score_to_win) this.winner = 1;
+      if (this.score.p1 >= this.score_to_win) this.winner = 1;
       else this.winner = 2;
     }
     this.gameTimer.pause();
@@ -275,7 +299,7 @@ export class PongGameModule {
     return this.pad2;
   }
 
-  getScore(): number[] {
+  getScore(): Score {
     return this.score;
   }
 

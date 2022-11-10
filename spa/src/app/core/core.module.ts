@@ -1,12 +1,16 @@
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
-import { Injectable, NgModule } from '@angular/core';
+import { Injectable, NgModule, OnDestroy } from '@angular/core';
 import { JwtModule } from '@auth0/angular-jwt';
 import { CookieService } from 'ngx-cookie-service';
-import { Socket, SocketIoModule } from 'ngx-socket-io';
+import { Socket } from 'ngx-socket-io';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
+import { Subject, takeUntil } from 'rxjs';
 import { DialogModule } from 'primeng/dialog';
+
+import { SocketError } from './models';
+import { ToastService } from './services';
 
 const tokenGetter = () => localStorage.getItem('access_token');
 
@@ -25,8 +29,10 @@ export class PongSocket extends Socket {
 }
 
 @Injectable()
-export class ChatSocket extends Socket {
-  constructor() {
+export class ChatSocket extends Socket implements OnDestroy {
+  unsubscribeAll$ = new Subject<void>();
+
+  constructor(toastService: ToastService) {
     super({
       url: 'http://localhost:3000/chat',
       options: {
@@ -35,6 +41,16 @@ export class ChatSocket extends Socket {
         },
       },
     });
+
+    this.fromEvent<SocketError>('socketError')
+      .pipe(takeUntil(this.unsubscribeAll$))
+      .subscribe((err: SocketError) => {
+        toastService.showError('Error', err.message);
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribeAll$.next();
   }
 }
 

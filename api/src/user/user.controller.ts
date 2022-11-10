@@ -9,6 +9,7 @@ import {
   Post,
   UseInterceptors,
   UploadedFile,
+  OnModuleInit,
   NotFoundException,
   BadRequestException,
 } from '@nestjs/common';
@@ -17,17 +18,23 @@ import { UpdateUserDto } from './dto';
 import { Friendship, User } from '@prisma/client';
 import { GetUser } from 'src/auth/decorator';
 import { JwtGuard } from 'src/auth/guards';
-import { UserService } from './user.service';
+import { UserService } from './services/user.service';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { UserConnectionService } from './services/user-connection.service';
 import { FriendService } from '../friends-list/friend.service';
-import { UpdateFriendsDto } from '../friends-list/dto';
+
 @UseGuards(JwtGuard)
 @Controller('users')
-export class UserController {
+export class UserController implements OnModuleInit {
   constructor(
     private readonly userService: UserService,
+    private readonly userConnectionService: UserConnectionService,
     private readonly friendService: FriendService,
   ) {}
+
+  async onModuleInit() {
+    await this.userConnectionService.deleteAll();
+  }
 
   @UseGuards(JwtGuard)
   @Get('me')
@@ -109,12 +116,20 @@ export class UserController {
     return await this.friendService.removeFriendship(adresseeId, userId);
   }
 
-  @Patch(':id/blockedfriend/:friendId')
-  async blockedFriend(
-    @Param('friendId', ParseIntPipe) adresseeId: UpdateFriendsDto,
+  @Patch(':id/blockfriend/:friendId')
+  async blockFriend(
+    @Param('id', ParseIntPipe) userId: number,
+    @Param('friendId', ParseIntPipe) adresseeId: number,
+  ): Promise<Friendship> {
+    return await this.friendService.blockFriend(adresseeId, userId);
+  }
+
+  @Patch(':id/unblockfriend/:friendId')
+  async unblockFriend(
+    @Param('friendId', ParseIntPipe) adresseeId: number,
     @Param('id', ParseIntPipe) userId: number,
   ): Promise<Friendship> {
-    return await this.friendService.blockedFriend(adresseeId, userId);
+    return await this.friendService.unblockFriend(adresseeId, userId);
   }
 
   @Post(':id/createfriend/:friendId')
@@ -122,7 +137,6 @@ export class UserController {
     @Param('friendId', ParseIntPipe) adresseeId: number,
     @Param('id', ParseIntPipe) userId: number,
   ) {
-    console.log('dans controlleur du back');
     return await this.friendService.createFriendship(adresseeId, userId);
   }
 }

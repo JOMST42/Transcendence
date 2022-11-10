@@ -1,9 +1,10 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { take } from 'rxjs';
 import { ToastService } from '../../../../core/services';
 import { UpdateFriendsDto, User } from '../../../models';
 import { FriendService } from '../../../services';
 
+type ButtonState = 'ADD' | 'ACCEPT' | 'REMOVE' | 'DISABLE';
 @Component({
   selector: 'app-friend-btn',
   templateUrl: './friend-btn.component.html',
@@ -18,8 +19,12 @@ export class FriendBtnComponent implements OnInit {
   @Input() user!: User;
   @Input() me!: User;
   @Input() userIsMe!: boolean;
+state: ButtonState = 'DISABLE';
+@Output() stateChange = new EventEmitter<ButtonState>();
 
-  state: 'ADD' | 'ACCEPT' | 'REMOVE' | 'DISABLE' = 'DISABLE';
+stateChanged(state: ButtonState) {
+  this.stateChange.emit();
+}
 
   async initButton() {
     await this.friendService
@@ -46,7 +51,7 @@ export class FriendBtnComponent implements OnInit {
       });
   }
 
-  friendButton(state: 'ADD' | 'ACCEPT' | 'REMOVE' | 'DISABLE') {
+  friendButton(state: ButtonState) {
     switch (state) {
       case 'ADD': {
         this.friendService.addFriend(this.user.id, this.me.id);
@@ -68,24 +73,19 @@ export class FriendBtnComponent implements OnInit {
 
   acceptNewFriend() {
     this.friendService
-      .updateFriendship(
-        { adresseeId: this.user.id, requesterId: this.me.id },
-        this.me.id
-      )
+      .updateFriendship(this.user.id, this.me.id)
       .pipe(take(1))
       .subscribe({
         next: (data) => {
           console.log(data);
+          this.state = 'REMOVE';
         },
       });
   }
 
   removeFriend() {
     this.friendService
-      .removeFriendship(
-        { adresseeId: this.user.id, requesterId: this.me.id },
-        this.me.id
-      )
+      .removeFriendship(this.user.id, this.me.id)
       .pipe(take(1))
       .subscribe({
         next: (data) => {
@@ -94,6 +94,7 @@ export class FriendBtnComponent implements OnInit {
             'You are no longer friend with ' + this.user.displayName
           );
           console.log(data);
+          this.state = 'ADD';
         },
       });
   }

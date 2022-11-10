@@ -20,8 +20,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
 
   constructor(
     private activatedRoute: ActivatedRoute,
-    public readonly authService: AuthService,
-    public readonly userService: UserService
+    private readonly authService: AuthService
   ) {}
 
   refreshUser(): void {
