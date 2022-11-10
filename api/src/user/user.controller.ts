@@ -9,6 +9,7 @@ import {
   Post,
   UseInterceptors,
   UploadedFile,
+  OnModuleInit,
   NotFoundException,
   BadRequestException,
 } from '@nestjs/common';
@@ -17,22 +18,30 @@ import { UpdateUserDto } from './dto';
 import { Friendship, User } from '@prisma/client';
 import { GetUser } from 'src/auth/decorator';
 import { JwtGuard } from 'src/auth/guards';
-import { UserService } from './user.service';
+import { UserService } from './services/user.service';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { UserConnectionService } from './services/user-connection.service';
 import { FriendService } from '../friends-list/friend.service';
+
 @UseGuards(JwtGuard)
 @Controller('users')
-export class UserController {
+export class UserController implements OnModuleInit {
   constructor(
     private readonly userService: UserService,
+    private readonly userConnectionService: UserConnectionService,
     private readonly friendService: FriendService,
   ) {}
+
+  async onModuleInit() {
+    await this.userConnectionService.deleteAll();
+  }
 
   @UseGuards(JwtGuard)
   @Get('me')
   async getMe(@GetUser() user: User): Promise<User> {
     return user;
   }
+
   @Get(':id')
   async getUserById(
     @Param('id', ParseIntPipe) id: number,

@@ -1,19 +1,56 @@
-
+<div #pongContainer id="roomPongDiv" class="grid pong-game">
+	<div class="col-12 flex align-items-center justify-content-center">
+		<div class="grid">
+			<div class="player-info block justify-content-start sm:display-none sm:col-6 md:col-6 lg:col-3 xl:col-3 pr-6">
+				<div class="grid">
+					<div class="col-12 block">
+						<img class="profile-img" src="../../../../assets/image/player-test.jpg" alt="Image"/>
+						<h3 class="player-name">DISPLAY NAME</h3>
+					</div>
+				</div>
+			</div>
+			<div class="grid small-window-player-info justify-content-center align-items-center">
+				<div class="col-4">
+					<img class="profile-img" src="../../../../assets/image/player-test.jpg" alt="Image"/>
+					<h3 class="player-name">DISPLAY NAME</h3>
+				</div>
+				<div class="col-4">
+					<h2>JBADIA VS MIKASTIV</h2>
+				</div>
+				<div class="col-4">
+					<img class="profile-img" src="../../../../assets/image/player-test.jpg" alt="Image"/>
+					<h3 class="player-name">DISPLAY NAME</h3>
+				</div>
+			</div>
+			<div class="flex align-items-center justify-content-center sm:col-12 md:col-12 lg:col-6 xl:col-6">
+				<app-pong-screen></app-pong-screen>
+			</div>
+			<div class="player-info flex justify-content-end sm:col-6 md:col-6 lg:col-3 xl:col-3">
+				<div class="grid">
+					<div class="col-12 block">
+						<img class="profile-img" src="../../../../assets/image/player-test.jpg" alt="Image"/>
+						<h3 class="player-name">DISPLAY NAME</h3>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-12 flex align-items-center justify-content-center">
+		<app-ready-button></app-ready-button>
+	</div>
+</div>
 <app-pong-input></app-pong-input>
 
-<div #pongContainer id="roomPongDiv" class="center">
-	<!-- <app-room-list id="roomList"></app-room-list> -->
-	<!-- <canvas #game id="gameCanvas" (keydown)="onKeyDown($event)" (keyup)="onKeyUp($event)" width="600" height="400" tabindex="1" ></canvas> -->
-	<app-pong-screen></app-pong-screen>
-	<!-- <canvas #game id="gameCanvas" width="600" height="400" tabindex="1" ></canvas> -->
-
-
 		<!-- <button (click)="connect()">Connect</button> -->
-	<button (click)="joinQueue()">Join queue</button>
-	<button (click)="leaveQueue()">Leave queue</button>
-	<button (click)="readyToPlay()">Ready</button>
+		<!-- <app-queue-button></app-queue-button> -->
+		<!-- <app-join-game-button></app-join-game-button> -->
+		<!-- <app-join-game-dialog></app-join-game-dialog> -->
+		
+	<!-- <button (click)="joinQueue()">Join queue</button> -->
+	<!-- <button (click)="leaveQueue()">Leave queue</button> -->
+	<!-- <button (click)="readyToPlay()">Ready</button> -->
 	<!-- <button (click)="getRooms()">Get Rooms</button> -->
-	<button (click)="leaveGameRoom()">Leave all rooms</button>
+	<!-- <button (click)="leaveGameRoom()">Leave all rooms</button> -->
 	
 	<!-- <form #chatForm="ngForm" (ngSubmit)="joinGameRoom()">
 		
@@ -21,13 +58,3 @@
 		<input name="room_id" [(ngModel)]="room_id"	type="text"/>
 		
 	</form> -->
-	
-	</div>
-	<div #debugLog id="debugLog" class="center">
-		<p [innerHtml]="DebugTxt">
-		</p>
-	</div>
-
-
-
-<!-- <img id="pongBall" src="../../assets/images/gabball.png" alt="Gabriel Collet Ball"> -->

@@ -7,14 +7,16 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
 import { CredentialsInterceptor, ErrorInterceptor } from './core/interceptors';
+import { SharedModule } from './shared/shared.module';
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [
+  imports: [ 
     AppRoutingModule,
     BrowserModule,
     BrowserAnimationsModule,
     CoreModule,
+    SharedModule,
   ],
   providers: [
     {

@@ -1,7 +1,9 @@
 <div class="container">
-  <img [src]="avatarUrl" alt="Image" class="profile-img"/>
+  <img [src]="avatarUrl" alt="Image" class="profile-img"
+  />
   <span>
     <p-fileUpload
+	class="upload-icons"
     *ngIf="userIsMe"
     mode="basic"
       name="avatar"

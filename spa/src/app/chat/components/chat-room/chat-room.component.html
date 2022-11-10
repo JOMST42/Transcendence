@@ -1,0 +1,14 @@
+<div class="mx-5">
+  <div *ngFor="let user of room.users">
+    <p>{{ user.user.displayName }}</p>
+    <p>{{ user.isOwner }}</p>
+  </div>
+
+  <div #messages class="message">
+    <span *ngFor="let message of room.messages">
+      <app-chat-message [message]="message"></app-chat-message>
+    </span>
+  </div>
+  <input class="mr-2" type="text" pInputText [(ngModel)]="message" />
+  <p-button label="Send" (onClick)="sendMessage($event)"></p-button>
+</div>

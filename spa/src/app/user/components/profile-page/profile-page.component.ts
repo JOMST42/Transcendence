@@ -45,7 +45,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
     });
 
     this.authService
-      .getCurrentUser()
+      .getCurrentUser()               
       .pipe(takeUntil(this.unsubscribeAll$))
       .subscribe({
         next: (data) => {

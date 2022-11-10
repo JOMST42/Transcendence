@@ -1,11 +1,16 @@
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
-import { Injectable, NgModule } from '@angular/core';
+import { Injectable, NgModule, OnDestroy } from '@angular/core';
 import { JwtModule } from '@auth0/angular-jwt';
 import { CookieService } from 'ngx-cookie-service';
-import { Socket, SocketIoModule } from 'ngx-socket-io';
+import { Socket } from 'ngx-socket-io';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
+import { Subject, takeUntil } from 'rxjs';
+import { DialogModule } from 'primeng/dialog';
+
+import { SocketError } from './models';
+import { ToastService } from './services';
 
 const tokenGetter = () => localStorage.getItem('access_token');
 
@@ -13,7 +18,7 @@ const tokenGetter = () => localStorage.getItem('access_token');
 export class PongSocket extends Socket {
   constructor() {
     super({
-      url: 'http://localhost:3000/pong',
+      url: 'http://10.12.5.10:3000/pong',
       options: {
         extraHeaders: {
           Authorization: tokenGetter() || '',
@@ -24,16 +29,28 @@ export class PongSocket extends Socket {
 }
 
 @Injectable()
-export class ChatSocket extends Socket {
-  constructor() {
+export class ChatSocket extends Socket implements OnDestroy {
+  unsubscribeAll$ = new Subject<void>();
+
+  constructor(toastService: ToastService) {
     super({
-      url: 'http://localhost:3000/chat',
+      url: 'http://10.12.5.10:3000/chat',
       options: {
         extraHeaders: {
           Authorization: tokenGetter() || '',
         },
       },
     });
+
+    this.fromEvent<SocketError>('socketError')
+      .pipe(takeUntil(this.unsubscribeAll$))
+      .subscribe((err: SocketError) => {
+        toastService.showError('Error', err.message);
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribeAll$.next();
   }
 }
 
@@ -51,6 +68,6 @@ export class ChatSocket extends Socket {
     }),
   ],
   providers: [MessageService, CookieService, PongSocket, ChatSocket],
-  exports: [ToastModule],
+  exports: [ToastModule, DialogModule],
 })
 export class CoreModule {}

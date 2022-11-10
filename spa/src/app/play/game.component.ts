@@ -3,8 +3,33 @@ import { Component, OnInit } from '@angular/core';
 // TODO To be changed
 import { Response } from './interfaces';
 
-import { AudioHandler } from './class';
+import { AudioHandler } from './classes';
 import { PlayService } from './play.service';
+
+export interface Score {
+	p1: number,
+	p2: number,
+}
+
+export interface Vector3 {
+	x: number,
+	y: number,
+	z?: number,
+}
+
+export interface EntityInfo {
+  pos: Vector3;
+  size: Vector3;
+}
+
+export interface GameInfo {
+  ball: EntityInfo;
+  pad1: EntityInfo;
+  pad2: EntityInfo;
+  score: Score;
+  state: any;
+  events: Event[];
+}
 
 @Component({
   selector: 'app-game',
@@ -16,7 +41,7 @@ export class GameComponent implements OnInit {
   // @ViewChild("game")
   // private gameCanvas!: ElementRef;
   private context: any;
-  private score: number[] = [0, 0];
+  private score: Score = {p1:0,p2:0};
   private audio: AudioHandler = new AudioHandler(0.3, 1);
   room_id: string = '';
   DebugTxt: string = '';
@@ -25,11 +50,11 @@ export class GameComponent implements OnInit {
   constructor(private server: PlayService) {}
 
   ngOnInit() {
-    this.audio.setSoundColPad('../../assets/sound/hit_paddle.m4a');
-    this.audio.setSoundColWall('../../assets/sound/hit_wall.m4a');
-    this.audio.setSoundScore('../../assets/sound/score.m4a');
-    this.audio.setMusicGame('../../assets/music/game.mp3');
-    this.audio.setMusicVictory('../../assets/music/victory.mp3');
+    this.audio.setSoundColPad('assets/sound/hit_paddle.m4a');
+    this.audio.setSoundColWall('assets/sound/hit_wall.m4a');
+    this.audio.setSoundScore('assets/sound/score.m4a');
+    this.audio.setMusicGame('assets/music/game.mp3');
+    this.audio.setMusicVictory('assets/music/victory.mp3');
   }
 
   ngAfterViewInit() {
@@ -42,50 +67,19 @@ export class GameComponent implements OnInit {
   // }
 
   setGameListener() {
-    this.server.listen('game-countdown').subscribe((info: number) => {
-      // TODOshow countdown
-    });
 
-    // this.server.listenGameUpdate().subscribe((info: GameInfo) => {
-    // this.refresh()
-    // this.context.fillStyle = "#FFFFFF";
-    // this.context.fillText(this.score[0], 250, 50);
-    // this.context.fillText(this.score[1], 350, 50);
-    // this.context.fillRect(info.p1_pos.x, info.p1_pos.y, info.p1_size.x, info.p1_size.y);
-    // this.context.fillRect(info.p2_pos.x, info.p2_pos.y, info.p2_size.x, info.p2_size.y);
-    // this.context.fillRect(info.b_pos.x - info.b_rad / 2, info.b_pos.y - info.b_rad, info.b_rad, info.b_rad);
-    // if (info.events)
-    // 	this.handleEvents(info.events);
-    // });
+		this.server.listen('queue-success').subscribe((info: string)=> {
+			this.log('queue success!');
+		});
 
-    this.server.listenGameStart().then((info: string) => {
-      this.log(info + ' (game-start)');
+    this.server.listenGameStart().then((info: Response) => {
+      this.log(info?.msg);
       // this.audio.playGame(true, true);
     });
 
-    this.server.listen('player-ready').subscribe((info: string) => {
-      this.log('player ' + info + ' is ready!');
+    this.server.listen('player-ready').subscribe((info: Response) => {
+      this.log(info?.msg);
     });
-  }
-
-  async joinQueue() {
-    this.server
-      .emit('join-queue', {})
-      .then((data: Response) =>
-        this.log('Join queue: ' + data.code + ' ' + data.msg)
-      );
-    this.log('Attempting to join queue...');
-  }
-
-  async leaveQueue() {
-    this.server
-      .emit('leave-queue', {})
-      .then((data: Response) => this.leaveQueueResponse(data));
-    this.log('Attempting to leave queue...');
-  }
-
-  private async leaveQueueResponse(data: Response) {
-    this.log('leave queue: ' + data.code + ' ' + data.msg);
   }
 
   async readyToPlay() {

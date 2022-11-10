@@ -5,92 +5,54 @@
 	// font-size: 150px;
 }
 
-span {
-	// display: none;
-	color: #f8e300;
+// .sidebar {
+// 	position: static;
+// 	float: left;
+// 	// padding-top: 600px;
+// 	width: 14rem;
+// 	height: 100%;
+// 	background: #0C1013;
+// 	font-size: 0.65em;
+// 	z-index: 10;
+// 	top: 0;
+// }
 
-	text-shadow:
-		0 0 7px #0082FD,
-		0 0 10px #0082FD,
-		0 0 21px #0082FD,
-		0 0 42px #e60073,
-		0 0 82px #e60073,
-		0 0 92px #e60073,
-		0 0 102px #e60073,
-		0 0 151px #e60073;
-
-}
-
-span:hover {
-	text-shadow:
-		0 0 7px #e60073,
-		0 0 10px #e60073,
-		0 0 21px #e60073,
-		0 0 42px #0082FD,
-		0 0 82px #0082FD,
-		0 0 92px #0082FD,
-		0 0 102px #0082FD,
-		0 0 151px #0082FD;
-}
-
-.sidebar {
-	position: static;
-	float: left;
-	padding-top: 600px;
-	width: 25%;
-	height: 100%;
-	background: #662d91;
-	font-size: 0.65em;
-	z-index: 10;
-  }
-
-
-//   @media screen and (min-width: 0px) and (max-width: 1200px) {
-// 	nav.navbar{
-// 	  background-color: #171717 !important;
-//  	  transition: all 1s ease;
-
-// 	}
-//   }
-
-
-  .nav {
-	position: relative;
+.nav {
+	z-index: 99999;
+	position: absolute;
 	margin: 0 15%;
 	text-align: right;
-	top: 50%;
-	transform: translateY(-50%);
 	font-weight: bold;
-  }
+}
 
-  .nav ul {
+.nav ul {
 	list-style: none;
 
 	li {
 	  position: relative;
-	  margin: 3.2em 0;
+	//   margin: 3.2em 0;
 
 	  a {
-		font-size: 50px;
-		line-height: 5em;
+		z-index: 1;
+		font-size: 1.7rem;
+		line-height: 3.5em;
 		text-transform: uppercase;
 		text-decoration: none;
 		letter-spacing: 0.4em;
-		// color: rgba(#FFF, 0.35);
 		display: block;
-		transition: all ease-out 300ms;
-		color: #f8e300;
+		transition: all ease-out 0.3s;
+		color: #68758A;
 		cursor: pointer;
 
-	text-shadow:
-		0 0 7px #0082FD,
-		0 0 10px #0082FD,
-		0 0 21px #0082FD,
-		0 0 42px #e60073,
-		0 0 82px #e60073,
-		0 0 92px #e60073,
-		0 0 102px #e60073,
-		0 0 151px #e60073;
+	// text-shadow:
+	// 	0 0 7px #fff,
+	// 	0 0 10px #fff,
+	// 	0 0 21px #68758A,
+	// 	0 0 42px #68758A,
+	// 	0 0 82px #0c1013,
+	// 	0 0 92px #0c1013,
+	// 	0 0 102px #68758A,
+	// 	0 0 151px #68758A;
 	  }
 
 	  &.active a {
@@ -105,14 +67,14 @@ span:hover {
 	  &:not(.active):hover a {
 		color: rgba(#FFF, 0.75);
 		text-shadow:
-		0 0 7px #e60073,
-		0 0 10px #e60073,
-		0 0 21px #e60073,
-		0 0 42px #0082FD,
-		0 0 82px #0082FD,
-		0 0 92px #0082FD,
-		0 0 102px #0082FD,
-		0 0 151px #0082FD;
+			0 0 7px #0c1013,
+			0 0 10px #0c1013,
+			0 0 21px #BABDBF,
+			0 0 42px #68758A,
+			0 0 82px #68758A,
+			0 0 92px #68758A,
+			0 0 102px #68758A,
+			0 0 151px #68758A;
 	  }
 
 	  &::after {
@@ -123,7 +85,7 @@ span:hover {
 		background: black;
 		left: 0;
 		bottom: 0;
-		background-image: linear-gradient(to right, #f8e300, #0082FD)
+		background-image: linear-gradient(to right, #BABDBF, #68758A)
 	  }
 
 	  &::after:hover {
@@ -134,47 +96,56 @@ span:hover {
 		background: black;
 		left: 0;
 		bottom: 0;
-		background-image: linear-gradient(to right, #0082FD, #f8e300)
+		background-image: linear-gradient(to right, #68758A, #BABDBF)
 	}
   }
 }
 
-#ballWrap {
-	position: relative;
+img {
+	height: 8rem;
+	width: 8rem;
+	border-radius: 50%;
+	opacity: 0.8;
+}
 
+h3 {
+	font-size: 1.5rem;
+	letter-spacing: 3px;
+	color: #68758A;
+	font-family: PowerRangers;
 
 }
 
 .ball {
+	z-index: 0;
 	position: absolute;
 	animation: float 3.5s ease-in-out infinite;
 	height: 80px;
 	width: 80px;
 	border-radius: 50%;
 
+	background: radial-gradient( circle at 75% 30%, white 5px, #BABDBF 8%,
+	#BABDBF 60%, #ededed 100%);
 
-	background: radial-gradient( circle at 75% 30%, white 5px, #e60073 8%,
-	#0082FD 60%, #e60073 100%);
-
-	box-shadow: inset 0 0 20px #e60073, inset 10px 0 46px
-	#0082FD, inset 88px 0px 60px #e60073, inset -20px -60px 100px
-	#0082FD, inset 0 50px 140px #fde9ea, 0 0 90px #fff;
+	box-shadow: inset 0 0 20px #BABDBF, inset 10px 0 46px
+	#BABDBF, inset 88px 0px 60px #BABDBF, inset -20px -60px 100px
+	#BABDBF, inset 0 50px 140px #fde9ea, 0 0 90px #fff;
 }
 
-.ball:hover {
-	animation: float 3.5s ease-in-out infinite;
-	height: 80px;
-	width: 80px;
-	border-radius: 50%;
-	position: relative;
+// .ball:hover {
+// 	animation: float 3.5s ease-in-out infinite;
+// 	height: 80px;
+// 	width: 80px;
+// 	border-radius: 50%;
+// 	position: relative;
 
-	background: radial-gradient( circle at 75% 30%, #e60073 5px, #0082FD 8%,
-	#e60073 60%, #e60073 100%);
+// 	background: radial-gradient( circle at 75% 30%, #e60073 5px, #0082FD 8%,
+// 	#e60073 60%, #e60073 100%);
 
-	box-shadow: inset 0 0 20px #0082FD, inset 10px 0 46px
-	#e60073, inset 88px 0px 60px #0082FD, inset -20px -60px 100px
-	#fff, inset 0 50px 140px #fff, 0 0 90px #fff;
-}
+// 	box-shadow: inset 0 0 20px #0082FD, inset 10px 0 46px
+// 	#e60073, inset 88px 0px 60px #0082FD, inset -20px -60px 100px
+// 	#fff, inset 0 50px 140px #fff, 0 0 90px #fff;
+// }
 
 @keyframes float {
 	0% {
@@ -188,3 +159,104 @@ span:hover {
 	}
 }
 
+//==========
+.menu-trigger {
+	cursor: pointer;
+	padding: 10px;
+	color: #ededed;
+  }
+
+  .menu-close {
+	cursor: pointer;
+	text-align: right;
+	padding: 10px 10px 0 0;
+  }
+
+  .side-menu {
+	// z-index: 1;
+	height: 100vh;
+	position: fixed;
+	top: 0;
+	width: 250px;
+	// background: transparent;
+	background: black;
+  }
+
+  .menu-item {
+	text-align: center;
+	padding: 15px 0;
+	border-bottom: 1px solid #dcdcdc;
+	width: 100%;
+	&:last-child {
+	  border-bottom: none;
+	}
+	&:hover {
+	  color: #c1c1c1;
+	}
+  }
+
+  .gg-menu-boxed {
+	color: #68758A;
+    box-sizing: border-box;
+    position: relative;
+    display: block;
+    transform: scale(var(--ggs,1));
+    width: 28px;
+    height: 28px;
+    border-radius: 3px;
+    border: 2px solid;
+	transition: 0.3s;
+}
+.gg-menu-boxed::before {
+    content: "";
+    display: block;
+    box-sizing: border-box;
+    position: absolute;
+    width: 20px;
+    height: 2px;
+    background: currentColor;
+    border-radius: 3px;
+    top: 5px;
+    left: 2px;
+    box-shadow: 0px 6px 0 , 0 12px 0
+}
+
+.gg-menu-boxed:hover {
+	color: #ededed;
+}
+
+//===========
+  .gg-close-r {
+	color: #68758A;
+    box-sizing: border-box;
+    position: relative;
+    display: inline-block;
+    transform: scale(var(--ggs,1));
+    width: 32px;
+    height: 32px;
+    border: 2px solid;
+    border-radius: 4px;
+	transition: 0.3s;
+}
+
+.gg-close-r:hover {
+	color: #ededed;
+}
+
+.gg-close-r::after,
+.gg-close-r::before {
+    content: "";
+    display: block;
+    box-sizing: border-box;
+    position: absolute;
+    width: 26px;
+    height: 2px;
+    background: currentColor;
+    transform: rotate(45deg);
+    border-radius: 5px;
+    top: 13px;
+    left: 1px
+}
+.gg-close-r::after {
+    transform: rotate(-45deg)
+}

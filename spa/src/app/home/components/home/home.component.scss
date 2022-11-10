@@ -1,47 +1,118 @@
-.home-page{
+//===== PRE LOGGIN PAGE ==============
+.log-page{
 	overflow: hidden;
 	// background-image: linear-gradient(to right, #00cdac 0%, #8ddad5 100%);
 	margin: 0;
 	padding: 0;
-	height: 100vh;
+	height: 100%;
 	width: 100%;
 	margin: 0  0;
 }
 
-@media  screen and (min-width: 800px) and (max-width: 1200px) {
-	.title .title {
-		font-size: 190px;
+.log-page::before {
+    content: "";
+    background-image: url('../../../../assets/image/pong-gif.jpeg');
+    background-position: center center;
+    background-size: cover;
+    background-repeat: no-repeat;
+	background-attachment: fixed;
+    background-color: #666666;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    left: 0px;
+    opacity: 15%;
+}
+
+@media  screen and (min-width: 1050px) and (max-width: 1275px) {
+	.title-div .title-logpage {
+		font-size: 16rem;
+	}
+
+	.ball-div .ball {
+		height: 4rem;
+		width: 4rem;
 	}
 }
 
-@media  screen and (min-width: 650px) and (max-width: 800px) {
-	.title .title {
-		font-size: 160px;
+@media  screen and (min-width: 850px) and (max-width: 1050px) {
+	.title-div .title-logpage {
+		font-size: 13rem;
+	}
+	.ball-div .ball {
+		height: 3rem;
+		width: 3rem;
+	}
+}
+
+@media  screen and (min-width: 650px) and (max-width: 850px) {
+	.title-div .title-logpage {
+		font-size: 10rem;
+	}
+	.ball-div .ball {
+		height: 3rem;
+		width: 3rem;
 	}
 }
 
 @media  screen and (min-width: 500px) and (max-width: 650px) {
-	.title .title {
-		font-size: 120px;
+	.title-div .title-logpage {
+		font-size: 7rem;
+	}
+	.ball-div .ball {
+		height: 2rem;
+		width: 2rem;
+	}
+	.button-div .btn-grad {
+		font-size: 0.7rem;
+		padding: 10px 40px;
 	}
 }
 
 @media  screen and (min-width: 350px) and (max-width: 500px) {
-	.title .title {
-		font-size: 80px;
+	.title-div .title-logpage {
+		font-size: 5rem;
+	}
+	.ball-div .ball {
+		height: 2rem;
+		width: 2rem;
+	}
+	.button-div .btn-grad {
+		font-size: 0.5rem;
+		padding: 8px 38px;
 	}
 }
 
 @media  screen and (min-width: 0px) and (max-width: 350px) {
-	.title .title {
-		font-size: 60px;
+	.title-div .title-logpage {
+		font-size: 3rem;
+	}
+	.ball-div .ball {
+		height: 2rem;
+		width: 2rem;
+	}
+	.button-div .btn-grad {
+		font-size: 0.5rem;
+		padding: 8px 38px;
 	}
 }
 
-.title {
+.title-div {
+	width: 100%;
+	height: 100%;
+	position: relative;
+}
+
+ h3 {
+	margin-top: -4rem;
+}
+
+.title-logpage {
+	margin-top: -0.4rem;
 	font-family: "PowerRangers";
 	font-weight: 50;
-	font-size: 275px;
+	font-size: 20rem;
 	color: #68758A;
 	transition: 0.3s;
 		text-shadow:
@@ -55,7 +126,7 @@
     		0 0 151px #68758A;
 }
 
-.title:hover {
+.title-logpage:hover {
 	color: #ededed;
 
 	text-shadow:
@@ -74,93 +145,65 @@ p {
 	font-size: 18px;
 }
 
-.ball {
-	animation: float 3.5s ease-in-out infinite;
-	height: 80px;
-	width: 80px;
-	border-radius: 50%;
-	position: relative;
-
-	background: radial-gradient( circle at 75% 30%, white 5px, #BABDBF 8%,
-	#BABDBF 60%, #ededed 100%);
-
-	box-shadow: inset 0 0 20px #BABDBF, inset 10px 0 46px
-	#BABDBF, inset 88px 0px 60px #BABDBF, inset -20px -60px 100px
-	#BABDBF, inset 0 50px 140px #fde9ea, 0 0 90px #fff;
-}
-
-// .ball:hover {
+// .ball {
 // 	animation: float 3.5s ease-in-out infinite;
-// 	height: 80px;
-// 	width: 80px;
+// 	height: 5rem;
+// 	width: 5rem;
 // 	border-radius: 50%;
 // 	position: relative;
-
-// 	background: radial-gradient( circle at 75% 30%, #e60073 5px, #0082FD 8%,
-// 	#e60073 60%, #e60073 100%);
-
-// 	box-shadow: inset 0 0 20px #0082FD, inset 10px 0 46px
-// 	#e60073, inset 88px 0px 60px #0082FD, inset -20px -60px 100px
+// 	color: #68758A;
+// 	background: radial-gradient( circle at 75% 30%, #68758A 5px, #68758A 8%,
+// 	#68758A 60%, #68758A 100%);
+// 	background-color: #fff;
+// 	opacity: 0.8;
+// 	box-shadow: inset 0 0 20px #68758A, inset 10px 0 46px
+// 	#68758A, inset 88px 0px 60px #68758A, inset -20px -60px 100px
 // 	#fff, inset 0 50px 140px #fff, 0 0 90px #fff;
 // }
 
-.ball {
-	width: 100px;
-	height: 100px;
-	border-radius: 50%;
-	background-color: #fff;
-	opacity: 0.8;
-	position: relative;
+// .log-page:hover .ball  {
+// 	animation: dancingball 5s linear infinite;
 
-}
-
-// .home-page .card {
- 	// background-color: #68758A;
 // }
 
-.home-page:hover .ball  {
-	animation: dancingball 5s linear infinite;
-
-}
-
-@keyframes dancingball {
-	0% {
-		background-color: fff;
-		transform: translateY(0);
-		top: 0%;
-		left:	40%;
-	}
-	25% {
-		background-color: fff;
-		transform: translateY(40%);
-		top: 40%;
-		left: 0;
-	}
-	50% {
-		background-color: fff;
-		transform: translateY(100%);
-		top: 100%;
-		left: 40%;
-	}
-	75% {
-		background-color: fff;
-		transform: translateY(40%);
-		top: 40%;
-		left: 100%;
-	}
-	100% {
-		background-color: fff;
-		transform: translateY(0);
-		top: 0%;
-		left: 40%;
-	}
-}
+// @keyframes dancingball {
+// 	0% {
+// 		background-color: fff;
+// 		transform: translateY(0);
+// 		top: 0%;
+// 		left:	40%;
+// 	}
+// 	25% {
+// 		background-color: fff;
+// 		transform: translateY(40%);
+// 		top: 40%;
+// 		left: 0;
+// 	}
+// 	50% {
+// 		background-color: fff;
+// 		transform: translateY(100%);
+// 		top: 100%;
+// 		left: 40%;
+// 	}
+// 	75% {
+// 		background-color: fff;
+// 		transform: translateY(40%);
+// 		top: 40%;
+// 		left: 100%;
+// 	}
+// 	100% {
+// 		background-color: fff;
+// 		transform: translateY(0);
+// 		top: 0%;
+// 		left: 40%;
+// 	}
+// }
 
 .btn-grad {
+	// margin-top: -5rem;
 	// background-image: linear-gradient(to right, #FEAC5E 0%, #C779D0  51%, #FEAC5E  100%);
 	// background-image: -webkit-linear-gradient(0deg, #68758A 0%, #0c1013  0%, #0c1013  100%);
 	background-color: transparent;
-	margin: 10px;
 	padding: 15px 45px;
 	text-align: center;
 	text-transform: uppercase;
@@ -177,6 +220,8 @@ p {
 	transition: 0.3s ease-in-out;
 	z-index: 1;
 	border-color: #68758A;
+	font-size: 1rem;
+	position: absolute;
 
   }
 
@@ -191,3 +236,168 @@ p {
 	border-color: #ededed;
 
   }
+
+// ====== LOGGIN PAGE ===========
+
+.home-page {
+	overflow: hidden;
+	// background-color: #404040;
+	margin: 0;
+	padding: 0;
+	// height: 100%;
+	width: 100%;
+	margin: 0  0;
+	
+}
+
+// .home-page::before {
+//     content: "";
+//     background-image: url('../../../../assets/image/pong-gif.jpeg');
+//     background-position: top center;
+//     background-size: cover;
+//     background-repeat: no-repeat;
+//     background-color: #666666;
+//     position: absolute;
+//     top: 0px;
+//     right: 0px;
+//     bottom: 0px;
+//     left: 0px;
+//     opacity: 15%;
+// }
+
+.header-card {
+	border: 3px solid #202329;
+	padding-top: 0;
+	padding-bottom: 0;
+	margin-bottom: 0;
+}
+
+.user-card{
+	
+	.display-name {
+		margin-top: -2rem;
+	}
+}
+
+.menu-card {
+	border: 3px solid #202329;
+}
+
+.game-card {
+	border: 3px solid #202329;
+}
+
+.watch-card {
+	border: 3px solid #202329;
+}
+
+.chats-card {
+	border: 3px solid #202329;
+}
+
+.player-info {
+	// margin-top: 4rem;
+	margin-left: -6rem;
+}
+.profile-img {
+	width: 8rem;
+	height: 8rem;
+	border-radius: 50%;
+	opacity: 0.6;
+}
+
+.player-name {
+	// position: static;
+	// margin-right: 40px;
+	margin-top: 0.6rem;
+	font-family: "monoton";
+	font-weight: 50;
+	font-size: 2rem;
+	color: #68758A;
+	// transition: 0.3s;
+}
+
+.title-homepage {
+	font-family: Franchise;
+	font-weight: 50;
+	font-size: 10rem;
+	color: #68758A;
+	transition: 0.3s;
+	position: absolute;
+		// text-shadow:
+    		// 0 0 7px #fff,
+    		// 0 0 10px #fff,
+    		// 0 0 21px #68758A,
+    		// 0 0 42px #68758A,
+    		// 0 0 82px #0c1013,
+    		// 0 0 92px #0c1013,
+    		// 0 0 102px #68758A,
+    		// 0 0 151px #68758A;
+}
+
+@media screen and (min-width: 1110px) {
+	.nav-bar {
+		display: none !important;
+	}
+}
+
+@media  screen and (min-width: 0px) and (max-width: 1110px) {
+	.home-page .menu-card {
+		display: none !important;
+	}
+	.home-page .header-card {
+		display: none !important;
+	}
+}
+
+
+
+h2 {
+	font-family: Franchise;
+	color: #68758A;
+}
+
+img {
+	border-radius: 10px;
+	border: 2px solid #68758A;
+}
+.menu-item ul {
+	top: 0;
+	margin-left: -2rem;
+	list-style-type: none;
+	// background-color: #404040;
+	height: 100%;
+	width: 25%;
+	a {
+		padding-bottom: 2px;
+		margin-bottom: 2rem;
+		font-size: 2.7rem;
+		line-height: 2.5em;
+		text-decoration: none;
+		font-family: Franchise;
+		display: block;
+		cursor: pointer;
+		transition: 0.3s;
+		color: #68758A;
+	}
+	a:hover {
+		scale: 1.2;
+		color: #ededed;
+		text-shadow:
+		// 0 0 7px #68758A,
+		// 0 0 10px #68758A,
+		// 0 0 21px #68758A,
+		// 0 0 42px #68758A,
+		0 0 83px #68758A,
+		0 0 92px #68758A,
+		// 0 0 102px #68758A,
+		// 0 0 151px #68758A;
+	}
+}
+
+// https://css-tricks.com/snippets/css/complete-guide-grid/
+
+.canvas {
+	width: 400px;
+}
+//idee pour le backgroud est dwe le faire rotate 90deg quand height > width

@@ -24,5 +24,13 @@ import { FriendCardComponent } from './components/friends/friend-card/friend-car
     FriendCardComponent,
   ],
   imports: [SharedModule, UserRoutingModule, FileUploadModule],
+  exports: [
+    UserDisplaynameComponent,
+    UserImgComponent,
+    FileUploadModule,
+    UserRoutingModule,
+    ProfilePageComponent,
+    FriendListComponent
+  ]
 })
 export class UserModule {}
