@@ -17,6 +17,7 @@ import {
 } from './components';
 import { EventButtonComponent } from './components/event-button/event-button.component';
 import { UserModule } from '../user/user.module';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { UserModule } from '../user/user.module';
     InputTextModule,
     DialogModule,
     AvatarModule,
+	RouterModule
   ],
   exports: [
     CommonModule,

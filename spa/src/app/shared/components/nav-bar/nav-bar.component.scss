@@ -41,7 +41,7 @@
 		letter-spacing: 0.4em;
 		display: block;
 		transition: all ease-out 0.3s;
-		color: #68758A;
+		color: #ededed;
 		cursor: pointer;
 
 	// text-shadow:
@@ -198,7 +198,9 @@ h3 {
   .gg-menu-boxed {
 	color: #68758A;
     box-sizing: border-box;
-    position: relative;
+    position: absolute;
+	top: 10px;
+	left: 10px;
     display: block;
     transform: scale(var(--ggs,1));
     width: 28px;

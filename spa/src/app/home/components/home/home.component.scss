@@ -238,18 +238,85 @@ p {
   }
 
 // ====== LOGGIN PAGE ===========
-
-.home-page {
-	overflow: hidden;
-	// background-color: #404040;
-	margin: 0;
-	padding: 0;
-	// height: 100%;
-	width: 100%;
-	margin: 0  0;
-	
+.nav-bar {
+	position: absolute;
 }
 
+.home-page {
+	// overflow: hidden;
+	// background-color: #404040;
+	// margin: 0;
+	padding: 0;
+	height: 100%;
+	width: 100%;
+	margin: 0  0;
+}
+
+.home-page::before {
+    content: "";
+    background-image: url('../../../../assets/image/pong-gif.jpeg');
+    background-position: center center;
+    background-size: cover;
+    background-repeat: no-repeat;
+	background-attachment: fixed;
+    background-color: #ededed;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    left: 0px;
+    opacity: 20%;
+}
+
+.card {
+	width: 100%;
+	height: 100%;
+}
+
+.home-container {
+	position: relative;
+	height: 100%;
+	// width: 100%;
+}
+
+.home-page-card {
+	background-color: #ededed !important;
+	box-shadow:0px 1px 0px #38393d, 0px 3px 0px #38393d, 0px 5px 0px #424449, 0px 6px 0px #08090a, 0px 8px 0px #08090a, 0px 9px 3px rgba(0,0,0,0.1), 0px 0px 7px rgba(0,0,0,0.1), 0px 1px 3px rgba(0,0,0,0.3), 0px 3px 5px rgba(0,0,0,0.2), -4px 8px 8px rgba(0,0,0,0.1), -8px 16px 16px rgba(0,0,0,0.37), -16px 32px 32px rgba(0,0,0,0.25), -32px 64px 64px rgba(0,0,0,0.25);
+	// background-color: transparent;
+}
+
+img {
+	width: 200px;
+	height: 200px;
+}
+
+h2 {
+	font-size: 30px;
+	font-family: Franchise;
+	font-weight: 50;
+	// font-size: 10rem;
+	color: #08090a;
+	transition: 0.3s;
+}
+
+.title-homepage  {
+	font-size: 55px;
+	font-family: Franchise;
+	font-weight: 50;
+	// font-size: 10rem;
+	color: #08090a;
+	transition: 0.3s;
+	// position: absolute;
+		// text-shadow:
+			// 0 0 7px #fff,
+			// 0 0 10px #fff,
+			// 0 0 21px #68758A,
+			// 0 0 42px #68758A,
+			// 0 0 82px #0c1013,
+			// 0 0 92px #0c1013,
+			// 0 0 102px #68758A,
+			// 0 0 151px #68758A;
+}
 // .home-page::before {
 //     content: "";
 //     background-image: url('../../../../assets/image/pong-gif.jpeg');
@@ -265,139 +332,122 @@ p {
 //     opacity: 15%;
 // }
 
-.header-card {
-	border: 3px solid #202329;
-	padding-top: 0;
-	padding-bottom: 0;
-	margin-bottom: 0;
-}
+// .header-card {
+// 	border: 3px solid #202329;
+// 	padding-top: 0;
+// 	padding-bottom: 0;
+// 	margin-bottom: 0;
+// }
 
-.user-card{
+// .user-card{
 	
-	.display-name {
-		margin-top: -2rem;
-	}
-}
+// 	.display-name {
+// 		margin-top: -2rem;
+// 	}
+// }
 
-.menu-card {
-	border: 3px solid #202329;
-}
+// .menu-card {
+// 	border: 3px solid #202329;
+// }
 
-.game-card {
-	border: 3px solid #202329;
-}
+// .game-card {
+// 	border: 3px solid #202329;
+// }
 
-.watch-card {
-	border: 3px solid #202329;
-}
+// .watch-card {
+// 	border: 3px solid #202329;
+// }
 
-.chats-card {
-	border: 3px solid #202329;
-}
+// .chats-card {
+// 	border: 3px solid #202329;
+// }
 
-.player-info {
-	// margin-top: 4rem;
-	margin-left: -6rem;
-}
-.profile-img {
-	width: 8rem;
-	height: 8rem;
-	border-radius: 50%;
-	opacity: 0.6;
-}
+// .player-info {
+// 	// margin-top: 4rem;
+// 	margin-left: -6rem;
+// }
+// .profile-img {
+// 	width: 8rem;
+// 	height: 8rem;
+// 	border-radius: 50%;
+// 	opacity: 0.6;
+// }
 
-.player-name {
-	// position: static;
-	// margin-right: 40px;
-	margin-top: 0.6rem;
-	font-family: "monoton";
-	font-weight: 50;
-	font-size: 2rem;
-	color: #68758A;
-	// transition: 0.3s;
-}
+// .player-name {
+// 	// position: static;
+// 	// margin-right: 40px;
+// 	margin-top: 0.6rem;
+// 	font-family: "monoton";
+// 	font-weight: 50;
+// 	font-size: 2rem;
+// 	color: #68758A;
+// 	// transition: 0.3s;
+// }
 
-.title-homepage {
-	font-family: Franchise;
-	font-weight: 50;
-	font-size: 10rem;
-	color: #68758A;
-	transition: 0.3s;
-	position: absolute;
-		// text-shadow:
-    		// 0 0 7px #fff,
-    		// 0 0 10px #fff,
-    		// 0 0 21px #68758A,
-    		// 0 0 42px #68758A,
-    		// 0 0 82px #0c1013,
-    		// 0 0 92px #0c1013,
-    		// 0 0 102px #68758A,
-    		// 0 0 151px #68758A;
-}
 
-@media screen and (min-width: 1110px) {
-	.nav-bar {
-		display: none !important;
-	}
-}
+// @media screen and (min-width: 1110px) {
+// 	.nav-bar {
+// 		display: none !important;
+// 	}
+// }
 
-@media  screen and (min-width: 0px) and (max-width: 1110px) {
-	.home-page .menu-card {
-		display: none !important;
-	}
-	.home-page .header-card {
-		display: none !important;
-	}
-}
+// @media  screen and (min-width: 0px) and (max-width: 1110px) {
+// 	.home-page .menu-card {
+// 		display: none !important;
+// 	}
+// 	.home-page .header-card {
+// 		display: none !important;
+// 	}
+// }
 
 
 
-h2 {
-	font-family: Franchise;
-	color: #68758A;
-}
+// h2 {
+// 	font-family: Franchise;
+// 	color: #68758A;
+// }
 
-img {
-	border-radius: 10px;
-	border: 2px solid #68758A;
-}
-.menu-item ul {
-	top: 0;
-	margin-left: -2rem;
-	list-style-type: none;
-	// background-color: #404040;
-	height: 100%;
-	width: 25%;
-	a {
-		padding-bottom: 2px;
-		margin-bottom: 2rem;
-		font-size: 2.7rem;
-		line-height: 2.5em;
-		text-decoration: none;
-		font-family: Franchise;
-		display: block;
-		cursor: pointer;
-		transition: 0.3s;
-		color: #68758A;
-	}
-	a:hover {
-		scale: 1.2;
-		color: #ededed;
-		text-shadow:
-		// 0 0 7px #68758A,
-		// 0 0 10px #68758A,
-		// 0 0 21px #68758A,
-		// 0 0 42px #68758A,
-		0 0 83px #68758A,
-		0 0 92px #68758A,
-		// 0 0 102px #68758A,
-		// 0 0 151px #68758A;
-	}
-}
+// img {
+// 	border-radius: 10px;
+// 	border: 2px solid #68758A;
+// }
+// .menu-item ul {
+// 	top: 0;
+// 	margin-left: -2rem;
+// 	list-style-type: none;
+// 	// background-color: #404040;
+// 	height: 100%;
+// 	width: 25%;
+// 	a {
+// 		padding-bottom: 2px;
+// 		margin-bottom: 2rem;
+// 		font-size: 2.7rem;
+// 		line-height: 2.5em;
+// 		text-decoration: none;
+// 		font-family: Franchise;
+// 		display: block;
+// 		cursor: pointer;
+// 		transition: 0.3s;
+// 		color: #68758A;
+// 	}
+// 	a:hover {
+// 		scale: 1.2;
+// 		color: #ededed;
+// 		text-shadow:
+// 		// 0 0 7px #68758A,
+// 		// 0 0 10px #68758A,
+// 		// 0 0 21px #68758A,
+// 		// 0 0 42px #68758A,
+// 		0 0 83px #68758A,
+// 		0 0 92px #68758A,
+// 		// 0 0 102px #68758A,
+// 		// 0 0 151px #68758A;
+// 	}
+// }
 
-// https://css-tricks.com/snippets/css/complete-guide-grid/
+// // https://css-tricks.com/snippets/css/complete-guide-grid/
 
-.canvas {
-	width: 400px;
-}
+// .canvas {
+// 	width: 400px;
+// }
 //idee pour le backgroud est dwe le faire rotate 90deg quand height > width
