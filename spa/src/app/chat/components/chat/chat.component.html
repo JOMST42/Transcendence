@@ -1,4 +1,4 @@
-<div class="flex justify-content-center">
+<!-- <div class="flex justify-content-center">
   <div *ngIf="rooms?.length; else noRooms" class="flex-grow-1 mb-4 mx-8">
     <p-table
       [value]="rooms"
@@ -25,4 +25,19 @@
   <ng-template #noRooms><div>You are not in any chat rooms</div></ng-template>
 </div>
 
-<p-button class="ml-8" label="Create room" (onClick)="createRoom()"></p-button>
+<p-button class="ml-8" label="Create room" (onClick)="createRoom()"></p-button> -->
+
+<div
+  class="flex flex-row justify-content-between surface-100 border-round mx-4 my-4"
+  style="height: 92%"
+>
+  <div class="flex-none flex">
+    <app-chat-channel-list></app-chat-channel-list>
+  </div>
+  <div class="flex-grow-1 flex justify-content-center">
+    <app-chat-message-list></app-chat-message-list>
+  </div>
+  <div class="flex-none flex">
+    <app-chat-user-list></app-chat-user-list>
+  </div>
+</div>

@@ -16,7 +16,6 @@ import {
   ServerErrorComponent,
 } from './components';
 import { EventButtonComponent } from './components/event-button/event-button.component';
-import { UserModule } from '../user/user.module';
 
 @NgModule({
   declarations: [

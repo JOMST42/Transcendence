@@ -7,10 +7,6 @@ import { NotFoundComponent, ServerErrorComponent } from './shared/components';
 const routes: Routes = [
   {
     path: '',
-    loadChildren: () => import('./home/home.module').then((m) => m.HomeModule),
-  },
-  {
-    path: '',
     runGuardsAndResolvers: 'always',
     canActivate: [AuthGuard],
     children: [
@@ -35,6 +31,10 @@ const routes: Routes = [
           import('./watch/watch.module').then((m) => m.WatchModule),
       },
     ],
+  },
+  {
+    path: '',
+    loadChildren: () => import('./home/home.module').then((m) => m.HomeModule),
   },
   {
     path: 'server-error',
