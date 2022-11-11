@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { take } from 'rxjs';
 import { Game } from './models';
 import { WatchService } from './services/watch.service';
 
@@ -17,10 +18,9 @@ export class WatchComponent implements OnInit {
   }
 
 	async getGames(){
-		this.watchService.getGames().subscribe({
-      next: (data) => {
-        this.games = data;
-				console.log(data[1].id);
+		this.watchService.getGames().pipe(take(1)).subscribe({
+      next: (games) => {
+        this.games = games;
         //console.log(data);
       },
       error: (err) => {

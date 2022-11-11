@@ -17,6 +17,7 @@ import {
 } from './components';
 import { EventButtonComponent } from './components/event-button/event-button.component';
 import { RouterModule } from '@angular/router';
+import { MatchHistoryComponent } from './components/match-history/match-history.component';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { RouterModule } from '@angular/router';
     PongAudioComponent,
     EventButtonComponent,
     JoinGameDialogComponent,
+		MatchHistoryComponent,
   ],
   imports: [
     CommonModule,
@@ -50,6 +52,7 @@ import { RouterModule } from '@angular/router';
     InputTextModule,
     JoinGameDialogComponent,
     AvatarModule,
+		MatchHistoryComponent,
   ],
 })
 export class SharedModule {}
