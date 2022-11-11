@@ -1,4 +1,7 @@
-<div class="container">
+<div
+  class="container"
+  style="padding-bottom: 3rem; border-style: double; border-color: blueviolet"
+>
   <div class="grid">
     <div class="lg:col-4 sm:col-12 md:12">
       <app-user-img
@@ -56,6 +59,15 @@
   </div>
 </div>
 
-<div id="container-flex-column">
-  <app-friend-list [user]="user"></app-friend-list>
-</div>
+<p-tabView>
+  <p-tabPanel header="STATS"> Content 1 </p-tabPanel>
+  <p-tabPanel header="FRIENDS">
+    <div id="container-flex-column">
+      <app-friend-list [user]="user"></app-friend-list>
+    </div>
+  </p-tabPanel>
+  <p-tabPanel header="MATCH HISTORY"> Content 3 </p-tabPanel>
+  <p-tabPanel *ngIf="user?.id === me?.id" header="SEARCH">
+    <app-search-user></app-search-user>
+  </p-tabPanel>
+</p-tabView>

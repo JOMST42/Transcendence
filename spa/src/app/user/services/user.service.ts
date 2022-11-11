@@ -29,4 +29,8 @@ export class UserService {
     params.append('displayName', displayName);
     return this.baseApiService.getMany('/users', params);
   }
+
+  getUsers(): Observable<User[]> {
+    return this.baseApiService.getMany('/users/all');
+  }
 }

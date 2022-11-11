@@ -42,6 +42,12 @@ export class UserController implements OnModuleInit {
     return user;
   }
 
+  @Get('all')
+  async getUsers(): Promise<User[]> {
+    console.log('controler');
+    return await this.userService.getUsers();
+  }
+
   @Get(':id')
   async getUserById(
     @Param('id', ParseIntPipe) id: number,

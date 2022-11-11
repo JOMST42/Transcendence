@@ -1,47 +1,28 @@
-<div class="card">
-  <div class="grid formgrid">
-    <div class="field col-12 md:col-6 md:pr-6 pr-0">
-      <div
-        class="custom-skeleton p-4"
-        style="background-color: rgb(48, 42, 42)"
-      >
-        <div class="flex mb-3">
-          <p-avatar
-            class="avatar"
-            [image]="user?.avatarUrl"
-            alt="Image"
-            shape="circle"
-            size="xlarge"
-          ></p-avatar>
-
-          <span style="padding: 1rem 1rem 1rem 1rem">{{
-            user?.displayName
-          }}</span>
-
-          <p-button
-            type="button"
-            class="p-button-sm"
-            (click)="showDialog()"
-            icon="pi pi-external-link"
-          ></p-button>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+<p-card class="p-card">
+  <ng-template pTemplate="header">
+    <app-user-avatar
+      [avatarUrl]="user?.avatarUrl"
+      [user]="user"
+    ></app-user-avatar>
+    <span style="padding: 1rem 1rem 1rem">{{ user?.displayName }}</span>
+    <p-button
+      type="button"
+      class="p-button-sm"
+      (click)="showDialog()"
+      icon="pi pi-external-link"
+    ></p-button>
+  </ng-template>
+</p-card>
 
 <p-dialog header="Title" [(visible)]="display">
   <ng-template pTemplate="header">
-    <p-avatar
-      class="avatar"
-      [image]="user?.avatarUrl"
-      alt="Image"
-      shape="circle"
-      size="xlarge"
-    ></p-avatar>
+    <app-user-avatar
+      [avatarUrl]="user?.avatarUrl"
+      [user]="user"
+    ></app-user-avatar>
     <div>{{ user?.displayName }}</div>
   </ng-template>
-carte utilisateur - est ce qu'on met du contenu ?
+  carte utilisateur - est ce qu'on met du contenu ?
   <ng-template pTemplate="footer">
     <span class="p-buttonset">
       <button pButton type="button">

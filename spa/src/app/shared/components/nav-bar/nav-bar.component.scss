@@ -198,7 +198,9 @@ h3 {
   .gg-menu-boxed {
 	color: #68758A;
     box-sizing: border-box;
-    position: relative;
+    position: absolute;
+		top: 10px;
+		left: 10px;
     display: block;
     transform: scale(var(--ggs,1));
     width: 28px;
