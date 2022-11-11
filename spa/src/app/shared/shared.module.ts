@@ -6,6 +6,7 @@ import { TableModule } from 'primeng/table';
 import { InputTextModule } from 'primeng/inputtext';
 import { DialogModule } from 'primeng/dialog';
 import { AvatarModule } from 'primeng/avatar';
+import { InputTextareaModule } from 'primeng/inputtextarea';
 
 import {
   JoinGameDialogComponent,
@@ -35,6 +36,7 @@ import { EventButtonComponent } from './components/event-button/event-button.com
     InputTextModule,
     DialogModule,
     AvatarModule,
+    InputTextareaModule,
   ],
   exports: [
     CommonModule,
@@ -48,6 +50,7 @@ import { EventButtonComponent } from './components/event-button/event-button.com
     InputTextModule,
     JoinGameDialogComponent,
     AvatarModule,
+    InputTextareaModule,
   ],
 })
 export class SharedModule {}
