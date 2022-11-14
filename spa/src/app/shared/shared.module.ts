@@ -21,6 +21,7 @@ import { EventButtonComponent } from './components/event-button/event-button.com
 import { RouterModule } from '@angular/router';
 import { SearchUserComponent } from './components/search-user/search-user.component';
 import { UserAvatarComponent } from './components/user-avatar/user-avatar.component';
+import { MatchHistoryComponent } from './components/match-history/match-history.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { UserAvatarComponent } from './components/user-avatar/user-avatar.compon
     JoinGameDialogComponent,
     SearchUserComponent,
     UserAvatarComponent,
+		MatchHistoryComponent,
   ],
   imports: [
     CommonModule,
@@ -63,6 +65,7 @@ import { UserAvatarComponent } from './components/user-avatar/user-avatar.compon
     CardModule,
     SearchUserComponent,
     UserAvatarComponent,
+		MatchHistoryComponent,
   ],
 })
 export class SharedModule {}

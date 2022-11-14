@@ -66,8 +66,19 @@
       <app-friend-list [user]="user"></app-friend-list>
     </div>
   </p-tabPanel>
-  <p-tabPanel header="MATCH HISTORY"> Content 3 </p-tabPanel>
+  <p-tabPanel header="MATCH HISTORY">
+    <app-match-history [user]="user"></app-match-history>
+  </p-tabPanel>
   <p-tabPanel *ngIf="user?.id === me?.id" header="SEARCH">
     <app-search-user></app-search-user>
   </p-tabPanel>
 </p-tabView>
+<!-- <app-friend-card
+  [userIsMe]="user.id === me.id"
+  [me]="me"
+  [user]="user"
+></app-friend-card> -->
+
+<!-- <div id="container-flex-column">
+<app-friend-list></app-friend-list>
+</div> -->
