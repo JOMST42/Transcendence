@@ -63,3 +63,7 @@
     border: 3px solid #000;
     background-color: #00A595;
   }
+
+  :host ::ng-deep .p-card{
+    background-color: #00A595 !important;
+  } 
