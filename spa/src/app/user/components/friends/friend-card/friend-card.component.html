@@ -1,4 +1,4 @@
-<p-card class="p-card">
+<p-card class="p-card" [ngClass]="friendState ? '' : 'blockedCard'">
   <ng-template pTemplate="header">
     <app-user-avatar
       [avatarUrl]="user?.avatarUrl"

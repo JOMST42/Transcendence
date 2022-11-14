@@ -47,12 +47,10 @@ export class FriendListComponent implements OnInit {
   constructor(
     private readonly friendService: FriendService,
     private readonly authService: AuthService,
-    private readonly userService: UserService
   ) {}
   friendsList!: Friendship[];
   userList!: User[];
   me!: User;
-  myfriend: User;
   @Input() user!: User;
 
   ngOnInit(): void {

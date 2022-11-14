@@ -1,3 +1,7 @@
-.p-card {
+:host ::ng-deep .p-card{
   background-color: antiquewhite;
+}
+
+.blockedCard{
+  opacity: 0.5;
 }

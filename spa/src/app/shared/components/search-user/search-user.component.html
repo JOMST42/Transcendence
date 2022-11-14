@@ -1,29 +1,28 @@
 <p-table
-  #dt
+  #dt1
   [value]="users"
+  dataKey="id"
   [rows]="10"
+  [loading]="loading"
   [showCurrentPageReport]="true"
   [rowsPerPageOptions]="[10, 25, 50]"
   styleClass="p-datatable-customers p-datatable-gridlines"
   [paginator]="true"
   currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-  [globalFilterFields]="['firstname']"
+  [globalFilterFields]="['firstName', 'displayName']"
 >
-  <ng-template pTemplate="caption">
-    <div class="p-d-flex">
+  <ng-template let-user pTemplate="caption">
+   
       <span class="p-input-icon-left p-ml-auto">
         <i class="pi pi-search"></i>
         <input
-          type="text"
           pInputText
-          size="50"
-          placeholder="Global Filter"
-          (input)="dt.filterGlobal($any($event.target).value, 'contains')"
-          style="width: auto"
-          placeholder="Search user"
+          type="text"
+          (input)="dt1.filterGlobal($any($event.target).value, 'contains')"
+          placeholder="Search name"
         />
       </span>
-    </div>
+    
   </ng-template>
 
   <ng-template pTemplate="header">
@@ -31,14 +30,18 @@
       <th>
         <div class="p-d-flex p-jc-between p-ai-center">Avatar</div>
       </th>
-      <th>
-        <div class="p-d-flex p-jc-between p-ai-center">Name</div>
+      <th >
+        <div class="p-d-flex p-jc-between p-ai-center" field="firstName">
+          Name
+          
+        </div>
       </th>
       <th>
-        <div class="p-d-flex p-jc-between p-ai-center">Display name</div>
+        <div class="p-d-flex p-jc-between p-ai-center" field="displayName">Display name</div>
       </th>
     </tr>
   </ng-template>
+
   <ng-template pTemplate="body" let-user>
     <tr>
       <td>
@@ -55,6 +58,7 @@
       </td>
     </tr>
   </ng-template>
+
   <ng-template pTemplate="emptymessage">
     <tr>
       <td colspan="7">No users found.</td>

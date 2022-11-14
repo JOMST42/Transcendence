@@ -1,7 +1,8 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, resolveForwardRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { take } from 'rxjs';
 import { Friendship, User } from '../../../models';
-import { UserService } from '../../../services';
+import { FriendService, UserService } from '../../../services';
 
 @Component({
   selector: 'app-friend-card',
@@ -13,14 +14,16 @@ export class FriendCardComponent implements OnInit {
   @Input() userIsMe!: boolean;
   @Input() me: User;
   @Input() friends: Friendship[];
-  @Input() friend: User;
+  myFriendId!: number;
   @Input() friendship: Friendship;
   display: boolean = false;
+  friendState: boolean = true;
 
   constructor(
     private readonly router: Router,
     private readonly route: ActivatedRoute,
-    private readonly userService: UserService
+    private readonly userService: UserService,
+    private readonly friendService: FriendService
   ) {}
 
   showDialog() {
@@ -39,15 +42,40 @@ export class FriendCardComponent implements OnInit {
     });
   }
 
-  async getFriendToUser(friends: Friendship): Promise<User> {
+  async friendshipBlockedOrNotAccepted(userId: number, friends: Friendship) {
     let friendId: number;
     if (friends.adresseeId === this.me.id) {
       friendId = friends.requesterId;
     } else if (friends.requesterId === this.me.id) {
       friendId = friends.adresseeId;
     }
+    this.friendService
+      .getFriend(friendId, userId)
+      .pipe(take(1))
+      .subscribe({
+        next: (data) => {
+          if (data) {
+            if (data.blocked === true) {
+              this.friendState = false;
+            } else if (data.accepted === false) {
+              this.friendState = false;
+            }
+          }
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      });
+  }
+
+  async getFriendToUser(friends: Friendship): Promise<User> {
+    if (friends.adresseeId === this.me.id) {
+      this.myFriendId = friends.requesterId;
+    } else if (friends.requesterId === this.me.id) {
+      this.myFriendId = friends.adresseeId;
+    }
     return new Promise((resolve, reject) => {
-      this.userService.getUserById(friendId).subscribe({
+      this.userService.getUserById(this.myFriendId).subscribe({
         next: (data) => {
           if (data) {
             resolve(data);
@@ -59,7 +87,7 @@ export class FriendCardComponent implements OnInit {
   }
 
   async friendToUser(friends: Friendship) {
-    const user = await this.getFriendToUser(friends)
+    await this.getFriendToUser(friends)
       .then((data) => {
         this.user = data;
         console.log(this.user);
@@ -71,5 +99,6 @@ export class FriendCardComponent implements OnInit {
 
   ngOnInit(): void {
     this.friendToUser(this.friendship);
+    this.friendshipBlockedOrNotAccepted(this.me.id, this.friendship);
   }
 }
