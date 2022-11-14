@@ -11,9 +11,9 @@
 // 	// width: 100%;
 // }
 
-
 .card-container {
-	background-color: #fff;
+	// background-color: #fff;
+	background-color: #7869C4;
 	height: 70% auto;
 	// width:  60%;
 	border-radius: 10px;
@@ -45,7 +45,8 @@ img {
 	font-family: "PixelPowerline";
 	font-weight: 50;
 	font-size: 9rem;
-	color: #fff;
+	color: #000;
+	// color: #fff;
 	transition: 0.3s;
 	text-shadow: -20px -20px #7869C4,
 					-17px -17px #000,
@@ -57,11 +58,14 @@ h2 {
 	font-size: 42px;
 	-webkit-text-stroke: black;
 	-webkit-text-stroke-width: 2px;
-		color: #00A595;
+		color: #fff;
+		// color: #B7A1FF;
+		// color: #00A595;
 		 text-shadow: 
-		 -10px -10px #7869C4,
+		 -10px -10px #00A595,
 		//  -10px -10px #00A595,
-		 				-8px -8px #000,
+						-10px -8px #000,
+		 				-8px -10px #000,
 						-12px -12px #000;
 }
 
