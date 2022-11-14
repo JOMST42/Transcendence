@@ -31,31 +31,31 @@
 	<section class="home-page" id="home">
 			<div class="flex home-container justify-content-center align-items-center">
 				<div class="flex home-page-card   text-center w-auto p-4 border-round mb-3 justify-content-center align-items-center ">
-						<div class="grid">
-							<div class="col-6 mt-3 flex flex-column align-items-center justify-content-center">
-								<app-user-img [avatarUrl]="user?.avatarUrl" [userIsMe]="user.id === user.id" (eventUpload)="refreshUser()"></app-user-img>
-								<app-user-displayname [user]="user" [userIsMe]="user.id === user.id" ></app-user-displayname>
-							</div>
-							<div class="display-name col-6 flex align-items-center justify-content-center">
-								<h1 class="title-homepage">!TRANSCENCUL!</h1>
-							</div>
-							<div class="xl:col-6 lg:col-6 md:col-12 sm:col-12 xs:col-12 align-items-center">
-								<img src="../../../../assets/image/pong-icon.svg" width="48" height="48"/>
-								<h2 class="text-center">Play</h2>
-							</div>
-							<div class="xl:col-6 lg:col-6 md:col-12 sm:col-12 xs:col-12 align-items-center">
-								<img src="../../../../assets/image/chats-icons.svg"/>
-								<h2 class="text-center">Chats</h2>
-							</div>
-							<div class="xl:col-6 lg:col-6 md:col-12 sm:col-12 xs:col-12 align-items-center">
-								<img src="../../../../assets/image/user.svg"/>
-								<h2 class="text-center">User</h2>
-							</div>
-							<div class="xl:col-6 lg:col-6 md:col-12 sm:col-12 xs:col-12 align-items-center">
-								<img src="../../../../assets/image/setting.svg"/>
-								<h2 class="text-center">settings</h2>
-							</div>
+					<div class="grid">
+						<div class="col-6 mt-3 flex flex-column align-items-center justify-content-center">
+							<app-user-img [avatarUrl]="user?.avatarUrl" [userIsMe]="user.id === user.id" (eventUpload)="refreshUser()"></app-user-img>
+							<app-user-displayname [user]="user" [userIsMe]="user.id === user.id" ></app-user-displayname>
 						</div>
+						<div class="display-name col-6 flex align-items-center justify-content-center">
+							<h1 class="title-homepage">!TRANSCENCUL!</h1>
+						</div>
+						<div class="xl:col-6 lg:col-6 md:col-12 sm:col-12 xs:col-12 align-items-center">
+							<img src="../../../../assets/image/pong-icon.svg" width="48" height="48"/>
+							<h2 class="text-center">Play</h2>
+						</div>
+						<div class="xl:col-6 lg:col-6 md:col-12 sm:col-12 xs:col-12 align-items-center">
+							<img src="../../../../assets/image/chats-icons.svg"/>
+							<h2 class="text-center">Chats</h2>
+						</div>
+						<div class="xl:col-6 lg:col-6 md:col-12 sm:col-12 xs:col-12 align-items-center">
+							<img src="../../../../assets/image/user.svg"/>
+							<h2 class="text-center">User</h2>
+						</div>
+						<div class="xl:col-6 lg:col-6 md:col-12 sm:col-12 xs:col-12 align-items-center">
+							<img src="../../../../assets/image/setting.svg"/>
+							<h2 class="text-center">settings</h2>
+						</div>
+					</div>
 				</div>
 			</div>
 	</section>
