@@ -24,7 +24,7 @@ import { UserState } from 'src/pong/data/enums';
 import { PongServerInterceptor } from '../pong-server.interceptor';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { User } from '@prisma/client';
-import { UserService } from '../../../user/services/user.service';
+import { UserService } from 'src/user/services/user.service';
 
 @Injectable({})
 @UseInterceptors(new PongServerInterceptor())
@@ -57,11 +57,11 @@ export class PongServerGateway
     this.server.setMaxListeners(Infinity); // WARNING need to read about it
 
     // WARNING test purpose
-    this.initTestServer();
+    // this.initTestServer();
 
-    setInterval(() => {
-      this.showServerInfo();
-    }, 30000);
+    // setInterval(() => {
+    //   this.showServerInfo();
+    // }, 30000);
     // setInterval(() => {
     //   this.updateRooms();
     // }, (1 / 60) * 1000); // FPS
