@@ -1,84 +1,82 @@
-<div
-  class="container"
-  style="padding-bottom: 3rem; border-style: double; border-color: blueviolet"
->
+<div #userContainer class="user-card">
   <div class="grid">
-    <div class="lg:col-4 sm:col-12 md:12">
-      <app-user-img
-        [avatarUrl]="user?.avatarUrl"
-        [userIsMe]="user.id === me.id"
-        (eventUpload)="refreshUser()"
-        style="overflow: hidden"
-      >
-      </app-user-img>
-      <app-friend-btn
-        [userIsMe]="user.id === me.id"
-        [me]="me"
-        [user]="user"
-      ></app-friend-btn>
-      <app-blocked-btn
-        [userIsMe]="user.id === me.id"
-        [me]="me"
-        [user]="user"
-      ></app-blocked-btn>
+    <div class="col-12 flex align-items-center justify-content-center">
+      <h1 class="title text-center">USER</h1>
     </div>
-    <div class="lg:col-8 sm:col-12 md:col-12">
-      <div class="grid">
-        <div class="lg:col-6 sm:col-12 md:col-12">
-          <app-user-displayname
-            [user]="user"
-            [userIsMe]="user.id === me.id"
-          ></app-user-displayname>
-        </div>
-        <div class="lg:col-6 sm:col-12 md:12">
-          <input
-            type="text"
-            pInputText
-            class="transparent-background color-bottom-border input-font"
-            placeholder="{{ user?.username }}"
-          />
-        </div>
-        <div class="lg:col-6 sm:col-12 md:12">
-          <input
-            type="text"
-            pInputText
-            class="transparent-background color-bottom-border input-font"
-            placeholder="{{ user?.lastName }}"
-          />
-        </div>
-        <div class="lg:col-6 sm:col-12 md:12">
-          <input
-            type="text"
-            pInputText
-            class="transparent-background color-bottom-border input-font"
-            placeholder="{{ user?.firstName }}"
-          />
+    <div class="col-12 flex align-items-center justify-content-center">
+      <div class="container">
+        <div class="grid">
+          <div class="lg:col-4 sm:col-12 md:12 card-user">
+            <app-user-img
+              [avatarUrl]="user?.avatarUrl"
+              [userIsMe]="user.id === me.id"
+              (eventUpload)="refreshUser()"
+              style="overflow: hidden"
+            >
+            </app-user-img>
+            <app-friend-btn
+              [userIsMe]="user.id === me.id"
+              [me]="me"
+              [user]="user"
+            ></app-friend-btn>
+            <app-blocked-btn
+              [userIsMe]="user.id === me.id"
+              [me]="me"
+              [user]="user"
+            ></app-blocked-btn>
+            <!-- <div class="stats-card  col-4"></div> -->
+          </div>
+          <div class="lg:col-8 sm:col-12 md:col-12 card-user">
+            <div class="grid">
+              <div class="lg:col-6 sm:col-12 md:col-12">
+                <app-user-displayname
+                  [user]="user"
+                  [userIsMe]="user.id === me.id"
+                ></app-user-displayname>
+              </div>
+              <div class="lg:col-6 sm:col-12 md:12">
+                <input
+                  type="text"
+                  pInputText
+                  class="transparent-background color-bottom-border input-font"
+                  placeholder="{{ user?.username }}"
+                />
+              </div>
+              <div class="lg:col-6 sm:col-12 md:12">
+                <input
+                  type="text"
+                  pInputText
+                  class="transparent-background color-bottom-border input-font"
+                  placeholder="{{ user?.lastName }}"
+                />
+              </div>
+              <div class="lg:col-6 sm:col-12 md:12">
+                <input
+                  type="text"
+                  pInputText
+                  class="transparent-background color-bottom-border input-font"
+                  placeholder="{{ user?.firstName }}"
+                />
+              </div>
+
+              <p-tabView>
+                <p-tabPanel header="STATS">
+                  <div class="stats-card col-4 mr-3"></div>
+                  <div class="stats-card col-4"></div>
+                </p-tabPanel>
+                <p-tabPanel header="FRIENDS">
+                  <div id="container-flex-column">
+                    <app-friend-list [user]="user"></app-friend-list>
+                  </div>
+                </p-tabPanel>
+                <p-tabPanel header="MATCH HISTORY">
+                  <app-match-history [user]="user"></app-match-history>
+                </p-tabPanel>
+              </p-tabView>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </div>
-
-<p-tabView>
-  <p-tabPanel header="STATS"> Content 1 </p-tabPanel>
-  <p-tabPanel header="FRIENDS">
-    <div id="container-flex-column">
-      <app-friend-list [user]="user"></app-friend-list>
-    </div>
-  </p-tabPanel>
-  <p-tabPanel header="MATCH HISTORY">
-    <app-match-history [user]="user"></app-match-history>
-  </p-tabPanel>
-  <p-tabPanel *ngIf="user?.id === me?.id" header="SEARCH">
-    <app-search-user></app-search-user>
-  </p-tabPanel>
-</p-tabView>
-<!-- <app-friend-card
-  [userIsMe]="user.id === me.id"
-  [me]="me"
-  [user]="user"
-></app-friend-card> -->
-
-<!-- <div id="container-flex-column">
-<app-friend-list></app-friend-list>
-</div> -->

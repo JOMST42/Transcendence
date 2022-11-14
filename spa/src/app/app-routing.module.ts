@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { AuthGuard } from './core/guards';
 import { NotFoundComponent, ServerErrorComponent } from './shared/components';
+import { SearchUserComponent } from './shared/components/search-user/search-user.component';
 
 const routes: Routes = [
   {
@@ -22,10 +23,10 @@ const routes: Routes = [
     loadChildren: () =>
       import('./watch/watch.module').then((m) => m.WatchModule),
   },
-	{
+  {
     path: '',
     loadChildren: () => import('./home/home.module').then((m) => m.HomeModule),
-		pathMatch: 'full',
+    pathMatch: 'full',
   },
   {
     path: 'server-error',
@@ -34,6 +35,10 @@ const routes: Routes = [
   {
     path: 'not-found',
     component: NotFoundComponent,
+  },
+  {
+    path: 'search',
+    component: SearchUserComponent,
   },
   {
     path: '**',

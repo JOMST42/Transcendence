@@ -1,5 +1,6 @@
 .pong-game {
 	z-index: -1;
+	box-shadow: -10px -10px #7869C4;
 }
 .profile-img {
 	width: 6rem;
@@ -19,5 +20,19 @@
 		display: none !important;
 	}
 
+}
+
+h1 {
+	-webkit-text-stroke: black;
+	-webkit-text-stroke-width: 3px;
+	// margin-top: -0.4rem;
+	font-family: "PixelPowerline";
+	font-weight: 50;
+	font-size: 6rem;
+	color: #fff;
+	transition: 0.3s;
+	text-shadow: -20px -20px #7869C4,
+					-17px -17px #000,
+					-23px -23px #000;
 }
 

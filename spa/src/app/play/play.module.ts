@@ -24,7 +24,7 @@ import { MatchHistoryComponent } from '../shared/components/match-history/match-
 		QueueWidjetComponent,
 		ReadyButtonComponent,
 	],
-  imports: [CommonModule, GameRoutingModule, FormsModule, SharedModule],
+  imports: [CommonModule, GameRoutingModule, FormsModule, SharedModule,],
   providers: [],
 })
 export class PlayModule {}

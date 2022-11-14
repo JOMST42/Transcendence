@@ -17,6 +17,9 @@
 	border-radius: 10px;
 	width:  800px;
 	height: auto;
+	box-shadow: -12px -12px #7869C4,
+				-13px -11px #000,
+				-15px -15px #000;
 }
 
 
@@ -43,12 +46,18 @@
 
 
 .score {
-	color: #68758A;
+	font-family: PixelPowerline;
+	-webkit-text-stroke: black;
+	-webkit-text-stroke-width: 2px;
+	color: #fff;
 	position: absolute;
 	font-size: 100px;
 	z-index: 10;
 	transform: translateX(-50%);
-	opacity: 0.5;
+	// opacity: 0.5;
+	text-shadow: -12px -12px #7869C4,
+				-13px -11px #000,
+				-15px -15px #000;
 	
 }
 

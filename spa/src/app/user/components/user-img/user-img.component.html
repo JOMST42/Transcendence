@@ -1,16 +1,23 @@
 <div class="container">
-  <img [src]="avatarUrl" alt="Image" class="profile-img"
-  />
-  <span>
+  <img [src]="avatarUrl" alt="Image" class="profile-img" />
+
     <p-fileUpload
-	class="upload-icons"
-    *ngIf="userIsMe"
-    mode="basic"
+      class="upload-icons"
+      *ngIf="userIsMe"
+      mode="basic"
+      validator=""
       name="avatar"
       url="http://localhost:3000/api/users/upload"
       accept="image/*"
       (onUpload)="onUpload()"
+      [maxFileSize]="1000000"
+      [fileLimit]="1"
+      [invalidFileSizeMessageSummary]="'Max file size 10MB'"
+      [invalidFileSizeMessageDetail]="'Please, choose an other image'"
+      [invalidFileTypeMessageSummary]="'Select an image type'"
+      [invalidFileTypeMessageDetail]="''"
+      
+      
     ></p-fileUpload>
-  </span>
-</div>
 
+</div>
