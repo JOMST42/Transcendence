@@ -16,12 +16,14 @@ import { PongQueueService } from './services/pong-queue.service';
 import { AuthModule } from '../../auth/auth.module';
 import { UserModule } from '../../user/user.module';
 import { PongServerInterceptor } from './pong-server.interceptor';
+import { PongInviteService } from './services/pong-invite.service';
 
 @Module({
   imports: [PongGameModule, AuthModule, UserModule],
   providers: [
     PongRoomService,
     PongQueueService,
+    PongInviteService,
     PongServerGateway,
     PongServerInterceptor,
   ],

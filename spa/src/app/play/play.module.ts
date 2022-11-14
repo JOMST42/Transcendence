@@ -13,6 +13,7 @@ import { QueueWidjetComponent } from './ui/queue-widjet/queue-widjet.component';
 import { ReadyButtonComponent } from './ui/ready-button/ready-button.component';
 import { CoreModule } from '../core/core.module';
 import { MatchHistoryComponent } from '../shared/components/match-history/match-history.component';
+import { PongModule } from '../pong/pong.module';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,7 @@ import { MatchHistoryComponent } from '../shared/components/match-history/match-
 		QueueWidjetComponent,
 		ReadyButtonComponent,
 	],
-  imports: [CommonModule, GameRoutingModule, FormsModule, SharedModule],
+  imports: [CommonModule, GameRoutingModule, FormsModule, SharedModule, PongModule],
   providers: [],
 })
 export class PlayModule {}

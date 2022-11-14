@@ -25,6 +25,7 @@ import { PongServerInterceptor } from '../pong-server.interceptor';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { User } from '@prisma/client';
 import { UserService } from 'src/user/services/user.service';
+import { PongInviteService } from '../services/pong-invite.service';
 
 @Injectable({})
 @UseInterceptors(new PongServerInterceptor())
@@ -47,6 +48,8 @@ export class PongServerGateway
     private roomService: PongRoomService,
     @Inject(forwardRef(() => PongQueueService))
     private queueService: PongQueueService,
+    @Inject(forwardRef(() => PongInviteService))
+    private inviteService: PongInviteService,
     private authService: AuthService,
     private userService: UserService,
     private prisma: PrismaService,
@@ -216,6 +219,22 @@ export class PongServerGateway
     @ConnectedSocket() socket: Socket,
   ): Response {
     return this.roomService.userJoinRoom(id, socket);
+  }
+
+  @SubscribeMessage('invite-player')
+  handleInvitePlayer(
+    @MessageBody() id: number,
+    @ConnectedSocket() socket: Socket,
+  ): Response {
+    const targetSocket = this.roomService.getUserWithId(id);
+    if (!targetSocket)
+      return {
+        code: 1,
+        msg: 'You are trying to invite an offline or non-existant player',
+      };
+    if (targetSocket === socket)
+      return { code: 1, msg: 'You can not invite yourself' };
+    return this.inviteService.userInvite(socket, targetSocket);
   }
 
   /********** END EVENT SUBSCRIPTIONS **********/

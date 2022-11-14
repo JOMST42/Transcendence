@@ -15,7 +15,6 @@ import {
   PongScreenComponent,
   ServerErrorComponent,
 } from './components';
-import { EventButtonComponent } from './components/event-button/event-button.component';
 import { RouterModule } from '@angular/router';
 import { MatchHistoryComponent } from './components/match-history/match-history.component';
 
@@ -26,7 +25,6 @@ import { MatchHistoryComponent } from './components/match-history/match-history.
     NavBarComponent,
     PongScreenComponent,
     PongAudioComponent,
-    EventButtonComponent,
     JoinGameDialogComponent,
 		MatchHistoryComponent,
   ],
@@ -47,7 +45,6 @@ import { MatchHistoryComponent } from './components/match-history/match-history.
     TableModule,
     PongScreenComponent,
     PongAudioComponent,
-    EventButtonComponent,
     NavBarComponent,
     InputTextModule,
     JoinGameDialogComponent,
