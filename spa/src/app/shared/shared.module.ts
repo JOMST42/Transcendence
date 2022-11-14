@@ -8,6 +8,7 @@ import { DialogModule } from 'primeng/dialog';
 import { AvatarModule } from 'primeng/avatar';
 import { CardModule } from 'primeng/card';
 import { TabViewModule } from 'primeng/tabview';
+import { InputTextareaModule } from 'primeng/inputtextarea';
 
 import {
   JoinGameDialogComponent,
@@ -47,6 +48,7 @@ import { MatchHistoryComponent } from './components/match-history/match-history.
     RouterModule,
     TabViewModule,
     CardModule,
+    InputTextareaModule,
   ],
   exports: [
     CommonModule,
@@ -66,6 +68,7 @@ import { MatchHistoryComponent } from './components/match-history/match-history.
     SearchUserComponent,
     UserAvatarComponent,
 		MatchHistoryComponent,
+    InputTextareaModule,
   ],
 })
 export class SharedModule {}

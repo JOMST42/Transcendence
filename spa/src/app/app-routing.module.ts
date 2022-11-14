@@ -7,16 +7,31 @@ import { SearchUserComponent } from './shared/components/search-user/search-user
 
 const routes: Routes = [
   {
-    path: 'users',
-    loadChildren: () => import('./user/user.module').then((m) => m.UserModule),
-  },
-  {
-    path: 'chat',
-    loadChildren: () => import('./chat/chat.module').then((m) => m.ChatModule),
-  },
-  {
-    path: 'play',
-    loadChildren: () => import('./play/play.module').then((m) => m.PlayModule),
+    path: '',
+    runGuardsAndResolvers: 'always',
+    canActivate: [AuthGuard],
+    children: [
+      {
+        path: 'users',
+        loadChildren: () =>
+          import('./user/user.module').then((m) => m.UserModule),
+      },
+      {
+        path: 'chat',
+        loadChildren: () =>
+          import('./chat/chat.module').then((m) => m.ChatModule),
+      },
+      {
+        path: 'play',
+        loadChildren: () =>
+          import('./play/play.module').then((m) => m.PlayModule),
+      },
+      {
+        path: 'watch',
+        loadChildren: () =>
+          import('./watch/watch.module').then((m) => m.WatchModule),
+      },
+    ],
   },
   {
     path: 'watch',
