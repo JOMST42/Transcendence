@@ -1,51 +1,51 @@
-<div class="container">
-  <div class="grid">
-    <div class="lg:col-4 sm:col-12 md:12">
-      <app-user-img
-        [avatarUrl]="user?.avatarUrl"
-        [userIsMe]="user.id === me.id"
-        (eventUpload)="refreshUser()"
-        style="overflow: hidden"
-      >
-      </app-user-img>
-      <app-friend-btn
-        [userIsMe]="user.id === me.id"
-        [me]="me"
-        [user]="user"
-      ></app-friend-btn>
-      <app-blocked-btn
-        [userIsMe]="user.id === me.id"
-        [me]="me"
-        [user]="user"
-      ></app-blocked-btn>
-    </div>
-    <div class="lg:col-8 sm:col-12 md:col-12">
-      <div class="grid">
-        <div class="lg:col-6 sm:col-12 md:col-12">
-          <app-user-displayname
-            [user]="user"
-            [userIsMe]="user.id === me.id"
-          ></app-user-displayname>
-        </div>
-        <div class="lg:col-6 sm:col-12 md:12" style="background-color: rgb(0, 255, 72)">
-          <input type="text" pInputText class="transparent-background color-bottom-border input-font" placeholder="{{ user?.username }}"/>
-        </div>
-        <div class="lg:col-6 sm:col-12 md:12" style="background-color: rgb(255, 102, 0)">
-          <input type="text" pInputText class="transparent-background color-bottom-border input-font" placeholder="{{ user?.lastName }}"/>
-        </div>
-        <div class="lg:col-6 sm:col-12 md:12" style="background-color: rgb(41, 39, 163)" >
-          <input type="text" pInputText class="transparent-background color-bottom-border input-font" placeholder="{{ user?.firstName }}"/>
+
+<div #userContainer  class="user-card">
+	<div class="grid">
+		<div class="col-12 flex  align-items-center justify-content-center">
+			<h1 class="title text-center">USER</h1>
+		</div>
+		<div class="col-12 flex align-items-center justify-content-center">
+      <div class="container">
+        <div class="grid">
+          <div class="lg:col-4 sm:col-12 md:12 card-user">
+            <app-user-img [avatarUrl]="user?.avatarUrl" [userIsMe]="user.id === me.id" (eventUpload)="refreshUser()" style="overflow: hidden">
+            </app-user-img>
+            <app-friend-btn [userIsMe]="user.id === me.id" [me]="me"[user]="user"></app-friend-btn>
+            <app-blocked-btn [userIsMe]="user.id === me.id" [me]="me" [user]="user"></app-blocked-btn>
+          </div>
+          <div class="lg:col-8 sm:col-12 md:col-12 card-user">
+            <div class="grid">
+              <div class="lg:col-6 sm:col-12 md:col-12">
+                <app-user-displayname [user]="user" [userIsMe]="user.id === me.id"></app-user-displayname>
+              </div>
+              <div class="lg:col-6 sm:col-12 md:12">
+                <input type="text" pInputText class="transparent-background color-bottom-border input-font" placeholder="{{ user?.username }}"/>
+              </div>
+              <div class="lg:col-6 sm:col-12 md:12">
+                <input type="text" pInputText class="transparent-background color-bottom-border input-font" placeholder="{{ user?.lastName }}"/>
+              </div>
+              <div class="lg:col-6 sm:col-12 md:12" >
+                <input type="text" pInputText class="transparent-background color-bottom-border input-font" placeholder="{{ user?.firstName }}"/>
+              </div>
+              <div class="stats-card  col-4"></div>
+              <div class="stats-card  col-4"></div>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-  </div>
+		</div>
+	</div>
 </div>
 
-<app-friend-card
+
+
+
+
+<!-- <app-friend-card
   [userIsMe]="user.id === me.id"
   [me]="me"
   [user]="user"
-></app-friend-card>
+></app-friend-card> -->
 
 
 

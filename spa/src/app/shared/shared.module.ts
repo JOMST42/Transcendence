@@ -37,7 +37,8 @@ import { RouterModule } from '@angular/router';
     InputTextModule,
     DialogModule,
     AvatarModule,
-	RouterModule
+	RouterModule,
+  // UserModule
   ],
   exports: [
     CommonModule,

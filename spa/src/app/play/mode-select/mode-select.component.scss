@@ -13,11 +13,11 @@
 
 
 .card-container {
-	background: rgb(104, 117, 138, 0.15);
+	background-color: #fff;
 	height: 70% auto;
 	// width:  60%;
 	border-radius: 10px;
-	border: 2px solid #68758A;
+	border: 3px solid #000;
 
 }
 
@@ -31,41 +31,49 @@ img {
 	border-radius: 10px;
 	max-height: 600px;
 	max-width: 800px;
-	border: 2px solid #68758A;
-	z-index: -1;
+	border: 3px solid #000;
+	box-shadow: -10px -10px #00A595,
+				-7px -7px #000,
+				-13px -13px #000;
+	
 }
 
 .title {
-	margin-top: -0.4rem;
-	font-family: "PowerRangers";
+	-webkit-text-stroke: black;
+	-webkit-text-stroke-width: 3px;
+	// margin-top: -0.4rem;
+	font-family: "PixelPowerline";
 	font-weight: 50;
-	font-size: 10rem;
-	color: #68758A;
+	font-size: 9rem;
+	color: #fff;
 	transition: 0.3s;
-		text-shadow:
-    		0 0 7px #fff,
-    		0 0 10px #fff,
-    		0 0 21px #68758A,
-    		0 0 42px #68758A,
-    		// 0 0 82px #0c1013,
-    		// 0 0 92px #0c1013,
-    		// 0 0 102px #68758A,
-    		// 0 0 151px #68758A;
+	text-shadow: -20px -20px #7869C4,
+					-17px -17px #000,
+					-23px -23px #000;
 }
 
 h2 {
-	// position: relative;
-	font-family: monospace;
-	// font-family: PowerRangers;
-	font-weight: 40;
-	color: #68758A;
-	// letter-spacing: 0.5rem;
+	font-family: PixelPowerline;
+	font-size: 42px;
+	-webkit-text-stroke: black;
+	-webkit-text-stroke-width: 2px;
+		color: #00A595;
+		 text-shadow: 
+		 -10px -10px #7869C4,
+		//  -10px -10px #00A595,
+		 				-8px -8px #000,
+						-12px -12px #000;
 }
 
 @media  screen and (min-width: 0px) and (max-width: 1280px) {
 	// .grid .card-container {
 	// 	display: flex-none;
 	// }
+}
+@media  screen and (min-width: 910px) and (max-width: 1160px) {
+	.grid .title {
+		font-size: 5rem;
+	}
 }
 
 @media  screen and (min-width: 0px) and (max-width: 910px) {
@@ -74,6 +82,8 @@ h2 {
 	}
 	.grid .card-container {
 		display: flex-none;
+		// background-color: #00A595;
+		// width: 500px;
 	}
 	.grid .title {
 		font-size: 5rem;
@@ -81,6 +91,10 @@ h2 {
 }
 
 @media  screen and (min-width: 1160px) and (max-width: 1320px) {
+	.grid .title {
+		font-size: 6rem;
+	}
+
 	.grid img {
 		width: 500px;
 		// height: 300px;
