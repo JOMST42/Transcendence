@@ -1,7 +1,9 @@
-@media screen and (max-width:800px){
+@media screen and (max-width:600px){
   .container{
-    justify-items: center;
+    align-items: center;
+		align-content: center;
   }
+	
 }
 
 :host ::ng-deep .p-tabview-panels {

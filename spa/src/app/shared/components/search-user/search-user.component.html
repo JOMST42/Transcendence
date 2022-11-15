@@ -4,7 +4,7 @@
   </div>
   <div class="col-12 flex align-items-center justify-content-center">
     <div class="grid">
-      <div class="col-8 flex align-items-center justify-content-center">
+      <div class="col-8 flex align-items-center justify-content-center search-card" style="width: 700px;">
         <p-table
           #dt1
           [value]="users"
@@ -34,10 +34,10 @@
 
           <ng-template pTemplate="header">
             <tr>
-              <th>
+              <th class="item1">
                 <div class="p-d-flex p-jc-between p-ai-center">Avatar</div>
               </th>
-              <th>
+              <th class="item2">
                 <div
                   class="p-d-flex p-jc-between p-ai-center"
                   field="firstName"
@@ -45,7 +45,7 @@
                   Name
                 </div>
               </th>
-              <th>
+              <th class="item3">
                 <div
                   class="p-d-flex p-jc-between p-ai-center"
                   field="displayName"
@@ -57,8 +57,8 @@
           </ng-template>
 
           <ng-template pTemplate="body" let-user>
-            <tr>
-              <td>
+            <tr >
+              <td >
                 <app-user-avatar
                   [avatarUrl]="user?.avatarUrl"
                   [user]="user"
