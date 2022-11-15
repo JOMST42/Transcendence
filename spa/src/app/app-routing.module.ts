@@ -8,6 +8,11 @@ import { SearchUserComponent } from './shared/components/search-user/search-user
 const routes: Routes = [
   {
     path: '',
+    loadChildren: () => import('./home/home.module').then((m) => m.HomeModule),
+    pathMatch: 'full',
+  },
+  {
+    path: '',
     runGuardsAndResolvers: 'always',
     canActivate: [AuthGuard],
     children: [
@@ -37,11 +42,6 @@ const routes: Routes = [
     path: 'watch',
     loadChildren: () =>
       import('./watch/watch.module').then((m) => m.WatchModule),
-  },
-  {
-    path: '',
-    loadChildren: () => import('./home/home.module').then((m) => m.HomeModule),
-    pathMatch: 'full',
   },
   {
     path: 'server-error',
