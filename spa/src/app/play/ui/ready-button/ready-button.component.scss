@@ -1,26 +1,26 @@
 .p-button-raised {
-	z-index: 0;
-	position: relative;
-	background-color: transparent;
+	background-color: #fff;
 	padding: 15px 45px;
 	text-align: center;
 	text-transform: uppercase;
 	transition: 0.3s;
-	color: #68758A;
-	box-shadow: 0 0 20px #404040;
+	background-size: 200% auto;
+	color: #7869C4;
+	-webkit-text-stroke: black;
+	-webkit-text-stroke-width: 1.5px;
 	border-radius: 10px;
-	font-family: Monoton;
-	font-weight: 50;
-	letter-spacing: 4px;
-	border-color: #68758A;
-	font-size: 1rem;
+	display: block;
+	font-family: PixelPowerline;
+	font-weight: 100;
+	transition: 0.3s ease-in-out;
+	border-color: #000;
+	font-size: 1.7rem;
   }
 
 .p-button-raised:hover {
-	background-color: #68758A;
+	scale: 1.2;
+	background-color: #7869C4;
 	background-position: right center; /* change the direction of the change here */
-	color: #ededed;
+	color: #fff;
 	text-decoration: none;
-	box-shadow: 0 0 20px #404040;
-	border-color: #ededed;
   }

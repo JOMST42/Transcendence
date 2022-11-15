@@ -1,230 +1,106 @@
 @media screen and (max-width:800px){
-    .container{
-      justify-items: center;
-    }
+  .container{
+    justify-items: center;
   }
-// #container-flex-column{
-//   display:flex;
-//   flex-direction: column;
-// }
+}
 
-// .img-card{
-//   float:left;
-// }
-
-// .container{
-//   background-color: #bc13fe;
-//   margin-top: 2rem;
-// }
-// // .container {
-// //   display: flex;
-// //   flex-flow: row wrap;
-// //   align-items: center;
-// //   justify-content: space-around;
-// //   flex-direction: row;
-// //   width: 100%;
-// //   block-size: fit-content;
-// //   margin: 1rem 2rem 2rem 0rem;
-// //   background-color: rgb(89, 13, 203);
-// //   aspect-ratio: 100 / 29;
-// //   max-height: 200px;
-// // }
+:host ::ng-deep .p-tabview-panels {
+  background-color: #7869c4 !important;
+  border: 3px solid black;
+	border-top: 0px;
+}
 
 
-// .transparent-background {
-//   background-color: transparent;
-//   border: none;
-//   outline: none;
-// }
-
-// .color-bottom-border {
-//   border-bottom: 2px solid #A6A6A6;
-// }
-
-// .label-style {
-//   margin-top: 0rem;
-//   margin-right: 1rem;
-//   margin-left: 1rem;
-//   margin-bottom: 0rem;
-// }
-
-// .label-nonclick {
-//   pointer-events: none;
-// }
-
-// .input-font {
-//   font-size: 1.5rem;
-//   font-family: "Lato";
-// }
-
-// .label-style::placeholder {
-//   color: rgb(8, 0, 255);
-//   font-weight: 900;
-// }
-
-// .hovertext {
-//   position: relative;
-//   border: none;
-//   width: 200px;
-//   height: 200px;
-// }
-
-// .hovertext:before {
-//   content: attr(data-hover);
-//   visibility: hidden;
-//   opacity: 0;
-//   width: max-content;
-//   background-color: transparent;
-//   color: rgb(19, 228, 0);
-//   font-size: 1.5rem;
-//   font-family: "Lato";
-//   text-align: center;
-//   padding: 5px 5px;
-//   transition: opacity 1s ease-in-out;
-
-//   position: absolute;
-//   z-index: 1;
-//   left: 0;
-//   top: 110%;
-// }
-
-// .hovertext:hover:before {
-//   opacity: 1;
-//   visibility: visible;
-// }
-
-// .hovertext:focus-within {
-//   visibility: hidden;
-// }
-
-// .float_label {
-//   outline: none;
-//   border: none;
-//   margin-bottom: 0.5rem;
-//   width: fit-content;
-//   min-width: fit-content;
-//   block-size: fit-content;
-//   border-bottom: 1px  rgb(241, 255, 43);
-//   border-bottom-style: solid;
-//   background-color: rgb(47, 9, 145);
-//   box-shadow: 0 0 .2rem #fff,
-//               0 0 .2rem #fff,
-//               0 0 2rem #bc13fe,
-//               0 0 0.8rem #bc13fe,
-//               0 0 2.8rem #bc13fe,
-//               inset 0 0 1.3rem #bc13fe;
-// }
-
-// .inputbox-trans {
-//   border: 0;
-//   outline: 0;
-//   opacity: 0.2;
-//   width: fit-content;
-//   height:30px;
-//   margin: 2rem 2rem 5rem 2rem;
-//   border-bottom: 2px solid #ffff18;
-// }
-
-// .inputbox-trans::placeholder{
-//   font-family:"Lato";
-//   opacity: 1;
-//   color: #ffff18;
-//   font-size: large;
-// }
-
-// .profile_button {
-//   width: 30px;
-//   max-width: 50%;
-//   padding: 1%;
-//   border: 3px solid rgb(23, 110, 157);
-//   background-color: rgb(54, 198, 198);
-//   box-shadow: 3px 3px 0px grey;
-// }
+:host ::ng-deep .p-tabview-nav-link {
+  background-color: #7869c4 !important;
+	color: #00A595;
+	border-style: 2px 2px 2px 2px;
+  border:  solid black;
+}
 
 
-// .flex-container {
-// display:flex;
-// flex-flow: row wrap;
-// justify-content: flex-start;
-// padding: 0;
-// margin-top: 2rem;
-// margin-left: 150px;
-// list-style: none;
-// }
+:host ::ng-deep .p-tabview-title{
+  background-color: #7869c4 !important;
+	color: #00A595;
 
-// .flex-item {
-// background:transparent;
-// padding: 0px;
-// // min-width: 150px;
-// // width:auto;
-// // min-height: 150px;
-// // height: auto;
-// margin-top: 10px;
-// font-weight: bold;
-// font-size: 3em;
-// // text-align: center;
-// font-family:"Poppins";
-// opacity: 1;
-// color: #ffff18;
-// font-size: large;
+}
 
-// }
+:host ::ng-deep .p-tabview-ink-bar{
+	color: #00A595;
 
+}
 
-// .profile-img {
- 
-//   border-radius: 0px;
-//   width: 100%;
-//   height: auto;
-//   max-width: 150px;
-//   min-height: auto;
-//   margin: 0rem 2rem 2rem 2rem;
-//   box-shadow: 0 0 .2rem rgb(0, 0, 0),
-//   0 0 .2rem rgb(6, 3, 3),
-//   0 0 2rem #0a0a0a,
-//   0 0 0.8rem #000002,
-//   inset 0 0 1.3rem #010105;
-//   float: left;
-// }
-// @media screen and (max-width:800px){
-//   .profile-img{
-//     width: auto;
-//     max-width: 300px;
-//     float: none;
-//     display: block;
-//     margin: 2rem 0rem 0rem 2rem;
-//   }
-// }
+.container  {
+  // margin-top: 50px;
+  border-radius: 30px;
+	width: 900px !important;
+	position: relative;
+	background-color: #fff  !important;
+	border: 3px solid black;;
+	box-shadow: -10px -10px #7869C4,
+				-10px -8px #000,
+				-8px -10px #000,
+				-12px -12px #000;
+}
 
-// // @media screen and (max-width:800px){
-// //   .flex-container{
-// //     background-color: #2718ff;
-// //     flex-flow: column wrap;
-// //     margin-left: 0;
-// //     text-align: center;
-// //   }
-// // }
+h1 {
+	-webkit-text-stroke: black;
+	-webkit-text-stroke-width: 3px;
+	// margin-top: -0.4rem;
+	font-family: "PixelPowerline";
+	font-weight: 50;
+	font-size: 4rem;
+	color: #fff;
+	transition: 0.3s;
+	text-shadow: -20px -20px #7869C4,
+					-17px -17px #000,
+					-23px -23px #000;
+}
 
-// // @media screen and (max-width:800px){
-// //   .flex-item{
-// //     margin: 1rem 1rem 1rem 1rem;
+h2 {
+	-webkit-text-stroke: black;
+	-webkit-text-stroke-width: 3px;
+	// margin-top: -0.4rem;
+	font-family: "PixelPowerline";
+	font-weight: 50;
+	font-size: 2.5rem;
+	color: #fff;
+	transition: 0.3s;
+	text-shadow: -12px -12px #7869C4,
+					-10px -10px #000,
+					-10px -8px #000,
+					-8px -10px #000,
+					-14px -14px #000;
+}
 
-// //   }
-// // }
+.card-user {
+  margin-top: 3rem;
+}
 
-// // @media screen and (max-width:800px){
-// //   .profile-img{
-// //     width: auto;
-// //     max-width: 300px;
-// //     float: none;
-// //     display: block;
-// //     margin: 2rem auto;
-// //   }
-// // }
+.stats-card {
 
+	margin-top: 15px;
+	height: 250px;
+	width: 175px;
+	border-radius: 30px;
+	position: relative;
+	background-color: #00A595  !important;
+	border: 3px solid black;;
+	// box-shadow: -10px -10px #7869C4,
+	// 			-10px -8px #000,
+	// 			-8px -10px #000,
+	// 			-12px -12px #000;
+}
 
-// // @media screen and (max-width:800px){
-// //   .img-card{
-// //    float: none;
-// //   }
-// // }
+::placeholder {
+	color: #00A595;
+}
+
+input {
+	background-color: #7869C4 !important;
+	font-family: PixelPowerline;
+	color: #fff !important;
+	-webkit-text-stroke: black;
+	-webkit-text-stroke-width: 1px;
+	border: 3px solid #000 !important;
+}

@@ -42,6 +42,12 @@ export class UserController implements OnModuleInit {
     return user;
   }
 
+  @Get('all')
+  async getUsers(): Promise<User[]> {
+    console.log('controler');
+    return await this.userService.getUsers();
+  }
+
   @Get(':id')
   async getUserById(
     @Param('id', ParseIntPipe) id: number,
@@ -77,7 +83,7 @@ export class UserController implements OnModuleInit {
     return this.userService.updateUserById(user.id, { avatarUrl: res.url });
   }
 
-  @Get(':id/friendsList')
+  @Get(':id/friends_list')
   async getFriendships(
     @Param('id', ParseIntPipe) userId: number,
   ): Promise<Friendship[]> {

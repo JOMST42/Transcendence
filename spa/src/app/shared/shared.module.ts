@@ -6,6 +6,9 @@ import { TableModule } from 'primeng/table';
 import { InputTextModule } from 'primeng/inputtext';
 import { DialogModule } from 'primeng/dialog';
 import { AvatarModule } from 'primeng/avatar';
+import { CardModule } from 'primeng/card';
+import { TabViewModule } from 'primeng/tabview';
+import { InputTextareaModule } from 'primeng/inputtextarea';
 
 import {
   JoinGameDialogComponent,
@@ -16,6 +19,8 @@ import {
   ServerErrorComponent,
 } from './components';
 import { RouterModule } from '@angular/router';
+import { SearchUserComponent } from './components/search-user/search-user.component';
+import { UserAvatarComponent } from './components/user-avatar/user-avatar.component';
 import { MatchHistoryComponent } from './components/match-history/match-history.component';
 
 @NgModule({
@@ -26,6 +31,8 @@ import { MatchHistoryComponent } from './components/match-history/match-history.
     PongScreenComponent,
     PongAudioComponent,
     JoinGameDialogComponent,
+    SearchUserComponent,
+    UserAvatarComponent,
 		MatchHistoryComponent,
   ],
   imports: [
@@ -36,7 +43,10 @@ import { MatchHistoryComponent } from './components/match-history/match-history.
     InputTextModule,
     DialogModule,
     AvatarModule,
-		RouterModule,
+    RouterModule,
+    TabViewModule,
+    CardModule,
+    InputTextareaModule,
   ],
   exports: [
     CommonModule,
@@ -49,7 +59,13 @@ import { MatchHistoryComponent } from './components/match-history/match-history.
     InputTextModule,
     JoinGameDialogComponent,
     AvatarModule,
+    DialogModule,
+    TabViewModule,
+    CardModule,
+    SearchUserComponent,
+    UserAvatarComponent,
 		MatchHistoryComponent,
+    InputTextareaModule,
   ],
 })
 export class SharedModule {}
