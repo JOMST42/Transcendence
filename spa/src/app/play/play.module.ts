@@ -23,7 +23,7 @@ import { CoreModule } from '../core/core.module';
 		QueueWidjetComponent,
 		ReadyButtonComponent,
 	],
-  imports: [CommonModule, GameRoutingModule, FormsModule, SharedModule],
+  imports: [CommonModule, GameRoutingModule, FormsModule, SharedModule,],
   providers: [],
 })
 export class PlayModule {}

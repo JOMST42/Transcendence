@@ -3,7 +3,7 @@
 		<div class="title-div flex col-12 align-items-center justify-content-center m-2">
 			<div class="grid">
 				<div class="col-12">
-					<h1 class="block text-center title-logpage">!Transcendence!</h1>
+					<h1 class="block text-center title-logpage">Transcendence</h1>
 					<!-- <h3 class="block text-center">PONG GAME BY JOMST</h3> -->
 				</div>
 			</div>
@@ -26,40 +26,50 @@
 
 <ng-template #loggedIn>
 	<div class="nav-bar">
-		<app-nav-bar></app-nav-bar>
+		<!-- <app-nav-bar></app-nav-bar> -->
 	</div>
 	<section class="home-page" id="home">
-			<div class="flex home-container justify-content-center align-items-center">
+			<div class="flex grid home-container justify-content-center align-items-center">
+				<div class="col-12 flex align-content-center justify-content-center"><h1 class="title-homepage">MENU</h1></div>
 				<div class="flex home-page-card   text-center w-auto p-4 border-round mb-3 justify-content-center align-items-center ">
-					<div class="grid">
-						<div class="col-6 mt-3 flex flex-column align-items-center justify-content-center">
-							<app-user-img [avatarUrl]="user?.avatarUrl" [userIsMe]="user.id === user.id" (eventUpload)="refreshUser()"></app-user-img>
-							<app-user-displayname [user]="user" [userIsMe]="user.id === user.id" ></app-user-displayname>
+						<div class="grid">
+							<div class="col-12 mt-3 flex align-items-center justify-content-center">
+								<app-user-img [avatarUrl]="user?.avatarUrl" [userIsMe]="user.id === user.id" (eventUpload)="refreshUser()"></app-user-img>
+								<app-user-displayname [user]="user" [userIsMe]="user.id === user.id" ></app-user-displayname>
+								<!-- <div class="display-name col-6 flex align-items-center justify-content-center">
+									<h1 class="title-homepage">!TRANSCENDENSE!</h1>
+								</div> -->
+							</div>
+							<div class="col-6 flex flex-column align-items-center text-center ">
+								<div class="img-container xl:col-6 lg:col-6 md:col-12 sm:col-12 xs:col-12 justify-content-center align-items-center">
+									<img src="../../../../assets/image/pong-blanc.svg" width="48" height="48"/>
+									<!-- <h2 class="text-center">Play</h2> -->
+								</div>
+								<div class=" img-container xl:col-6 lg:col-6 md:col-12 sm:col-12 xs:col-12 justify-content-centerlign-items-center">
+									<img src="../../../../assets/image/chats-icons.svg"/>
+									<!-- <h2 class="text-center">Chats</h2> -->
+								</div>
+							</div>
+							<div class="col-6 flex flex-column align-items-center text-center">
+
+								<div class="img-container xl:col-6 lg:col-6 md:col-12 sm:col-12 xs:col-12 justify-content-centerlign-items-center">
+									<img src="../../../../assets/image/user.svg"/>
+									<!-- <h2 class="text-center">User</h2> -->
+								</div>
+								<div class="img-container xl:col-6 lg:col-6 md:col-12 sm:col-12 xs:col-12 justify-content-centerlign-items-center">
+									<img src="../../../../assets/image/setting-blanc.svg"/>
+									<!-- <h2 class="text-center">settings</h2> -->
+								</div>
+							</div>
 						</div>
-						<div class="display-name col-6 flex align-items-center justify-content-center">
-							<h1 class="title-homepage">!TRANSCENCUL!</h1>
-						</div>
-						<div class="xl:col-6 lg:col-6 md:col-12 sm:col-12 xs:col-12 align-items-center">
-							<img src="../../../../assets/image/pong-icon.svg" width="48" height="48"/>
-							<h2 class="text-center">Play</h2>
-						</div>
-						<div class="xl:col-6 lg:col-6 md:col-12 sm:col-12 xs:col-12 align-items-center">
-							<img src="../../../../assets/image/chats-icons.svg"/>
-							<h2 class="text-center">Chats</h2>
-						</div>
-						<div class="xl:col-6 lg:col-6 md:col-12 sm:col-12 xs:col-12 align-items-center">
-							<img src="../../../../assets/image/user.svg"/>
-							<h2 class="text-center">User</h2>
-						</div>
-						<div class="xl:col-6 lg:col-6 md:col-12 sm:col-12 xs:col-12 align-items-center">
-							<img src="../../../../assets/image/setting.svg"/>
-							<h2 class="text-center">settings</h2>
-						</div>
+						
 					</div>
 				</div>
-			</div>
 	</section>
 </ng-template>
 
 <!-- https://www.learmoreseekmore.com/2020/12/angular-ngx-device-detector-library.html -->
 
+<!-- https://colorswall.com/palette/133992 -->
+<!-- https://www.fontspace.com/category/80s -->
+<!-- https://uigradients.com/#Instagram -->
