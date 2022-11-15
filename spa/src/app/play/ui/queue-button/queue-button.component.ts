@@ -41,12 +41,12 @@ export class QueueButtonComponent implements OnInit {
 	async handleQueue(event: any) {
 		if (this.state === ButtonState.JOIN) {
 			this.changeToProcess();
-			await this.delay(1000); // TODO test purpose
+			// await this.delay(1000); // TODO test purpose
 			await this.joinQueue();
 		}
 		else if (this.state === ButtonState.LEAVE) {
 			this.changeToProcess();
-			await this.delay(1000); // TODO test purpose
+			// await this.delay(1000); // TODO test purpose
 			await this.leaveQueue();
 		}
 

@@ -12,6 +12,7 @@ import {
 import { FriendBtnComponent } from './components/friends/friend-btn/friend-btn.component';
 import { BlockedBtnComponent } from './components/friends/blocked-btn/blocked-btn.component';
 import { FriendCardComponent } from './components/friends/friend-card/friend-card.component';
+import { PongModule } from '../pong/pong.module';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,7 @@ import { FriendCardComponent } from './components/friends/friend-card/friend-car
     FriendCardComponent,
   
   ],
-  imports: [SharedModule, UserRoutingModule, FileUploadModule],
+  imports: [SharedModule, UserRoutingModule, FileUploadModule, PongModule],
   exports: [
     UserDisplaynameComponent,
     UserImgComponent,

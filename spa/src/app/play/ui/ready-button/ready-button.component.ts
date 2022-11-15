@@ -39,12 +39,12 @@ export class ReadyButtonComponent {
 	async handleReady(event: any) {
 		if (this.state === ButtonState.READY) {
 			this.changeToProcess();
-			await this.delay(1000); // TODO test purpose
+			// await this.delay(1000); // TODO test purpose
 			await this.ready();
 		}
 		else if (this.state === ButtonState.UNREADY) {
 			this.changeToProcess();
-			await this.delay(1000); // TODO test purpose
+			// await this.delay(1000); // TODO test purpose
 			await this.unready();
 		}
 

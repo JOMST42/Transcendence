@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { User } from 'src/app/user/models';
 import { GameInviteService } from '../services/game-invite.service';
 
 @Component({
@@ -6,14 +7,15 @@ import { GameInviteService } from '../services/game-invite.service';
   templateUrl: './game-invite.component.html',
 })
 export class GameInviteComponent implements OnInit {
+	@Input() user!: User;
 
   constructor(private inviteService: GameInviteService) { }
 
   ngOnInit(): void {
   }
 
-	invitePlayer(id2: number) {
-		this.inviteService.invitePlayer(id2);
+	invitePlayer() {
+		this.inviteService.invitePlayer(this.user.id);
 	}
 
 	acceptInvite() {

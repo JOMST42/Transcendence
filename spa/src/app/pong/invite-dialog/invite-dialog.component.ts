@@ -37,7 +37,6 @@ enum ButtonState {
   `]
 })
 export class InviteDialogComponent { 
-
 	displayPosition: boolean;
 	position: string;
 	labelAccept = "Accept";
@@ -57,7 +56,6 @@ export class InviteDialogComponent {
 	constructor(private inviteService: GameInviteService,
 		 private primengConfig: PrimeNGConfig,
 		 private toast: ToastService,
-		 private readonly router: Router,
 		 private playService: PlayService,
 		 ) {
 		this.handleLabels();
@@ -80,11 +78,11 @@ export class InviteDialogComponent {
 			
 	}
 
-	acceptInvite() {
+	async acceptInvite() {
 		this.inviteService.acceptInvite();
 	}
 
-	refuseInvite() {
+	async refuseInvite() {
 		this.inviteService.refuseInvite();
 	}
 
@@ -95,45 +93,24 @@ export class InviteDialogComponent {
 
 	async handleAccept(event: any) {
 		if (this.state === ButtonState.ACTIVE) {
-			this.changeToProcess();
-			await this.delay(1000); // TODO test purpose
-			await this.accept();
+			this.accept();
+			this.displayPosition = false;
 		}
 	}
 
 	async handleRefuse(event: any) {
 		if (this.state === ButtonState.ACTIVE) {
-			this.changeToProcess();
-			await this.delay(1000); // TODO test purpose
-			await this.refuse();
+			 this.refuse();
+			 this.displayPosition = false;
 		}
 	}
 
 	async accept() {
-    // this.server
-    //   .emit('accept-game', {})
-    //   .then((data: Response) => {
-		// 		this.changeToDisabled();
-		// 		this.router.navigate(['play/classic']);
-		// 		this.toast.showSuccess('Accept success', 'You accepted the game');
-		// 	}, (data: Response | undefined) => {
-		// 		this.changeToActive();
-		// 		this.toast.showError('Accept error', data?.msg);
-		// 	});
+    this.inviteService.acceptInvite();
   }
 
   async refuse() {
-		// console.log('Attempting to refuse queue...');
-    // await this.server
-    //   .emit('refuse-game', {})
-    //   .then((data: Response) => {
-    //     this.changeToDisabled();
-		// 		this.toast.showSuccess('Refuse success', 'You left the game');
-		// 	}, (data: Response | undefined) => {
-		// 		this.changeToActive();
-		// 		this.toast.showError('Refuse error', data?.msg);
-		// 	});
-		// return;
+    this.inviteService.refuseInvite();
   }
 
 	private changeToActive() {

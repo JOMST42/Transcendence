@@ -88,7 +88,7 @@ export class JoinGameDialogComponent {
 	async handleJoin(event: any) {
 		if (this.state === ButtonState.ACTIVE) {
 			this.changeToProcess();
-			await this.delay(1000); // TODO test purpose
+			// await this.delay(1000); // TODO test purpose
 			await this.join();
 		}
 	}
@@ -96,7 +96,7 @@ export class JoinGameDialogComponent {
 	async handleLeave(event: any) {
 		if (this.state === ButtonState.ACTIVE) {
 			this.changeToProcess();
-			await this.delay(1000); // TODO test purpose
+			// await this.delay(1000); // TODO test purpose
 			await this.leave();
 		}
 	}

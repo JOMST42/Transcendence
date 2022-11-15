@@ -9,26 +9,33 @@
   [draggable]="true" 
 	[resizable]="false"
 	[closable]="false">
-    <!-- <p>Accept: Move you to the game room</p> -->
+    Do you accept the invitation to play? You will be queued together.
 	<ng-template pTemplate="footer">
 					
-	<button pButton id="joinGameButton"
-	label="Accept"
+	<button pButton id="acceptInviteButton"
+	[label]="labelAcceptButton"
+	[ngClass]="{
+		'p-button-danger': state === 2,
+		'p-button-secondary': state === 1
+	}"
 	class="p-button-raised"
 	[disabled]="disabled"
+	[loading]="isProcessing"
 	loadingIcon="pi pi-spinner pi-spin"
-	(click)="acceptInvite()"
-	>Accept</button>
+	(click)="handleAccept($event)"
+	></button>
 
-	<button pButton id="leaveGameButton"
-	label="Refuse"
+	<button pButton id="refuseInviteButton"
+	[label]="labelRefuseButton"
+	[ngClass]="{
+		'p-button-danger': state === 2,
+		'p-button-secondary': state === 1
+	}"
 	class="p-button-raised"
 	[disabled]="disabled"
+	[loading]="isProcessing"
 	loadingIcon="pi pi-spinner pi-spin"
-	(click)="refuseInvite()"
-	>Refuse</button>
-            <!-- <p-button icon="pi pi-check" (onClick)="displayPosition=false;joinGame()" label="Join" class="p-button-text"></p-button> -->
-            <!-- <p-button icon="pi pi-times" (click)="displayPosition=false" label="Hide"></p-button> -->
-						<!-- <p-button icon="pi pi-times" (onClick)="displayPosition=false" label="Cancel"></p-button> -->
+	(click)="handleRefuse($event)"
+	></button>
   </ng-template>
 </p-dialog>

@@ -38,12 +38,12 @@ export class JoinGameButtonComponent {
 	async handleJoin(event: any) {
 		if (this.state === ButtonState.JOIN) {
 			this.changeToProcess();
-			await this.delay(1000); // TODO test purpose
+			// await this.delay(1000); // TODO test purpose
 			await this.join();
 		}
 		else if (this.state === ButtonState.LEAVE) {
 			this.changeToProcess();
-			await this.delay(1000); // TODO test purpose
+			// await this.delay(1000); // TODO test purpose
 			await this.unjoin();
 		}
 

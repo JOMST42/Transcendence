@@ -7,7 +7,7 @@ import { PongRoomService } from './pong-room.service';
 import { Timer } from 'src/pong/data/classes';
 import { TimerType, UserState } from 'src/pong/data/enums';
 
-interface Invite {
+class Invite {
   p1: Socket;
   p2: Socket;
   accepted: boolean;
@@ -17,7 +17,7 @@ interface Invite {
 
 class InviteConfig {
   maxEntries = 100;
-  expirationTime = 60;
+  expirationTime = 10;
 
   checkDuplicate = true;
   checkMax = true;
@@ -65,11 +65,11 @@ export class PongInviteService {
     });
   }
 
-  setCancelListener(socket: Socket) {
-    // socket.once('cancel-invite', (args, callback) => {
-    //   const response = this.handleLeaveQueue(socket);
-    //   if (typeof callback === 'function') callback(response);
-    // });
+  setRefuseListener(socket: Socket) {
+    socket.once('refuse-invite', (args, callback) => {
+      const response = this.refuseInvite(socket);
+      if (typeof callback === 'function') callback(response);
+    });
   }
 
   userInvite(socket: Socket, targetSocket: Socket): Response {
@@ -87,7 +87,11 @@ export class PongInviteService {
       p1: socket,
       p2: targetSocket,
       accepted: false,
-      expirationTimer: new Timer(TimerType.STOPWATCH, 0, 60),
+      expirationTimer: new Timer(
+        TimerType.STOPWATCH,
+        0,
+        this.config.expirationTime,
+      ),
     };
     if (this.inviteList.length === this.inviteList.push(invite)) {
       return {
@@ -95,8 +99,10 @@ export class PongInviteService {
         msg: 'Could not process your invitation. Try again later',
       };
     }
+    invite.expirationTimer.start();
     this.logger.debug('Invite event: Queue size: ' + this.inviteList.length);
     this.setAcceptListener(targetSocket);
+    this.setRefuseListener(targetSocket);
     targetSocket.emit('player-invite', socket.data.user.id);
     return { code: 0, msg: 'Your invitation has been sent!' };
   }
@@ -123,6 +129,7 @@ export class PongInviteService {
   }
 
   hasInvitation(socket: Socket): Invite | undefined {
+    this.logger.debug('has invite: Queue size: ' + this.inviteList.length);
     const invite = this.inviteList.find((invite: Invite) => {
       if (invite.p1?.data?.user?.id === socket.data?.user?.id) return true;
       if (invite.p2?.data?.user?.id === socket.data?.user?.id) return true;
@@ -139,7 +146,7 @@ export class PongInviteService {
     return invite;
   }
 
-  cancelInvite(socket: Socket): Response {
+  refuseInvite(socket: Socket): Response {
     const invite = this.hasInvitation(socket);
     if (invite) {
       this.cullInvite(invite);
@@ -179,9 +186,9 @@ export class PongInviteService {
     const response: Response = this.checkInvalid(invite);
     if (response.code != 0) {
       if (invite.p1.connected)
-        invite.p1.volatile.emit('invite-error', response);
+        invite.p1.emit('invite-cancel', 'The invitation has been refused.');
       if (invite.p2.connected)
-        invite.p2.volatile.emit('invite-error', response);
+        invite.p2.emit('invite-cancel', 'The invitation has been refused.');
       return true;
     }
     return false;
@@ -194,7 +201,12 @@ export class PongInviteService {
   }
 
   cullAllInvalid() {
-    this.inviteList.filter((invite) => this.checkAndWarnInvalid(invite));
+    let i = 0;
+    while (i < this.inviteList.length) {
+      if (this.checkAndWarnInvalid(this.inviteList[i])) {
+        this.inviteList.splice(i, 1);
+      } else i++;
+    }
   }
 
   cullAll() {

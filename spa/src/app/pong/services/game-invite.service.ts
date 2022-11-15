@@ -14,46 +14,56 @@ export class GameInviteService {
 		});
 	}
 
-	async invitePlayer(targetId: number) {
+	async invitePlayer(targetId: number): Promise<Response> {
+		let response : Response;
 		await this.playService.emit('invite-player', targetId).then((data:Response) => {
 			if (data && data?.code === 0){
-				this.toast.showSuccess('Game invite' ,'Invitation successfully sent!');
+				this.toast.showSuccess('Game invite', data?.msg);
 			} else {
-				this.toast.showError('Game invite' ,'Invitation could not be sent.');
+				this.toast.showError('Game invite', data?.msg);
 				console.debug('invitation failure: ' + data?.msg);
 			}
+			response = data;
 		}).catch((data:Response) => {
-			this.toast.showError('Game invite' ,'Invitation could not be sent.');
-				console.debug('invitation failure: ' + data?.msg);
+			this.toast.showError('Game invite', data?.msg);
+			response = data;
 		});
+		return response;
 	}
 
-	async acceptInvite() {
+	async acceptInvite(): Promise<Response> {
+		let response : Response;
 		await this.playService.emit('accept-invite', {}).then((data:Response) => {
 			if (data && data?.code === 0){
-				this.toast.showSuccess('Game invite' ,'Invitation successfully sent!');
+				this.toast.showSuccess('Game invite', data?.msg);
 			} else {
-				this.toast.showError('Game invite' ,'Invitation could not be sent.');
+				this.toast.showError('Game invite', data?.msg);
 				console.debug('invitation failure: ' + data?.msg);
 			}
+			response = data;
 		}).catch((data:Response) => {
-			this.toast.showError('Game invite' ,'Invitation could not be sent.');
-				console.debug('invitation failure: ' + data?.msg);
+			this.toast.showError('Game invite', data?.msg);
+			console.debug('invitation failure: ' + data?.msg);
+			response = data;
 		});
+		return response;
 	}
 
-	async refuseInvite() { // TODO
-		await this.playService.emit('cancel-invite', {}).then((data:Response) => {
+	async refuseInvite(): Promise<Response> { // TODO
+		let response : Response;
+		await this.playService.emit('refuse-invite', {}).then((data:Response) => {
 			if (data && data?.code === 0){
-				this.toast.showSuccess('Game invite' ,'Invitation successfully sent!');
 			} else {
-				this.toast.showError('Game invite' ,'Invitation could not be sent.');
+				this.toast.showError('Game invite' ,'Refusal could not processed.');
 				console.debug('invitation failure: ' + data?.msg);
 			}
+			response = data;
 		}).catch((data:Response) => {
-			this.toast.showError('Game invite' ,'Invitation could not be sent.');
-				console.debug('invitation failure: ' + data?.msg);
+			this.toast.showError('Game invite' ,'Refusal could not processed.');
+			console.debug('invitation failure: ' + data?.msg);
+			response = data;
 		});
+		return response;
 	}
 
 
