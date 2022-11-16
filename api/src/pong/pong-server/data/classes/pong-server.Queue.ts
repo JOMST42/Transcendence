@@ -89,9 +89,16 @@ export class Queue {
     this.queue = this.queue.filter(this.is_connected);
   }
 
-  is_queued(s: Socket): boolean {
+  isQueued(s: Socket): boolean {
     this.clean();
     if (this.queue.find((socket) => socket.data.user?.id === s.data.user?.id))
+      return true;
+    return false;
+  }
+
+  isUserQueued(userId: number): boolean {
+    this.clean();
+    if (this.queue.find((socket) => socket.data.user?.id === userId))
       return true;
     return false;
   }

@@ -11,14 +11,12 @@ import { TabViewModule } from 'primeng/tabview';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 
 import {
-  JoinGameDialogComponent,
   NavBarComponent,
   NotFoundComponent,
   PongAudioComponent,
   PongScreenComponent,
   ServerErrorComponent,
 } from './components';
-import { EventButtonComponent } from './components/event-button/event-button.component';
 import { RouterModule } from '@angular/router';
 import { SearchUserComponent } from './components/search-user/search-user.component';
 import { UserAvatarComponent } from './components/user-avatar/user-avatar.component';
@@ -31,8 +29,6 @@ import { MatchHistoryComponent } from './components/match-history/match-history.
     NavBarComponent,
     PongScreenComponent,
     PongAudioComponent,
-    EventButtonComponent,
-    JoinGameDialogComponent,
     SearchUserComponent,
     UserAvatarComponent,
 		MatchHistoryComponent,
@@ -57,10 +53,8 @@ import { MatchHistoryComponent } from './components/match-history/match-history.
     TableModule,
     PongScreenComponent,
     PongAudioComponent,
-    EventButtonComponent,
     NavBarComponent,
     InputTextModule,
-    JoinGameDialogComponent,
     AvatarModule,
     DialogModule,
     TabViewModule,
