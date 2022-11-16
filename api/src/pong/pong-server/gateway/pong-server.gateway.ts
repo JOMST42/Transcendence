@@ -46,7 +46,6 @@ export class PongServerGateway
     private queueService: PongQueueService,
     @Inject(forwardRef(() => PongInviteService))
     private inviteService: PongInviteService,
-    @Inject(forwardRef(() => PongService))
     private pongService: PongService,
     private authService: AuthService,
     private userService: UserService,

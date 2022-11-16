@@ -24,11 +24,8 @@ export class PongService {
   logger: Logger = new Logger('PongService');
 
   constructor(
-    @Inject(forwardRef(() => PongRoomService))
     private roomService: PongRoomService,
-    @Inject(forwardRef(() => PongInviteService))
     private inviteService: PongInviteService,
-    @Inject(forwardRef(() => PongQueueService))
     private queueService: PongQueueService,
   ) {}
 
