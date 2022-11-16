@@ -13,6 +13,7 @@ import {
   // ...
 } from '@angular/animations';
 import { PlayService } from '../../../play/play.service';
+import { RoomInfo } from '../../data/enums/match.room-info';
 
 @Component({
   selector: 'app-room-list',
@@ -60,11 +61,11 @@ export class RoomListComponent implements OnInit {
 			);
 	}
 
-	async fillRooms(rooms:string[]) {
+	async fillRooms(rooms:RoomInfo[]) {
 		this.roomList = [];
 
 		for (let i = 0; i < rooms.length; i++) {
-			this.roomList.push({id:rooms[i], name:'placeholder'});
+			this.roomList.push({id:rooms[i].roomId, name:rooms[i].roomId});
 		}
 	}
 

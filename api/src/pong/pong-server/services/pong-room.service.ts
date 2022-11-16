@@ -108,10 +108,10 @@ export class PongRoomService {
   }
 
   userGetRooms(user: Socket): Response {
-    const rooms: string[] = [];
+    const rooms: RoomInfo[] = [];
 
     for (let i = 0; i < this.rooms.length; i++) {
-      rooms.push(this.rooms[i].getRoomId());
+      rooms.push(this.rooms[i].getRoomInfo());
     }
     return { code: 0, msg: 'rooms fetched', payload: rooms };
   }
@@ -138,8 +138,9 @@ export class PongRoomService {
         this.rooms.push(room);
         this.userJoinRoomAsPlayer(user1, room);
         this.userJoinRoomAsPlayer(user2, room);
-        room.createGame(this.classic_set); // WARNING
+        room.createGame(this.test_set); // WARNING
         room.startWaiting(); // WARNING
+        // room.startGame(true, true); // WARNING
         user1.emit('game-waiting', room.getRoomId());
         user2.emit('game-waiting', room.getRoomId());
 

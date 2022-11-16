@@ -14,8 +14,6 @@ import { EventEmitter2 } from '@nestjs/event-emitter';
 export class PongRoom {
   private logger: Logger = new Logger('PongRoomClass');
 
-  // @Inject(EventEmitter2) eventEmitter: EventEmitter2;
-
   private prismaId: number;
   private roomId: string;
   private state: RoomState = RoomState.Waiting;
@@ -54,9 +52,9 @@ export class PongRoom {
   }
 
   async endRoom() {
-    this.logger.debug('ending room');
+    this.logger.debug('ending room ' + this.roomId);
     this.state = RoomState.Processing;
-    this.users.forEach(this.clearListeners, this);
+    this.users.forEach((user: Socket) => this.clearListeners(user));
     this.state = RoomState.ToBeDeleted;
   }
 
@@ -88,6 +86,7 @@ export class PongRoom {
   }
 
   startGame(ai_1?: boolean, ai_2?: boolean) {
+    this.logger.debug('game playing');
     this.prismaGame.startTime = new Date();
     this.getGame()?.startGame(ai_1, ai_2);
     this.getUserPlayer1().emit('game-start');
