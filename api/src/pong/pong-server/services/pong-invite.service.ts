@@ -5,7 +5,7 @@ import { PongServerGateway } from '../gateway/pong-server.gateway';
 import { Response } from '../data/interfaces';
 import { PongRoomService } from './pong-room.service';
 import { Timer } from 'src/pong/data/classes';
-import { TimerType, UserState } from 'src/pong/data/enums';
+import { TimerType } from 'src/pong/data/enums';
 
 class Invite {
   p1: Socket;
@@ -74,7 +74,7 @@ export class PongInviteService {
 
   userInvite(socket: Socket, targetSocket: Socket): Response {
     let invite: Invite;
-    invite = this.hasInvitation(socket);
+    invite = this.hasInvitation(socket.data.user.id);
     if (invite) {
       return {
         code: 1,
@@ -109,7 +109,7 @@ export class PongInviteService {
 
   acceptInvite(socket: Socket): Response {
     let response: Response = { code: 1, msg: '' };
-    const invite = this.getPendingInviteOfUser(socket);
+    const invite = this.getPendingInviteOfUser(socket.data.user.id);
     if (invite) {
       invite.accepted = true;
       response = { code: 0, msg: 'You have accepted the invitation.' };
@@ -128,26 +128,35 @@ export class PongInviteService {
     };
   }
 
-  hasInvitation(socket: Socket): Invite | undefined {
-    this.logger.debug('has invite: Queue size: ' + this.inviteList.length);
+  isQueued(userId: number): boolean {
+    const invite = this.hasInvitation(userId);
+    if (invite) {
+      if (invite.accepted) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  hasInvitation(userId: number): Invite | undefined {
     const invite = this.inviteList.find((invite: Invite) => {
-      if (invite.p1?.data?.user?.id === socket.data?.user?.id) return true;
-      if (invite.p2?.data?.user?.id === socket.data?.user?.id) return true;
+      if (invite.p1?.data?.user?.id === userId) return true;
+      if (invite.p2?.data?.user?.id === userId) return true;
       return false;
     });
     return invite;
   }
 
-  getPendingInviteOfUser(user: Socket) {
+  getPendingInviteOfUser(userId: number): Invite | undefined {
     const invite = this.inviteList.find((invite: Invite) => {
-      if (invite.p2?.data?.user?.id === user.data?.user?.id) return true;
+      if (invite.p2?.data?.user?.id === userId) return true;
       return false;
     });
     return invite;
   }
 
   refuseInvite(socket: Socket): Response {
-    const invite = this.hasInvitation(socket);
+    const invite = this.hasInvitation(socket.data.user.id);
     if (invite) {
       this.cullInvite(invite);
       invite.p1.emit('invite-cancel', 'The invitation has been cancelled.');

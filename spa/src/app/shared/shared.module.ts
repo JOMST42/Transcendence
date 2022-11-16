@@ -11,7 +11,6 @@ import { TabViewModule } from 'primeng/tabview';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 
 import {
-  JoinGameDialogComponent,
   NavBarComponent,
   NotFoundComponent,
   PongAudioComponent,
@@ -30,7 +29,6 @@ import { MatchHistoryComponent } from './components/match-history/match-history.
     NavBarComponent,
     PongScreenComponent,
     PongAudioComponent,
-    JoinGameDialogComponent,
     SearchUserComponent,
     UserAvatarComponent,
 		MatchHistoryComponent,
@@ -57,7 +55,6 @@ import { MatchHistoryComponent } from './components/match-history/match-history.
     PongAudioComponent,
     NavBarComponent,
     InputTextModule,
-    JoinGameDialogComponent,
     AvatarModule,
     DialogModule,
     TabViewModule,

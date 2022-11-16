@@ -1,10 +1,14 @@
-import { Component } from '@angular/core';
-import { PrimeNGConfig } from 'primeng/api';
-import { Response } from '../../play/interfaces';
-import { ToastService } from 'src/app/core/services';
-import { Router } from '@angular/router';
-import { GameInviteService } from '../services/game-invite.service';
-import { PlayService } from 'src/app/play/play.service';
+import { Component } from "@angular/core";
+import { PrimeNGConfig } from "primeng/api";
+import { Subscription, take } from "rxjs";
+import { ToastService, AuthService } from "src/app/core/services";
+import { Response } from "src/app/play/interfaces";
+import { PlayService } from "src/app/play/play.service";
+import { UserService } from "src/app/user/services";
+import { InviteState } from "../../data/enums";
+import { GameInviteService } from "../../services/game-invite.service";
+import { PongService } from "../../services/pong.service";
+
 
 enum ButtonState {
 	ACTIVE = 0,
@@ -53,10 +57,14 @@ export class InviteDialogComponent {
 	isProcessing: boolean = false;
 	classStyle: string = this.defaultStyle;
 
+	private interval?: NodeJS.Timer;
+	private updateSub: Subscription;
+
 	constructor(private inviteService: GameInviteService,
 		 private primengConfig: PrimeNGConfig,
 		 private toast: ToastService,
 		 private playService: PlayService,
+		 private readonly pongService: PongService,
 		 ) {
 		this.handleLabels();
 		this.handleState();
@@ -65,6 +73,7 @@ export class InviteDialogComponent {
 	ngOnInit() {
 		this.primengConfig.ripple = true;
 		this.setListeners();
+		this.interval = setInterval(() => this.refreshDialog(), 2500);
 	}
 
 	setListeners() {
@@ -76,6 +85,22 @@ export class InviteDialogComponent {
 			},
 		});
 			
+	}
+
+	refreshDialog() {
+		if (!this.pongService.user) return ;
+
+		this.updateSub?.unsubscribe();
+		this.updateSub = this.pongService.canJoinGame(this.pongService.user.id).pipe(take(1)).subscribe({
+      next: (data: Response) => {
+        if (data.code === 0) {
+					this.showPositionDialog('bottom');
+				}
+      },
+      error: (err) => { 
+				this.displayPosition = false;
+			},
+    });
 	}
 
 	async acceptInvite() {

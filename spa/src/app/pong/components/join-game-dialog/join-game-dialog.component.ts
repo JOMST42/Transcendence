@@ -4,6 +4,8 @@ import { PlayService } from '../../../play/play.service';
 import { Response } from '../../../play/interfaces';
 import { ToastService } from 'src/app/core/services';
 import { Router } from '@angular/router';
+import { PongService } from '../../services/pong.service';
+import { Subscription, take } from 'rxjs';
 
 enum ButtonState {
 	ACTIVE = 0,
@@ -53,10 +55,14 @@ export class JoinGameDialogComponent {
 	isProcessing: boolean = false;
 	classStyle: string = this.defaultStyle;
 
+	private interval?: NodeJS.Timer;
+	private updateSub: Subscription;
+
 	constructor(private server: PlayService,
 		 private primengConfig: PrimeNGConfig,
 		 private toast: ToastService,
 		 private readonly router: Router,
+		 private readonly pongService: PongService,
 		 ) {
 		this.handleLabels();
 		this.handleState();
@@ -65,6 +71,7 @@ export class JoinGameDialogComponent {
 	ngOnInit() {
 		this.primengConfig.ripple = true;
 		this.setListeners();
+		this.interval = setInterval(() => this.refreshDialog(), 2500);
 	}
 
 	setListeners() {
@@ -73,11 +80,20 @@ export class JoinGameDialogComponent {
 		});
 	}
 
-	joinGame() {
-		this.server.emit('join-game', () => {});
-	}
+	refreshDialog() {
+		if (!this.pongService.user) return ;
 
-	leaveGame() {
+		this.updateSub?.unsubscribe();
+		this.updateSub = this.pongService.canJoinGame(this.pongService.user.id).pipe(take(1)).subscribe({
+      next: (data: Response) => {
+        if (data.code === 0) {
+					this.showPositionDialog('bottom');
+				}
+      },
+      error: (err) => { 
+				this.displayPosition = false;
+			},
+    });
 	}
 
 	showPositionDialog(position: string) {

@@ -6,6 +6,11 @@ import { NotFoundComponent, ServerErrorComponent } from './shared/components';
 import { SearchUserComponent } from './shared/components/search-user/search-user.component';
 
 const routes: Routes = [
+	{
+    path: '',
+    loadChildren: () => import('./home/home.module').then((m) => m.HomeModule),
+    pathMatch: 'full',
+  },
   {
     path: '',
     runGuardsAndResolvers: 'always',
@@ -38,11 +43,7 @@ const routes: Routes = [
     loadChildren: () =>
       import('./watch/watch.module').then((m) => m.WatchModule),
   },
-  {
-    path: '',
-    loadChildren: () => import('./home/home.module').then((m) => m.HomeModule),
-    pathMatch: 'full',
-  },
+  
   {
     path: 'server-error',
     component: ServerErrorComponent,

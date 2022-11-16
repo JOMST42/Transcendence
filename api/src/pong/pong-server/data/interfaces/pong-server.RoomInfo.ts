@@ -8,6 +8,7 @@ export interface RoomInfo {
   user1: User;
   user2: User;
   score: Score;
+  scoreToWin: number;
   state: RoomState;
   time: number;
   winner: Winner;

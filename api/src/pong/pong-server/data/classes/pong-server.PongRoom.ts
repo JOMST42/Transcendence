@@ -7,7 +7,7 @@ import { PongGameModule } from '../../../pong-game/pong-game.module';
 import { RoomState, VictoryType } from '../enums';
 import { Response, RoomInfo } from '../../data/interfaces';
 import { Victory } from '../interfaces/pong-server.Victory';
-import { TimerType } from '../../../data/enums';
+import { UserGameState, TimerType } from '../../../data/enums';
 import { Game, Winner } from '@prisma/client';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 
@@ -31,6 +31,8 @@ export class PongRoom {
   private gameCountdown: Timer;
   private waitCountdown: Timer;
 
+  private settings: GameSettings;
+
   constructor(
     prismaId: number,
     roomId: string,
@@ -42,14 +44,13 @@ export class PongRoom {
     this.roomId = roomId;
     this.setUserPlayer(1, userP1);
     this.setUserPlayer(2, userP2);
-    this.p1 = new Player(userP1?.data.user.userId);
-    this.p2 = new Player(userP2?.data.user.userId);
+    this.p1 = new Player(userP1?.data.user.id);
+    this.p2 = new Player(userP2?.data.user.id);
     this.prismaGame = prismaGame;
 
     this.waitCountdown = new Timer(TimerType.COUNTDOWN, 60, 0);
     this.readyCountdown = new Timer(TimerType.COUNTDOWN, 20, 0);
     this.gameCountdown = new Timer(TimerType.COUNTDOWN, 3, 0);
-    // this.eventEmitter.emit('game.finish');
   }
 
   async endRoom() {
@@ -57,6 +58,11 @@ export class PongRoom {
     this.state = RoomState.Processing;
     this.users.forEach(this.clearListeners, this);
     this.state = RoomState.ToBeDeleted;
+  }
+
+  isDeletable(): boolean {
+    if (this.state === RoomState.ToBeDeleted) return true;
+    return false;
   }
 
   addUser(user: Socket): boolean {
@@ -76,6 +82,7 @@ export class PongRoom {
   }
 
   createGame(set: GameSettings): PongGameModule {
+    this.settings = set;
     this.setGame(new PongGameModule(set));
     return this.getGame();
   }
@@ -222,6 +229,7 @@ export class PongRoom {
       user1: this.getUserPlayer1().data.user,
       user2: this.getUserPlayer2().data.user,
       score: this.getGame().getScore(),
+      scoreToWin: this.settings.score_to_win,
       state: this.getState(),
       time: this.getGame()?.getGameTime(),
       winner: this.getWinner(),
@@ -237,6 +245,26 @@ export class PongRoom {
 
   getRoomId(): string {
     return this.roomId;
+  }
+
+  getUserGameState(userId: number): UserGameState {
+    let player: Player;
+
+    if (userId === this.p1?.userId) player = this.p1;
+    else if (userId === this.p2?.userId) player = this.p2;
+    else return UserGameState.OFFLINE;
+
+    switch (this.state) {
+      case RoomState.Countdown:
+      case RoomState.Playing:
+        return UserGameState.PLAYING;
+        break;
+      case RoomState.Waiting:
+        if (!player.joined) return UserGameState.RECONNECT;
+        else return UserGameState.WAITING;
+      default:
+        return UserGameState.OFFLINE;
+    }
   }
 
   getPrismaGame(): Game {

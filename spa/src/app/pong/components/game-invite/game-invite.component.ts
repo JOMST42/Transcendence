@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { User } from 'src/app/user/models';
-import { GameInviteService } from '../services/game-invite.service';
+import { GameInviteService } from '../../services/game-invite.service';
 
 @Component({
   selector: 'app-game-invite',
@@ -16,10 +16,6 @@ export class GameInviteComponent implements OnInit {
 
 	invitePlayer() {
 		this.inviteService.invitePlayer(this.user.id);
-	}
-
-	acceptInvite() {
-		this.inviteService.acceptInvite();
 	}
 
 }
