@@ -15,6 +15,7 @@ import {
   ChatUserComponent,
   ChatUserListComponent,
 } from './components';
+
 @NgModule({
   declarations: [
     ChatComponent,
