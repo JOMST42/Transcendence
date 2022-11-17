@@ -17,7 +17,7 @@ class Invite {
 
 class InviteConfig {
   maxEntries = 100;
-  expirationTime = 10;
+  expirationTime = 25;
 
   checkDuplicate = true;
   checkMax = true;

@@ -71,7 +71,8 @@ export class JoinGameDialogComponent {
 	ngOnInit() {
 		this.primengConfig.ripple = true;
 		this.setListeners();
-		this.interval = setInterval(() => this.refreshDialog(), 2500);
+		this.refreshDialog();
+		// this.interval = setInterval(() => this.refreshDialog(), 2500);
 	}
 
 	setListeners() {
