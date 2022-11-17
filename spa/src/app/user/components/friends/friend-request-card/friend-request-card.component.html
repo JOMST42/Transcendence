@@ -1,0 +1,16 @@
+<p-card class="p-card flex-row">
+  <ng-template pTemplate="content">
+    <app-user-avatar
+      [avatarUrl]="myFriend?.avatarUrl"
+      [user]="myFriend"
+    ></app-user-avatar>
+    <span style="padding: 1rem 1rem 1rem">{{ myFriend?.displayName }}</span>
+<button class="transparent">
+  <app-friend-btn
+    [userIsMe]="me === myFriend"
+    [me]="me"
+    [user]="myFriend"
+  ></app-friend-btn>
+</button>
+  </ng-template>
+</p-card>

@@ -1,8 +1,14 @@
-<p-avatar
-  class="avatar"
-  [ngClass]=""
+<p-avatar 
+class="avatar"
+[ngClass]="{
+  'offline' : isOffline(),
+  'online' : !isOffline() 
+}"
+  shape="circle"
   [image]="avatarUrl"
   alt="Image"
-  shape="circle"
   size="xlarge"
 ></p-avatar>
+
+
+<!-- [ngClass]="isOffline() ? 'offline' : isGaming() ? 'gaming' : 'online'" -->

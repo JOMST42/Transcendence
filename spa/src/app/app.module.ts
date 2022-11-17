@@ -8,11 +8,10 @@ import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
 import { CredentialsInterceptor, ErrorInterceptor } from './core/interceptors';
 import { SharedModule } from './shared/shared.module';
-import { MatchHistoryComponent } from './shared/components/match-history/match-history.component';
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [ 
+  imports: [
     AppRoutingModule,
     BrowserModule,
     BrowserAnimationsModule,

@@ -164,10 +164,6 @@ export class FriendService {
             adresseeId: userId,
             accepted: false,
           },
-          {
-            requesterId: userId,
-            accepted: false,
-          },
         ],
       },
     });

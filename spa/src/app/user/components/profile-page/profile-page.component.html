@@ -69,6 +69,11 @@
                     <app-friend-list [user]="user"></app-friend-list>
                   </div>
                 </p-tabPanel>
+                <p-tabPanel header="REQUESTS" *ngIf="user.id === me.id">
+                  <div id="container-flex-column">
+                    <app-friend-requests [me]="me"></app-friend-requests>
+                  </div>
+                </p-tabPanel>
                 <p-tabPanel header="MATCH HISTORY">
                   <app-match-history [user]="user"></app-match-history>
                 </p-tabPanel>

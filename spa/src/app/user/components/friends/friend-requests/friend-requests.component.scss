@@ -1,3 +1,9 @@
+.list-card{
+  height: 500px; 
+  overflow-y: scroll; 
+  overflow-x: hidden
+}
+
 :host ::ng-deep .p-card{
   background-color: #00A595;
 }
@@ -12,9 +18,4 @@
 	color: #7869C4;
   background-color: transparent;
 	border: 3px solid #7869C4;
-}
-
-
-.blockedCard{
-  opacity: 0.5;
 }

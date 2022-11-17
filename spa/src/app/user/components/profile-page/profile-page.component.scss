@@ -6,10 +6,18 @@
 	
 }
 
+
+
 :host ::ng-deep .p-tabview-panels {
-  background-color: #7869c4 !important;
+  background-color: #7869c4;
   border: 3px solid black;
 	border-top: 0px;
+	// -webkit-text-stroke: black;
+	// -webkit-text-stroke-width: 1px;
+	// font-family: "PixelPowerline"!important;
+	// font-weight: 50;
+	//  font-size: 7rem;
+	// color: #fff;
 }
 
 
@@ -23,7 +31,12 @@
 
 :host ::ng-deep .p-tabview-title{
   background-color: #7869c4 !important;
-	color: #00A595;
+	-webkit-text-stroke: black;
+	-webkit-text-stroke-width: 1px;
+	font-family: "PixelPowerline";
+	font-weight: 50;
+	font-size: 1rem;
+	color: #fff;
 
 }
 

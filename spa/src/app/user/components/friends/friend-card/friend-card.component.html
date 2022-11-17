@@ -1,9 +1,11 @@
 <p-card class="p-card" [ngClass]="friendState ? '' : 'blockedCard'">
-  <ng-template pTemplate="header">
-    <app-user-avatar
-      [avatarUrl]="user?.avatarUrl"
-      [user]="user"
-    ></app-user-avatar>
+  <ng-template pTemplate="content">
+    <a routerLink="/users/{{ user?.id }}" style="cursor: pointer">
+      <app-user-avatar
+        [avatarUrl]="user?.avatarUrl"
+        [user]="user"
+      ></app-user-avatar>
+    </a>
     <span style="padding: 1rem 1rem 1rem">{{ user?.displayName }}</span>
     <p-button
       type="button"
@@ -41,15 +43,6 @@
           (stateChange)="resetPage()"
         ></app-blocked-btn>
       </button>
-      <a routerLink="/users/{{ user?.id }}">
-        <button
-          pButton
-          type="button"
-          label="Voir Profil"
-          icon="pi pi-times"
-          (click)="closeDialog()"
-        ></button>
-      </a>
     </span>
   </ng-template>
 </p-dialog>
