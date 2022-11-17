@@ -51,6 +51,7 @@ export class ChatComponent implements OnInit, OnDestroy {
       .pipe(take(1))
       .subscribe({
         next: (data) => {
+          data.messages.reverse();
           this.selectedChannel = data;
         },
       });

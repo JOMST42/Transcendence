@@ -44,7 +44,7 @@ export class ChatMessageListComponent
       .getNewMessage()
       .pipe(takeUntil(this.unsubscribeAll$))
       .subscribe((msg) => {
-        this.chatMessages.push(msg);
+        this.chatMessages.unshift(msg);
         this.scrollToBottom();
       });
     this.chatService.joinRoom(this.roomId);

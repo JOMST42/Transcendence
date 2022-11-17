@@ -1,7 +1,7 @@
 <div class="w-full flex flex-column">
   <div
     #messages
-    class="h-full flex flex-column align-content-end mx-6 mt-6 overflow-y-auto"
+    class="h-full flex flex-column-reverse mx-6 mt-6 overflow-y-auto"
   >
     <span *ngFor="let message of chatMessages">
       <app-chat-message [message]="message"></app-chat-message>
