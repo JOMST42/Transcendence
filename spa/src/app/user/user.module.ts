@@ -22,6 +22,7 @@ import { FriendCardComponent } from './components/friends/friend-card/friend-car
     FriendBtnComponent,
     BlockedBtnComponent,
     FriendCardComponent,
+  
   ],
   imports: [SharedModule, UserRoutingModule, FileUploadModule],
   exports: [
@@ -30,7 +31,7 @@ import { FriendCardComponent } from './components/friends/friend-card/friend-car
     FileUploadModule,
     UserRoutingModule,
     ProfilePageComponent,
-    FriendListComponent
-  ]
+    FriendListComponent,
+  ],
 })
 export class UserModule {}

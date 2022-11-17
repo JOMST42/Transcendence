@@ -24,6 +24,10 @@ export class UserService {
     return user;
   }
 
+  async getUsers(): Promise<User[]> {
+    return await this.prisma.user.findMany();
+  }
+
   async updateUserById(
     userId: number,
     dto: UpdateUserDto,

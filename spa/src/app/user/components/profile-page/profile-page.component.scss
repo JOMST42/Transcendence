@@ -4,6 +4,32 @@
   }
 }
 
+:host ::ng-deep .p-tabview-panels {
+  background-color: #7869c4 !important;
+  border: 3px solid black;
+	border-top: 0px;
+}
+
+
+:host ::ng-deep .p-tabview-nav-link {
+  background-color: #7869c4 !important;
+	color: #00A595;
+	border-style: 2px 2px 2px 2px;
+  border:  solid black;
+}
+
+
+:host ::ng-deep .p-tabview-title{
+  background-color: #7869c4 !important;
+	color: #00A595;
+
+}
+
+:host ::ng-deep .p-tabview-ink-bar{
+	color: #00A595;
+
+}
+
 .container  {
   // margin-top: 50px;
   border-radius: 30px;

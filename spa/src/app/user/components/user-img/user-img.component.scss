@@ -43,26 +43,29 @@
       margin: 2rem 0rem 0rem 2rem;
     }
   }
+:host ::ng-deep .p-message.p-message-error{
+  position: fixed;
+  top: 0px;
+  right: 0px;
+  z-index: 10px;
+ 
+ }
+  
+ :host ::ng-deep .p-fileupload-choose{
+  background-color: #00a595;
+  color: #7869C4;
+  border: 3px solid black;
+ }
 
-  ::ng-deep .p-selectbutton .p-button.p-highlight {
-    color: #68758A !important;
-    font-weight: 700;
-  }
 
-
-  p-ripple p-element p-button p-component p-fileupload-choose p-button-icon-only{
-    z-index: 0;
+ :host ::ng-deep .p-fileupload-choose:hover {
 	color: #7869C4;
-	border: 3px solid #000;
-	background-color: #00A595;
-  }
+  background-color: transparent;
 
-  p-fileupload-choose {
-    z-index: 0;
-    color: #7869C4;
-    border: 3px solid #000;
-    background-color: #00A595;
-  }
+	border: 3px solid #7869C4;
+
+
+}
 
   :host ::ng-deep .p-card{
     background-color: #00A595 !important;

@@ -12,6 +12,7 @@ import { JoinGameButtonComponent } from './ui/join-game-button/join-game-button.
 import { QueueWidjetComponent } from './ui/queue-widjet/queue-widjet.component';
 import { ReadyButtonComponent } from './ui/ready-button/ready-button.component';
 import { CoreModule } from '../core/core.module';
+import { MatchHistoryComponent } from '../shared/components/match-history/match-history.component';
 
 @NgModule({
   declarations: [
