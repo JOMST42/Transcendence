@@ -82,6 +82,8 @@ export class ChatService {
     roomId: string,
     message: CreateChatMessageDto,
   ): Promise<ChatMessageWithAuthor> {
+    console.log(roomId);
+
     const room = await this.validateUserForRoom(userId, roomId);
 
     return this.prisma.chatMessage.create({

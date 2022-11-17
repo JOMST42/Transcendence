@@ -37,7 +37,8 @@
     class="h-full flex-none flex border-right-2"
   ></app-chat-channel-list>
   <app-chat-message-list
-    [messages]="selectedChannel?.messages"
+    [chatMessages]="selectedChannel?.messages"
+    [roomId]="selectedChannel?.id"
     class="h-full flex-grow-1 flex"
   ></app-chat-message-list>
   <div class="h-full flex-none flex flex-column border-left-2">

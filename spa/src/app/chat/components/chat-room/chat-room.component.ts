@@ -60,10 +60,13 @@ export class ChatRoomComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   sendMessage(event: any): void {
-    this.chatService.sendMessage({
-      roomId: this.room.id,
-      content: this.message,
-    });
+    this.chatService.sendMessage(
+      {
+        roomId: this.room.id,
+        content: this.message,
+      },
+      (message) => console.log(message)
+    );
     this.message = '';
   }
 

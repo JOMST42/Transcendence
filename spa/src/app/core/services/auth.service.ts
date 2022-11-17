@@ -11,7 +11,7 @@ import { BaseApiService } from './base-api.service';
   providedIn: 'root',
 })
 export class AuthService {
-  private userSubject = new ReplaySubject<User | null>(1);
+  private userSubject = new ReplaySubject<User>(1);
   private user$ = this.userSubject.asObservable();
 
   constructor(
@@ -20,7 +20,7 @@ export class AuthService {
     private readonly baseApiService: BaseApiService
   ) {}
 
-  getCurrentUser(): Observable<User | null> {
+  getCurrentUser(): Observable<User> {
     return this.user$;
   }
 
@@ -28,7 +28,7 @@ export class AuthService {
     this.userSubject.next(user);
   }
 
-  refreshProfile(): Observable<User | null> {
+  refreshProfile(): Observable<User> {
     return this.getProfile().pipe(
       take(1),
       map((user: User) => {
@@ -38,12 +38,11 @@ export class AuthService {
     );
   }
 
-
   getProfile(): Observable<User> {
     return this.baseApiService.getOne('/users/me');
   }
 
-  login(): Observable<User | null> {
+  login(): Observable<User> {
     const token =
       this.cookieService.get('access_token') ||
       localStorage.getItem('access_token');

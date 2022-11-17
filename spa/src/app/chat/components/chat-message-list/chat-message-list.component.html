@@ -1,14 +1,29 @@
-<div class="h-full flex-grow-1 flex align-items-end">
-  <div class="w-full flex-grow-1 flex flex-row my-3 mx-3">
-    <input
-      class="w-full"
-      type="text"
-      placeholder="Message"
-      pInputText
-      [(ngModel)]="message"
-    />
+<div class="w-full flex flex-column">
+  <div
+    #messages
+    class="h-full flex flex-column align-content-end mx-6 mt-6 overflow-y-auto"
+  >
+    <span *ngFor="let message of chatMessages">
+      <app-chat-message [message]="message"></app-chat-message>
+    </span>
   </div>
-  <div class="my-3 mr-3">
-    <button pButton type="button" icon="pi pi-send"></button>
+  <div class="flex">
+    <div class="w-full flex flex-row my-3 mx-3">
+      <input
+        class="w-full"
+        type="text"
+        placeholder="Message"
+        pInputText
+        [(ngModel)]="message"
+      />
+    </div>
+    <div class="my-3 mr-3">
+      <button
+        (click)="sendMessage()"
+        pButton
+        type="button"
+        icon="pi pi-send"
+      ></button>
+    </div>
   </div>
 </div>

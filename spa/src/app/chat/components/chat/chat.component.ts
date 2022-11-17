@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { Subject, take, takeUntil } from 'rxjs';
 
 import { ToastService } from '../../../core/services';
@@ -19,8 +19,7 @@ export class ChatComponent implements OnInit, OnDestroy {
   constructor(
     private readonly chatService: ChatService,
     private readonly route: ActivatedRoute,
-    private readonly toastService: ToastService,
-    private readonly router: Router
+    private readonly toastService: ToastService
   ) {}
 
   ngOnDestroy(): void {
@@ -53,7 +52,6 @@ export class ChatComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (data) => {
           this.selectedChannel = data;
-          console.log(data);
         },
       });
   }
