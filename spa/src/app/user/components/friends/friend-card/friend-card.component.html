@@ -1,55 +1,29 @@
 <p-card class="p-card" [ngClass]="friendState ? '' : 'blockedCard'">
   <ng-template pTemplate="header">
-    <app-user-avatar
-      [avatarUrl]="user?.avatarUrl"
-      [user]="user"
-    ></app-user-avatar>
+    <app-user-avatar [avatarUrl]="user?.avatarUrl" [user]="user" ></app-user-avatar>
     <span style="padding: 1rem 1rem 1rem">{{ user?.displayName }}</span>
-    <p-button
-      type="button"
-      class="p-button-sm"
-      (click)="showDialog()"
-      icon="pi pi-external-link"
-    ></p-button>
+    <p-button type="button" class="p-button-sm" (click)="showDialog()" icon="pi pi-external-link" ></p-button>
   </ng-template>
 </p-card>
 
 <p-dialog header="Title" [(visible)]="display">
   <ng-template pTemplate="header">
-    <app-user-avatar
-      [avatarUrl]="user?.avatarUrl"
-      [user]="user"
-    ></app-user-avatar>
+    <app-user-avatar [avatarUrl]="user?.avatarUrl" [user]="user" ></app-user-avatar>
     <div>{{ user?.displayName }}</div>
   </ng-template>
   carte utilisateur - est ce qu'on met du contenu ?
   <ng-template pTemplate="footer">
     <span class="p-buttonset">
       <button pButton type="button">
-        <app-friend-btn
-          [userIsMe]="user.id === me.id"
-          [me]="me"
-          [user]="user"
-          (stateChange)="resetPage()"
-        ></app-friend-btn>
+        <app-friend-btn [userIsMe]="user.id === me.id" [me]="me" [user]="user" (stateChange)="resetPage()" ></app-friend-btn>
       </button>
       <button pButton type="button">
-        <app-blocked-btn
-          [userIsMe]="user.id === me.id"
-          [me]="me"
-          [user]="user"
-          (stateChange)="resetPage()"
-        ></app-blocked-btn>
+        <app-blocked-btn [userIsMe]="user.id === me.id" [me]="me"[user]="user" (stateChange)="resetPage()"></app-blocked-btn>
       </button>
       <a routerLink="/users/{{ user?.id }}">
-        <button
-          pButton
-          type="button"
-          label="Voir Profil"
-          icon="pi pi-times"
-          (click)="closeDialog()"
-        ></button>
+        <button pButton type="button" label="Voir Profil" icon="pi pi-times"(click)="closeDialog()"></button>
       </a>
     </span>
   </ng-template>
 </p-dialog>
+§

@@ -5,6 +5,10 @@
   }
 }
 
+tr {
+	// width: 100%;
+	position: absolute relative;
+}
 .title {
  -webkit-text-stroke: black;
 	-webkit-text-stroke-width: 3px;
@@ -70,7 +74,8 @@
 }
 
 :host ::ng-deep .p-datatable .p-datatable-thead > tr > th {
-  background-color: #7869c4 ;
+//   background-color: #7869c4 ;
+  background-color: #000 ;
   border: none;
   font-family: "PixelPowerline";
   font-weight: 30;
@@ -115,3 +120,22 @@
 //   border-color: #00a695;
 //   color: #00a695;
 // }
+
+@media screen and (max-width: 960px) {
+
+	:host ::ng-deep #pr_id_3 .p-datatable .p-datatable-thead > tr > th  {
+		display: table-cell !important;
+	}
+	:host ::ng-deep .p-datatable .p-datatable-thead > tr > th  {
+		display: table-cell !important;
+	}
+
+	:host ::ng-deep .p-datatable-tbody  > tr > td {
+		display: table-cell !important; 
+		height: 101.5px !important;
+		max-width: inherit !important;
+		vertical-align: inherit !important;
+		align-items: center;
+		justify-content: space-between;
+	}
+}
