@@ -5,7 +5,7 @@ import { SharedModule } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { GameRoutingModule } from '../play/play-routing.module';
-import { GameInviteComponent, InviteDialogComponent, JoinGameDialogComponent } from './components';
+import { GameInviteComponent, InviteDialogComponent, JoinGameDialogComponent, PongAudioComponent, PongInputComponent, PongScreenComponent } from './components';
 import { PongService } from './services/pong.service';
 
 @NgModule({
@@ -13,9 +13,19 @@ import { PongService } from './services/pong.service';
 		GameInviteComponent,
 		InviteDialogComponent,
 		JoinGameDialogComponent,
+		PongAudioComponent,
+		PongScreenComponent,
+		PongInputComponent,
 	],
   imports: [DialogModule, ButtonModule, CommonModule],
-	exports: [GameInviteComponent, InviteDialogComponent, JoinGameDialogComponent],
+	exports: [
+		GameInviteComponent,
+		InviteDialogComponent,
+		JoinGameDialogComponent,
+		PongAudioComponent,
+		PongScreenComponent,
+		PongInputComponent,
+	],
   providers: [PongService],
 })
 export class PongModule {}

@@ -75,10 +75,7 @@ export class PongQueueService {
     response = this.attemptJoinQueue(socket);
     if (response.code !== 0) return response;
     this.setListeners(socket);
-    socket.data.queueTimer = new Timer(TimerType.STOPWATCH, 0, 0);
-    socket.data.queueTimer.start();
     this.logger.debug('join-queue event: Queue size: ' + this.queue.length());
-    this.logger.debug('added queue timer in socket.data.queueTimer.');
     return { code: 0, msg: 'you have joined the queue.' };
   }
 
@@ -116,7 +113,6 @@ export class PongQueueService {
       .to(socket.data.userRoom)
       .emit('queue-success', 'Successfully matched');
     this.clearListeners(socket);
-    socket.data.queueTimer.stop();
   }
 
   isUserQueued(userId: number): boolean {

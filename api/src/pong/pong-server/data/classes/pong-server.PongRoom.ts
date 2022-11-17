@@ -328,18 +328,7 @@ export class PongRoom {
         const response = this.setReadyPlayer(playerIndex, true);
         callback(response);
         if (response.code === 0) {
-          user
-            .to(this.roomId)
-            .emit('player-ready', user.data.user.displayName + ' is ready!');
-        }
-      });
-      user.on('unready-to-play', (args, callback) => {
-        const response = this.setReadyPlayer(playerIndex, false);
-        callback(response);
-        if (response.code === 0) {
-          user
-            .to(this.roomId)
-            .emit('player-unready', user.data.user.displayName + ' unreadied!');
+          user.to(this.roomId).emit('player-ready', playerIndex);
         }
       });
     }
@@ -370,7 +359,6 @@ export class PongRoom {
 
   private clearRoomListeners(user: Socket) {
     user.removeAllListeners('ready-to-play');
-    user.removeAllListeners('unready-to-play');
   }
 
   private clearInputListeners(user: Socket) {

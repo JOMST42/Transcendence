@@ -104,6 +104,7 @@ export class PongGameModule {
         victory: this.victory,
         finished: this.finished,
       },
+      time: this.gameTimer.getTime(),
       events: this.events,
     };
     this.events = [];

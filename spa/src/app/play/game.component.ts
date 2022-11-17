@@ -5,17 +5,7 @@ import { Response } from './interfaces';
 
 import { AudioHandler } from './classes';
 import { PlayService } from './play.service';
-
-export interface Score {
-	p1: number,
-	p2: number,
-}
-
-export interface Vector3 {
-	x: number,
-	y: number,
-	z?: number,
-}
+import { Score, Vector3 } from '../pong/data/interfaces';
 
 export interface EntityInfo {
   pos: Vector3;
@@ -28,6 +18,7 @@ export interface GameInfo {
   pad2: EntityInfo;
   score: Score;
   state: any;
+	time: number;
   events: Event[];
 }
 

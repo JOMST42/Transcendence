@@ -22,8 +22,6 @@
 				-15px -15px #000;
 }
 
-
-
 @media  screen and (min-width: 500px) and (max-width: 800px) {
 	.watch-screen #gameCanvas {
 		width:  500px;
@@ -44,20 +42,20 @@
 	}
 }
 
-
 .score {
 	font-family: PixelPowerline;
 	-webkit-text-stroke: black;
 	-webkit-text-stroke-width: 2px;
 	color: #fff;
+	opacity: 0.6;
 	position: absolute;
 	font-size: 100px;
 	z-index: 10;
 	transform: translateX(-50%);
 	// opacity: 0.5;
-	text-shadow: -12px -12px #7869C4,
-				-13px -11px #000,
-				-15px -15px #000;
+	// text-shadow: -12px -12px #7869C4,
+	// 			-13px -11px #000,
+	// 			-15px -15px #000;
 	
 }
 

@@ -105,7 +105,7 @@ export class PongServerGateway
       }
 
       // let i = 0;
-      // while (i++ < 20) {
+      // while (i++ < 1) {
       //   this.roomService.createGameRoom(socket, socket);
       // }
     } catch (e) {

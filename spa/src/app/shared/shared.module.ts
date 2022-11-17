@@ -13,8 +13,6 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
 import {
   NavBarComponent,
   NotFoundComponent,
-  PongAudioComponent,
-  PongScreenComponent,
   ServerErrorComponent,
 } from './components';
 import { RouterModule } from '@angular/router';
@@ -27,8 +25,6 @@ import { MatchHistoryComponent } from './components/match-history/match-history.
     NotFoundComponent,
     ServerErrorComponent,
     NavBarComponent,
-    PongScreenComponent,
-    PongAudioComponent,
     SearchUserComponent,
     UserAvatarComponent,
 		MatchHistoryComponent,
@@ -51,8 +47,6 @@ import { MatchHistoryComponent } from './components/match-history/match-history.
     FormsModule,
     ButtonModule,
     TableModule,
-    PongScreenComponent,
-    PongAudioComponent,
     NavBarComponent,
     InputTextModule,
     AvatarModule,

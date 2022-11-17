@@ -1,4 +1,5 @@
-import { Score } from "src/app/shared/components";
+
+import { Score } from "src/app/pong/data/interfaces";
 import { User } from "src/app/user/models";
 
 export interface RoomInfo {

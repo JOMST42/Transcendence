@@ -1,7 +1,3 @@
-<app-room-list></app-room-list>
-
-<button (click)="getGames()">Get games</button>
-
 <div [@stagger]="games.length" class="rooms">
 	<ul>
   <li *ngFor="let game of games">
@@ -25,7 +21,8 @@
     </div>
   </div>
   <div class="col-12 flex align-items-center justify-content-center">
-      <app-pong-screen></app-pong-screen>
+		<app-pong-screen></app-pong-screen>
   </div>
+	<app-room-list></app-room-list>
 </div>
 

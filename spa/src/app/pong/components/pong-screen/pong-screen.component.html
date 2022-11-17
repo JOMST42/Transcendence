@@ -1,8 +1,9 @@
 <section class="pong-game">
 	<div id="screenContainer" class="watch-screen">
-		<canvas #game id="gameCanvas"  tabindex="1" ></canvas>
-		<span id="score1" class="score" [innerHTML]="score[0]"></span>
-		<span id="score2" class="score" [innerHTML]="score[1]"></span>
+		<canvas #game id="gameCanvas"  width="{{dimension.w}}" height="{{dimension.h}}" ></canvas>
+		<span id="score1" class="score" [innerHTML]="score.p1"></span>
+		<span id="score2" class="score" [innerHTML]="score.p2"></span>
+		<!-- <span [innerHTML]="timer"></span> -->
 		<span id="countdown" [@.disabled]="animDisabled" [@countdown]="{value: countdown}" [innerHTML]="countdown"></span>
 		<!-- <button (click)="testCountdown()">Countdown test</button> -->
 	</div>
