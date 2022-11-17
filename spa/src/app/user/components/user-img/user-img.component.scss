@@ -1,8 +1,7 @@
 
 .container{
   position: relative;
-  width: 100%;
-  z-index: 0;
+  width: 50%;
 }
 
 .container img{
@@ -10,14 +9,17 @@
   height: auto;
 }
 
-.container .upload{
+.container .btn{
   position: absolute;
-  top: 80%;
-  left: 80%;
+  top: 50%;
+  left: 50%;
+  transform: translate(90%, 200%);
+  background-color: transparent;
+  border: none;
 }
 
-
 .profile-img {
+  z-index: -1;
   border: 3px solid #000;
     overflow: hidden;
     border-radius: 0px;
@@ -34,15 +36,24 @@
 	border-radius: 16px;
   }
   
-  @media screen and (max-width:800px){
+  @media screen and (max-width:600px){
     .profile-img{
       width: auto;
       max-width: 300px;
-      float: none;
+      float: initial;
       display: table-column;
       margin: 2rem 0rem 0rem 2rem;
     }
+    .container .btn{
+      position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(110%, 105%);
+  background-color: transparent;
+  border: none;
+    }
   }
+
 :host ::ng-deep .p-message.p-message-error{
   position: fixed;
   top: 0px;
@@ -55,13 +66,17 @@
   background-color: #00a595;
   color: #7869C4;
   border: 3px solid black;
+  border-bottom-right-radius: 12px;
+  position: absolute;
+  bottom: 100%;
+  left: 0%;
+  right: 50%;
  }
 
 
  :host ::ng-deep .p-fileupload-choose:hover {
 	color: #7869C4;
   background-color: transparent;
-
 	border: 3px solid #7869C4;
 
 
