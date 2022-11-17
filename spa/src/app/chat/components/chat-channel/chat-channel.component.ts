@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+
 import { Room } from '../../models';
 import { avatarLabel } from '../../utils';
 

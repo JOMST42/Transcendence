@@ -1,5 +1,6 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
+
 import { AuthService } from '../../../core/services';
 import { User } from '../../../user/models';
 import { ChatMessage } from '../../models';

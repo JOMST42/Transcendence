@@ -11,6 +11,7 @@ import { DialogModule } from 'primeng/dialog';
 
 import { SocketError } from './models';
 import { ToastService } from './services';
+import { DialogService } from 'primeng/dynamicdialog';
 
 const tokenGetter = () => localStorage.getItem('access_token');
 
@@ -67,7 +68,13 @@ export class ChatSocket extends Socket implements OnDestroy {
       },
     }),
   ],
-  providers: [MessageService, CookieService, PongSocket, ChatSocket],
+  providers: [
+    MessageService,
+    CookieService,
+    PongSocket,
+    ChatSocket,
+    DialogService,
+  ],
   exports: [ToastModule, DialogModule],
 })
 export class CoreModule {}

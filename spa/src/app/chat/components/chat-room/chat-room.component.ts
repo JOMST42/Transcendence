@@ -8,7 +8,8 @@ import {
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
-import { ChatMessage, Room } from '../../models';
+
+import { Room } from '../../models';
 import { ChatService } from '../../services';
 
 @Component({

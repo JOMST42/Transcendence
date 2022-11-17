@@ -9,6 +9,7 @@ import { AvatarModule } from 'primeng/avatar';
 import { CardModule } from 'primeng/card';
 import { TabViewModule } from 'primeng/tabview';
 import { InputTextareaModule } from 'primeng/inputtextarea';
+import { DynamicDialogModule } from 'primeng/dynamicdialog';
 
 import {
   NavBarComponent,
@@ -31,7 +32,7 @@ import { MatchHistoryComponent } from './components/match-history/match-history.
     PongAudioComponent,
     SearchUserComponent,
     UserAvatarComponent,
-		MatchHistoryComponent,
+    MatchHistoryComponent,
   ],
   imports: [
     CommonModule,
@@ -45,6 +46,7 @@ import { MatchHistoryComponent } from './components/match-history/match-history.
     TabViewModule,
     CardModule,
     InputTextareaModule,
+    DynamicDialogModule,
   ],
   exports: [
     CommonModule,
@@ -61,8 +63,9 @@ import { MatchHistoryComponent } from './components/match-history/match-history.
     CardModule,
     SearchUserComponent,
     UserAvatarComponent,
-		MatchHistoryComponent,
+    MatchHistoryComponent,
     InputTextareaModule,
+    DynamicDialogModule,
   ],
 })
 export class SharedModule {}

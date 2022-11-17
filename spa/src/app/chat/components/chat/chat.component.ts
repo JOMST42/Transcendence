@@ -1,8 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject, take, takeUntil } from 'rxjs';
-import { ToastService } from '../../../core/services';
 
+import { ToastService } from '../../../core/services';
 import { Room } from '../../models';
 import { ChatService } from '../../services';
 
