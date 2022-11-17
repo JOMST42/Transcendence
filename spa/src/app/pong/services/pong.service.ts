@@ -20,7 +20,7 @@ export class PongService {
     private readonly baseApiService: BaseApiService,
 		private readonly authService: AuthService
   ) {
-		this.interval = setInterval(() => this.updateState(), 2000);
+		// this.interval = setInterval(() => this.updateState(), 2000);
 	}
 
 	updateUser() {

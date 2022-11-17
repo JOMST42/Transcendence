@@ -38,16 +38,16 @@ export class QueueButtonComponent implements OnInit {
   constructor(private server: PlayService, private toast: ToastService, private readonly pongService: PongService) {
 		this.handleLabel();
 		this.handleState();
-		this.refreshButton()
-		this.interval = setInterval(() => this.refreshButton(), 1000);
+		
+		// this.interval = setInterval(() => this.refreshButton(), 1000);
 	}
 
   ngOnInit(): void {
+		this.refreshButton()
   }
 
 	refreshButton() {
 		if (!this.pongService.user) return ;
-
 		this.updateSub?.unsubscribe();
 		this.updateSub = this.pongService.canQueue(this.pongService.user.id).pipe(take(1)).subscribe({
       next: (data: Response) => {

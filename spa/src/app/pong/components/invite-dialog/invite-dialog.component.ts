@@ -73,7 +73,7 @@ export class InviteDialogComponent {
 	ngOnInit() {
 		this.primengConfig.ripple = true;
 		this.setListeners();
-		this.interval = setInterval(() => this.refreshDialog(), 2500);
+		this.refreshDialog();
 	}
 
 	setListeners() {
