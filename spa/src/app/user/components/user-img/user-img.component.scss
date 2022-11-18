@@ -1,8 +1,6 @@
-
 .container{
   position: relative;
   display: inline-block;
-  // width: 50%;
 }
 
 .container img{
@@ -55,7 +53,7 @@
   top: 0px;
   right: 0px;
   z-index: 10px;
- 
+
  }
   
  :host ::ng-deep .p-fileupload-choose{
@@ -74,8 +72,6 @@
 	color: #7869C4;
   background-color: transparent;
 	border: 3px solid #7869C4;
-
-
 }
 
   :host ::ng-deep .p-card{

@@ -4,35 +4,67 @@
   </div>
 
   <div class="grid">
-    <div class="col-12 flex align-items-center justify-content-center" style="background-color: yellow;">
+    <div class="col-12 flex align-items-center justify-content-center">
       <div class="container">
         <div class="grid">
-          <div class="lg:col-4 sm:col-12 md:12 card-user" style="background-color: rgb(69, 105, 73); height: fit-content;">
-            <app-user-img [avatarUrl]="user?.avatarUrl" [userIsMe]="user.id === me.id" (eventUpload)="refreshUser()"></app-user-img>
-            <span class="p-buttonset" style="background-color: rgb(0, 26, 255);">
-              <app-friend-btn [userIsMe]="user.id === me.id" [me]="me" [user]="user"></app-friend-btn>
-              <app-blocked-btn [userIsMe]="user.id === me.id" [me]="me" [user]="user" ></app-blocked-btn>
+          <div class="lg:col-4 sm:col-12 md:12 card-user">
+            <app-user-img
+              [avatarUrl]="user?.avatarUrl"
+              [userIsMe]="user.id === me.id"
+              (eventUpload)="refreshUser()"
+            ></app-user-img>
+            <span class="p-buttonset">
+              <app-friend-btn
+                [userIsMe]="user.id === me.id"
+                [me]="me"
+                [user]="user"
+              ></app-friend-btn>
+              <app-blocked-btn
+                [userIsMe]="user.id === me.id"
+                [me]="me"
+                [user]="user"
+              ></app-blocked-btn>
             </span>
           </div>
 
-          <div class="lg:col-8 sm:col-12 md:col-12 card-user" style="background-color: rgb(234, 0, 255);">
+          <div class="lg:col-8 sm:col-12 md:col-12 card-user">
             <div class="grid">
               <div class="lg:col-6 sm:col-12 md:col-12">
-                <app-user-displayname  [user]="user" [userIsMe]="user.id === me.id" ></app-user-displayname>
+                <app-user-displayname
+                  [user]="user"
+                  [userIsMe]="user.id === me.id"
+                ></app-user-displayname>
               </div>
 
               <div class="lg:col-6 sm:col-12 md:12">
-                <input type="text" pInputText class="transparent-background color-bottom-border input-font" placeholder="{{ user?.username }}"/>
+                <input
+                  type="text"
+                  class="no-cursor"
+                  pInputText
+                  [disabled]="true"
+                  placeholder="{{ user?.username }}"
+                />
               </div>
 
               <div class="lg:col-6 sm:col-12 md:12">
-                <input type="text" pInputText class="transparent-background color-bottom-border input-font" placeholder="{{ user?.lastName }}" />
+                <input
+                  type="text"
+                  class="no-cursor"
+                  pInputText
+                  [disabled]="true"
+                  placeholder="{{ user?.lastName }}"
+                />
               </div>
 
               <div class="lg:col-6 sm:col-12 md:12">
-                <input type="text" pInputText class="transparent-background color-bottom-border input-font" placeholder="{{ user?.firstName }}"/>
+                <input
+                  type="text"
+                  class="no-cursor"
+                  pInputText
+                  [disabled]="true"
+                  placeholder="{{ user?.firstName }}"
+                />
               </div>
-
             </div>
           </div>
         </div>
@@ -50,7 +82,11 @@
               </div>
             </ng-template>
           </p-tabPanel>
-          <p-tabPanel [cache]="false" header="REQUESTS" *ngIf="user.id === me.id">
+          <p-tabPanel
+            [cache]="false"
+            header="REQUESTS"
+            *ngIf="user.id === me.id"
+          >
             <ng-template pTemplate="content">
               <div id="container-flex-column">
                 <app-friend-requests [me]="me"></app-friend-requests>
@@ -66,8 +102,4 @@
       </div>
     </div>
   </div>
-
 </div>
-
-
-<app-user-img [avatarUrl]="user?.avatarUrl" [userIsMe]="user.id === me.id" (eventUpload)="refreshUser()"></app-user-img>

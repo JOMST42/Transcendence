@@ -1,7 +1,8 @@
-@media screen and (max-width:600px){
+@media screen and (max-width:900px){
   .container{
     align-items: center;
 		align-content: center;
+		justify-content: center;
   }
 }
 
@@ -88,6 +89,10 @@ input {
 	border: 3px solid #000 !important;
 }
 
+.no-cursor{
+	cursor: no-drop;
+	opacity: 1;
+}
 
 .card-user {
 	margin-top : 3rem;
