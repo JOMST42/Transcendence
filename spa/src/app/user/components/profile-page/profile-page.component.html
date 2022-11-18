@@ -60,22 +60,30 @@
               </div>
 
               <p-tabView>
-                <p-tabPanel header="STATS">
-                  <div class="stats-card col-4 mr-3"></div>
-                  <div class="stats-card col-4"></div>
+                <p-tabPanel header="STATS" [cache]="false">
+                  <ng-template pTemplate="content">
+                    <div class="stats-card col-4 mr-3"></div>
+                    <div class="stats-card col-4"></div>
+                  </ng-template>
                 </p-tabPanel>
-                <p-tabPanel header="FRIENDS">
-                  <div id="container-flex-column">
-                    <app-friend-list [user]="user"></app-friend-list>
-                  </div>
+                <p-tabPanel header="FRIENDS" [cache]="false">
+                  <ng-template pTemplate="content">
+                    <div id="container-flex-column">
+                      <app-friend-list [user]="user"></app-friend-list>
+                    </div>
+                  </ng-template>
                 </p-tabPanel>
-                <p-tabPanel header="REQUESTS" *ngIf="user.id === me.id">
-                  <div id="container-flex-column">
-                    <app-friend-requests [me]="me"></app-friend-requests>
-                  </div>
+                <p-tabPanel [cache]="false" header="REQUESTS" *ngIf="user.id === me.id">
+                  <ng-template pTemplate="content">
+                    <div id="container-flex-column">
+                      <app-friend-requests [me]="me"></app-friend-requests>
+                    </div>
+                  </ng-template>
                 </p-tabPanel>
                 <p-tabPanel header="MATCH HISTORY">
-                  <app-match-history [user]="user"></app-match-history>
+                  <ng-template pTemplate="content">
+                    <app-match-history [user]="user"></app-match-history>
+                  </ng-template>
                 </p-tabPanel>
               </p-tabView>
             </div>

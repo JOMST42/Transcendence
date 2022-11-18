@@ -26,23 +26,29 @@
   </ng-template>
   carte utilisateur - est ce qu'on met du contenu ?
   <ng-template pTemplate="footer">
-    <span class="p-buttonset">
-      <button pButton type="button">
-        <app-friend-btn
-          [userIsMe]="user.id === me.id"
-          [me]="me"
-          [user]="user"
-          (stateChange)="resetPage()"
-        ></app-friend-btn>
-      </button>
-      <button pButton type="button">
-        <app-blocked-btn
-          [userIsMe]="user.id === me.id"
-          [me]="me"
-          [user]="user"
-          (stateChange)="resetPage()"
-        ></app-blocked-btn>
-      </button>
+    <span class="p-buttonset" class="button-set">
+      <app-friend-btn
+        [userIsMe]="user.id === me.id"
+        [me]="me"
+        [user]="user"
+        (stateChange)="resetPage()"
+      ></app-friend-btn>
+
+      <app-blocked-btn
+        [userIsMe]="user.id === me.id"
+        [me]="me"
+        [user]="user"
+        (stateChange)="resetPage()"
+      ></app-blocked-btn>
+
+      <a routerLink="/users/{{ user?.id }}">
+        <button
+          pButton
+          type="button"
+          icon="pi pi-user"
+          (click)="closeDialog()"
+        ></button>
+      </a>
     </span>
   </ng-template>
 </p-dialog>

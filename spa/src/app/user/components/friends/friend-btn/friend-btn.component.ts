@@ -31,15 +31,11 @@ export class FriendBtnComponent implements OnInit {
       .checkFriendship(this.user.id, this.me.id)
       .then((data) => {
         if (data.accepted === false) {
-          if (data.requesterId == this.me.id) {
+          if (data.requesterId === this.me.id) {
             this.state = 'DISABLE';
           }
-          if (data.adresseeId == this.me.id) {
+          if (data.adresseeId === this.me.id) {
             this.state = 'ACCEPT';
-            this.toastService.showInfo(
-              'Hey !',
-              'You received an invitation from ' + this.user.displayName
-            );
           }
         } else {
           this.state = 'REMOVE';
@@ -57,10 +53,6 @@ export class FriendBtnComponent implements OnInit {
         this.friendService.addFriend(this.user.id, this.me.id);
         break;
       }
-      case 'ACCEPT': {
-        this.acceptNewFriend();
-        break;
-      }
       case 'REMOVE': {
         this.removeFriend();
         break;
@@ -69,18 +61,6 @@ export class FriendBtnComponent implements OnInit {
         break;
       }
     }
-  }
-
-  acceptNewFriend() {
-    this.friendService
-      .updateFriendship(this.user.id, this.me.id)
-      .pipe(take(1))
-      .subscribe({
-        next: (data) => {
-          console.log(data);
-          this.state = 'REMOVE';
-        },
-      });
   }
 
   removeFriend() {

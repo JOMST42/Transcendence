@@ -70,8 +70,8 @@ export class FriendService {
     return await this.prisma.friendship.delete({
       where: {
         requesterId_adresseeId: {
-          requesterId: userId,
-          adresseeId: adressee.id,
+          requesterId: adressee.id,
+          adresseeId: userId,
         },
       },
     });

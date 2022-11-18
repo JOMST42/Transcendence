@@ -5,12 +5,7 @@
       [user]="myFriend"
     ></app-user-avatar>
     <span style="padding: 1rem 1rem 1rem">{{ myFriend?.displayName }}</span>
-<button class="transparent">
-  <app-friend-btn
-    [userIsMe]="me === myFriend"
-    [me]="me"
-    [user]="myFriend"
-  ></app-friend-btn>
-</button>
+    <app-refuse-friend-btn [user]="myFriend"></app-refuse-friend-btn>
+    <app-accept-friend-btn [user]="myFriend"></app-accept-friend-btn>
   </ng-template>
 </p-card>
