@@ -11,7 +11,6 @@ import {
   ChatFriendListComponent,
   ChatMessageComponent,
   ChatMessageListComponent,
-  ChatRoomComponent,
   ChatUserComponent,
   ChatUserListComponent,
 } from './components';
@@ -19,7 +18,6 @@ import {
 @NgModule({
   declarations: [
     ChatComponent,
-    ChatRoomComponent,
     ChatMessageComponent,
     ChatChannelListComponent,
     ChatChannelComponent,

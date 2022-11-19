@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Subject, take, takeUntil } from 'rxjs';
+import { Subject, take, takeUntil, tap } from 'rxjs';
 
 import { ToastService } from '../../../core/services';
 import { Room } from '../../models';
@@ -48,7 +48,12 @@ export class ChatComponent implements OnInit, OnDestroy {
   onChannelSelect(channel: Room): void {
     this.chatService
       .getChatRoom(channel.id)
-      .pipe(take(1))
+      .pipe(
+        take(1),
+        tap((data) => {
+          this.chatService.joinRoom(data.id);
+        })
+      )
       .subscribe({
         next: (data) => {
           data.messages.reverse();

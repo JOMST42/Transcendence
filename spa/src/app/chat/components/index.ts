@@ -1,5 +1,4 @@
 export * from './chat/chat.component';
-export * from './chat-room/chat-room.component';
 export * from './channel-create/channel-create.component';
 export * from './chat-channel/chat-channel.component';
 export * from './chat-channel-list/chat-channel-list.component';

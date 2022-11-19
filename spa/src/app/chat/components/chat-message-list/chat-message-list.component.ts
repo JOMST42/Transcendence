@@ -47,10 +47,12 @@ export class ChatMessageListComponent
         this.chatMessages.unshift(msg);
         this.scrollToBottom();
       });
-    this.chatService.joinRoom(this.roomId);
   }
 
-  sendMessage(): void {
+  sendMessage(event: any): void {
+    if (event && event.key !== 'Enter') {
+      return;
+    }
     this.chatService.sendMessage({
       roomId: this.roomId,
       content: this.message,

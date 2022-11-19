@@ -15,11 +15,12 @@
         placeholder="Message"
         pInputText
         [(ngModel)]="message"
+        (keypress)="sendMessage($event)"
       />
     </div>
     <div class="my-3 mr-3">
       <button
-        (click)="sendMessage()"
+        (click)="sendMessage(undefined)"
         pButton
         type="button"
         icon="pi pi-send"
