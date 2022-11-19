@@ -23,6 +23,7 @@ export class ChatComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnDestroy(): void {
+    this.leaveChannel();
     this.unsubscribeAll$.next();
   }
 
@@ -51,6 +52,7 @@ export class ChatComponent implements OnInit, OnDestroy {
       .pipe(
         take(1),
         tap((data) => {
+          this.leaveChannel();
           this.chatService.joinRoom(data.id);
         })
       )
@@ -60,5 +62,11 @@ export class ChatComponent implements OnInit, OnDestroy {
           this.selectedChannel = data;
         },
       });
+  }
+
+  leaveChannel(): void {
+    if (this.selectedChannel) {
+      this.chatService.leaveRoom(this.selectedChannel.id);
+    }
   }
 }

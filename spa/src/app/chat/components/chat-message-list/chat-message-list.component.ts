@@ -29,7 +29,6 @@ export class ChatMessageListComponent
   constructor(private readonly chatService: ChatService) {}
 
   ngOnDestroy(): void {
-    this.chatService.leaveRoom(this.roomId);
     this.unsubscribeAll$.next();
   }
 
