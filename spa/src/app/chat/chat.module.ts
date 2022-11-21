@@ -14,6 +14,7 @@ import {
   ChatUserComponent,
   ChatUserListComponent,
 } from './components';
+import { UserInviteComponent } from './components/user-invite/user-invite.component';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import {
     ChatFriendListComponent,
     ChatFriendComponent,
     ChannelCreateComponent,
+    UserInviteComponent,
   ],
   imports: [SharedModule, ChatRoutingModule],
 })

@@ -5,7 +5,18 @@
   <div class="flex justify-content-center">
     <h2>Users</h2>
   </div>
-  <div class="h-full flex flex-column overflow-auto thin-bar">
+  <div class="flex justify-content-center mb-2">
+    <button
+      pButton
+      pRipple
+      label="Invite"
+      icon="pi pi-plus"
+      type="button"
+      class="p-button-rounded"
+      (click)="inviteUser()"
+    ></button>
+  </div>
+  <div class="h-full flex flex-column overflow-y-auto thin-bar">
     <div *ngFor="let user of users">
       <app-chat-user [user]="user"></app-chat-user>
     </div>

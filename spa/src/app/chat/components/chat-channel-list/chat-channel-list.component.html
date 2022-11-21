@@ -16,7 +16,7 @@
       (click)="createChannel()"
     ></button>
   </div>
-  <div class="h-full flex flex-column overflow-auto thin-bar">
+  <div class="h-full flex flex-column overflow-y-auto thin-bar">
     <div *ngFor="let channel of channels">
       <app-chat-channel
         (click)="onChannelSelect(channel)"
