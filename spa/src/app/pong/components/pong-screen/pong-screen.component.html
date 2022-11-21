@@ -1,5 +1,14 @@
 <section class="pong-game">
 	<div id="screenContainer" class="watch-screen">
+		<div class="col-12 flex align-items-center justify-content-center">
+			<div class="grid">
+				<div class="col-8 flex align-items-center justify-content-center">
+						<app-user-avatar></app-user-avatar>
+				</div>
+				<div class="col-4 flex align-items-center justify-content-center"><h2>VS</h2></div>
+				<div class="col-8 flex align-items-center justify-content-center"></div>
+			</div>
+		</div>
 		<canvas #game id="gameCanvas"  width="{{dimension.w}}" height="{{dimension.h}}" ></canvas>
 		<span id="score1" class="score" [innerHTML]="score.p1"></span>
 		<span id="score2" class="score" [innerHTML]="score.p2"></span>
