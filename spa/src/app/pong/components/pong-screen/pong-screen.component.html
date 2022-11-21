@@ -2,11 +2,13 @@
 	<div id="screenContainer" class="watch-screen">
 		<div class="col-12 flex align-items-center justify-content-center">
 			<div class="grid">
-				<div class="col-8 flex align-items-center justify-content-center">
-						<!-- <app-user-avatar></app-user-avatar> -->
+				<div class="col-4 flex align-items-center justify-content-start">
+						<app-user-avatar *ngIf="roomInfo?.user1" [user]="roomInfo.user1" [avatarUrl]="roomInfo.user1.avatarUrl" >coucuou</app-user-avatar>
 				</div>
 				<div class="col-4 flex align-items-center justify-content-center"><h2>VS</h2></div>
-				<div class="col-8 flex align-items-center justify-content-center"></div>
+				<div class="col-4 flex align-items-center justify-content-end">
+					<app-user-avatar *ngIf="roomInfo?.user2" [user]="roomInfo.user2" [avatarUrl]="roomInfo.user2.avatarUrl" >coucuou</app-user-avatar>
+				</div>
 			</div>
 		</div>
 		<canvas #game id="gameCanvas"  width="{{dimension.w}}" height="{{dimension.h}}" ></canvas>

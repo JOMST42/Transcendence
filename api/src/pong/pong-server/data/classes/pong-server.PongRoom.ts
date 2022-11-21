@@ -21,7 +21,6 @@ export class PongRoom {
   private userP2?: Socket | undefined;
   private p1!: Player;
   private p2!: Player;
-  private users: Socket[] = [];
   private game!: PongGameModule;
   private prismaGame!: Game;
 
@@ -44,39 +43,28 @@ export class PongRoom {
     this.setUserPlayer(2, userP2);
     this.p1 = new Player(userP1?.data.user.id);
     this.p2 = new Player(userP2?.data.user.id);
+    this.p1.disc_timer.callback = () => this.handleDisconnect(this.userP1);
+    this.p2.disc_timer.callback = () => this.handleDisconnect(this.userP2);
     this.prismaGame = prismaGame;
 
     this.waitCountdown = new Timer(TimerType.COUNTDOWN, 60, 0);
     this.readyCountdown = new Timer(TimerType.COUNTDOWN, 20, 0);
     this.gameCountdown = new Timer(TimerType.COUNTDOWN, 3, 0);
+
+    setInterval(() => this.checkDisconnect(), 1000);
   }
 
   async endRoom() {
     this.logger.debug('ending room ' + this.roomId);
+    this.clearListeners(this.userP1);
+    this.clearListeners(this.userP2);
     this.state = RoomState.Processing;
-    this.users.forEach((user: Socket) => this.clearListeners(user));
     this.state = RoomState.ToBeDeleted;
   }
 
   isDeletable(): boolean {
     if (this.state === RoomState.ToBeDeleted) return true;
     return false;
-  }
-
-  addUser(user: Socket): boolean {
-    if (this.findUser(user)) return false;
-    this.users.push(user);
-    return true;
-  }
-
-  // Returns an Socket if found; undefined if not found
-  findUser(user: Socket): Socket | undefined {
-    for (let i = 0; i < this.users.length; i++) {
-      if (this.users[i] === user) {
-        return this.users[i];
-      }
-    }
-    return undefined;
   }
 
   createGame(set: GameSettings): PongGameModule {
@@ -118,6 +106,8 @@ export class PongRoom {
 
   startWaiting() {
     this.state = RoomState.Waiting;
+    this.getUserPlayer1()?.emit('game-waiting', this.getRoomId());
+    this.getUserPlayer2()?.emit('game-waiting', this.getRoomId());
     this.waitCountdown.reset();
     this.waitCountdown.start(() => {
       return this.startReadying();
@@ -127,6 +117,8 @@ export class PongRoom {
 
   startReadying() {
     this.state = RoomState.Readying;
+    this.getUserPlayer1()?.emit('ready-check', this.getRoomId());
+    this.getUserPlayer2()?.emit('ready-check', this.getRoomId());
     this.readyCountdown.reset();
     this.readyCountdown.start(() => {
       return this.startCountdown();
@@ -136,11 +128,39 @@ export class PongRoom {
 
   startCountdown() {
     this.state = RoomState.Countdown;
+    this.getUserPlayer1()?.emit('game-countdown', this.getRoomId());
+    this.getUserPlayer2()?.emit('game-countdown', this.getRoomId());
     this.gameCountdown.reset();
     this.gameCountdown.start(() => {
       return this.startGame(false, false);
     });
     this.logger.log('Game starting in...' + this.gameCountdown.getTime());
+  }
+
+  checkDisconnect() {
+    switch (this.state) {
+      case RoomState.Playing:
+      case RoomState.Readying:
+      case RoomState.Countdown:
+        if (this.userP1.disconnected || this.userP2.disconnected) {
+          this.startWaiting();
+          if (this.userP1.disconnected) {
+            this.p1.disc_timer.resume();
+          } else this.userP2.emit('player-disconnect', 1);
+          if (this.userP2.disconnected) {
+            this.p2.disc_timer.resume();
+          } else this.userP1.emit('player-disconnect', 2);
+        }
+      default:
+        break;
+    }
+  }
+
+  handleDisconnect(user: Socket) {
+    if (user === this.userP1) this.game.forceWin(1);
+    else this.game.forceWin(2);
+    this.p1.disc_timer.stop();
+    this.p2.disc_timer.stop();
   }
 
   getVictoryInfo(): Victory | undefined {
@@ -284,10 +304,6 @@ export class PongRoom {
 
   getUserPlayer2(): Socket | undefined {
     return this.userP2;
-  }
-
-  getUsers(): Socket[] {
-    return this.users;
   }
 
   /********** EVENT LISTENERS **********/

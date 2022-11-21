@@ -8,12 +8,11 @@ import {
   animation,
   useAnimation,
 } from '@angular/animations';
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { GameInfo } from 'src/app/play/game.component';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { UserService } from 'src/app/user/services';
 import { AudioHandler } from '../../../play/classes';
 import { PlayService } from '../../../play/play.service';
-import { Score, Vector3 } from '../../data/interfaces';
+import { GameInfo, RoomInfo, Score, Vector3 } from '../../data/interfaces';
 
 export interface EntityInfo {
   pos: Vector3;
@@ -52,6 +51,8 @@ export class PongScreenComponent implements OnInit {
   score: Score = {p1:0, p2:0};
 	p1Ready: boolean = false;
 	p2Ready: boolean = false;
+	p1Connected: boolean = false;
+	p2Connected: boolean = false;
 	timer: number = 0;
 
   countdown: number = 0;
@@ -59,7 +60,10 @@ export class PongScreenComponent implements OnInit {
   animDisabled?: boolean = false;
 
 	afterImage: Vector3[] = [];
-	afterTimer = {frames:0, reset:5}; 
+	afterTimer = {frames:0, reset:5};
+
+	roomInfo?: RoomInfo; 
+
 
 
   private audio: AudioHandler = new AudioHandler(0.3, 1);
@@ -80,6 +84,7 @@ export class PongScreenComponent implements OnInit {
     this.audio.setMusicVictory('assets/music/victory.mp3');
 		this.refresh();
     this.setGameListener();
+		this.setRoomListener();
     // this.animDisabled = false;
   }
 
@@ -146,6 +151,19 @@ export class PongScreenComponent implements OnInit {
 				this.p2Ready = false;
     });
   }
+
+	setRoomListener() {
+    this.server.listen('room-update').subscribe((info: RoomInfo | undefined | null) => {
+			if (!info) return;
+      if (info.roomId != this.roomInfo?.roomId) {
+				this.updateRoom(info);
+			}
+		});
+	}
+
+	updateRoom(roomInfo : RoomInfo) {
+		this.roomInfo = roomInfo;
+	}
 
 	drawAfterImage(size: number) {
 		let width = this.gameCanvas.nativeElement.width
