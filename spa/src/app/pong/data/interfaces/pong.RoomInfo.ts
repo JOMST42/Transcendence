@@ -11,5 +11,8 @@ export interface RoomInfo {
   scoreToWin: number;
   state: RoomState;
   time: number;
+	hasCountdown: boolean;
+	countdownTime: number;
+	countdownLabel: string;
   winner: Winner;
 }

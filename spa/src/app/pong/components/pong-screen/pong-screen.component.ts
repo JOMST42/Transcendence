@@ -92,6 +92,7 @@ export class PongScreenComponent implements OnInit {
     this.server.listenGameUpdate().subscribe((info: GameInfo | undefined | null) => {
 			if (!info) return;
       this.refresh();
+			console.log('refreshing');
       this.context.fillStyle = '#FFFFFF';
 			let width = this.gameCanvas.nativeElement.width
 			let height = this.gameCanvas.nativeElement.height

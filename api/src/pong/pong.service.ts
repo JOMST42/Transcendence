@@ -92,6 +92,7 @@ export class PongService {
 
   canJoinGame(userId: number): Response {
     const userState = this.getUserState(userId);
+    this.logger.debug(userState);
     if (userState.queue != QueueState.NOTQUEUED) {
       return {
         code: 1,
@@ -108,7 +109,8 @@ export class PongService {
     }
     if (
       userState.game != UserGameState.OFFLINE &&
-      userState.game != UserGameState.WAITING
+      userState.game != UserGameState.WAITING &&
+      userState.game != UserGameState.RECONNECT
     ) {
       return {
         code: 1,
@@ -116,7 +118,10 @@ export class PongService {
         payload: userState,
       };
     }
-    if (userState.game === UserGameState.WAITING) {
+    if (
+      userState.game === UserGameState.WAITING ||
+      userState.game === UserGameState.RECONNECT
+    ) {
       return {
         code: 0,
         msg: 'You have a game that needs you!',

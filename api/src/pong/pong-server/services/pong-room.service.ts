@@ -57,14 +57,13 @@ export class PongRoomService {
     @Inject(forwardRef(() => PongServerGateway))
     private server: PongServerGateway,
     private readonly prisma: PrismaService,
-    private eventEmitter: EventEmitter2,
   ) {
     setInterval(() => {
       this.updateGamesInfo();
     }, (1 / 60) * 1000);
     setInterval(() => {
       this.updateRoomsInfo();
-    }, 2000);
+    }, 1000);
   }
 
   private updateGamesInfo() {
@@ -165,8 +164,8 @@ export class PongRoomService {
           payload: room,
         };
       })
-      .catch((game) => {
-        this.logger.log('failed to add game to prisma... ' + game.id);
+      .catch((e) => {
+        this.logger.log('failed to add game to prisma... ' + e);
         return { code: 1, msg: 'Could not create game in the database' };
       });
   }
@@ -194,7 +193,8 @@ export class PongRoomService {
 
   async endRoom(room: PongRoom) {
     const roomInfo: RoomInfo = room.getRoomInfo();
-    room.endRoom();
+    await room.endRoom();
+    // TODO splice room
 
     this.logger.log('Trying to update game to prisma... ');
     try {
@@ -219,14 +219,25 @@ export class PongRoomService {
   }
 
   private userJoinRoomAsPlayer(user: Socket, room: PongRoom) {
-    this.userLeaveRooms(user);
     this.userJoinRoom(room.getRoomId(), user);
   }
 
   addUser(user: Socket) {
     this.users.push(user);
-    // this.setDisconnectListener(user);
     this.setRoomListeners(user);
+    this.handleReconnection(user);
+  }
+
+  handleReconnection(user: Socket) {
+    const room = this.rooms.find((room) => {
+      if (
+        room.getUserGameState(user.data.user.id) === UserGameState.RECONNECT
+      ) {
+        room.handleReconnect(user);
+        user.join(room.getRoomId());
+        return;
+      }
+    });
   }
 
   disconnectUser(user: Socket) {
@@ -244,7 +255,13 @@ export class PongRoomService {
   }
 
   getUserGameState(userId: number): UserGameState {
-    const room = this.rooms.find((room) => {});
+    const room = this.rooms.find((room) => {
+      if (room.getUserGameState(userId) != UserGameState.OFFLINE) {
+        return true;
+      }
+      return false;
+    });
+    if (room) return room.getUserGameState(userId);
     return UserGameState.OFFLINE;
   }
 

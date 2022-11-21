@@ -17,6 +17,7 @@ export class PongRoom {
   private prismaId: number;
   private roomId: string;
   private state: RoomState = RoomState.Waiting;
+  private finished = false;
   private userP1?: Socket | undefined;
   private userP2?: Socket | undefined;
   private p1!: Player;
@@ -27,6 +28,7 @@ export class PongRoom {
   private readyCountdown: Timer;
   private gameCountdown: Timer;
   private waitCountdown: Timer;
+  private discCountdown: Timer;
 
   private settings: GameSettings;
 
@@ -39,26 +41,25 @@ export class PongRoom {
   ) {
     this.prismaId = prismaId;
     this.roomId = roomId;
-    this.setUserPlayer(1, userP1);
-    this.setUserPlayer(2, userP2);
     this.p1 = new Player(userP1?.data.user.id);
     this.p2 = new Player(userP2?.data.user.id);
-    this.p1.disc_timer.callback = () => this.handleDisconnect(this.userP1);
-    this.p2.disc_timer.callback = () => this.handleDisconnect(this.userP2);
+    this.setUserPlayer(1, userP1);
+    this.setUserPlayer(2, userP2);
     this.prismaGame = prismaGame;
 
     this.waitCountdown = new Timer(TimerType.COUNTDOWN, 60, 0);
     this.readyCountdown = new Timer(TimerType.COUNTDOWN, 20, 0);
     this.gameCountdown = new Timer(TimerType.COUNTDOWN, 3, 0);
+    this.discCountdown = new Timer(TimerType.COUNTDOWN, 20, 0);
 
     setInterval(() => this.checkDisconnect(), 1000);
   }
 
   async endRoom() {
+    this.state = RoomState.Processing;
     this.logger.debug('ending room ' + this.roomId);
     this.clearListeners(this.userP1);
     this.clearListeners(this.userP2);
-    this.state = RoomState.Processing;
     this.state = RoomState.ToBeDeleted;
   }
 
@@ -91,8 +92,9 @@ export class PongRoom {
   }
 
   getGameUpdate(): GameInfo | undefined {
-    if (this.game.isFinished() && this.state === RoomState.Playing) {
+    if (this.game.isFinished() && !this.finished) {
       this.state = RoomState.Finished;
+      this.finished = true;
     } // TODO
     return this.getGame()?.getGameInfo();
   }
@@ -106,8 +108,11 @@ export class PongRoom {
 
   startWaiting() {
     this.state = RoomState.Waiting;
-    this.getUserPlayer1()?.emit('game-waiting', this.getRoomId());
-    this.getUserPlayer2()?.emit('game-waiting', this.getRoomId());
+    this.game.pause();
+    if (!this.p1.joined)
+      this.getUserPlayer1()?.emit('game-waiting', this.getRoomId());
+    if (!this.p2.joined)
+      this.getUserPlayer2()?.emit('game-waiting', this.getRoomId());
     this.waitCountdown.reset();
     this.waitCountdown.start(() => {
       return this.startReadying();
@@ -117,6 +122,9 @@ export class PongRoom {
 
   startReadying() {
     this.state = RoomState.Readying;
+    this.game.pause();
+    this.p1.ready = false;
+    this.p2.ready = false;
     this.getUserPlayer1()?.emit('ready-check', this.getRoomId());
     this.getUserPlayer2()?.emit('ready-check', this.getRoomId());
     this.readyCountdown.reset();
@@ -128,6 +136,7 @@ export class PongRoom {
 
   startCountdown() {
     this.state = RoomState.Countdown;
+    this.game.pause();
     this.getUserPlayer1()?.emit('game-countdown', this.getRoomId());
     this.getUserPlayer2()?.emit('game-countdown', this.getRoomId());
     this.gameCountdown.reset();
@@ -142,13 +151,19 @@ export class PongRoom {
       case RoomState.Playing:
       case RoomState.Readying:
       case RoomState.Countdown:
-        if (this.userP1.disconnected || this.userP2.disconnected) {
+      case RoomState.Waiting:
+        if (
+          (this.userP1.disconnected && this.p1.joined) ||
+          (this.userP2.disconnected && this.p2.joined)
+        ) {
           this.startWaiting();
           if (this.userP1.disconnected) {
             this.p1.disc_timer.resume();
+            this.p1.joined = false;
           } else this.userP2.emit('player-disconnect', 1);
           if (this.userP2.disconnected) {
             this.p2.disc_timer.resume();
+            this.p2.joined = false;
           } else this.userP1.emit('player-disconnect', 2);
         }
       default:
@@ -157,10 +172,28 @@ export class PongRoom {
   }
 
   handleDisconnect(user: Socket) {
-    if (user === this.userP1) this.game.forceWin(1);
-    else this.game.forceWin(2);
+    if (user === this.userP1) this.game.forceWin(2);
+    else this.game.forceWin(1);
     this.p1.disc_timer.stop();
     this.p2.disc_timer.stop();
+  }
+
+  handleReconnect(user: Socket) {
+    this.logger.debug(
+      'checking if user ' + user.data.user.displayName + ' has to reconnect',
+    );
+    if (user.data.user.id === this.userP1.data.user.id) {
+      this.setUserPlayer(1, user);
+      // this.setJoinStatus(1, true);
+      this.p1.disc_timer.pause();
+      this.logger.debug(user.data.user.displayName + ' has to reconnect');
+    }
+    if (user.data.user.id === this.userP2.data.user.id) {
+      this.setUserPlayer(2, user);
+      // this.setJoinStatus(2, true);
+      this.p2.disc_timer.pause();
+      this.logger.debug(user.data.user.displayName + ' has to reconnect');
+    }
   }
 
   getVictoryInfo(): Victory | undefined {
@@ -201,8 +234,11 @@ export class PongRoom {
       return { code: 1, msg: 'Room is not waiting for players' };
     }
     if (i === 1 || i === 2) {
-      if (i === 1) this.p1.joined = flag;
-      else this.p2.joined = flag;
+      if (i === 1) {
+        this.p1.joined = flag;
+      } else {
+        this.p2.joined = flag;
+      }
       if (flag === true)
         response = { code: 0, msg: 'player ' + i + ' has joined the game!' };
       else response = { code: 0, msg: 'player ' + i + ' has left the game!' };
@@ -233,8 +269,17 @@ export class PongRoom {
   }
 
   setUserPlayer(i: 1 | 2, user: Socket | undefined) {
-    if (i === 1) this.userP1 = user;
-    if (i === 2) this.userP2 = user;
+    if (i === 1) {
+      this.userP1 = user;
+      this.p1.disc_timer.callback = () => this.handleDisconnect(this.userP1);
+    }
+    if (i === 2) {
+      this.userP2 = user;
+      this.p2.disc_timer.callback = () => this.handleDisconnect(this.userP2);
+    }
+    user.leave(user.data.gameRoom);
+    user.data.gameRoom = this.roomId;
+    user.join(this.roomId);
     this.setGameListeners(user);
     this.setRoomListeners(user);
     this.setInputListeners(user);
@@ -251,8 +296,29 @@ export class PongRoom {
       scoreToWin: this.settings.score_to_win,
       state: this.getState(),
       time: this.getGame()?.getGameTime(),
+      hasCountdown: false,
+      countdownLabel: 'none',
+      countdownTime: 0,
       winner: this.getWinner(),
     };
+    switch (this.state) {
+      case RoomState.Countdown:
+        info.hasCountdown = true;
+        info.countdownLabel = 'Game starts in...';
+        info.countdownTime = this.gameCountdown.timer;
+        break;
+      case RoomState.Readying:
+        info.hasCountdown = true;
+        info.countdownLabel = 'Ready check';
+        info.countdownTime = this.readyCountdown.timer;
+        break;
+      case RoomState.Waiting:
+        info.hasCountdown = true;
+        info.countdownLabel = 'Waiting for players...';
+        info.countdownTime = this.readyCountdown.timer;
+        break;
+      default:
+    }
     return info;
   }
 
@@ -272,13 +338,20 @@ export class PongRoom {
     if (userId === this.p1?.userId) player = this.p1;
     else if (userId === this.p2?.userId) player = this.p2;
     else return UserGameState.OFFLINE;
+    this.checkDisconnect();
 
     switch (this.state) {
       case RoomState.Countdown:
       case RoomState.Playing:
         return UserGameState.PLAYING;
-        break;
+      case RoomState.Readying:
+        return UserGameState.READYING;
       case RoomState.Waiting:
+        if (
+          (player === this.p1 && this.userP1.disconnected) ||
+          (player === this.p2 && this.userP2.disconnected)
+        )
+          return UserGameState.RECONNECT;
         if (!player.joined) return UserGameState.RECONNECT;
         else return UserGameState.WAITING;
       default:

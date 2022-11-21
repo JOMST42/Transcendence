@@ -3,6 +3,7 @@ import { PlayService } from '../../play.service';
 import { Response } from '../../interfaces';
 import {ButtonModule} from 'primeng/button'
 import { ToastService } from 'src/app/core/services';
+import { PongService } from 'src/app/pong/services/pong.service';
 
 enum ButtonState {
 	READY = 0,
@@ -36,14 +37,15 @@ export class ReadyButtonComponent {
 	}
 
 	ngOnInit(): void {
+		// this.changeToDisabled();
 		this.server.listen("ready-check").subscribe((info: number) => {
 			this.changeToReady();
 		});
-	}
+  }
 
 	async handleReady(event: any) {
 		if (this.state === ButtonState.READY) {
-			this.changeToProcess();
+			// this.changeToProcess();
 			await this.ready();
 		}
 	}
@@ -52,7 +54,7 @@ export class ReadyButtonComponent {
     this.server
       .emit('ready-to-play', {})
       .then((data: Response) => {
-				this.changeToDisabled();
+				// this.changeToDisabled();
 				this.toast.showSuccess('Ready success', 'You are now ready');
 			}, (data: Response | undefined) => {
 				this.changeToReady();

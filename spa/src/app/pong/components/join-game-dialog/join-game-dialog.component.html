@@ -9,7 +9,8 @@
 	[baseZIndex]="10000"
   [draggable]="true" 
 	[resizable]="false"
-	[closable]="false">
+	[closable]="true"
+	(onHide)="handleLeave($event)"	>
     <!-- <p>Accept: Move you to the game room</p> -->
         <ng-template pTemplate="footer">
 					

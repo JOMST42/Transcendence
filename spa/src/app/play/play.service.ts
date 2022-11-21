@@ -34,8 +34,8 @@ export class PlayService {
     });
   }
 
-	public listenGameWaiting(): Promise<any> {
-    return this.socket.fromOneTimeEvent('game-waiting');
+	public listenGameWaiting(): Observable<any> {
+    return this.socket.fromEvent('game-waiting');
   }
 
   public listenGameStart(): Promise<any> {

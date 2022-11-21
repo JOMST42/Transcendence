@@ -6,4 +6,5 @@ export enum RoomState {
   Readying = 'READYCHECK',
   Countdown = 'COUNTDOWN',
   Waiting = 'WAITING',
+  Disconnect = 'DISCONNECT',
 }
