@@ -21,7 +21,6 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
   constructor(
     private activatedRoute: ActivatedRoute,
     private readonly authService: AuthService,
-    private readonly toastService: ToastService
   ) {}
 
   refreshUser(): void {

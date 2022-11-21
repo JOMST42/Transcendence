@@ -1,6 +1,11 @@
 <p-card class="p-card" [ngClass]="friendState ? '' : 'blockedCard'">
-  <ng-template pTemplate="header">
-    <app-user-avatar [avatarUrl]="user?.avatarUrl" [user]="user" ></app-user-avatar>
+  <ng-template pTemplate="content">
+    <a routerLink="/users/{{ user?.id }}" style="cursor: pointer">
+      <app-user-avatar
+        [avatarUrl]="user?.avatarUrl"
+        [user]="user"
+      ></app-user-avatar>
+    </a>
     <span style="padding: 1rem 1rem 1rem">{{ user?.displayName }}</span>
     <p-button type="button" class="p-button-sm" (click)="showDialog()" icon="pi pi-external-link" ></p-button>
   </ng-template>
@@ -15,15 +20,26 @@
   <ng-template pTemplate="footer">
     <span class="p-buttonset">
       <button pButton type="button">
-        <app-friend-btn [userIsMe]="user.id === me.id" [me]="me" [user]="user" (stateChange)="resetPage()" ></app-friend-btn>
-      </button>
-      <button pButton type="button">
-        <app-blocked-btn [userIsMe]="user.id === me.id" [me]="me"[user]="user" (stateChange)="resetPage()"></app-blocked-btn>
-      </button>
+        <app-friend-btn [userIsMe]="user.id === me.id" [me]="me" [user]="user" (stateChange)="resetPage()" >
+			(stateChange)="resetPage()"
+			></app-friend-btn>
+		</button>
+
+      <app-blocked-btn
+        [userIsMe]="user.id === me.id"
+        [me]="me"
+        [user]="user"
+        (stateChange)="resetPage()"
+      ></app-blocked-btn>
+
       <a routerLink="/users/{{ user?.id }}">
-        <button pButton type="button" label="Voir Profil" icon="pi pi-times"(click)="closeDialog()"></button>
+        <button
+          pButton
+          type="button"
+          icon="pi pi-user"
+          (click)="closeDialog()"
+        ></button>
       </a>
     </span>
   </ng-template>
 </p-dialog>
-§

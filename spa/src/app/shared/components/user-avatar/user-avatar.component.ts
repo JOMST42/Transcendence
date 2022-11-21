@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { User } from '../../../user/models';
+import { StateKey } from '@angular/platform-browser';
+import { User, UserStatus } from '../../../user/models';
 
 @Component({
   selector: 'app-user-avatar',
@@ -12,18 +13,24 @@ export class UserAvatarComponent implements OnInit {
   @Input() avatarUrl: string;
   @Input() user!: User;
 
-  colorStateAvatar(state: string): boolean {
-    if (state === 'online') {
-      return true;
-    } else if (state === 'offline') {
-      return false;
-    } else if (state === 'gaming') {
+  isOffline(): boolean {
+    if (this.user.status === UserStatus.OFFLINE) {
       return true;
     }
     return false;
   }
 
-  ngOnInit(): void {
-    //colorStateAvatar()
+  isGaming(): boolean {
+    if (!this.isOffline()) {
+      if (
+        this.user.status === UserStatus.IN_GAME ||
+        this.user.status === UserStatus.SPECTATING
+      ) {
+        return true;
+      }
+    }
+    return false;
   }
+
+  ngOnInit(): void {}
 }

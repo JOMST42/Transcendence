@@ -18,7 +18,7 @@ export class FriendService {
   }
 
   getPendingInvitations(userId: number): Observable<Friendship[]> {
-    return this.baseApiService.getMany(`/users/${userId}/pending_friends`);
+    return this.baseApiService.getMany(`/users/${userId}/pendingFriends`);
   }
 
   updateFriendship(adresseeId: number, userId: number): Observable<Friendship> {
