@@ -11,5 +11,6 @@ export interface GameInfo {
   pad2: EntityInfo;
   score: Score;
   state: any;
+  time: number;
   events: Event[];
 }

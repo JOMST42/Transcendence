@@ -26,11 +26,11 @@ export class ChatService {
     return this.baseApiService.postOne<Room>('/chatrooms', room);
   }
 
-  joinRoom(roomId: number): void {
+  joinRoom(roomId: string): void {
     this.socket.emit('joinRoom', roomId);
   }
 
-  leaveRoom(roomId: number): void {
+  leaveRoom(roomId: string): void {
     this.socket.emit('leaveRoom', roomId);
   }
 

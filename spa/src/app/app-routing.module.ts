@@ -6,6 +6,11 @@ import { NotFoundComponent, ServerErrorComponent } from './shared/components';
 import { SearchUserComponent } from './shared/components/search-user/search-user.component';
 
 const routes: Routes = [
+	{
+    path: '',
+    loadChildren: () => import('./home/home.module').then((m) => m.HomeModule),
+    pathMatch: 'full',
+  },
   {
     path: 'users',
     loadChildren: () => import('./user/user.module').then((m) => m.UserModule),

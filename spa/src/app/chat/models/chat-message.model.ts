@@ -1,7 +1,7 @@
 import { User } from '../../user/models';
 
 export interface ChatMessage {
-  roomId: number;
+  roomId: string;
   content: string;
   author?: User;
 }

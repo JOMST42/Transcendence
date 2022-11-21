@@ -2,7 +2,7 @@ import { TimerType } from '../enums';
 
 export class Timer {
   interval: NodeJS.Timer;
-  private timer: number;
+  timer: number;
   type: TimerType;
   startTime: number;
   endTime: number;
@@ -64,6 +64,14 @@ export class Timer {
   reset() {
     this.pause();
     this.timer = this.startTime;
+  }
+
+  reachedEndtime(): boolean {
+    if (this.timer >= this.endTime && this.type === TimerType.STOPWATCH)
+      return true;
+    if (this.timer <= this.endTime && this.type === TimerType.COUNTDOWN)
+      return true;
+    return false;
   }
 
   getTime() {

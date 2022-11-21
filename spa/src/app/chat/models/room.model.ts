@@ -9,7 +9,7 @@ export interface UserChatRoom {
 }
 
 export interface Room {
-  id?: number;
+  id?: string;
   name?: string;
   users?: UserChatRoom[];
   messages?: ChatMessage[];

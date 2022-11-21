@@ -7,7 +7,7 @@ import { ToastService } from 'src/app/core/services';
 enum ButtonState {
 	READY = 0,
 	PROCESS = 1,
-	UNREADY = 2
+	DISABLED = 2
 }
 
 @Component({
@@ -35,45 +35,29 @@ export class ReadyButtonComponent {
 		this.handleState();
 	}
 
+	ngOnInit(): void {
+		this.server.listen("ready-check").subscribe((info: number) => {
+			this.changeToReady();
+		});
+	}
 
 	async handleReady(event: any) {
 		if (this.state === ButtonState.READY) {
 			this.changeToProcess();
-			await this.delay(1000); // TODO test purpose
 			await this.ready();
 		}
-		else if (this.state === ButtonState.UNREADY) {
-			this.changeToProcess();
-			await this.delay(1000); // TODO test purpose
-			await this.unready();
-		}
-
 	}
 
 	async ready() {
     this.server
       .emit('ready-to-play', {})
       .then((data: Response) => {
-				this.changeToUnready();
+				this.changeToDisabled();
 				this.toast.showSuccess('Ready success', 'You are now ready');
 			}, (data: Response | undefined) => {
 				this.changeToReady();
 				this.toast.showError('Ready error', data?.msg);
 			});
-  }
-
-  async unready() {
-		console.log('Attempting to leave queue...');
-    await this.server
-      .emit('unready-to-play', {})
-      .then((data:Response) => {
-        this.changeToReady();
-				this.toast.showSuccess('Unready success', 'You cancelled your ready check');
-			}, (data: Response | undefined) => {
-				this.changeToUnready();
-				this.toast.showError('Unready error', data?.msg);
-			});
-		return;
   }
 
 	private changeToReady() {
@@ -85,18 +69,17 @@ export class ReadyButtonComponent {
 	}
 
 	private changeToProcess() {
-		// this.disabled = true;
 		this.isProcessing = true;
 		this.label = this.labelProcess;
 		this.state = ButtonState.PROCESS;
 		this.classStyle = this.processStyle;
 	}
 
-	private changeToUnready() {
-		this.disabled = false;
+	private changeToDisabled() {
+		this.disabled = true;
 		this.isProcessing = false;
-		this.label = this.labelUnready;
-		this.state = ButtonState.UNREADY;
+		this.label = this.labelReady;
+		this.state = ButtonState.DISABLED;
 		this.classStyle = this.cancelStyle;
 	}
 

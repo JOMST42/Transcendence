@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, take, takeUntil } from 'rxjs';
 import { ToastService } from '../../../core/services';
 
 import { Room } from '../../models';
@@ -14,7 +14,7 @@ import { ChatService } from '../../services';
 export class ChatComponent implements OnInit, OnDestroy {
   private unsubscribeAll$ = new Subject<void>();
   rooms: Room[];
-  selectedRoom: Room;
+  selectedChannel: Room | null = null;
 
   constructor(
     private readonly chatService: ChatService,
@@ -46,7 +46,15 @@ export class ChatComponent implements OnInit, OnDestroy {
       });
   }
 
-  onRowSelect(event) {
-    this.router.navigate(['chat', event.data.id]);
+  onChannelSelect(channel: Room): void {
+    this.chatService
+      .getChatRoom(channel.id)
+      .pipe(take(1))
+      .subscribe({
+        next: (data) => {
+          this.selectedChannel = data;
+          console.log(data);
+        },
+      });
   }
 }
