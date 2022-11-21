@@ -1,29 +1,26 @@
-
-<div class="container align-items-center justify-content-center" data-hover="change display name">
-    <input
-      type="text"
-      style="font-weight: 300; color: #68758A"
-      pInputText
-      class="transparent-background color-bottom-border input-font"
-      placeholder="{{ user?.displayName }}"
-      [(ngModel)]="displayName"
-      #dname="ngModel"
-      [ngModelOptions]="{ standalone: true }"
-      ngFormControl="control"
-	  
-      />
-      <button
-      *ngIf="userIsMe"
-      pButton
-      pRipple
-      type="button"
-      icon="pi pi-check"
-      class="p-button p-button-outlined profile_button"
-      (click)="changeDisplayName()"
-      ></button>
-      <div *ngIf="dname.invalid && (dname.dirty || dname.touched)" class="ng-invalid ng-dirty">
-        <div *ngIf="dname.errors?.['required']">
-          Display name is required
-        </div>
-      </div>
+<div class="container">
+  <input
+    type="text"
+    pInputText
+    placeholder="{{ user?.displayName }}"
+    [(ngModel)]="displayName"
+    #dname="ngModel"
+    [ngModelOptions]="{ standalone: true }"
+    ngFormControl="control"
+  />
+  <button
+    *ngIf="userIsMe && displayName"
+    pButton
+    pRipple
+    type="button"
+    icon="pi pi-check"
+    class="p-button p-button-outlined btn"
+    (click)="changeDisplayName()"
+  ></button>
+  <div
+    *ngIf="dname.invalid && (dname.dirty || dname.touched)"
+    class="ng-invalid ng-dirty"
+  >
+    <div *ngIf="dname.errors?.['required']">Display name is required</div>
   </div>
+</div>

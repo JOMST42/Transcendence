@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Subject, take, takeUntil } from 'rxjs';
 
 import { User } from '../../models';
-import { AuthService } from '../../../core/services';
+import { AuthService, ToastService } from '../../../core/services';
 import { UserService } from '../../services';
 
 @Component({
@@ -20,7 +20,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
 
   constructor(
     private activatedRoute: ActivatedRoute,
-    private readonly authService: AuthService
+    private readonly authService: AuthService,
   ) {}
 
   refreshUser(): void {

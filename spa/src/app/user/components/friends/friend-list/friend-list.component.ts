@@ -23,9 +23,9 @@ import { FriendService, UserService } from '../../../services';
         query(':enter', style({ opacity: 0 }), { optional: true }),
         query(
           ':enter',
-          stagger('1500ms', [
+          stagger('500ms', [
             animate(
-              '1000ms ease-in',
+              '500ms ease-in',
               keyframes([
                 style({ opacity: 0, transform: 'translateY(0%)', offset: 0 }),
                 style({

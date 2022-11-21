@@ -11,62 +11,40 @@
 			</ng-template>
 			<ng-template pTemplate="header">
 					<tr>
-							<th style="min-width:5rem" >
-									<div class="flex justify-content-center align-items-center">
-											ID
-											<p-columnFilter type="text" field="gameId" display="menu"></p-columnFilter>
-									</div>
-							</th>
-							<th style="min-width:12rem" [pSortableColumn]="'p1.name'">
-									<div class="flex justify-content-center align-items-center">
-											Player 1
-											<p-columnFilter type="text" field="player1" display="menu"></p-columnFilter>
-											<p-sortIcon [field]=""></p-sortIcon>
-									</div>
-							</th>
-							<th style="min-width:12rem" [pSortableColumn]="'p2.name'">
+						<th style="min-width:5rem" >
 								<div class="flex justify-content-center align-items-center">
-										Player 2
+										ID
+										<p-columnFilter type="text" field="gameId" display="menu"></p-columnFilter>
+								</div>
+						</th>
+						<th [pSortableColumn]="'p1.name'">
+								<div class="flex justify-content-center align-items-center">
+										Player 1
 										<p-columnFilter type="text" field="player1" display="menu"></p-columnFilter>
 										<p-sortIcon [field]=""></p-sortIcon>
 								</div>
-							</th>
-							<!-- <th style="min-width:15rem">
-									<div class="flex justify-content-center align-items-center">
-											Player 2
-											<p-columnFilter field="Player 2" matchMode="in" display="menu" [showMatchModes]="false" [showOperator]="false" [showAddButton]="false">
-													<ng-template pTemplate="header">
-															<div class="px-3 pt-3 pb-0">
-																	<span class="font-bold">Agent Picker</span>
-															</div>
-													</ng-template>
-													<ng-template pTemplate="filter" let-value let-filter="filterCallback">
-															<p-multiSelect [ngModel]="value" [options]="representatives" placeholder="Any" (onChange)="filter($event.value)" optionLabel="name">
-																	<ng-template let-option pTemplate="item">
-																			<div class="p-multiselect-representative-option">
-																					<img [alt]="option.label" src="assets/showcase/images/demo/avatar/{{option.image}}" width="32" style="vertical-align: middle" />
-																					<span class="ml-1">{{option.name}}</span>
-																			</div>
-																	</ng-template>
-															</p-multiSelect>
-													</ng-template>
-											</p-columnFilter>
-									</div>
-							</th> -->
-							<th style="min-width:10rem">
+						</th>
+						<th  [pSortableColumn]="'p2.name'">
+							<div class="flex justify-content-center align-items-center">
+									Player 2
+									<p-columnFilter type="text" field="player1" display="menu"></p-columnFilter>
+									<p-sortIcon [field]=""></p-sortIcon>
+							</div>
+						</th>
+							<th>
 									<div class="flex justify-content-center align-items-center">
 											Score
 											<p-columnFilter field="score" display="menu"></p-columnFilter>
 									</div>
 							</th>
-							<th style="min-width:10rem" [pSortableColumn]="'timePlayed'">
+							<th [pSortableColumn]="'timePlayed'">
 									<div class="flex justify-content-center align-items-center" >
 											Time
 											<p-columnFilter type="text" field="timePlayed" display="menu"></p-columnFilter>
 									</div>
 							</th>
-							<th style="min-width:10rem" [pSortableColumn]="'date'">
-								<div class="flex justify-content-center align-items-center">
+							<th  [pSortableColumn]="'date'">
+							`	<div class="flex justify-content-center align-items-center">
 									Date
 									<p-columnFilter type="date" field="date" display="menu"></p-columnFilter>
 									<p-sortIcon [field]=""></p-sortIcon>

@@ -1,46 +1,49 @@
-@media screen and (max-width:800px){
+@media screen and (max-width:900px){
   .container{
-    justify-items: center;
+    align-items: center;
+		align-content: center;
+		justify-content: center;
   }
 }
 
-:host ::ng-deep .p-tabview-panels {
-  background-color: #7869c4 !important;
+:host ::ng-deep .p-tabview-panels{
+  background-color: #7869c4;
   border: 3px solid black;
-	border-top: 0px;
+
+	margin: 0rem 3rem 3rem 3rem;
+	border-bottom-left-radius: 16px;
+	border-bottom-right-radius: 16px;
+	border-top-right-radius: 16px;
 }
 
+:host ::ng-deep .p-tabview-nav-container{
+	margin: 0rem 3rem 0rem 3rem;
+}
+
+:host ::ng-deep .p-tabview .p-tabview-nav{
+	border: none;
+}
 
 :host ::ng-deep .p-tabview-nav-link {
+	margin: 0rem 3rem 3rem 3rem;
   background-color: #7869c4 !important;
 	color: #00A595;
 	border-style: 2px 2px 2px 2px;
   border:  solid black;
 }
 
-
 :host ::ng-deep .p-tabview-title{
   background-color: #7869c4 !important;
-	color: #00A595;
-
+	-webkit-text-stroke: black;
+	-webkit-text-stroke-width: 1px;
+	font-family: "PixelPowerline";
+	font-weight: 50;
+	font-size: 1rem;
+	color: #fff;
 }
 
 :host ::ng-deep .p-tabview-ink-bar{
 	color: #00A595;
-
-}
-
-.container  {
-  // margin-top: 50px;
-  border-radius: 30px;
-	width: 900px !important;
-	position: relative;
-	background-color: #fff  !important;
-	border: 3px solid black;;
-	box-shadow: -10px -10px #7869C4,
-				-10px -8px #000,
-				-8px -10px #000,
-				-12px -12px #000;
 }
 
 h1 {
@@ -53,8 +56,8 @@ h1 {
 	color: #fff;
 	transition: 0.3s;
 	text-shadow: -20px -20px #7869C4,
-					-17px -17px #000,
-					-23px -23px #000;
+	-17px -17px #000,
+	-23px -23px #000;
 }
 
 h2 {
@@ -67,29 +70,10 @@ h2 {
 	color: #fff;
 	transition: 0.3s;
 	text-shadow: -12px -12px #7869C4,
-					-10px -10px #000,
-					-10px -8px #000,
-					-8px -10px #000,
-					-14px -14px #000;
-}
-
-.card-user {
-  margin-top: 3rem;
-}
-
-.stats-card {
-
-	margin-top: 15px;
-	height: 250px;
-	width: 175px;
-	border-radius: 30px;
-	position: relative;
-	background-color: #00A595  !important;
-	border: 3px solid black;;
-	// box-shadow: -10px -10px #7869C4,
-	// 			-10px -8px #000,
-	// 			-8px -10px #000,
-	// 			-12px -12px #000;
+	-10px -10px #000,
+	-10px -8px #000,
+	-8px -10px #000,
+	-14px -14px #000;
 }
 
 ::placeholder {
@@ -103,4 +87,35 @@ input {
 	-webkit-text-stroke: black;
 	-webkit-text-stroke-width: 1px;
 	border: 3px solid #000 !important;
+}
+
+.no-cursor{
+	cursor: no-drop;
+	opacity: 1;
+}
+
+.card-user {
+	margin-top : 3rem;
+}
+
+.stats-card {
+	margin-top: 15px;
+	height: 250px;
+	width: 175px;
+	border-radius: 30px;
+	position: relative;
+	background-color: #00A595  !important;
+	border: 3px solid black;;
+}
+
+.container  {
+	border-radius: 30px;
+	width: 900px !important;
+	position: relative;
+	background-color: #fff  !important;
+	border: 3px solid black;;
+	box-shadow: -10px -10px #7869C4,
+				-10px -8px #000,
+				-8px -10px #000,
+				-12px -12px #000;
 }

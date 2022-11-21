@@ -1,17 +1,37 @@
-.avatar {
-  border-radius: 50%; 
-  border-style: solid;
-  border-color: transparent;
-}
 
-.online{
-  border-color: green;
+.avatar{
+  border-radius: 50%;
+ border: 4px;
+  border-style: solid;
+  display: inline-grid;
+  overflow: hidden;
+  border-color: yellow;
 }
 
 .offline{
-  border-color: red;
+  border-radius: 50%;
+ border: 4px;
+  border-style: solid;
+  display: inline-grid;
+  overflow: hidden;
+  border-color: rgb(193, 15, 15);
 }
 
+.online{
+  border-radius: 50%;
+ border: 4px;
+  border-style: solid;
+  display: inline-grid;
+  overflow: hidden;
+  border-color: rgb(8, 240, 8);
+}
+
+
 .gaming{
+  border-radius: 50%;
+  border: 4px;
+   border-style: solid;
+   display: inline-grid;
+   overflow: hidden;
   border-color: blue;
 }

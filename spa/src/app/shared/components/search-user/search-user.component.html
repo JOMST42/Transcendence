@@ -4,15 +4,18 @@
   </div>
   <div class="col-12 flex align-items-center justify-content-center">
     <div class="grid">
-      <div class="col-8 flex align-items-center justify-content-center">
+      <div
+        class="col-8 flex align-items-center justify-content-center search-card"
+        style="width: 700px;"
+      >
         <p-table
           #dt1
           [value]="users"
           dataKey="id"
-          [rows]="10"
+          [rows]="5"
           [loading]="loading"
           [showCurrentPageReport]="true"
-          [rowsPerPageOptions]="[10, 25, 50]"
+          [rowsPerPageOptions]="[5, 10, 25]"
           styleClass="p-datatable-customers p-datatable-gridlines"
           [paginator]="true"
           currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
@@ -21,62 +24,45 @@
           <ng-template let-user pTemplate="caption">
             <span class="p-input-icon-left p-ml-auto">
               <i class="pi pi-search"></i>
-              <input
-                pInputText
-                type="text"
-                (input)="
-                  dt1.filterGlobal($any($event.target).value, 'contains')
-                "
-                placeholder="Search name"
-              />
+              <input pInputText type="text" (input)="dt1.filterGlobal($any($event.target).value, 'contains')" placeholder="Search name" />
             </span>
           </ng-template>
-
+		  
           <ng-template pTemplate="header">
             <tr>
-              <th>
+              <th class="item1">
                 <div class="p-d-flex p-jc-between p-ai-center">Avatar</div>
               </th>
-              <th>
-                <div
-                  class="p-d-flex p-jc-between p-ai-center"
-                  field="firstName"
-                >
+              <th class="item2">
+                <div class="p-d-flex p-jc-between p-ai-center" field="firstName">
                   Name
                 </div>
               </th>
-              <th>
-                <div
-                  class="p-d-flex p-jc-between p-ai-center"
-                  field="displayName"
-                >
+              <th class="item3">
+                <div class="p-d-flex p-jc-between p-ai-center" field="displayName">
                   Display name
                 </div>
               </th>
             </tr>
-          </ng-template>
+		</ng-template>
 
-          <ng-template pTemplate="body" let-user>
-            <tr>
-              <td>
-                <app-user-avatar
-                  [avatarUrl]="user?.avatarUrl"
-                  [user]="user"
-                ></app-user-avatar>
-              </td>
-              <td>
-                <span class="image-text">{{ user?.firstName }}</span>
-              </td>
-              <td>
-                <span class="image-text">{{ user?.displayName }}</span>
-              </td>
-            </tr>
+          <ng-template pTemplate="body" let-user class="col-12">
+            <tr >
+              <td >
+                <app-user-avatar [avatarUrl]="user?.avatarUrl" [user]="user" ></app-user-avatar>
+                </td>
+                <td class="name">
+                  <span class="image-text">{{ user?.firstName }}</span>
+                </td>
+                <td class="name">
+                  <span class="image-text">{{ user?.displayName }}</span>
+                </td>
+              </tr>
           </ng-template>
 
           <ng-template pTemplate="emptymessage">
             <tr>
-              <td colspan="7">No users found.</td>
-            </tr>
+              <td colspan="5">No users found.</td>
           </ng-template>
         </p-table>
       </div>
