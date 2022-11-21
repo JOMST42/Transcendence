@@ -5,22 +5,7 @@ import { Response } from './interfaces';
 
 import { AudioHandler } from './classes';
 import { PlayService } from './play.service';
-import { Score, Vector3 } from '../pong/data/interfaces';
-
-export interface EntityInfo {
-  pos: Vector3;
-  size: Vector3;
-}
-
-export interface GameInfo {
-  ball: EntityInfo;
-  pad1: EntityInfo;
-  pad2: EntityInfo;
-  score: Score;
-  state: any;
-	time: number;
-  events: Event[];
-}
+import { Score } from '../pong/data/interfaces';
 
 @Component({
   selector: 'app-game',

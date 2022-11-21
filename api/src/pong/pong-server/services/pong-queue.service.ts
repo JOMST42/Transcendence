@@ -21,7 +21,6 @@ export class PongQueueService {
 
   private config = new QueueConfig();
   private queue: Queue = new Queue(this.config.maxEntries);
-  private disconnectListener: any;
 
   constructor(
     @Inject(forwardRef(() => PongRoomService))
@@ -53,12 +52,6 @@ export class PongQueueService {
   }
 
   setListeners(socket: Socket) {
-    this.disconnectListener = () => {
-      this.handleLeaveQueue(socket);
-    };
-
-    socket.once('disconnect', this.disconnectListener);
-
     socket.on('leave-queue', (args, callback) => {
       const response = this.handleLeaveQueue(socket);
       if (typeof callback === 'function') callback(response);
@@ -126,9 +119,6 @@ export class PongQueueService {
   getQueueState(userId: number) {}
 
   clearListeners(socket: Socket) {
-    try {
-      socket.off('disconnect', this.disconnectListener);
-    } catch (e) {}
     socket.removeAllListeners('leave-queue');
     socket.removeAllListeners('update-queue');
   }

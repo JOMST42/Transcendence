@@ -95,6 +95,7 @@ export class PongServerGateway
 
         socket.data.user = prismaUser;
         socket.data.userRoom = <string>('u' + prismaUser.id);
+        socket.data.gameRoom = 0;
         socket.join(socket.data.userRoom);
         this.roomService.addUser(socket);
         // socket.setMaxListeners(Infinity); // TODO
@@ -105,7 +106,7 @@ export class PongServerGateway
       }
 
       // let i = 0;
-      // while (i++ < 1) {
+      // while (i++ < 5) {
       //   this.roomService.createGameRoom(socket, socket);
       // }
     } catch (e) {
