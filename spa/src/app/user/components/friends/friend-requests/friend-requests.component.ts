@@ -12,9 +12,9 @@ export class FriendRequestsComponent implements OnInit {
 
   @Input() me!: User;
 
-  friendsRequests!: Friendship[];
+  friendsRequests?: Friendship[];
 
-  async ngOnInit(): Promise<void> {
+  ngOnInit(): void {
     this.friendService.getPendingInvitations(this.me.id).subscribe({
       next: (data) => {
         this.friendsRequests = data;

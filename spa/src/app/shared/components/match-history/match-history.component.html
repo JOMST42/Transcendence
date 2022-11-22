@@ -11,20 +11,20 @@
 			</ng-template>
 			<ng-template pTemplate="header">
 					<tr>
-							<th style="min-width:5rem" >
+							<th  >
 									<div class="flex justify-content-center align-items-center">
 											ID
 											<p-columnFilter type="text" field="gameId" display="menu"></p-columnFilter>
 									</div>
 							</th>
-							<th style="min-width:12rem" [pSortableColumn]="'p1.name'">
+							<th  [pSortableColumn]="'p1.name'">
 									<div class="flex justify-content-center align-items-center">
 											Player 1
 											<p-columnFilter type="text" field="player1" display="menu"></p-columnFilter>
 											<p-sortIcon [field]=""></p-sortIcon>
 									</div>
 							</th>
-							<th style="min-width:12rem" [pSortableColumn]="'p2.name'">
+							<th  [pSortableColumn]="'p2.name'">
 								<div class="flex justify-content-center align-items-center">
 										Player 2
 										<p-columnFilter type="text" field="player1" display="menu"></p-columnFilter>
@@ -53,19 +53,19 @@
 											</p-columnFilter>
 									</div>
 							</th> -->
-							<th style="min-width:10rem">
+							<th >
 									<div class="flex justify-content-center align-items-center">
 											Score
 											<p-columnFilter field="score" display="menu"></p-columnFilter>
 									</div>
 							</th>
-							<th style="min-width:10rem" [pSortableColumn]="'timePlayed'">
+							<th  [pSortableColumn]="'timePlayed'">
 									<div class="flex justify-content-center align-items-center" >
 											Time
 											<p-columnFilter type="text" field="timePlayed" display="menu"></p-columnFilter>
 									</div>
 							</th>
-							<th style="min-width:10rem" [pSortableColumn]="'date'">
+							<th  [pSortableColumn]="'date'">
 								<div class="flex justify-content-center align-items-center">
 									Date
 									<p-columnFilter type="date" field="date" display="menu"></p-columnFilter>

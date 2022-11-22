@@ -13,22 +13,14 @@ import { FriendService } from '../../../services';
 export class AcceptFriendBtnComponent implements OnInit {
   constructor(
     private readonly friendService: FriendService,
-    private readonly authService: AuthService,
+    private readonly toastService: ToastService,
     private readonly router: Router,
     private readonly route: ActivatedRoute
   ) {}
 
   buttonState: boolean = false;
   @Input() user!: User;
-  me!: User;
-
-  resetPage() {
-    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-    this.router.onSameUrlNavigation = 'reload';
-    this.router.navigate(['./'], {
-      relativeTo: this.route,
-    });
-  }
+  @Input() me!: User;
 
   acceptNewFriend() {
     this.friendService
@@ -36,8 +28,10 @@ export class AcceptFriendBtnComponent implements OnInit {
       .pipe(take(1))
       .subscribe({
         next: (data) => {
-          console.log(data);
-          this.buttonState = false;
+          this.buttonState = true;
+        },
+        error: (err) => {
+          this.toastService.showWarn('Ho ho', 'You are not friend ');
         },
       });
   }
@@ -47,22 +41,23 @@ export class AcceptFriendBtnComponent implements OnInit {
       .checkFriendship(this.user.id, this.me.id)
       .then((data) => {
         if (data.adresseeId === this.me.id) {
-          this.buttonState = true;
-        } else {
           this.buttonState = false;
+        } else {
+          this.buttonState = true;
         }
       })
       .catch((err) => console.log('err catch dans accept friend btn'));
   }
 
-  ngOnInit(): void {
-    this.authService.getCurrentUser().subscribe({
-      next: (data) => {
-        this.me = data;
-      },
-      error: (err) => {
-        console.log(err);
-      },
-    });
+  async ngOnInit(): Promise<void> {
+    // this.authService.getCurrentUser().subscribe({
+    //   next: (data) => {
+    //     this.me = data;
+    //   },
+    //   error: (err) => {
+    //     console.log(err);
+    //   },
+    // });
+    await this.checkState();
   }
 }

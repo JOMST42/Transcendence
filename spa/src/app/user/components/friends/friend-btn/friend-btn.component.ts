@@ -42,7 +42,7 @@ export class FriendBtnComponent implements OnInit {
         }
       })
       .catch((data) => {
-        console.log('catch');
+        console.log('catch init button');
         this.state = 'ADD';
       });
   }
@@ -73,7 +73,6 @@ export class FriendBtnComponent implements OnInit {
             'Friend removed !',
             'You are no longer friend with ' + this.user.displayName
           );
-          console.log(data);
           this.state = 'ADD';
         },
       });

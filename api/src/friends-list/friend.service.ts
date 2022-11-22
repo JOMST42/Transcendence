@@ -42,6 +42,17 @@ export class FriendService {
     if (!adressee) {
       throw new BadRequestException('Cannot find user');
     }
+    // const friendship = await this.prisma.friendship.findUnique({
+    //   where: {
+    //     requesterId_adresseeId: {
+    //       requesterId: userId,
+    //       adresseeId: adressee.id,
+    //     },
+    //   },
+    // });
+    // if (!friendship) {
+    //   throw new BadRequestException('Cannot find friendship');
+    // }
     return await this.prisma.friendship.update({
       where: {
         requesterId_adresseeId: {
@@ -100,29 +111,6 @@ export class FriendService {
         },
       });
     }
-
-    // let friendship = await this.prisma.friendship.delete({
-    //   where: {
-    //     requesterId_adresseeId: {
-    //       adresseeId,
-    //       requesterId: userId,
-    //     },
-    //   },
-    // });
-    // if (!friendship) {
-    //   friendship = await this.prisma.friendship.delete({
-    //     where: {
-    //       requesterId_adresseeId: {
-    //         adresseeId: userId,
-    //         requesterId: adresseeId,
-    //       },
-    //     },
-    //   });
-    // }
-    // if (!friendship) {
-    //   throw new BadRequestException('You are not friend');
-    // }
-    // return friendship;
   }
 
   async blockFriend(adresseeId: number, userId: number): Promise<Friendship> {

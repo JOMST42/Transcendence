@@ -75,7 +75,11 @@
               <div class="stats-card col-4"></div>
             </ng-template>
           </p-tabPanel>
-          <p-tabPanel header="FRIENDS" [cache]="false">
+          <p-tabPanel
+            *ngIf="user.id === me.id"
+            header="FRIENDS"
+            [cache]="false"
+          >
             <ng-template pTemplate="content">
               <div id="container-flex-column">
                 <app-friend-list [user]="user"></app-friend-list>

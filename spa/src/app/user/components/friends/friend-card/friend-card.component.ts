@@ -13,7 +13,6 @@ export class FriendCardComponent implements OnInit {
   user!: User;
   @Input() userIsMe!: boolean;
   @Input() me: User;
-  // @Input() friends: Friendship[];
   myFriendId!: number;
   @Input() friendship: Friendship;
   display: boolean = false;
