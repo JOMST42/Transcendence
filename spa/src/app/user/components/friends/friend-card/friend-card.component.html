@@ -1,9 +1,11 @@
 <p-card class="p-card" [ngClass]="friendState ? '' : 'blockedCard'">
-  <ng-template pTemplate="header">
-    <app-user-avatar
-      [avatarUrl]="user?.avatarUrl"
-      [user]="user"
-    ></app-user-avatar>
+  <ng-template pTemplate="content">
+    <a routerLink="/users/{{ user?.id }}" style="cursor: pointer">
+      <app-user-avatar
+        [avatarUrl]="user?.avatarUrl"
+        [user]="user"
+      ></app-user-avatar>
+    </a>
     <span style="padding: 1rem 1rem 1rem">{{ user?.displayName }}</span>
     <p-button
       type="button"
@@ -24,29 +26,26 @@
   </ng-template>
   carte utilisateur - est ce qu'on met du contenu ?
   <ng-template pTemplate="footer">
-    <span class="p-buttonset">
-      <button pButton type="button">
-        <app-friend-btn
-          [userIsMe]="user.id === me.id"
-          [me]="me"
-          [user]="user"
-          (stateChange)="resetPage()"
-        ></app-friend-btn>
-      </button>
-      <button pButton type="button">
-        <app-blocked-btn
-          [userIsMe]="user.id === me.id"
-          [me]="me"
-          [user]="user"
-          (stateChange)="resetPage()"
-        ></app-blocked-btn>
-      </button>
+    <span class="p-buttonset" class="button-set">
+      <app-friend-btn
+        [userIsMe]="user.id === me.id"
+        [me]="me"
+        [user]="user"
+        (stateChange)="resetPage()"
+      ></app-friend-btn>
+
+      <app-blocked-btn
+        [userIsMe]="user.id === me.id"
+        [me]="me"
+        [user]="user"
+        (stateChange)="resetPage()"
+      ></app-blocked-btn>
+
       <a routerLink="/users/{{ user?.id }}">
         <button
           pButton
           type="button"
-          label="Voir Profil"
-          icon="pi pi-times"
+          icon="pi pi-user"
           (click)="closeDialog()"
         ></button>
       </a>

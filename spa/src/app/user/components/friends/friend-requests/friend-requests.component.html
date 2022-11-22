@@ -1,0 +1,10 @@
+<div *ngIf="friendsRequests" class="list-card">
+  <ul style="list-style-type: none">
+    <li *ngFor="let request of friendsRequests">
+      <app-friend-request-card
+        [friendship]="request"
+        [me]="me"
+      ></app-friend-request-card>
+    </li>
+  </ul>
+</div>

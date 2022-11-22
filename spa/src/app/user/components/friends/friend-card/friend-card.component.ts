@@ -13,7 +13,7 @@ export class FriendCardComponent implements OnInit {
   user!: User;
   @Input() userIsMe!: boolean;
   @Input() me: User;
-  @Input() friends: Friendship[];
+  // @Input() friends: Friendship[];
   myFriendId!: number;
   @Input() friendship: Friendship;
   display: boolean = false;
@@ -90,7 +90,6 @@ export class FriendCardComponent implements OnInit {
     await this.getFriendToUser(friends)
       .then((data) => {
         this.user = data;
-        console.log(this.user);
       })
       .catch((err) => {
         console.log(err);

@@ -33,4 +33,5 @@ export class UserService {
   getUsers(): Observable<User[]> {
     return this.baseApiService.getMany('/users/all');
   }
+
 }

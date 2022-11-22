@@ -1,0 +1,101 @@
+
+<div class="card">
+	<p-table #dt1 [value]="activeMatches" dataKey="id"
+			[rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" [loading]="loading"
+			[paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+			[globalFilterFields]="['match.p1.name','match.p2.name','timePlayed','date']">
+			<ng-template pTemplate="header">
+					<tr>
+						<th [pSortableColumn]="'win'">
+							<div class="flex justify-content-center align-items-center">
+									Win
+									<p-sortIcon [field]="'win'"></p-sortIcon>
+							</div>
+					</th>
+						<th style="min-width:12rem">
+								<div class="flex justify-content-center align-items-center">
+										Opponent
+										<p-columnFilter type="text" field="opponent" display="menu"></p-columnFilter>
+								</div>
+						</th>
+							<!-- <th style="min-width:15rem">
+									<div class="flex justify-content-center align-items-center">
+											Player 2
+											<p-columnFilter field="Player 2" matchMode="in" display="menu" [showMatchModes]="false" [showOperator]="false" [showAddButton]="false">
+													<ng-template pTemplate="header">
+															<div class="px-3 pt-3 pb-0">
+																	<span class="font-bold">Agent Picker</span>
+															</div>
+													</ng-template>
+													<ng-template pTemplate="filter" let-value let-filter="filterCallback">
+															<p-multiSelect [ngModel]="value" [options]="representatives" placeholder="Any" (onChange)="filter($event.value)" optionLabel="name">
+																	<ng-template let-option pTemplate="item">
+																			<div class="p-multiselect-representative-option">
+																					<img [alt]="option.label" src="assets/showcase/images/demo/avatar/{{option.image}}" width="32" style="vertical-align: middle" />
+																					<span class="ml-1">{{option.name}}</span>
+																			</div>
+																	</ng-template>
+															</p-multiSelect>
+													</ng-template>
+											</p-columnFilter>
+									</div>
+							</th> -->
+							<th style="min-width:5rem" [pSortableColumn]="'score.you'">
+									<div class="flex justify-content-center align-items-center">
+											Score
+											<p-sortIcon [field]="'score.you'"></p-sortIcon>
+									</div>
+									
+							</th>
+							<th style="min-width:10rem" [pSortableColumn]="'timePlayed'">
+									<div class="flex justify-content-center align-items-center" >
+											Time
+											<p-sortIcon [field]="'timePlayed'"></p-sortIcon>
+									</div>
+									
+							</th>
+							<th style="min-width:10rem" [pSortableColumn]="'date'">
+								<div class="flex justify-content-center align-items-center">
+									Date
+									<p-sortIcon [field]="'date'"></p-sortIcon>
+								</div>
+							</th>
+					</tr>
+			</ng-template>
+			<ng-template pTemplate="body" let-match>
+					<tr>
+						<td [ngClass]="match.win ? 'matchWinner' : 'matchLoser'">
+							<div class="flex justify-content-center align-items-center">
+								{{match.win ? 'W' : 'L'}}
+							</div>
+						</td>
+						<td>
+							<div class="flex justify-content-center align-items-center">
+								<img [alt]="match.opponent.name" [src]="match.opponent.img" width="30">
+								<span class="image-text">{{match.opponent.name}}</span>
+							</div>
+						</td>
+						<td>
+							<div class="flex justify-content-center align-items-center">
+								{{match.score.you}} | {{match.score.them}}
+							</div>
+						</td>
+						<td>
+							<div class="flex justify-content-center align-items-center">
+								{{match.timeString}}
+							</div>
+						</td>
+						<td class="text-center">
+							<div class="flex justify-content-center align-items-center">
+								{{match.dateString}}
+							</div>
+						</td>
+					</tr>
+			</ng-template>
+			<ng-template pTemplate="emptymessage">
+					<tr>
+							<td colspan="7">No games found.</td>
+					</tr>
+			</ng-template>
+	</p-table>
+</div>

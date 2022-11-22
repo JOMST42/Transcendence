@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Table } from 'primeng/table';
 import { User } from '../../../user/models';
 import { UserService } from '../../../user/services';
@@ -9,10 +10,12 @@ import { UserService } from '../../../user/services';
   styleUrls: ['./search-user.component.scss'],
 })
 export class SearchUserComponent implements OnInit {
-  constructor(private readonly userService: UserService) {}
+  constructor(private readonly userService: UserService,
+    public readonly router: Router) {}
   toSearch!: string;
   users!: User[];
   loading: boolean = true;
+
 
 
   ngOnInit(): void {

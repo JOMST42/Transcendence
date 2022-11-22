@@ -9,7 +9,7 @@ import { AvatarModule } from 'primeng/avatar';
 import { CardModule } from 'primeng/card';
 import { TabViewModule } from 'primeng/tabview';
 import { InputTextareaModule } from 'primeng/inputtextarea';
-
+import { BadgeModule } from 'primeng/badge';
 import {
   NavBarComponent,
   NotFoundComponent,
@@ -21,6 +21,7 @@ import { RouterModule } from '@angular/router';
 import { SearchUserComponent } from './components/search-user/search-user.component';
 import { UserAvatarComponent } from './components/user-avatar/user-avatar.component';
 import { MatchHistoryComponent } from './components/match-history/match-history.component';
+import { UserMatchHistoryComponent } from './components/user-match-history/user-match-history.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { MatchHistoryComponent } from './components/match-history/match-history.
     PongAudioComponent,
     SearchUserComponent,
     UserAvatarComponent,
-		MatchHistoryComponent,
+    MatchHistoryComponent,
+		UserMatchHistoryComponent,
   ],
   imports: [
     CommonModule,
@@ -45,6 +47,7 @@ import { MatchHistoryComponent } from './components/match-history/match-history.
     TabViewModule,
     CardModule,
     InputTextareaModule,
+    BadgeModule,
   ],
   exports: [
     CommonModule,
@@ -61,8 +64,10 @@ import { MatchHistoryComponent } from './components/match-history/match-history.
     CardModule,
     SearchUserComponent,
     UserAvatarComponent,
-		MatchHistoryComponent,
+    MatchHistoryComponent,
+		UserMatchHistoryComponent,
     InputTextareaModule,
+    BadgeModule,
   ],
 })
 export class SharedModule {}
