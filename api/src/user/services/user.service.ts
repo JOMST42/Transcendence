@@ -28,7 +28,7 @@ export class UserService {
     return await this.prisma.user.findMany({
       where: {
         normalizedName: {
-          startsWith: displayName.toLowerCase(),
+          startsWith: displayName?.toLowerCase(),
         },
       },
     });

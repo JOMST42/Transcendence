@@ -12,7 +12,6 @@ import {
   OnModuleInit,
   NotFoundException,
   BadRequestException,
-  Query,
 } from '@nestjs/common';
 
 import { UpdateUserDto } from './dto';
@@ -43,8 +42,8 @@ export class UserController implements OnModuleInit {
   }
 
   @Get('all')
-  async getUsers(@Query('displayname') displayName: string): Promise<User[]> {
-    return await this.userService.getUsers(displayName);
+  async getUsers(): Promise<User[]> {
+    return await this.userService.getUsers();
   }
 
   @Get(':id')

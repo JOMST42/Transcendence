@@ -11,6 +11,8 @@ import { TabViewModule } from 'primeng/tabview';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { DynamicDialogModule } from 'primeng/dynamicdialog';
 import { AutoCompleteModule } from 'primeng/autocomplete';
+import { ChipModule } from 'primeng/chip';
+import { DropdownModule } from 'primeng/dropdown';
 
 import {
   NavBarComponent,
@@ -49,6 +51,8 @@ import { MatchHistoryComponent } from './components/match-history/match-history.
     InputTextareaModule,
     DynamicDialogModule,
     AutoCompleteModule,
+    ChipModule,
+    DropdownModule,
   ],
   exports: [
     CommonModule,
@@ -69,6 +73,8 @@ import { MatchHistoryComponent } from './components/match-history/match-history.
     InputTextareaModule,
     DynamicDialogModule,
     AutoCompleteModule,
+    ChipModule,
+    DropdownModule,
   ],
 })
 export class SharedModule {}
