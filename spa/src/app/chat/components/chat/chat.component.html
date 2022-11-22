@@ -44,6 +44,7 @@
   <div class="h-full flex-none flex flex-column border-left-2">
     <app-chat-user-list
       [users]="selectedChannel?.users"
+      [roomId]="selectedChannel?.id"
       class="flex-grow-1"
     ></app-chat-user-list>
     <app-chat-friend-list class="flex-grow-1"></app-chat-friend-list>

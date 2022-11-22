@@ -53,4 +53,8 @@ export class ChatService {
   getChatRoom(id: string): Observable<Room> {
     return this.baseApiService.getOne(`/chatrooms/${id}`);
   }
+
+  inviteUser(userId: number, roomId: string): void {
+    this.socket.emit('inviteUser', { userId, roomId });
+  }
 }

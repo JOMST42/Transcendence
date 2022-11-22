@@ -13,6 +13,7 @@ import { UserInviteComponent } from '../user-invite/user-invite.component';
 })
 export class ChatUserListComponent implements OnInit {
   @Input() users: UserChatRoom[];
+  @Input() roomId: string;
 
   constructor(
     private readonly dialogService: DialogService,
@@ -29,6 +30,7 @@ export class ChatUserListComponent implements OnInit {
 
     ref.onClose.pipe(take(1)).subscribe((userId: number) => {
       if (userId) {
+        this.chatService.inviteUser(userId, this.roomId);
       }
     });
   }
