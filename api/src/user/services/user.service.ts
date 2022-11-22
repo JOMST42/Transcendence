@@ -24,8 +24,14 @@ export class UserService {
     return user;
   }
 
-  async getUsers(): Promise<User[]> {
-    return await this.prisma.user.findMany();
+  async getUsers(displayName?: string): Promise<User[]> {
+    return await this.prisma.user.findMany({
+      where: {
+        normalizedName: {
+          startsWith: displayName.toLowerCase(),
+        },
+      },
+    });
   }
 
   async updateUserById(

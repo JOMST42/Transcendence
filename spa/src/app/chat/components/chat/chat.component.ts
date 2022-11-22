@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Subject, take, takeUntil, tap } from 'rxjs';
+import { Subject, Subscription, take, takeUntil, tap } from 'rxjs';
 
 import { ToastService } from '../../../core/services';
 import { Room } from '../../models';
@@ -13,6 +13,7 @@ import { ChatService } from '../../services';
 })
 export class ChatComponent implements OnInit, OnDestroy {
   private unsubscribeAll$ = new Subject<void>();
+  private newUser$: Subscription = null;
   rooms: Room[];
   selectedChannel: Room | null = null;
 
@@ -54,6 +55,14 @@ export class ChatComponent implements OnInit, OnDestroy {
         tap((data) => {
           this.leaveChannel();
           this.chatService.joinRoom(data.id);
+          if (this.newUser$) {
+            this.newUser$.unsubscribe();
+          }
+          this.newUser$ = this.chatService.getNewUser().subscribe({
+            next: (user) => {
+              this.selectedChannel.users.push(user);
+            },
+          });
         })
       )
       .subscribe({

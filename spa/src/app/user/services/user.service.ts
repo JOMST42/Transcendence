@@ -1,6 +1,6 @@
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map, Observable, Subject, take, takeUntil } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 
 import { AuthService, BaseApiService } from '../../core/services';
 import { UpdateUserDto, User } from '../models';
@@ -25,9 +25,8 @@ export class UserService {
   }
 
   findByDisplayName(displayName: string): Observable<User[]> {
-    const params = new HttpParams();
-    params.append('displayName', displayName);
-    return this.baseApiService.getMany('/users', params);
+    const params = new HttpParams().append('displayname', displayName);
+    return this.baseApiService.getMany('/users/all', params);
   }
 
   getUsers(): Observable<User[]> {

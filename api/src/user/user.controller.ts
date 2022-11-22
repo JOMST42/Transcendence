@@ -12,6 +12,7 @@ import {
   OnModuleInit,
   NotFoundException,
   BadRequestException,
+  Query,
 } from '@nestjs/common';
 
 import { UpdateUserDto } from './dto';
@@ -36,15 +37,14 @@ export class UserController implements OnModuleInit {
     await this.userConnectionService.deleteAll();
   }
 
-  @UseGuards(JwtGuard)
   @Get('me')
   async getMe(@GetUser() user: User): Promise<User> {
     return user;
   }
 
   @Get('all')
-  async getUsers(): Promise<User[]> {
-    return await this.userService.getUsers();
+  async getUsers(@Query('displayname') displayName: string): Promise<User[]> {
+    return await this.userService.getUsers(displayName);
   }
 
   @Get(':id')

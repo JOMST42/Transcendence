@@ -10,6 +10,7 @@ import { CardModule } from 'primeng/card';
 import { TabViewModule } from 'primeng/tabview';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { DynamicDialogModule } from 'primeng/dynamicdialog';
+import { AutoCompleteModule } from 'primeng/autocomplete';
 
 import {
   NavBarComponent,
@@ -47,6 +48,7 @@ import { MatchHistoryComponent } from './components/match-history/match-history.
     CardModule,
     InputTextareaModule,
     DynamicDialogModule,
+    AutoCompleteModule,
   ],
   exports: [
     CommonModule,
@@ -66,6 +68,7 @@ import { MatchHistoryComponent } from './components/match-history/match-history.
     MatchHistoryComponent,
     InputTextareaModule,
     DynamicDialogModule,
+    AutoCompleteModule,
   ],
 })
 export class SharedModule {}

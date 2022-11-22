@@ -3,7 +3,7 @@ import {
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
-import { ChatRoom, ChatRoomVisibility } from '@prisma/client';
+import { ChatRoom, ChatRoomVisibility, UserChatRoom } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 import { ChatRoomWithMessages, CreateChatRoomDto } from './dto';
 import { ChatMessageWithAuthor, CreateChatMessageDto } from './dto/message.dto';
@@ -44,9 +44,19 @@ export class ChatService {
     });
   }
 
-  async addUserToRoom(userId: number, roomId: string): Promise<ChatRoom> {
-    await this.prisma.userChatRoom.create({ data: { userId, roomId } });
-    return this.prisma.chatRoom.findUnique({ where: { id: roomId } });
+  async addUserToRoom(userId: number, roomId: string): Promise<UserChatRoom> {
+    const userChatRoom = await this.prisma.userChatRoom.findUnique({
+      where: { userId_roomId: { roomId, userId } },
+    });
+
+    if (userChatRoom) {
+      throw new BadRequestException('User already in chat room');
+    }
+
+    return await this.prisma.userChatRoom.create({
+      data: { userId, roomId },
+      include: { user: true },
+    });
   }
 
   async validateUserForRoom(userId: number, roomId: string): Promise<ChatRoom> {

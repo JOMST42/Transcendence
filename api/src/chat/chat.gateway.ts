@@ -1,4 +1,4 @@
-import { UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, UnauthorizedException } from '@nestjs/common';
 import {
   ConnectedSocket,
   MessageBody,
@@ -14,6 +14,7 @@ import { AuthService } from '../auth/auth.service';
 import { UserConnectionService } from '../user/services/user-connection.service';
 import { UserService } from '../user/services/user.service';
 import { ChatService } from './chat.service';
+import { AddUserToChatRoomDto } from './dto';
 import { ChatMessageWithAuthor, SendChatMessageDto } from './dto/message.dto';
 
 @WebSocketGateway({
@@ -34,6 +35,10 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   private disconnect(socket: Socket): void {
     socket.emit('socketError', { message: 'Unauthorized' });
     socket.disconnect();
+  }
+
+  private unknownError(socket: Socket): void {
+    this.server.to(socket.id).emit('socketError', { message: 'Unknown error' });
   }
 
   async handleDisconnect(@ConnectedSocket() socket: Socket): Promise<void> {
@@ -87,9 +92,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
       if (e instanceof UnauthorizedException) {
         this.server.to(socket.id).emit('socketError', { message: e.message });
       } else {
-        this.server
-          .to(socket.id)
-          .emit('socketError', { message: 'Unknown error' });
+        this.unknownError(socket);
       }
     }
   }
@@ -116,5 +119,26 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     @MessageBody() roomId: string,
   ): void {
     socket.leave(roomId);
+  }
+
+  @SubscribeMessage('inviteUser')
+  async addUserToChatRoom(
+    @ConnectedSocket() socket: Socket,
+    @MessageBody() dto: AddUserToChatRoomDto,
+  ): Promise<void> {
+    try {
+      const userChatRoom = await this.chatService.addUserToRoom(
+        dto.userId,
+        dto.roomId,
+      );
+
+      this.server.to(userChatRoom.roomId).emit('newRoomUser', userChatRoom);
+    } catch (e) {
+      if (e instanceof BadRequestException) {
+        this.server.to(socket.id).emit('socketError', { message: e.message });
+      } else {
+        this.unknownError(socket);
+      }
+    }
   }
 }

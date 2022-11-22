@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 
 import { ChatSocket } from '../../core/core.module';
 import { BaseApiService } from '../../core/services';
-import { ChatMessage, Room } from '../models';
+import { ChatMessage, Room, UserChatRoom } from '../models';
 
 @Injectable({
   providedIn: 'root',
@@ -32,6 +32,10 @@ export class ChatService {
 
   leaveRoom(roomId: string): void {
     this.socket.emit('leaveRoom', roomId);
+  }
+
+  getNewUser(): Observable<UserChatRoom> {
+    return this.socket.fromEvent<UserChatRoom>('newRoomUser');
   }
 
   sendMessage(message: ChatMessage, callback?: any): void {
