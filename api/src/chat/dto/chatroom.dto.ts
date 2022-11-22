@@ -1,12 +1,16 @@
 import { ChatRoom, User, UserChatRoom } from '@prisma/client';
-import { IsNumber, IsString } from 'class-validator';
+import { IsNumber, IsOptional, IsString } from 'class-validator';
 import { ChatMessageWithAuthor } from './message.dto';
 
 export class CreateChatRoomDto {
   @IsString()
   name: string;
 
+  @IsString()
   visibility: 'PUBLIC' | 'PRIVATE';
+
+  @IsOptional()
+  password: string;
 }
 
 export class AddUserToChatRoomDto {

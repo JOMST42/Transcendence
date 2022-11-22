@@ -4,6 +4,8 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { ChatRoom, ChatRoomVisibility, UserChatRoom } from '@prisma/client';
+import * as argon2 from 'argon2';
+
 import { PrismaService } from '../prisma/prisma.service';
 import { ChatRoomWithMessages, CreateChatRoomDto } from './dto';
 import { ChatMessageWithAuthor, CreateChatMessageDto } from './dto/message.dto';
@@ -23,9 +25,22 @@ export class ChatService {
       throw new BadRequestException("Room owner doesn't exist");
     }
 
+    let hash = undefined;
+    let isProtected = false;
+    if (dto.password) {
+      dto.password = dto.password.trim();
+      if (dto.password.length > 0) {
+        hash = argon2.hash(dto.password);
+        isProtected = true;
+      }
+      delete dto.password;
+    }
+
     return this.prisma.chatRoom.create({
       data: {
         ...dto,
+        hash,
+        isProtected,
         users: {
           create: [{ isOwner: true, user: { connect: { id: owner.id } } }],
         },
@@ -34,7 +49,7 @@ export class ChatService {
   }
 
   async getRoomsForUser(userId: number): Promise<ChatRoom[]> {
-    return this.prisma.chatRoom.findMany({
+    const rooms = await this.prisma.chatRoom.findMany({
       where: {
         OR: [
           { users: { some: { userId } } },
@@ -42,6 +57,11 @@ export class ChatService {
         ],
       },
     });
+    rooms.map((room) => {
+      delete room.hash;
+      return room;
+    });
+    return rooms;
   }
 
   async addUserToRoom(userId: number, roomId: string): Promise<UserChatRoom> {
@@ -110,7 +130,7 @@ export class ChatService {
   ): Promise<ChatRoomWithMessages> {
     await this.validateUserForRoom(userId, roomId);
 
-    return this.prisma.chatRoom.findUnique({
+    const room = await this.prisma.chatRoom.findUnique({
       where: {
         id: roomId,
       },
@@ -128,5 +148,8 @@ export class ChatService {
         },
       },
     });
+
+    delete room?.hash;
+    return room;
   }
 }

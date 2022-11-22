@@ -14,4 +14,6 @@ export interface Room {
   users?: UserChatRoom[];
   messages?: ChatMessage[];
   visibility?: 'PUBLIC' | 'PRIVATE';
+  password?: string;
+  isProtected?: boolean;
 }

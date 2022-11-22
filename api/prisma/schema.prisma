@@ -42,9 +42,11 @@ enum ChatRoomVisibility {
 }
 
 model ChatRoom {
-  id         String             @id @default(uuid())
-  name       String
-  visibility ChatRoomVisibility @default(PUBLIC)
+  id          String             @id @default(uuid())
+  name        String
+  visibility  ChatRoomVisibility @default(PUBLIC)
+  hash        String?
+  isProtected Boolean            @default(false)
 
   users    UserChatRoom[]
   messages ChatMessage[]

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { ToastService } from '../../../core/services';
+import { Room } from '../../models';
 
 @Component({
   selector: 'app-channel-create',
@@ -9,7 +10,8 @@ import { ToastService } from '../../../core/services';
 })
 export class ChannelCreateComponent implements OnInit {
   name = '';
-  visibility: string;
+  visibility = 'PUBLIC';
+  password = '';
 
   visOptions = [
     { name: 'Public', value: 'PUBLIC' },
@@ -25,6 +27,7 @@ export class ChannelCreateComponent implements OnInit {
   ngOnInit(): void {}
 
   close(): void {
+    this.name = this.name.trim();
     if (this.name.length < 4) {
       this.toastService.showError(
         'Invalid name',
@@ -32,6 +35,18 @@ export class ChannelCreateComponent implements OnInit {
       );
       return;
     }
-    this.ref.close({ name: this.name, visibility: this.visibility });
+    this.password = this.password.trim();
+    if (this.password.length > 0 && this.password.length < 8) {
+      this.toastService.showError(
+        'Invalid password',
+        'The channel password must have at least 8 characters'
+      );
+      return;
+    }
+    this.ref.close({
+      name: this.name,
+      visibility: this.visibility,
+      password: this.password,
+    });
   }
 }

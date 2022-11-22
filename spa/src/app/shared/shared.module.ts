@@ -13,6 +13,7 @@ import { DynamicDialogModule } from 'primeng/dynamicdialog';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { ChipModule } from 'primeng/chip';
 import { DropdownModule } from 'primeng/dropdown';
+import { PasswordModule } from 'primeng/password';
 
 import {
   NavBarComponent,
@@ -53,6 +54,7 @@ import { MatchHistoryComponent } from './components/match-history/match-history.
     AutoCompleteModule,
     ChipModule,
     DropdownModule,
+    PasswordModule,
   ],
   exports: [
     CommonModule,
@@ -75,6 +77,7 @@ import { MatchHistoryComponent } from './components/match-history/match-history.
     AutoCompleteModule,
     ChipModule,
     DropdownModule,
+    PasswordModule,
   ],
 })
 export class SharedModule {}

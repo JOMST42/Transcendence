@@ -39,10 +39,10 @@ export class ChatChannelListComponent implements OnInit {
     });
 
     ref.onClose.pipe(take(1)).subscribe({
-      next: (chan: { name: string; visibility: 'PUBLIC' | 'PRIVATE' }) => {
-        if (chan.name) {
+      next: (room: Room) => {
+        if (room) {
           this.chatService
-            .createRoom({ ...chan })
+            .createRoom({ ...room })
             .pipe(take(1))
             .subscribe({
               next: (room) => {
