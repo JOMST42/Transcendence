@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { DialogService } from 'primeng/dynamicdialog';
 import { take } from 'rxjs';
+import { User } from '../../../user/models';
 import { UserService } from '../../../user/services';
 
 import { UserChatRoom } from '../../models';

@@ -10,7 +10,7 @@ import { User } from '../../../user/models';
 export class UserInviteComponent implements OnInit {
   text: string;
   users: User[];
-  selectedUser: User;
+  selectedUserId: number;
 
   constructor(
     private readonly ref: DynamicDialogRef,
@@ -21,5 +21,7 @@ export class UserInviteComponent implements OnInit {
     this.users = this.config.data;
   }
 
-  close(): void {}
+  close(): void {
+    this.ref.close(this.selectedUserId);
+  }
 }
