@@ -3,43 +3,40 @@
 	<p-table #dt1 [value]="activeMatches" dataKey="id"
 			[rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" [loading]="loading"
 			[paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-			[globalFilterFields]="['match.p1.name','match.p2.name','timePlayed','date']">
+			[globalFilterFields]="['match.opponent.name','match.timePlayed']">
 			<ng-template pTemplate="header">
 					<tr>
-						<th [pSortableColumn]="'win'">
+						<th style="max-width:5rem" [pSortableColumn]="'win'">
 							<div class="flex justify-content-center align-items-center">
 									Win
 									<p-sortIcon [field]="'win'"></p-sortIcon>
 							</div>
 					</th>
-						<th style="min-width:12rem">
+						<th style="min-width:12rem" [pSortableColumn]="'opponent.name'">
 								<div class="flex justify-content-center align-items-center">
 										Opponent
-										<p-columnFilter type="text" field="opponent" display="menu"></p-columnFilter>
+										<p-sortIcon [field]="'opponent.name'"></p-sortIcon>
+										<p-columnFilter field="opponent" matchMode="in" display="menu" [showMatchModes]="false" [showOperator]="false" [showAddButton]="false">
+											<ng-template pTemplate="header">
+													<div class="px-3 pt-3 pb-0">
+															<span class="font-bold">Opponent picker</span>
+													</div>
+											</ng-template>
+											<ng-template pTemplate="filter" let-value let-filter="filterCallback">
+													<p-multiSelect [ngModel]="value" [options]="opponents" placeholder="Any" (onChange)="filter($event.value)" optionLabel="name">
+															<ng-template let-opponent pTemplate="item">
+																	<div class="p-multiselect-opponent-option">
+																			<img [alt]="opponent.name" [src]="opponent.img" width="32" style="vertical-align: middle" />
+																			<span class="ml-1">{{opponent.name}}</span>
+																	</div>
+															</ng-template>
+													</p-multiSelect>
+											</ng-template>
+									</p-columnFilter>
 								</div>
 						</th>
-							<!-- <th style="min-width:15rem">
-									<div class="flex justify-content-center align-items-center">
-											Player 2
-											<p-columnFilter field="Player 2" matchMode="in" display="menu" [showMatchModes]="false" [showOperator]="false" [showAddButton]="false">
-													<ng-template pTemplate="header">
-															<div class="px-3 pt-3 pb-0">
-																	<span class="font-bold">Agent Picker</span>
-															</div>
-													</ng-template>
-													<ng-template pTemplate="filter" let-value let-filter="filterCallback">
-															<p-multiSelect [ngModel]="value" [options]="representatives" placeholder="Any" (onChange)="filter($event.value)" optionLabel="name">
-																	<ng-template let-option pTemplate="item">
-																			<div class="p-multiselect-representative-option">
-																					<img [alt]="option.label" src="assets/showcase/images/demo/avatar/{{option.image}}" width="32" style="vertical-align: middle" />
-																					<span class="ml-1">{{option.name}}</span>
-																			</div>
-																	</ng-template>
-															</p-multiSelect>
-													</ng-template>
-											</p-columnFilter>
-									</div>
-							</th> -->
+
+											
 							<th style="min-width:5rem" [pSortableColumn]="'score.you'">
 									<div class="flex justify-content-center align-items-center">
 											Score

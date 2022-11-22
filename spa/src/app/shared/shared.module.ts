@@ -9,6 +9,8 @@ import { AvatarModule } from 'primeng/avatar';
 import { CardModule } from 'primeng/card';
 import { TabViewModule } from 'primeng/tabview';
 import { InputTextareaModule } from 'primeng/inputtextarea';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { DropdownModule } from 'primeng/dropdown';
 import { BadgeModule } from 'primeng/badge';
 import {
   NavBarComponent,
@@ -48,6 +50,8 @@ import { UserMatchHistoryComponent } from './components/user-match-history/user-
     CardModule,
     InputTextareaModule,
     BadgeModule,
+		MultiSelectModule,
+		DropdownModule,
   ],
   exports: [
     CommonModule,
@@ -68,6 +72,7 @@ import { UserMatchHistoryComponent } from './components/user-match-history/user-
 		UserMatchHistoryComponent,
     InputTextareaModule,
     BadgeModule,
+		MultiSelectModule,
   ],
 })
 export class SharedModule {}

@@ -9,7 +9,7 @@ import { WatchService } from 'src/app/watch/services/watch.service';
 
 export interface UserMatch{
 	id?: number;
-	opponent?: {name: string, img: string};
+	opponent?: Opponent;
 	info?: string;
 	win?: boolean;
 	score?: {you: number, them: number};
@@ -17,6 +17,11 @@ export interface UserMatch{
 	timeString?: string;
 	date?: Date;
 	dateString?: string;
+}
+
+export interface Opponent {
+  name?: string;
+  img?: string;
 }
 
 @Component({
@@ -29,13 +34,10 @@ export class UserMatchHistoryComponent implements OnInit {
 	games: Game[] = [];
 	matches: UserMatch[];
 	activeMatches: UserMatch[];
+	opponents: Opponent[]
 	@Input() user!: User;
+  loading: boolean = true;
 
-	statuses: any[];
-
-    loading: boolean = true;
-
-    activityValues: number[] = [0, 100];
 
   constructor(private userService: UserService, private watchService: WatchService) { }
     
@@ -48,8 +50,8 @@ export class UserMatchHistoryComponent implements OnInit {
     }
 
 	async refreshMatches() {
-		let tempMatch: UserMatch = {};
 		this.activeMatches = [];
+		this.opponents = [];
 
 		this.watchService.getGamesByUserId(this.user.id).pipe(take(1)).subscribe({
       next: (games) => {
@@ -83,6 +85,8 @@ export class UserMatchHistoryComponent implements OnInit {
 				this.userService.getUserById(opponentId).pipe(take(1)).subscribe({
 					next: (user) => {
 						match.opponent = {name:user.displayName, img:user.avatarUrl};
+						if (!this.opponents.find((opponent) => {return opponent.name === match.opponent.name;}))
+							this.opponents.push(match.opponent);
 						resolve(null);
 					},
 					error: (err) => {

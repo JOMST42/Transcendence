@@ -5,3 +5,22 @@
 .matchLoser {
 	background-color: rgba(red, 0.2);
 }
+
+:host ::ng-deep p-table{
+  background-color: rgba(#9969c4, 1) !important;
+	color: #fff;
+}
+:host ::ng-deep th{
+  background-color: rgba(#9969c4, 1) !important;
+	color: #fff;
+}
+
+:host ::ng-deep tr{
+  background-color: rgba(#220022, 0.5) !important;
+	-webkit-text-stroke: black;
+	-webkit-text-stroke-width: 1px;
+	font-family: "PixelPowerline";
+	font-weight: 50;
+	font-size: 1rem;
+	color: #fff;
+}
