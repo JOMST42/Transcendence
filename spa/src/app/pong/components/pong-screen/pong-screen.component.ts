@@ -51,8 +51,8 @@ export class PongScreenComponent implements OnInit {
   score: Score = {p1:0, p2:0};
 	p1Ready: boolean = false;
 	p2Ready: boolean = false;
-	p1Connected: boolean = false;
-	p2Connected: boolean = false;
+	p1Joined: boolean = false;
+	p2Joined: boolean = false;
 	timer: number = 0;
 
   countdown: number = 0;
@@ -106,7 +106,8 @@ export class PongScreenComponent implements OnInit {
 			this.afterImage.push(info.ball.pos);
 			this.drawAfterImage(info.ball.size.x); // TODO
 
-			if (!this.p1Ready) this.context.fillStyle = "#FFFF00";
+			if (!this.p1Joined) this.context.fillStyle = "#FF0000";
+			else if (!this.p1Ready) this.context.fillStyle = "#FFFF00";
 			else this.context.fillStyle = "#FFFFFF";
       this.context.fillRect(
         info.pad1.pos.x * width,
@@ -115,7 +116,8 @@ export class PongScreenComponent implements OnInit {
         info.pad1.size.y
       );
 
-			if (!this.p2Ready) this.context.fillStyle = "#FFFF00";
+			if (!this.p2Joined) this.context.fillStyle = "#FF0000";
+			else if (!this.p2Ready) this.context.fillStyle = "#FFFF00";
 			else this.context.fillStyle = "#FFFFFF";
       this.context.fillRect(
         info.pad2.pos.x * width,
@@ -157,13 +159,21 @@ export class PongScreenComponent implements OnInit {
     this.server.listen('room-update').subscribe((info: RoomInfo | undefined | null) => {
 			if (!info) return;
       if (info.roomId != this.roomInfo?.roomId) {
-				this.updateRoom(info);
+				this.updateRoomInfo(info);
 			}
+			this.updateRoom(info)
 		});
 	}
 
-	updateRoom(roomInfo : RoomInfo) {
+	updateRoomInfo(roomInfo : RoomInfo) {
 		this.roomInfo = roomInfo;
+	}
+
+	updateRoom(info: RoomInfo) {
+		this.p1Ready = info.user1Ready;
+		this.p2Ready = info.user2Ready;
+		this.p1Joined = info.user1Joined;
+		this.p2Joined = info.user2Joined;
 	}
 
 	drawAfterImage(size: number) {

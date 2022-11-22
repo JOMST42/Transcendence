@@ -71,33 +71,37 @@ export class JoinGameDialogComponent {
 	ngOnInit() {
 		this.primengConfig.ripple = true;
 		this.setListeners();
-		this.refreshDialog();
+		// this.refreshDialog();
 		// this.interval = setInterval(() => this.refreshDialog(), 2500);
 	}
 
 	setListeners() {
-		this.server.listenGameWaiting().subscribe(() => {
+		// this.server.listenGameWaiting().subscribe(() => {
+		// 	this.showPositionDialog('bottom');
+		// 	this.changeToActive();
+		// });
+		this.server.listen('join-prompt').subscribe(() => {
 			this.showPositionDialog('bottom');
 			this.changeToActive();
 		});
 	}
 
-	async refreshDialog() {
-		await new Promise( resolve => setTimeout(resolve, 4000) );
+	// async refreshDialog() {
+	// 	await new Promise( resolve => setTimeout(resolve, 4000) );
 		
-		if (!this.pongService.user) return ;
-		this.updateSub?.unsubscribe();
-		this.updateSub = this.pongService.canJoinGame(this.pongService.user.id).pipe(take(1)).subscribe({
-      next: (data: Response) => {
-        if (data.code === 0) {
-					this.showPositionDialog('bottom');
-				}
-      },
-      error: (err) => { 
-				this.displayPosition = false;
-			},
-    });
-	}
+	// 	if (!this.pongService.user) return ;
+	// 	this.updateSub?.unsubscribe();
+	// 	this.updateSub = this.pongService.canJoinGame(this.pongService.user.id).pipe(take(1)).subscribe({
+  //     next: (data: Response) => {
+  //       if (data.code === 0) {
+	// 				this.showPositionDialog('bottom');
+	// 			}
+  //     },
+  //     error: (err) => { 
+	// 			this.displayPosition = false;
+	// 		},
+  //   });
+	// }
 
 	showPositionDialog(position: string) {
 			this.position = position;

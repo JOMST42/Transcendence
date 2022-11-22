@@ -96,10 +96,12 @@ export class PongRoomService {
   }
 
   cleanRooms() {
-    let i: number;
+    let i = 0;
     while (i < this.rooms.length) {
-      if (this.rooms[i].isDeletable()) this.rooms.splice(i, 1);
-      else i++;
+      if (this.rooms[i].isDeletable()) {
+        this.logger.debug('room being deleted');
+        this.rooms.splice(i, 1);
+      } else i++;
     }
   }
 
@@ -149,6 +151,7 @@ export class PongRoomService {
           user1,
           user2,
           game,
+          this.server,
         );
         this.rooms.push(room);
         this.userJoinRoomAsPlayer(user1, room);

@@ -92,7 +92,6 @@ export class PongService {
 
   canJoinGame(userId: number): Response {
     const userState = this.getUserState(userId);
-    this.logger.debug(userState);
     if (userState.queue != QueueState.NOTQUEUED) {
       return {
         code: 1,
