@@ -5,6 +5,8 @@ import { ChatMessageWithAuthor } from './message.dto';
 export class CreateChatRoomDto {
   @IsString()
   name: string;
+
+  visibility: 'PUBLIC' | 'PRIVATE';
 }
 
 export class AddUserToChatRoomDto {

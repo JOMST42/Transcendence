@@ -25,7 +25,7 @@ export class ChatService {
 
     return this.prisma.chatRoom.create({
       data: {
-        name: dto.name,
+        ...dto,
         users: {
           create: [{ isOwner: true, user: { connect: { id: owner.id } } }],
         },

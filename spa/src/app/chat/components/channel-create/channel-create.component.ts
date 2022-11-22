@@ -9,6 +9,12 @@ import { ToastService } from '../../../core/services';
 })
 export class ChannelCreateComponent implements OnInit {
   name = '';
+  visibility: string;
+
+  visOptions = [
+    { name: 'Public', value: 'PUBLIC' },
+    { name: 'Private', value: 'PRIVATE' },
+  ];
 
   constructor(
     private readonly toastService: ToastService,
@@ -26,6 +32,6 @@ export class ChannelCreateComponent implements OnInit {
       );
       return;
     }
-    this.ref.close(this.name);
+    this.ref.close({ name: this.name, visibility: this.visibility });
   }
 }

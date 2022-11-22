@@ -38,17 +38,19 @@ export class ChatChannelListComponent implements OnInit {
       width: '50%',
     });
 
-    ref.onClose.pipe(take(1)).subscribe((name: string) => {
-      if (name) {
-        this.chatService
-          .createRoom({ name })
-          .pipe(take(1))
-          .subscribe({
-            next: (room) => {
-              this.channels.push(room);
-            },
-          });
-      }
+    ref.onClose.pipe(take(1)).subscribe({
+      next: (chan: { name: string; visibility: 'PUBLIC' | 'PRIVATE' }) => {
+        if (chan.name) {
+          this.chatService
+            .createRoom({ ...chan })
+            .pipe(take(1))
+            .subscribe({
+              next: (room) => {
+                this.channels.push(room);
+              },
+            });
+        }
+      },
     });
   }
 }
