@@ -3,3 +3,7 @@
 2. Join button inside /play
 3. homepage (menu responsive)
 4. stats Page
+
+
+FAIT
+ set user img 200x200
