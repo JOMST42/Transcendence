@@ -37,8 +37,6 @@ export class ChatController {
     @GetUser() user: User,
     @Body() dto: CreateChatRoomDto,
   ): Promise<ChatRoom> {
-    console.log(dto);
-
     return await this.chatService.createRoom(dto, user.id);
   }
 

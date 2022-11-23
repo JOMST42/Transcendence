@@ -45,6 +45,9 @@ export class ChatService {
           create: [{ isOwner: true, user: { connect: { id: owner.id } } }],
         },
       },
+      include: {
+        users: true,
+      },
     });
   }
 
