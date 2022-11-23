@@ -58,6 +58,7 @@ export class PongGameModule {
     if (ai_1) this.getPad1().setAI(true);
     if (ai_2) this.getPad2().setAI(true);
     this.started = true;
+    this.paused = false;
     this.gameTimer.start();
     clearInterval(this.updateInterval);
     this.updateInterval = setInterval(() => {
@@ -69,6 +70,11 @@ export class PongGameModule {
     if (!this.started || this.paused || this.finished) return;
     this.updateBall();
     this.updatePads();
+  }
+
+  forceWin(winner: number) {
+    this.winner = winner;
+    this.finish();
   }
 
   // update(): {};
@@ -104,6 +110,7 @@ export class PongGameModule {
         victory: this.victory,
         finished: this.finished,
       },
+      time: this.gameTimer.getTime(),
       events: this.events,
     };
     this.events = [];

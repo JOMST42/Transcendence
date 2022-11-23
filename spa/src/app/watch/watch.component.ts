@@ -11,6 +11,7 @@ import { WatchService } from './services/watch.service';
 export class WatchComponent implements OnInit {
 
 	games: Game[] = []
+	
 
   constructor(private watchService: WatchService) { }
 

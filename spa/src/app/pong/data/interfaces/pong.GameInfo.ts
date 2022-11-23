@@ -1,9 +1,4 @@
-import { Vector3, Event, Score } from '.';
-
-export interface EntityInfo {
-  pos: Vector3;
-  size: Vector3;
-}
+import { EntityInfo, Score } from ".";
 
 export interface GameInfo {
   ball: EntityInfo;
@@ -11,6 +6,6 @@ export interface GameInfo {
   pad2: EntityInfo;
   score: Score;
   state: any;
-  time: number;
+	time: number;
   events: Event[];
 }

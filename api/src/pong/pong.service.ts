@@ -5,14 +5,7 @@ import {
   Injectable,
   Logger,
 } from '@nestjs/common';
-import { Socket } from 'socket.io';
-import { GameInfo } from 'src/pong/pong-game/data/interfaces';
-import { PrismaService } from 'src/prisma/prisma.service';
-import { PongRoom } from './pong-server/data/classes';
-import { CreateGameDto, EndGameDto } from '../prisma/game/dto';
-import { RoomState } from './pong-server/data/enums';
 import { Response, RoomInfo } from './pong-server/data/interfaces';
-import { Game, prisma, User } from '@prisma/client';
 import { PongRoomService } from './pong-server/services/pong-room.service';
 import { PongInviteService } from './pong-server/services/pong-invite.service';
 import { PongQueueService } from './pong-server/services/pong-queue.service';
@@ -115,7 +108,8 @@ export class PongService {
     }
     if (
       userState.game != UserGameState.OFFLINE &&
-      userState.game != UserGameState.WAITING
+      userState.game != UserGameState.WAITING &&
+      userState.game != UserGameState.RECONNECT
     ) {
       return {
         code: 1,
@@ -123,7 +117,10 @@ export class PongService {
         payload: userState,
       };
     }
-    if (userState.game === UserGameState.WAITING) {
+    if (
+      userState.game === UserGameState.WAITING ||
+      userState.game === UserGameState.RECONNECT
+    ) {
       return {
         code: 0,
         msg: 'You have a game that needs you!',

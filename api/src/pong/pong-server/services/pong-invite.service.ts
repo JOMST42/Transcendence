@@ -169,7 +169,6 @@ export class PongInviteService {
   queueSuccess(socket: Socket) {
     socket.to(socket.data.userRoom).emit('queue-success', 'Game created');
     this.clearListeners(socket);
-    socket.data.queueTimer.stop();
   }
 
   getListSize(): number {

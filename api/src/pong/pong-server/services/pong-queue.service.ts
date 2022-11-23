@@ -21,7 +21,6 @@ export class PongQueueService {
 
   private config = new QueueConfig();
   private queue: Queue = new Queue(this.config.maxEntries);
-  private disconnectListener: any;
 
   constructor(
     @Inject(forwardRef(() => PongRoomService))
@@ -53,12 +52,6 @@ export class PongQueueService {
   }
 
   setListeners(socket: Socket) {
-    this.disconnectListener = () => {
-      this.handleLeaveQueue(socket);
-    };
-
-    socket.once('disconnect', this.disconnectListener);
-
     socket.on('leave-queue', (args, callback) => {
       const response = this.handleLeaveQueue(socket);
       if (typeof callback === 'function') callback(response);
@@ -75,10 +68,7 @@ export class PongQueueService {
     response = this.attemptJoinQueue(socket);
     if (response.code !== 0) return response;
     this.setListeners(socket);
-    socket.data.queueTimer = new Timer(TimerType.STOPWATCH, 0, 0);
-    socket.data.queueTimer.start();
     this.logger.debug('join-queue event: Queue size: ' + this.queue.length());
-    this.logger.debug('added queue timer in socket.data.queueTimer.');
     return { code: 0, msg: 'you have joined the queue.' };
   }
 
@@ -116,7 +106,6 @@ export class PongQueueService {
       .to(socket.data.userRoom)
       .emit('queue-success', 'Successfully matched');
     this.clearListeners(socket);
-    socket.data.queueTimer.stop();
   }
 
   isUserQueued(userId: number): boolean {
@@ -130,9 +119,6 @@ export class PongQueueService {
   getQueueState(userId: number) {}
 
   clearListeners(socket: Socket) {
-    try {
-      socket.off('disconnect', this.disconnectListener);
-    } catch (e) {}
     socket.removeAllListeners('leave-queue');
     socket.removeAllListeners('update-queue');
   }

@@ -15,8 +15,6 @@ import { BadgeModule } from 'primeng/badge';
 import {
   NavBarComponent,
   NotFoundComponent,
-  PongAudioComponent,
-  PongScreenComponent,
   ServerErrorComponent,
 } from './components';
 import { RouterModule } from '@angular/router';
@@ -30,8 +28,6 @@ import { UserMatchHistoryComponent } from './components/user-match-history/user-
     NotFoundComponent,
     ServerErrorComponent,
     NavBarComponent,
-    PongScreenComponent,
-    PongAudioComponent,
     SearchUserComponent,
     UserAvatarComponent,
     MatchHistoryComponent,
@@ -58,8 +54,6 @@ import { UserMatchHistoryComponent } from './components/user-match-history/user-
     FormsModule,
     ButtonModule,
     TableModule,
-    PongScreenComponent,
-    PongAudioComponent,
     NavBarComponent,
     InputTextModule,
     AvatarModule,

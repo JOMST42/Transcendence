@@ -51,6 +51,7 @@ export class QueueButtonComponent implements OnInit {
 		this.updateSub?.unsubscribe();
 		this.updateSub = this.pongService.canQueue(this.pongService.user.id).pipe(take(1)).subscribe({
       next: (data: Response) => {
+				console.log(data.code);
         if (data.code === 0) {
 					this.changeToJoin();
 				}

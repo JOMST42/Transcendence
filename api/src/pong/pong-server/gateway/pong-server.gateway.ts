@@ -26,6 +26,7 @@ import { User } from '@prisma/client';
 import { UserService } from 'src/user/services/user.service';
 import { PongInviteService } from '../services/pong-invite.service';
 import { PongService } from 'src/pong/pong.service';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 
 @Injectable({})
 @UseInterceptors(new PongServerInterceptor())
@@ -95,6 +96,7 @@ export class PongServerGateway
 
         socket.data.user = prismaUser;
         socket.data.userRoom = <string>('u' + prismaUser.id);
+        socket.data.gameRoom = 0;
         socket.join(socket.data.userRoom);
         this.roomService.addUser(socket);
         // socket.setMaxListeners(Infinity); // TODO
@@ -104,10 +106,10 @@ export class PongServerGateway
         );
       }
 
-      // let i = 0;
-      // while (i++ < 20) {
-      //   this.roomService.createGameRoom(socket, socket);
-      // }
+      //   let i = 0;
+      //   while (i++ < 5) {
+      //     this.roomService.createGameRoom(socket, socket);
+      //   }
     } catch (e) {
       data = { code: 1, msg: 'unknown connection exception' };
     } finally {

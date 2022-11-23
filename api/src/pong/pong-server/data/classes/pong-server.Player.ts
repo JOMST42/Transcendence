@@ -8,7 +8,6 @@ export class Player {
   ready = false;
   joined = false;
   disc_timer = new Timer(TimerType.COUNTDOWN, 20, 0); // ms
-  disc_n = 0; // amount of disconnections
 
   constructor(userId: any) {
     this.userId = userId;

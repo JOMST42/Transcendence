@@ -24,48 +24,32 @@
           <ng-template let-user pTemplate="caption">
             <span class="p-input-icon-left p-ml-auto">
               <i class="pi pi-search"></i>
-              <input
-                pInputText
-                type="text"
-                (input)="
-                  dt1.filterGlobal($any($event.target).value, 'contains')
-                "
-                placeholder="Search name"
-              />
+              <input pInputText type="text" (input)="dt1.filterGlobal($any($event.target).value, 'contains')" placeholder="Search name" />
             </span>
           </ng-template>
-
+		  
           <ng-template pTemplate="header">
             <tr>
               <th class="item1">
                 <div class="p-d-flex p-jc-between p-ai-center">Avatar</div>
               </th>
               <th class="item2">
-                <div
-                  class="p-d-flex p-jc-between p-ai-center"
-                  field="firstName"
-                >
+                <div class="p-d-flex p-jc-between p-ai-center" field="firstName">
                   Name
                 </div>
               </th>
               <th class="item3">
-                <div
-                  class="p-d-flex p-jc-between p-ai-center"
-                  field="displayName"
-                >
+                <div class="p-d-flex p-jc-between p-ai-center" field="displayName">
                   Display name
                 </div>
               </th>
             </tr>
-          </ng-template>
+		</ng-template>
 
-          <ng-template pTemplate="body" let-user>
-            <tr routerLink="/users/{{user?.id}}">
-                <td class="avatar">
-                  <app-user-avatar
-                    [avatarUrl]="user?.avatarUrl"
-                    [user]="user"
-                  ></app-user-avatar>
+          <ng-template pTemplate="body" let-user class="col-12">
+            <tr >
+              <td >
+                <app-user-avatar [avatarUrl]="user?.avatarUrl" [user]="user" ></app-user-avatar>
                 </td>
                 <td class="name">
                   <span class="image-text">{{ user?.firstName }}</span>
@@ -79,7 +63,6 @@
           <ng-template pTemplate="emptymessage">
             <tr>
               <td colspan="5">No users found.</td>
-            </tr>
           </ng-template>
         </p-table>
       </div>

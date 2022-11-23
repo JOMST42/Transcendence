@@ -71,31 +71,37 @@ export class JoinGameDialogComponent {
 	ngOnInit() {
 		this.primengConfig.ripple = true;
 		this.setListeners();
-		this.refreshDialog();
+		// this.refreshDialog();
 		// this.interval = setInterval(() => this.refreshDialog(), 2500);
 	}
 
 	setListeners() {
-		this.server.listenGameWaiting().then(() => {
+		// this.server.listenGameWaiting().subscribe(() => {
+		// 	this.showPositionDialog('bottom');
+		// 	this.changeToActive();
+		// });
+		this.server.listen('join-prompt').subscribe(() => {
 			this.showPositionDialog('bottom');
+			this.changeToActive();
 		});
 	}
 
-	refreshDialog() {
-		if (!this.pongService.user) return ;
-
-		this.updateSub?.unsubscribe();
-		this.updateSub = this.pongService.canJoinGame(this.pongService.user.id).pipe(take(1)).subscribe({
-      next: (data: Response) => {
-        if (data.code === 0) {
-					this.showPositionDialog('bottom');
-				}
-      },
-      error: (err) => { 
-				this.displayPosition = false;
-			},
-    });
-	}
+	// async refreshDialog() {
+	// 	await new Promise( resolve => setTimeout(resolve, 4000) );
+		
+	// 	if (!this.pongService.user) return ;
+	// 	this.updateSub?.unsubscribe();
+	// 	this.updateSub = this.pongService.canJoinGame(this.pongService.user.id).pipe(take(1)).subscribe({
+  //     next: (data: Response) => {
+  //       if (data.code === 0) {
+	// 				this.showPositionDialog('bottom');
+	// 			}
+  //     },
+  //     error: (err) => { 
+	// 			this.displayPosition = false;
+	// 		},
+  //   });
+	// }
 
 	showPositionDialog(position: string) {
 			this.position = position;
@@ -104,7 +110,7 @@ export class JoinGameDialogComponent {
 
 	async handleJoin(event: any) {
 		if (this.state === ButtonState.ACTIVE) {
-			this.changeToProcess();
+			// this.changeToProcess();
 			// await this.delay(1000); // TODO test purpose
 			await this.join();
 		}
@@ -122,26 +128,34 @@ export class JoinGameDialogComponent {
     this.server
       .emit('join-game', {})
       .then((data: Response) => {
-				this.changeToDisabled();
 				this.router.navigate(['play/classic']);
 				this.toast.showSuccess('Join success', 'You joined the game');
 			}, (data: Response | undefined) => {
 				this.changeToActive();
 				this.toast.showError('Join error', data?.msg);
 			});
+			this.changeToDisabled();
   }
 
   async leave() {
-		console.log('Attempting to leave queue...');
-    await this.server
+    // await this.server
+    //   .emit('leave-game', {})
+    //   .then((data: Response) => {
+    //     this.changeToDisabled();
+		// 		this.toast.showSuccess('Leave success', 'You left the game');
+		// 	}, (data: Response | undefined) => {
+		// 		this.changeToActive();
+		// 		this.toast.showError('Leave error', data?.msg);
+		// 	});
+		this.server
       .emit('leave-game', {})
       .then((data: Response) => {
-        this.changeToDisabled();
 				this.toast.showSuccess('Leave success', 'You left the game');
 			}, (data: Response | undefined) => {
 				this.changeToActive();
 				this.toast.showError('Leave error', data?.msg);
 			});
+		this.changeToDisabled();
 		return;
   }
 
@@ -164,11 +178,11 @@ export class JoinGameDialogComponent {
 	}
 
 	private changeToDisabled() {
-		this.disabled = true;
-		this.isProcessing = false;
+		// this.disabled = true;
+		// this.isProcessing = false;
 		this.displayPosition = false;
-		this.labelJoinButton = this.labelDisabled;
-		this.labelLeaveButton = this.labelDisabled;
+		// this.labelJoinButton = this.labelDisabled;
+		// this.labelLeaveButton = this.labelDisabled;
 		this.state = ButtonState.DISABLED;
 		this.classStyle = this.defaultStyle;
 	}
