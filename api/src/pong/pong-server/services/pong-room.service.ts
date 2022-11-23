@@ -36,7 +36,7 @@ export class PongRoomService {
   private disconnectListener: any;
 
   public classic_set: GameSettings = {
-    score_to_win: 1,
+    score_to_win: 7,
     ball_radius: 10,
     pad_size: 50,
     pad_speed: 600,
@@ -157,8 +157,8 @@ export class PongRoomService {
         this.userJoinRoomAsPlayer(user1, room);
         this.userJoinRoomAsPlayer(user2, room);
         room.createGame(this.test_set); // WARNING
-        room.startWaiting(); // WARNING
-        // room.startGame(true, true); // WARNING
+        // room.startWaiting(); // WARNING
+        room.startGame(true, true); // WARNING
 
         this.logger.log('Room created and joined by 2 players');
         return {

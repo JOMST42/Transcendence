@@ -7,6 +7,7 @@ import { DialogModule } from 'primeng/dialog';
 import { GameRoutingModule } from '../play/play-routing.module';
 import { SharedModule } from '../shared/shared.module';
 import { GameInviteComponent, InviteDialogComponent, JoinGameDialogComponent, PongAudioComponent, PongInputComponent, PongScreenComponent } from './components';
+import { Pong3DScreenComponent } from './components/pong-3dscreen/pong-3dscreen.component';
 import { PongService } from './services/pong.service';
 
 @NgModule({
@@ -16,6 +17,7 @@ import { PongService } from './services/pong.service';
 		JoinGameDialogComponent,
 		PongAudioComponent,
 		PongScreenComponent,
+		Pong3DScreenComponent,
 		PongInputComponent,
 	],
   imports: [DialogModule, ButtonModule, CommonModule, SharedModule],
@@ -26,6 +28,7 @@ import { PongService } from './services/pong.service';
 		PongAudioComponent,
 		PongScreenComponent,
 		PongInputComponent,
+		Pong3DScreenComponent,
 	],
   providers: [PongService],
 })

@@ -35,12 +35,17 @@ export class PongGameModule {
 
   constructor(set: GameSettings) {
     this.setPad1(
-      new Pad(1, { x: 10, y: 150 }, { x: 5, y: set?.pad_size }, set?.pad_speed),
+      new Pad(
+        1,
+        { x: 10, y: this.center.y - set.pad_size / 2 },
+        { x: 5, y: set?.pad_size },
+        set?.pad_speed,
+      ),
     );
     this.setPad2(
       new Pad(
         2,
-        { x: 580, y: 150 },
+        { x: 585, y: this.center.y - set.pad_size / 2 },
         { x: 5, y: set?.pad_size },
         set?.pad_speed,
       ),
@@ -85,16 +90,16 @@ export class PongGameModule {
     const pos2 = this.getPad2().getPos();
     const bPos = this.ball.getPos();
     const pos1Pct = {
-      x: pos1.x / this.dimension.x,
-      y: pos1.y / this.dimension.y,
+      x: (pos1.x + this.getPad1().getSize().x / 2) / this.dimension.x,
+      y: (pos1.y + this.getPad1().getSize().y / 2) / this.dimension.y,
     };
     const pos2Pct = {
-      x: pos2.x / this.dimension.x,
-      y: pos2.y / this.dimension.y,
+      x: (pos2.x + this.getPad1().getSize().x / 2) / this.dimension.x,
+      y: (pos2.y + this.getPad2().getSize().y / 2) / this.dimension.y,
     };
     const ballPct = {
-      x: bPos.x / this.dimension.x,
-      y: bPos.y / this.dimension.y,
+      x: (bPos.x + this.ball.getSize().x / 2) / this.dimension.x,
+      y: (bPos.y + this.ball.getSize().x / 2) / this.dimension.y,
     };
     pong_info = {
       ball: {

@@ -5,8 +5,6 @@ import {
   transition,
   animate,
   keyframes,
-  animation,
-  useAnimation,
 } from '@angular/animations';
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { UserService } from 'src/app/user/services';
@@ -19,10 +17,30 @@ export interface EntityInfo {
   size: Vector3;
 }
 
+export interface Pad3D {
+	x:number,
+	y:number,
+	w:number,
+	h:number,
+	depth:number,
+}
+
+export interface Ball3D {
+	x:number,
+	y:number,
+	rad:number,
+}
+
+export interface GameInfo3D {
+	pad1?: Pad3D,
+	pad2?: Pad3D,
+	ball?: Ball3D,
+}
+
 @Component({
-  selector: 'app-pong-screen',
-  templateUrl: './pong-screen.component.html',
-  styleUrls: ['./pong-screen.component.scss'],
+  selector: 'app-pong-3dscreen',
+  templateUrl: './pong-3dscreen.component.html',
+  styleUrls: ['./pong-3dscreen.component.scss'],
   animations: [
     trigger('countdown', [
       state('*', style({ opacity: '0', 'font-size': '0px' })),
@@ -41,12 +59,16 @@ export interface EntityInfo {
     ]),
   ],
 })
-export class PongScreenComponent implements OnInit {
+export class Pong3DScreenComponent implements OnInit {
 
   @ViewChild('game')
   private gameCanvas!: ElementRef;
   private context: any;
 	dimension = {w:600, h:400};
+	width: number = 0;
+	height: number = 0;
+	perspective: number = 0.60;
+	depthMod: number = 0.70;
 
   score: Score = {p1:0, p2:0};
 	p1Ready: boolean = false;
@@ -64,9 +86,7 @@ export class PongScreenComponent implements OnInit {
 
 	roomInfo?: RoomInfo; 
 
-
-
-  private audio: AudioHandler = new AudioHandler(0.3, 1);
+  private audio: AudioHandler = new AudioHandler(0, 0);
 
   constructor(
 	private server: PlayService,
@@ -91,57 +111,28 @@ export class PongScreenComponent implements OnInit {
   setGameListener() {
     this.server.listenGameUpdate().subscribe((info: GameInfo | undefined | null) => {
 			if (!info) return;
+			this.width = this.gameCanvas.nativeElement.width
+			this.height = this.gameCanvas.nativeElement.height
       this.refresh();
-      this.context.fillStyle = '#FFFFFF';
-			let width = this.gameCanvas.nativeElement.width
-			let height = this.gameCanvas.nativeElement.height
+			let info3D: GameInfo3D = {};
+			info3D.pad1 = this.applyPerspectivePad(info.pad1);
+			info3D.pad2 = this.applyPerspectivePad(info.pad2);
+			info3D.ball = this.applyPerspectiveBall(info.ball);
+      
 			this.score.p1 = info.score.p1;
 			this.score.p2 = info.score.p2;
 			this.timer = Math.floor(info.time);
 
-			if (this.afterImage.length >= 10){
-				this.afterImage.shift();
-			}
-			this.afterImage.push(info.ball.pos);
-			this.drawAfterImage(info.ball.size.x); // TODO
-
-			if (!this.p1Joined) this.context.fillStyle = "#FF0000";
-			else if (!this.p1Ready) this.context.fillStyle = "#FFFF00";
-			else this.context.fillStyle = "#FFFFFF";
-      this.context.fillRect(
-        info.pad1.pos.x * width,
-        info.pad1.pos.y * height,
-        info.pad1.size.x,
-        info.pad1.size.y
-      );
-
-			if (!this.p2Joined) this.context.fillStyle = "#FF0000";
-			else if (!this.p2Ready) this.context.fillStyle = "#FFFF00";
-			else this.context.fillStyle = "#FFFFFF";
-      this.context.fillRect(
-        info.pad2.pos.x * width,
-        info.pad2.pos.y * height,
-        info.pad2.size.x,
-        info.pad2.size.y
-      );
-
-			this.context.fillStyle = "#FFFFFF";
-      this.context.fillRect(
-				info.ball.pos.x * width - (info.ball.size.x) / 2,
-				info.ball.pos.y * height - (info.ball.size.y) / 2,
-        info.ball.size.x,
-        info.ball.size.y
-      );
+			this.draw3D(info3D);
 
       if (info.events) this.handleEvents(info.events);
     });
 
     this.server.listenGameStart().then((info: string) => {
-    	// this.audio.playGame(true, true);
+    	this.audio.playGame(true, true);
     });
 
     this.server.listen("player-ready").subscribe((info: number) => {
-			console.log(info);
     	if (info === 1)
 				this.p1Ready = true;
 			if (info === 2)
@@ -153,6 +144,116 @@ export class PongScreenComponent implements OnInit {
 				this.p2Ready = false;
     });
   }
+
+	draw3D(info: GameInfo3D) {
+			
+		this.context.fillStyle = '#FFFFFF';
+		this.context.strokeStyle = '#FFFFFF';
+		// if (this.afterImage.length >= 10){
+		// 	this.afterImage.shift();
+		// }
+		// this.afterImage.push(info.ball.pos);
+		// this.drawAfterImage(info.ball.size.x); // TODO
+
+		
+		this.drawPad(info.pad1, this.p1Joined, this.p1Ready);
+
+		this.context.fillStyle = "#FFFFFF";
+		this.drawBall(info.ball);
+
+		this.drawPad(info.pad2, this.p2Joined, this.p2Ready);
+		
+		this.context.strokeStyle = '#FFFFFF';
+		this.context.moveTo(0, info.pad2.y);
+		this.context.lineTo(this.width, info.pad2.y);
+		this.context.stroke();
+
+		
+	}
+
+	drawPad(pad: Pad3D, ready: boolean, joined: boolean) {
+		const saveStroke = this.context.strokeStyle;
+		const saveFill = this.context.fillStyle;
+
+		this.context.strokeStyle = "#000000";
+		if (!joined) this.context.fillStyle = "#FF0000";
+		else if (!ready) this.context.fillStyle = "#FFFF00";
+		else this.context.fillStyle = "#FFFFFF";
+    this.context.beginPath();
+    this.context.moveTo(pad.x + pad.w / 2, pad.y);
+    this.context.lineTo(pad.x - pad.w / 2, pad.y);
+    this.context.lineTo(pad.x - pad.w / 2, pad.y - pad.depth);
+    this.context.lineTo(pad.x + pad.w / 2, pad.y - pad.depth);
+    this.context.closePath();
+    this.context.stroke();
+    this.context.fill();
+
+    // center face
+		
+    this.context.beginPath();
+    this.context.moveTo(pad.x + pad.w / 2, pad.y);
+		this.context.lineTo(pad.x - pad.w / 2, pad.y);
+    this.context.lineTo(pad.x - pad.w / 2, pad.y + pad.h);
+    this.context.lineTo(pad.x + pad.w / 2, pad.y + pad.h);
+    this.context.closePath();
+    this.context.fillStyle = "#AAAAAA";
+    this.context.stroke();
+    this.context.fill();
+
+		this.context.strokeStyle = saveStroke;
+		this.context.fillStyle = saveFill;	
+	}
+
+	drawBall(ball: Ball3D) {
+		const saveStroke = this.context.strokeStyle;
+		const saveFill = this.context.fillStyle;
+
+		var grd = this.context.createRadialGradient(ball.x, ball.y - ball.rad / 2, 0, ball.x, ball.y, ball.rad);
+		grd.addColorStop(0, "white");
+		grd.addColorStop(1, "#444444");
+
+		this.context.fillStyle = grd;
+		this.context.strokeStyle = "#000000";
+
+		this.context.beginPath();
+		this.context.arc(ball.x - ball.rad / 2, ball.y, ball.rad, 0, 2 * Math.PI);
+		this.context.stroke();
+		this.context.fill();
+
+		this.context.strokeStyle = saveStroke;
+		this.context.fillStyle = saveFill;	
+	}
+
+	applyPerspectivePad(pad: EntityInfo): Pad3D {
+		let pad3D: Pad3D = {x:0, y:0, w:0, h:0, depth:0}
+		let depthMagnitude = this.depthMod * (pad.pos.x);
+		let midOffset = Math.abs(1 - pad.pos.x) / (1 + depthMagnitude) * this.width;
+		pad3D.x = pad.pos.y * this.width;
+		pad3D.x = pad3D.x / (1 + depthMagnitude) + midOffset;
+
+		// pad3D.x = (pad.pos.y + (0.5 - pad.pos.y) * this.depthMod) * this.width;
+		pad3D.y = pad.pos.x * this.height * this.perspective;
+		// pad3D.w = pad.size.y * (this.width);
+		// pad3D.h = pad.size.x * (this.height);
+		pad3D.w = Math.ceil(pad.size.y * (1 - (this.depthMod * (1 - pad.pos.x))));
+		pad3D.h = Math.ceil(pad.size.x * (1 - (this.depthMod * (1 - pad.pos.x))));
+		pad3D.depth = pad3D.h;
+
+		return pad3D;
+	}
+
+	applyPerspectiveBall(ball: EntityInfo): Ball3D {
+		let ball3D: Ball3D = {x:0, y:0, rad:0}
+		let depthMagnitude = this.depthMod * (1 - ball.pos.x);
+		let midOffset = Math.abs(1 - ball.pos.x) * (this.depthMod * this.width);
+		ball3D.x = ball.pos.y * this.width;
+		ball3D.x = ball3D.x * depthMagnitude + midOffset;
+		// ball3D.x = (ball.pos.y + (0.5 - ball.pos.x) * this.depthMod) * this.width;
+		ball3D.y = ball.pos.x * this.height * this.perspective;
+		ball3D.rad = Math.ceil(ball.size.x * (1 - (this.depthMod * (1 - ball.pos.x))));
+
+		return ball3D;
+	}
 
 	setRoomListener() {
     this.server.listen('room-update').subscribe((info: RoomInfo | undefined | null) => {
@@ -230,9 +331,10 @@ export class PongScreenComponent implements OnInit {
       this.gameCanvas.nativeElement.width,
       this.gameCanvas.nativeElement.height
     );
-    for (let i = 10; i < this.dimension.h; i += this.dimension.h / 10) {
-      this.context.fillRect(this.dimension.w / 2 - 3, i, 6, 20);
-    }
+
+    // for (let i = 10; i < this.dimension.h; i += this.dimension.h / 10) {
+    //   this.context.fillRect(this.dimension.w / 2 - 3, i, 6, 20);
+    // }
   }
 
   testCountdown() {
@@ -247,7 +349,6 @@ export class PongScreenComponent implements OnInit {
       return;
     }
     this.countdown--;
-    console.log('ticking');
   }
 
 }

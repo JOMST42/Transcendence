@@ -106,10 +106,10 @@ export class PongServerGateway
         );
       }
 
-      //   let i = 0;
-      //   while (i++ < 5) {
-      //     this.roomService.createGameRoom(socket, socket);
-      //   }
+      let i = 0;
+      while (i++ < 5) {
+        this.roomService.createGameRoom(socket, socket);
+      }
     } catch (e) {
       data = { code: 1, msg: 'unknown connection exception' };
     } finally {
