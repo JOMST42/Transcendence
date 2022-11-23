@@ -30,12 +30,12 @@ export class ChatService {
     if (dto.password) {
       dto.password = dto.password.trim();
       if (dto.password.length > 0) {
-        hash = argon2.hash(dto.password);
+        hash = await argon2.hash(dto.password);
         isProtected = true;
       }
-      delete dto.password;
     }
 
+    delete dto.password;
     return this.prisma.chatRoom.create({
       data: {
         ...dto,
@@ -56,6 +56,9 @@ export class ChatService {
           { visibility: ChatRoomVisibility.PUBLIC },
         ],
       },
+      include: {
+        users: true,
+      },
     });
     rooms.map((room) => {
       delete room.hash;
@@ -64,7 +67,11 @@ export class ChatService {
     return rooms;
   }
 
-  async addUserToRoom(userId: number, roomId: string): Promise<UserChatRoom> {
+  async addUserToRoom(
+    userId: number,
+    roomId: string,
+    password?: string,
+  ): Promise<UserChatRoom> {
     const userChatRoom = await this.prisma.userChatRoom.findUnique({
       where: { userId_roomId: { roomId, userId } },
     });
@@ -73,9 +80,28 @@ export class ChatService {
       throw new BadRequestException('User already in chat room');
     }
 
+    const room = await this.prisma.chatRoom.findUnique({
+      where: {
+        id: roomId,
+      },
+    });
+
+    if (!room) {
+      throw new BadRequestException("Room doesn't exist");
+    }
+
+    if (room.isProtected) {
+      if (!password) {
+        throw new UnauthorizedException('Wrong password');
+      }
+      const passwordOk = await argon2.verify(room.hash, password);
+      if (!passwordOk) {
+        throw new UnauthorizedException('Wrong password');
+      }
+    }
+
     return await this.prisma.userChatRoom.create({
       data: { userId, roomId },
-      include: { user: true },
     });
   }
 

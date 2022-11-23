@@ -15,6 +15,7 @@ import {
   ChatUserListComponent,
 } from './components';
 import { UserInviteComponent } from './components/user-invite/user-invite.component';
+import { PasswordDialogComponent } from './components/password-dialog/password-dialog.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { UserInviteComponent } from './components/user-invite/user-invite.compon
     ChatFriendComponent,
     ChannelCreateComponent,
     UserInviteComponent,
+    PasswordDialogComponent,
   ],
   imports: [SharedModule, ChatRoutingModule],
 })

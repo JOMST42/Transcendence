@@ -21,11 +21,7 @@ export class ChatChannelListComponent implements OnInit {
     private readonly chatService: ChatService
   ) {}
 
-  ngOnInit(): void {
-    if (this.channels.length > 0) {
-      this.onChannelSelect(this.channels[0]);
-    }
-  }
+  ngOnInit(): void {}
 
   onChannelSelect(channel: Room): void {
     this.channelSelect.emit(channel);
@@ -41,8 +37,10 @@ export class ChatChannelListComponent implements OnInit {
     ref.onClose.pipe(take(1)).subscribe({
       next: (room: Room) => {
         if (room) {
+          console.log(room);
+
           this.chatService
-            .createRoom({ ...room })
+            .createRoom(room)
             .pipe(take(1))
             .subscribe({
               next: (room) => {

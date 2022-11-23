@@ -10,6 +10,7 @@ export class CreateChatRoomDto {
   visibility: 'PUBLIC' | 'PRIVATE';
 
   @IsOptional()
+  @IsString()
   password: string;
 }
 

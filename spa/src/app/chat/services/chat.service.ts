@@ -1,5 +1,6 @@
+import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, take } from 'rxjs';
 
 import { ChatSocket } from '../../core/core.module';
 import { BaseApiService } from '../../core/services';
@@ -52,6 +53,14 @@ export class ChatService {
 
   getChatRoom(id: string): Observable<Room> {
     return this.baseApiService.getOne(`/chatrooms/${id}`);
+  }
+
+  addUserToRoom(
+    userId: number,
+    roomId: string,
+    password?: string
+  ): Observable<void> {
+    return this.baseApiService.postOne(`/chatrooms/${roomId}`, { password });
   }
 
   inviteUser(userId: number, roomId: string): void {
