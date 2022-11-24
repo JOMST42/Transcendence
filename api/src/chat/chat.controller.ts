@@ -30,8 +30,6 @@ export class ChatController {
     @Param('id') roomId: string,
     @Body() body: { password: string },
   ): Promise<UserChatRoom> {
-    console.log('test');
-
     return await this.chatService.addUserToRoom(user.id, roomId, body.password);
   }
 

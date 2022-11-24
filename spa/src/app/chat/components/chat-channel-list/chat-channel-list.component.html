@@ -20,7 +20,6 @@
     <div *ngFor="let channel of channels">
       <app-chat-channel
         (click)="onChannelSelect(channel)"
-        (leaveChannel)="leaveChannel($event)"
         [channel]="channel"
         [selected]="channel.id === selectedChannel?.id"
       ></app-chat-channel>

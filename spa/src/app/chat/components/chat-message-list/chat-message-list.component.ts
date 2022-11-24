@@ -2,14 +2,16 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
+  EventEmitter,
   Input,
   OnDestroy,
   OnInit,
+  Output,
   ViewChild,
 } from '@angular/core';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, take, takeUntil } from 'rxjs';
 
-import { ChatMessage } from '../../models';
+import { ChatMessage, Room } from '../../models';
 import { ChatService } from '../../services';
 
 @Component({
@@ -24,6 +26,7 @@ export class ChatMessageListComponent
   @ViewChild('messages') private messagesScroller: ElementRef;
   @Input() chatMessages: ChatMessage[];
   @Input() roomId: string;
+  @Output() onLeaveChannel = new EventEmitter<string>();
   message: string;
 
   constructor(private readonly chatService: ChatService) {}
@@ -66,5 +69,14 @@ export class ChatMessageListComponent
           this.messagesScroller.nativeElement.scrollHeight;
       }, 1);
     } catch {}
+  }
+
+  leaveChannel(roomId: string): void {
+    this.chatService
+      .userLeaveRoom(roomId)
+      .pipe(take(1))
+      .subscribe(() => {
+        this.onLeaveChannel.emit(roomId);
+      });
   }
 }

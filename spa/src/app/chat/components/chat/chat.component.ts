@@ -136,4 +136,23 @@ export class ChatComponent implements OnInit, OnDestroy {
       this.chatService.leaveRoom(this.selectedChannel.id);
     }
   }
+
+  userLeaveChannel(roomId: string): void {
+    const room = this.rooms.find((r) => {
+      r.id === roomId;
+    });
+
+    if (!room) {
+      return;
+    }
+
+    if (room.visibility === 'PRIVATE' || room.users.length === 1) {
+      const idx = this.rooms.indexOf(room);
+      if (idx < 0) {
+        return;
+      }
+      this.rooms.splice(idx, 1);
+    }
+    this.selectedChannel = undefined;
+  }
 }

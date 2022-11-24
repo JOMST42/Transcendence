@@ -8,11 +8,11 @@ import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { Subject, takeUntil } from 'rxjs';
 import { DialogModule } from 'primeng/dialog';
-import * as io from 'socket.io-client';
 
 import { SocketError } from './models';
 import { ToastService } from './services';
 import { DialogService } from 'primeng/dynamicdialog';
+import { ClickStopPropagation } from './directives';
 
 const tokenGetter = () => localStorage.getItem('access_token');
 
@@ -56,7 +56,7 @@ export class ChatSocket extends Socket implements OnDestroy {
 }
 
 @NgModule({
-  declarations: [],
+  declarations: [ClickStopPropagation],
   imports: [
     CommonModule,
     HttpClientModule,

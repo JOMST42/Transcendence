@@ -49,19 +49,4 @@ export class ChatChannelListComponent implements OnInit {
       },
     });
   }
-
-  leaveChannel(room: Room): void {
-    this.chatService
-      .userLeaveRoom(room.id)
-      .pipe(take(1))
-      .subscribe(() => {
-        if (room.visibility === 'PRIVATE' || room.users.length === 1) {
-          const index = this.channels.indexOf(room);
-          if (index > -1) {
-            this.channels.splice(index, 1);
-          }
-        }
-        this.onChannelSelect(null);
-      });
-  }
 }

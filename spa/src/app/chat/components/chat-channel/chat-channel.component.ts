@@ -1,5 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { MenuItem } from 'primeng/api';
+import { Component, Input, OnInit } from '@angular/core';
 
 import { Room } from '../../models';
 import { avatarLabel } from '../../utils';
@@ -12,17 +11,7 @@ import { avatarLabel } from '../../utils';
 export class ChatChannelComponent implements OnInit {
   @Input() channel: Room;
   @Input() selected: boolean;
-  @Output() leaveChannel = new EventEmitter<Room>();
   label: string;
-  items: MenuItem[] = [
-    {
-      label: 'Leave Channel',
-      icon: 'pi pi-fw pi-power-off',
-      command: (event) => {
-        this.leaveChannel.emit(this.channel);
-      },
-    },
-  ];
 
   constructor() {}
 

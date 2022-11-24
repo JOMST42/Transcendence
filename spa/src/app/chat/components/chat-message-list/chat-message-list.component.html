@@ -1,4 +1,13 @@
 <div class="w-full flex flex-column">
+  <div *ngIf="roomId">
+    <button
+      (click)="leaveChannel(roomId)"
+      pButton
+      type="button"
+      label="Leave"
+      icon="pi pi-power-off"
+    ></button>
+  </div>
   <div
     #messages
     class="h-full flex flex-column-reverse mx-6 mt-6 overflow-y-auto"
