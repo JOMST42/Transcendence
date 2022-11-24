@@ -139,7 +139,7 @@ export class ChatComponent implements OnInit, OnDestroy {
 
   userLeaveChannel(roomId: string): void {
     const room = this.rooms.find((r) => {
-      r.id === roomId;
+      return r.id === roomId;
     });
 
     if (!room) {
