@@ -1,7 +1,7 @@
 
 <div class="card">
 	<p-table #dt1 [value]="activeMatches" dataKey="id"
-			[rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" [loading]="loading"
+			[rows]="3" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" [loading]="loading"
 			[paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
 			[globalFilterFields]="['match.p1.name','match.p2.name','timePlayed','date']">
 			<ng-template pTemplate="caption">

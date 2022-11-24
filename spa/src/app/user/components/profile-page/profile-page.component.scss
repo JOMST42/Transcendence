@@ -1,10 +1,10 @@
-@media screen and (max-width:900px){
-  .container{
-    align-items: center;
-		align-content: center;
-		justify-content: center;
-  }
-}
+// @media screen and (max-width:900px){
+//   .container{
+//     align-items: center;
+// 		align-content: center;
+// 		justify-content: center;
+//   }
+// }
 
 :host ::ng-deep .p-tabview-panels{
   background-color: #7869c4;
@@ -111,11 +111,41 @@ input {
 .container  {
 	border-radius: 30px;
 	width: 900px !important;
-	position: relative;
+	// position: relative;
 	background-color: #fff  !important;
 	border: 3px solid black;;
 	box-shadow: -10px -10px #7869C4,
 				-10px -8px #000,
 				-8px -10px #000,
 				-12px -12px #000;
+}
+
+@media screen  and (min-width: 600px) and (max-width:99999px) {
+	.tab-mobile {
+		display: none;
+	}
+}
+
+@media screen  and (min-width: 0px) and (max-width:600px) {
+	.container .tab {
+		display: none !important;
+	}
+	.container .card-user {
+		justify-content: center !important;
+	}
+	.container h2 {
+		justify-content: center;
+		text-align: center;
+	}
+	.container .card-user {
+		display: block !important;
+		justify-content: center !important;
+	}
+	// .container .tab-mobile {
+	// 	display: block;
+	// }
+}
+
+.card-tab-mobile {
+	height: auto;
 }

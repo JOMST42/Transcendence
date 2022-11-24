@@ -6,8 +6,8 @@
   <div class="grid">
     <div class="col-12 flex align-items-center justify-content-center user-card">
       <div class="container">
-        <div class="grid">
-          <div class="lg:col-4 sm:col-12 md:12 card-user">
+        <div class="grid md:flex-none xs:flex-none">
+          <div class="xl:col-4 lg:col-4 sm:col-5 md:col-4 card-user">
             <app-user-img [avatarUrl]="user?.avatarUrl" [userIsMe]="user.id === me.id" (eventUpload)="refreshUser()" ></app-user-img>
             <span class="p-buttonset">
               <app-friend-btn [userIsMe]="user.id === me.id" [me]="me" [user]="user" ></app-friend-btn>
@@ -15,27 +15,28 @@
             </span>
           </div>
 
-          <div class="lg:col-8 sm:col-12 md:col-12 card-user">
+          <div class="xl:col-8 lg:col-7 sm:col-6 md:col-8 xs:col-12 sm:flex-none card-user">
             <div class="grid">
-              <div class="lg:col-6 sm:col-12 md:col-12">
+              <div class="lg:col-6 sm:col-12 md:col-6">
                 <app-user-displayname [user]="user" [userIsMe]="user.id === me.id" ></app-user-displayname>
               </div>
-
-              <div class="lg:col-6 sm:col-12 md:12">
+              <div class="lg:col-6 sm:col-12 md:col-6">
                 <input type="text" class="no-cursor" pInputText [disabled]="true" placeholder="{{ user?.username }}" />
               </div>
-
-              <div class="lg:col-6 sm:col-12 md:12">
+              <div class="lg:col-6 sm:col-12 md:col-6">
                 <input type="text" class="no-cursor" pInputText [disabled]="true" placeholder="{{ user?.lastName }}" />
               </div>
-
-              <div class="lg:col-6 sm:col-12 md:12">
+              <div class="lg:col-6 sm:col-12 md:col-6">
                 <input type="text" class="no-cursor" pInputText [disabled]="true" placeholder="{{ user?.firstName }}"/>
               </div>
             </div>
           </div>
         </div>
-        <p-tabView>
+		
+	
+		
+
+        <p-tabView class="tab">
           <p-tabPanel header="STATS" [cache]="false">
             <ng-template pTemplate="content">
               <div class="stats-card col-4 mr-3"></div>
@@ -62,6 +63,28 @@
             </ng-template>
           </p-tabPanel>
         </p-tabView>
+		<!-- 600px et moin -->
+		<div class="tab-mobile">
+			<div class="card-tab-mobile">
+				<h2>STATS</h2>
+				<div class="grid flex align-items-center justify-content-center">
+					<div class="stats-card col-4 mr-3"></div>
+					<div class="stats-card col-4"></div>
+				</div>
+			</div>
+			<div class="card-tab-mobile">
+				<h2> FRIENDS</h2>
+				<app-friend-list [user]="user"></app-friend-list>
+			</div>
+			<div class="card-tab-mobile">
+				<h2>FRIENDS REQUESTS</h2>
+				<app-friend-requests [me]="me"></app-friend-requests>
+			</div>
+			<div class="card-tab-mobile">
+				<h2>MATCH</h2>
+				<app-match-history [user]="user"></app-match-history>
+			</div>
+		</div>
       </div>
     </div>
   </div>
