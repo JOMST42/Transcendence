@@ -78,7 +78,8 @@ export class PongGameModule {
   }
 
   forceWin(winner: number) {
-    this.winner = winner;
+    if (winner != 1 && winner != 2) this.winner = 0;
+    else this.winner = winner;
     this.finish();
   }
 
@@ -264,7 +265,7 @@ export class PongGameModule {
     ) {
       this.victory = true;
       if (this.score.p1 >= this.score_to_win) this.winner = 1;
-      else this.winner = 2;
+      else if (this.score.p2 >= this.score_to_win) this.winner = 2;
     }
     this.gameTimer.pause();
   }

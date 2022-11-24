@@ -24,10 +24,12 @@ export class PongInputComponent implements OnInit {
   handleKeyDown(event: KeyboardEvent) { 
     switch(event.key) {
 			case KEYS.UP:
+			case KEYS.RIGHT:
 				this.moveStart("up");
 				event.preventDefault();
 				break;
 			case KEYS.DOWN:
+			case KEYS.LEFT:
 				this.moveStart("down");
 				event.preventDefault();
 				break;
@@ -38,10 +40,12 @@ export class PongInputComponent implements OnInit {
   handleKeyUp(event: KeyboardEvent) { 
     switch(event.key) {
 			case KEYS.UP:
+			case KEYS.RIGHT:
 				this.moveEnd("up");
 				event.preventDefault();
 				break;
 			case KEYS.DOWN:
+				case KEYS.LEFT:
 				this.moveEnd("down");
 				event.preventDefault();
 				break;

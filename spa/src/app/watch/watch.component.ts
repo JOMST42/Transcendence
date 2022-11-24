@@ -11,6 +11,7 @@ import { WatchService } from './services/watch.service';
 export class WatchComponent implements OnInit {
 
 	games: Game[] = []
+	threeD: boolean = false;
 	
 
   constructor(private watchService: WatchService) { }
@@ -40,6 +41,10 @@ export class WatchComponent implements OnInit {
 
 	logSuccess() {
 		return console.log('Success');
+	}
+
+	set3D(flag: boolean) {
+		this.threeD = flag;
 	}
 
 }

@@ -4,7 +4,10 @@
   </div>
 
 <div class="col-12 flex align-items-center justify-content-center">
-		<app-pong-3dscreen></app-pong-3dscreen>
+		<app-pong-3dscreen *ngIf="threeD"></app-pong-3dscreen>
+		<app-pong-screen *ngIf="!threeD"></app-pong-screen>
+		<button (click)="set3D(false)">2D</button>
+		<button (click)="set3D(true)">3D</button>
   </div>
 	<app-room-list></app-room-list>
 </div> 

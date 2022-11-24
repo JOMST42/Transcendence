@@ -111,9 +111,9 @@ export class PongRoom {
 
   startWaiting() {
     this.state = RoomState.Waiting;
+    this.resetTimers();
     this.game.pause();
     this.server.to(this.roomId).emit('game-waiting', this.getRoomId());
-    this.waitCountdown.reset();
     this.waitCountdown.start(() => {
       return this.startReadying();
     });
@@ -123,11 +123,11 @@ export class PongRoom {
   startReadying() {
     this.leaveAllowed = false;
     this.state = RoomState.Readying;
+    this.resetTimers();
     this.game.pause();
     this.p1.ready = false;
     this.p2.ready = false;
     this.server.to(this.roomId).emit('ready-check', this.getRoomId());
-    this.readyCountdown.reset();
     this.readyCountdown.start(() => {
       return this.startCountdown();
     });
@@ -136,13 +136,19 @@ export class PongRoom {
 
   startCountdown() {
     this.state = RoomState.Countdown;
+    this.resetTimers();
     this.game.pause();
     this.server.to(this.roomId).emit('game-countdown', this.getRoomId());
-    this.gameCountdown.reset();
     this.gameCountdown.start(() => {
       return this.startGame(false, false);
     });
     this.logger.log('Game starting in...' + this.gameCountdown.getTime());
+  }
+
+  resetTimers() {
+    this.waitCountdown.reset();
+    this.readyCountdown.reset();
+    this.gameCountdown.reset();
   }
 
   checkDisconnect() {
@@ -173,17 +179,21 @@ export class PongRoom {
   checkJoinPrompt() {
     if (this.state === RoomState.Waiting) {
       if (this.userP1.connected && !this.p1.joined) {
-        this.userP1.emit('join-prompt', {});
+        if (this.leaveAllowed) this.userP1.emit('join-prompt', {});
+        else this.userP1.emit('reconnect-prompt', {});
       }
       if (this.userP2.connected && !this.p2.joined) {
-        this.userP2.emit('join-prompt', {});
+        if (this.leaveAllowed) this.userP2.emit('join-prompt', {});
+        else this.userP2.emit('reconnect-prompt', {});
       }
     }
   }
 
   handleDisconnect(user: Socket) {
-    if (user === this.userP1) this.game.forceWin(2);
-    else this.game.forceWin(1);
+    if (!this.finished) {
+      if (user === this.userP1) this.game.forceWin(2);
+      else this.game.forceWin(1);
+    }
     this.p1.disc_timer.stop(false);
     this.p2.disc_timer.stop(false);
   }
@@ -316,7 +326,7 @@ export class PongRoom {
     switch (this.state) {
       case RoomState.Countdown:
         info.hasCountdown = true;
-        info.countdownLabel = 'Game starts in...';
+        info.countdownLabel = 'Game starts in';
         info.countdownTime = this.gameCountdown.timer;
         break;
       case RoomState.Readying:
@@ -326,8 +336,8 @@ export class PongRoom {
         break;
       case RoomState.Waiting:
         info.hasCountdown = true;
-        info.countdownLabel = 'Waiting for players...';
-        info.countdownTime = this.readyCountdown.timer;
+        info.countdownLabel = 'Waiting for players';
+        info.countdownTime = this.waitCountdown.timer;
         break;
       default:
     }
@@ -409,9 +419,7 @@ export class PongRoom {
       });
       user.on('leave-game', (args, callback) => {
         const response = this.setJoinStatus(playerIndex, false);
-        this.logger.debug('leavegame pre callback');
         callback(response);
-        this.logger.debug('leavegame post callback');
         if (response.code === 0) {
           user
             .to(this.roomId)

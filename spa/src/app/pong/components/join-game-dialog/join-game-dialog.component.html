@@ -2,7 +2,7 @@
 
 
 <p-dialog 
-	header="Your game is ready!" 
+	[header]="header" 
 	[(visible)]="displayPosition" 
 	[position]="position" [modal]="false" 
 	[style]="{'min-width': '200px'}" 
@@ -12,7 +12,7 @@
 	[closable]="true"
 	(onHide)="handleLeave($event)"	>
     <!-- <p>Accept: Move you to the game room</p> -->
-        <ng-template pTemplate="footer">
+    <ng-template pTemplate="footer">
 					
 	<button pButton id="joinGameButton"
 	[label]="labelJoinButton"
@@ -39,8 +39,5 @@
 	loadingIcon="pi pi-spinner pi-spin"
 	(click)="handleLeave($event)"
 	></button>
-            <!-- <p-button icon="pi pi-check" (onClick)="displayPosition=false;joinGame()" label="Join" class="p-button-text"></p-button> -->
-            <!-- <p-button icon="pi pi-times" (click)="displayPosition=false" label="Hide"></p-button> -->
-						<!-- <p-button icon="pi pi-times" (onClick)="displayPosition=false" label="Cancel"></p-button> -->
-        </ng-template>
+  </ng-template>
 </p-dialog>

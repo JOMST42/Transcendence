@@ -79,6 +79,9 @@ export class PongRoomService {
       if (room.getState() === RoomState.Finished) {
         this.logger.debug('finish');
         this.endRoom(room);
+        this.server
+          .to(room.getRoomId())
+          .emit('game-finished', room.getWinner());
       } // TODO
     }
   }
@@ -156,9 +159,9 @@ export class PongRoomService {
         this.rooms.push(room);
         this.userJoinRoomAsPlayer(user1, room);
         this.userJoinRoomAsPlayer(user2, room);
-        room.createGame(this.test_set); // WARNING
-        // room.startWaiting(); // WARNING
-        room.startGame(true, true); // WARNING
+        room.createGame(this.classic_set); // WARNING
+        room.startWaiting(); // WARNING
+        // room.startGame(true, true); // WARNING
 
         this.logger.log('Room created and joined by 2 players');
         return {

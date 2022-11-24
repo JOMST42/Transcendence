@@ -19,6 +19,12 @@ export interface EntityInfo {
   size: Vector3;
 }
 
+export enum Winner {
+  PLAYER1,
+  PLAYER2,
+  NONE,
+}
+
 @Component({
   selector: 'app-pong-screen',
   templateUrl: './pong-screen.component.html',
@@ -56,6 +62,7 @@ export class PongScreenComponent implements OnInit {
 	timer: number = 0;
 
   countdown: number = 0;
+	countdownLabel: string = '';
   countdownId?: NodeJS.Timer;
   animDisabled?: boolean = false;
 
@@ -66,7 +73,7 @@ export class PongScreenComponent implements OnInit {
 
 
 
-  private audio: AudioHandler = new AudioHandler(0.3, 1);
+  private audio: AudioHandler = new AudioHandler(0, 0);
 
   constructor(
 	private server: PlayService,
@@ -110,7 +117,7 @@ export class PongScreenComponent implements OnInit {
 			else this.context.fillStyle = "#FFFFFF";
       this.context.fillRect(
         info.pad1.pos.x * width,
-        info.pad1.pos.y * height,
+        info.pad1.pos.y * height - info.pad1.size.y / 2,
         info.pad1.size.x,
         info.pad1.size.y
       );
@@ -120,7 +127,7 @@ export class PongScreenComponent implements OnInit {
 			else this.context.fillStyle = "#FFFFFF";
       this.context.fillRect(
         info.pad2.pos.x * width,
-        info.pad2.pos.y * height,
+        info.pad2.pos.y * height - info.pad1.size.y / 2,
         info.pad2.size.x,
         info.pad2.size.y
       );
@@ -137,7 +144,7 @@ export class PongScreenComponent implements OnInit {
     });
 
     this.server.listenGameStart().then((info: string) => {
-    	// this.audio.playGame(true, true);
+    	this.audio.playGame(true, true);
     });
 
     this.server.listen("player-ready").subscribe((info: number) => {
@@ -152,6 +159,10 @@ export class PongScreenComponent implements OnInit {
 				this.p1Ready = false;
 				this.p2Ready = false;
     });
+
+		this.server.listen("game-finished").subscribe((winner: Winner) => {
+			// TODO
+	});
   }
 
 	setRoomListener() {
@@ -173,6 +184,13 @@ export class PongScreenComponent implements OnInit {
 		this.p2Ready = info.user2Ready;
 		this.p1Joined = info.user1Joined;
 		this.p2Joined = info.user2Joined;
+		if (info.hasCountdown) {
+			this.countdown = Math.ceil(info.countdownTime);
+			this.countdownLabel = info.countdownLabel;
+		} else {
+			this.countdown = 0
+			this.countdownLabel = '';
+		}
 	}
 
 	drawAfterImage(size: number) {

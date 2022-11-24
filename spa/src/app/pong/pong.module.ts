@@ -8,6 +8,7 @@ import { GameRoutingModule } from '../play/play-routing.module';
 import { SharedModule } from '../shared/shared.module';
 import { GameInviteComponent, InviteDialogComponent, JoinGameDialogComponent, PongAudioComponent, PongInputComponent, PongScreenComponent } from './components';
 import { Pong3DScreenComponent } from './components/pong-3dscreen/pong-3dscreen.component';
+import { PongScreenContainerComponent } from './components/pong-screen-container/pong-screen-container.component';
 import { PongService } from './services/pong.service';
 
 @NgModule({
@@ -16,6 +17,7 @@ import { PongService } from './services/pong.service';
 		InviteDialogComponent,
 		JoinGameDialogComponent,
 		PongAudioComponent,
+		PongScreenContainerComponent,
 		PongScreenComponent,
 		Pong3DScreenComponent,
 		PongInputComponent,
@@ -26,9 +28,10 @@ import { PongService } from './services/pong.service';
 		InviteDialogComponent,
 		JoinGameDialogComponent,
 		PongAudioComponent,
+		PongScreenContainerComponent,
 		PongScreenComponent,
-		PongInputComponent,
 		Pong3DScreenComponent,
+		PongInputComponent,
 	],
   providers: [PongService],
 })
