@@ -14,6 +14,7 @@ import { AutoCompleteModule } from 'primeng/autocomplete';
 import { ChipModule } from 'primeng/chip';
 import { DropdownModule } from 'primeng/dropdown';
 import { PasswordModule } from 'primeng/password';
+import { ContextMenuModule } from 'primeng/contextmenu';
 
 import {
   NavBarComponent,
@@ -55,6 +56,7 @@ import { MatchHistoryComponent } from './components/match-history/match-history.
     ChipModule,
     DropdownModule,
     PasswordModule,
+    ContextMenuModule,
   ],
   exports: [
     CommonModule,
@@ -78,6 +80,7 @@ import { MatchHistoryComponent } from './components/match-history/match-history.
     ChipModule,
     DropdownModule,
     PasswordModule,
+    ContextMenuModule,
   ],
 })
 export class SharedModule {}

@@ -41,6 +41,11 @@ enum ChatRoomVisibility {
   PRIVATE
 }
 
+enum ChatRole {
+  ADMIN
+  USER
+}
+
 model ChatRoom {
   id          String             @id @default(uuid())
   name        String
@@ -63,7 +68,8 @@ model UserChatRoom {
   room   ChatRoom @relation(fields: [roomId], references: [id])
   roomId String
 
-  isOwner Boolean @default(false)
+  isOwner Boolean  @default(false)
+  role    ChatRole @default(USER)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

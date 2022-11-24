@@ -33,7 +33,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   ) {}
 
   private disconnect(socket: Socket): void {
-    socket.emit('socketError', { message: 'Unauthorized' });
+    // socket.emit('socketError', { message: 'Unauthorized' });
     socket.disconnect();
   }
 
@@ -87,8 +87,6 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
       return msg;
     } catch (e) {
-      console.log(e);
-
       if (e instanceof UnauthorizedException) {
         this.server.to(socket.id).emit('socketError', { message: e.message });
       } else {

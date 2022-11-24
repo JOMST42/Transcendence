@@ -66,4 +66,8 @@ export class ChatService {
   inviteUser(userId: number, roomId: string): void {
     this.socket.emit('inviteUser', { userId, roomId });
   }
+
+  userLeaveRoom(roomId: string): Observable<void> {
+    return this.baseApiService.deleteOne(`/chatrooms/${roomId}`);
+  }
 }

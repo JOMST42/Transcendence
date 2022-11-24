@@ -45,6 +45,10 @@ export class ChatComponent implements OnInit, OnDestroy {
   }
 
   onChannelSelect(channel: Room): void {
+    if (!channel) {
+      this.selectedChannel = null;
+      return;
+    }
     if (
       channel.isProtected &&
       !channel.users.find((user) => {

@@ -3,7 +3,12 @@ import {
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
-import { ChatRoom, ChatRoomVisibility, UserChatRoom } from '@prisma/client';
+import {
+  ChatRole,
+  ChatRoom,
+  ChatRoomVisibility,
+  UserChatRoom,
+} from '@prisma/client';
 import * as argon2 from 'argon2';
 
 import { PrismaService } from '../prisma/prisma.service';
@@ -42,7 +47,13 @@ export class ChatService {
         hash,
         isProtected,
         users: {
-          create: [{ isOwner: true, user: { connect: { id: owner.id } } }],
+          create: [
+            {
+              isOwner: true,
+              role: ChatRole.ADMIN,
+              user: { connect: { id: owner.id } },
+            },
+          ],
         },
       },
       include: {
@@ -180,5 +191,44 @@ export class ChatService {
 
     delete room?.hash;
     return room;
+  }
+
+  async removeUserFromRoom(userId: number, roomId: string): Promise<void> {
+    const userRoom = await this.prisma.userChatRoom.findUnique({
+      where: {
+        userId_roomId: {
+          roomId,
+          userId,
+        },
+      },
+    });
+
+    if (!userRoom) {
+      throw new BadRequestException('User not in room');
+    }
+
+    await this.prisma.userChatRoom.delete({
+      where: {
+        userId_roomId: {
+          roomId,
+          userId,
+        },
+      },
+    });
+
+    const room = await this.prisma.chatRoom.findUnique({
+      where: {
+        id: roomId,
+      },
+      include: { users: true },
+    });
+
+    if (room.users.length === 0) {
+      await this.prisma.chatRoom.delete({
+        where: {
+          id: roomId,
+        },
+      });
+    }
   }
 }

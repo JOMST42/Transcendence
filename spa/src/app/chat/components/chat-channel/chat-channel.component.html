@@ -1,4 +1,6 @@
+<p-contextMenu [target]="channelItem" [model]="items"></p-contextMenu>
 <div
+  #channelItem
   [class.selected]="selected"
   [class.channel]="!selected"
   class="flex border-round py-1 pl-2 pr-3 cursor-pointer"

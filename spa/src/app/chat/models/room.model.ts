@@ -5,6 +5,7 @@ export interface UserChatRoom {
   userId?: number;
   roomId?: number;
   isOwner?: boolean;
+  role?: 'ADMIN' | 'USER';
   user?: User;
 }
 

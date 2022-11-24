@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Post,
@@ -29,6 +30,8 @@ export class ChatController {
     @Param('id') roomId: string,
     @Body() body: { password: string },
   ): Promise<UserChatRoom> {
+    console.log('test');
+
     return await this.chatService.addUserToRoom(user.id, roomId, body.password);
   }
 
@@ -46,5 +49,13 @@ export class ChatController {
     @Param('id') id: string,
   ): Promise<ChatRoomWithMessages> {
     return await this.chatService.getRoomWithMessages(user.id, id);
+  }
+
+  @Delete(':id')
+  async leaveRoom(
+    @GetUser() user: User,
+    @Param('id') id: string,
+  ): Promise<void> {
+    return await this.chatService.removeUserFromRoom(user.id, id);
   }
 }

@@ -8,6 +8,7 @@ import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { Subject, takeUntil } from 'rxjs';
 import { DialogModule } from 'primeng/dialog';
+import * as io from 'socket.io-client';
 
 import { SocketError } from './models';
 import { ToastService } from './services';
@@ -28,7 +29,6 @@ export class PongSocket extends Socket {
     });
   }
 }
-
 @Injectable()
 export class ChatSocket extends Socket implements OnDestroy {
   unsubscribeAll$ = new Subject<void>();

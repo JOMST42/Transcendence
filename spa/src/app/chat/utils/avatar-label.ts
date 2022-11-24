@@ -1,7 +1,12 @@
 export function avatarLabel(name: string): string {
-  return name
+  const tmp = name
     .split(' ')
     .filter((value) => value.toLowerCase() != value.toUpperCase())
-    .map((value) => value[0].toUpperCase())
-    .reduce((acc, value) => acc.concat(value));
+    .map((value) => value[0].toUpperCase());
+
+  if (tmp.length === 0) {
+    return '';
+  }
+
+  return tmp.reduce((acc, value) => acc.concat(value));
 }

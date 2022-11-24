@@ -4,7 +4,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { Observable, ReplaySubject, take, map } from 'rxjs';
 
 import { User } from '../../user/models';
-import { UserService } from '../../user/services';
+import { ChatSocket } from '../core.module';
 import { BaseApiService } from './base-api.service';
 
 @Injectable({
@@ -17,7 +17,8 @@ export class AuthService {
   constructor(
     private readonly cookieService: CookieService,
     private readonly jwtService: JwtHelperService,
-    private readonly baseApiService: BaseApiService
+    private readonly baseApiService: BaseApiService,
+    private readonly chatSocket: ChatSocket
   ) {}
 
   getCurrentUser(): Observable<User> {
