@@ -11,14 +11,18 @@ export class FriendRequestsComponent implements OnInit {
   constructor(private readonly friendService: FriendService) {}
 
   @Input() me!: User;
-
+  @Output() requests = new EventEmitter<number>();
   friendsRequests?: Friendship[];
+
+  newRequest(value: number) {
+    this.requests.emit(value);
+  }
 
   ngOnInit(): void {
     this.friendService.getPendingInvitations(this.me.id).subscribe({
       next: (data) => {
         this.friendsRequests = data;
-        console.log(data);
+        this.newRequest(this.friendsRequests.length);
       },
       error: (err) => {
         console.log(err);

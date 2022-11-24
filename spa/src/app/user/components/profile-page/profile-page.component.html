@@ -86,14 +86,20 @@
               </div>
             </ng-template>
           </p-tabPanel>
-          <p-tabPanel
-            [cache]="false"
-            header="REQUESTS"
-            *ngIf="user.id === me.id"
-          >
+
+          <p-tabPanel [cache]="false" *ngIf="user.id === me.id">
+            <ng-template pTemplate="header">
+              REQUESTS
+              <p-badge value="{{ requestsNb }}" *ngIf="requestsNb"></p-badge>
+            </ng-template>
             <ng-template pTemplate="content">
               <div id="container-flex-column">
-                <app-friend-requests [me]="me"></app-friend-requests>
+                <app-friend-requests
+                  [me]="me"
+                  (requests)="getRequestNumber($event)"
+                >
+                  requests</app-friend-requests
+                >
               </div>
             </ng-template>
           </p-tabPanel>
