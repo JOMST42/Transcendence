@@ -33,12 +33,15 @@ export class FriendBtnComponent implements OnInit {
         if (data.accepted === false) {
           if (data.requesterId === this.me.id) {
             this.state = 'DISABLE';
+            console.log(this.state + ' dans init button');
           }
           if (data.adresseeId === this.me.id) {
             this.state = 'ACCEPT';
+            console.log(this.state + ' dans init button');
           }
         } else {
           this.state = 'REMOVE';
+          console.log(this.state + ' dans init button');
         }
       })
       .catch((data) => {
