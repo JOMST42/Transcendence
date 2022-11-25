@@ -20,6 +20,8 @@ model User {
   lastName       String
   avatarUrl      String?
   status         UserStatus @default(OFFLINE)
+  twoFASecret String? @unique
+  twoFAEnable Boolean @default(false)
 
   rooms           UserChatRoom[]
   connections     UserConnection[]
