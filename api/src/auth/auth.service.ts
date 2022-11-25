@@ -121,6 +121,6 @@ export class AuthService {
       isTwoFactorAuthEnabled: user.twoFAEnable,
       isTwoFactorAutehnticated: true,
     };
-    return { email: payload.email, token: this.jwt.sign(payload) };
+    return { email: payload.email, access_token: this.jwt.sign(payload) };
   }
 }

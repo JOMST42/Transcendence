@@ -1,46 +1,11 @@
-<app-room-list></app-room-list>
-
-<button (click)="getGames()">Get games</button>
-
-<div [@stagger]="games.length" class="rooms">
-	<ul>
-  <li *ngFor="let game of games">
-		{{game.id}} p1:{{game.player1Id}} p2:{{game.player2Id}} score:{{game.scorePlayer1}} | {{game.scorePlayer2}} winner:{{game.winner}}
-      <!-- <span class="name">{{room.name}}</span> -->
-	</ul>
-</div>
-
 <div class="grid">
   <div class="col-12 flex  align-items-center justify-content-center">
     <h1 class="title text-center">WATCH</h1>
   </div>
-  <div class="col-12 flex align-items-center justify-content-center">
-    <div class="grid">
-      <div class="col-8 flex align-items-center justify-content-center">
-        <!-- <app-user-img></app-user-img>
-        <app-user-displayname></app-user-displayname> -->
-      </div>
-      <div class="col-4 flex align-items-center justify-content-center"><h2>VS</h2></div>
-      <div class="col-8 flex align-items-center justify-content-center"></div>
-    </div>
+
+<div class="col-12 flex align-items-center justify-content-center">
+		<app-pong-screen></app-pong-screen>
   </div>
-  <div class="col-12 flex align-items-center justify-content-center">
-      <app-pong-screen></app-pong-screen>
-  </div>
-</div>
+	<app-room-list></app-room-list>
+</div> 
 
-<!-- <div *ngIf="selectedRoom">
-  <h2>{{selectedRoom.name | uppercase}} Details</h2>
-  <div>id: {{selectedRoom.id}}</div>
-  <div>
-    <label for="hero-name">Hero name: </label>
-    <input id="hero-name" [(ngModel)]="selectedRoom.name" placeholder="name">
-  </div>
-</div> -->
-
-<!-- <ul [@roomListState] #roomList id="roomList">
-	{{RoomList}}
-</ul> -->
-
-
-<!-- <app-title></app-title> -->

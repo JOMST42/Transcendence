@@ -28,10 +28,23 @@
 <p-button class="ml-8" label="Create room" (onClick)="createRoom()"></p-button> -->
 
 <div
-  class="flex flex-row justify-content-center surface-100 border-round mx-4 my-4"
-  style="height: 92%"
+  class="flex flex-row justify-content-center surface-100 border-round mx-6 my-6"
+  style="height: 95%"
 >
-  <app-chat-channel-list class="flex-none flex"></app-chat-channel-list>
-  <app-chat-message-list class="flex-grow-1 flex"></app-chat-message-list>
-  <app-chat-user-list class="flex-none flex"></app-chat-user-list>
+  <app-chat-channel-list
+    [channels]="rooms"
+    (channelSelect)="onChannelSelect($event)"
+    class="h-full flex-none flex border-right-2"
+  ></app-chat-channel-list>
+  <app-chat-message-list
+    [messages]="selectedChannel?.messages"
+    class="h-full flex-grow-1 flex"
+  ></app-chat-message-list>
+  <div class="h-full flex-none flex flex-column border-left-2">
+    <app-chat-user-list
+      [users]="selectedChannel?.users"
+      class="flex-grow-1"
+    ></app-chat-user-list>
+    <app-chat-friend-list class="flex-grow-1"></app-chat-friend-list>
+  </div>
 </div>

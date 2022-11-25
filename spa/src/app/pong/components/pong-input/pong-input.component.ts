@@ -1,5 +1,5 @@
 import { Component, HostListener, OnInit } from '@angular/core';
-import { PlayService } from '../play.service';
+import { PlayService } from '../../../play/play.service';
 
 export enum KEYS {
 	UP = "ArrowUp",

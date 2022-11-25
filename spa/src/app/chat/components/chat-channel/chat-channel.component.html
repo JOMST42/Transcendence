@@ -1,6 +1,10 @@
-<div class="flex border-round py-1 pl-2 pr-3 cursor-pointer channel">
+<div
+  [class.selected]="selected"
+  [class.channel]="!selected"
+  class="flex border-round py-1 pl-2 pr-3 cursor-pointer"
+>
   <p-avatar
-    label="V"
+    label="{{ label }}"
     styleClass="mr-2"
     size="large"
     shape="circle"
@@ -9,5 +13,5 @@
       color: 'var(--text-color)'
     }"
   ></p-avatar>
-  <p>Channel Name</p>
+  <p>{{ channel.name }}</p>
 </div>

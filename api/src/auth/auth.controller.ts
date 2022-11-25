@@ -54,7 +54,7 @@ export class AuthController {
     res.redirect(this.config.get('CLIENT_URL'));
   }
 
-  @Post('turnOn-2fa')
+  @Post('2fa/turnOn')
   // @UseGuards(FtAuthGuard)
   async turnOnTwoFAuth(@GetUser() user: User, @Body() body: string) {
     const isValid = this.authService.validateTwoFAuthCode(body, user);
@@ -63,4 +63,7 @@ export class AuthController {
     }
     return this.authService.logWith2FAuth(user);
   }
+
+  // @Post('2fa/generate')
+  // async
 }

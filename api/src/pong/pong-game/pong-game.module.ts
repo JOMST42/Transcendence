@@ -71,6 +71,11 @@ export class PongGameModule {
     this.updatePads();
   }
 
+  forceWin(winner: number) {
+    this.winner = winner;
+    this.finish();
+  }
+
   // update(): {};
 
   getGameInfo(): GameInfo {
@@ -104,6 +109,7 @@ export class PongGameModule {
         victory: this.victory,
         finished: this.finished,
       },
+      time: this.gameTimer.getTime(),
       events: this.events,
     };
     this.events = [];

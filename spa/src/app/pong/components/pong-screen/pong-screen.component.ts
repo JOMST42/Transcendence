@@ -8,34 +8,15 @@ import {
   animation,
   useAnimation,
 } from '@angular/animations';
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { UserService } from 'src/app/user/services';
 import { AudioHandler } from '../../../play/classes';
 import { PlayService } from '../../../play/play.service';
-
-export interface Score {
-	p1: number,
-	p2: number,
-}
-
-export interface Vector3 {
-	x: number,
-	y: number,
-	z?: number,
-}
+import { GameInfo, RoomInfo, Score, Vector3 } from '../../data/interfaces';
 
 export interface EntityInfo {
   pos: Vector3;
   size: Vector3;
-}
-
-export interface GameInfo {
-  ball: EntityInfo;
-  pad1: EntityInfo;
-  pad2: EntityInfo;
-  score: Score;
-  state: any;
-  events: Event[];
 }
 
 @Component({
@@ -62,17 +43,27 @@ export interface GameInfo {
 })
 export class PongScreenComponent implements OnInit {
 
-	
   @ViewChild('game')
   private gameCanvas!: ElementRef;
   private context: any;
+	dimension = {w:600, h:400};
+
   score: Score = {p1:0, p2:0};
+	p1Ready: boolean = false;
+	p2Ready: boolean = false;
+	p1Connected: boolean = false;
+	p2Connected: boolean = false;
+	timer: number = 0;
+
   countdown: number = 0;
   countdownId?: NodeJS.Timer;
   animDisabled?: boolean = false;
 
 	afterImage: Vector3[] = [];
-	afterTimer = {frames:0, reset:5}; 
+	afterTimer = {frames:0, reset:5};
+
+	roomInfo?: RoomInfo; 
+
 
 
   private audio: AudioHandler = new AudioHandler(0.3, 1);
@@ -91,7 +82,9 @@ export class PongScreenComponent implements OnInit {
     this.audio.setSoundScore('assets/sound/score.m4a');
     this.audio.setMusicGame('assets/music/game.mp3');
     this.audio.setMusicVictory('assets/music/victory.mp3');
+		this.refresh();
     this.setGameListener();
+		this.setRoomListener();
     // this.animDisabled = false;
   }
 
@@ -100,44 +93,44 @@ export class PongScreenComponent implements OnInit {
 			if (!info) return;
       this.refresh();
       this.context.fillStyle = '#FFFFFF';
-      // this.context.fillText(this.score[0], 250, 50);
-      // this.context.fillText(this.score[1], 350, 50);
-			// this.afterImage.push(info.ball.pos);
-			// this.drawAfterImage(info.ball.size.x);
-			// if (this.afterTimer.frames-- <= 0){
-				
-			// 		this.afterTimer.frames = this.afterTimer.reset;
-			// 	}
-				
-			// }
+			let width = this.gameCanvas.nativeElement.width
+			let height = this.gameCanvas.nativeElement.height
+			this.score.p1 = info.score.p1;
+			this.score.p2 = info.score.p2;
+			this.timer = Math.floor(info.time);
+
 			if (this.afterImage.length >= 10){
 				this.afterImage.shift();
 			}
 			this.afterImage.push(info.ball.pos);
 			this.drawAfterImage(info.ball.size.x); // TODO
 
+			if (!this.p1Ready) this.context.fillStyle = "#FFFF00";
+			else this.context.fillStyle = "#FFFFFF";
       this.context.fillRect(
-        info.pad1.pos.x * 600,
-        info.pad1.pos.y * 400,
+        info.pad1.pos.x * width,
+        info.pad1.pos.y * height,
         info.pad1.size.x,
         info.pad1.size.y
       );
+
+			if (!this.p2Ready) this.context.fillStyle = "#FFFF00";
+			else this.context.fillStyle = "#FFFFFF";
       this.context.fillRect(
-        info.pad2.pos.x * 600,
-        info.pad2.pos.y * 400,
+        info.pad2.pos.x * width,
+        info.pad2.pos.y * height,
         info.pad2.size.x,
         info.pad2.size.y
       );
+
+			this.context.fillStyle = "#FFFFFF";
       this.context.fillRect(
-        // info.ball.pos.x - info.ball.size.x / 2,
-        // info.ball.pos.y - info.ball.size.x,
-				info.ball.pos.x * 600 - info.ball.size.x / 2,
-				info.ball.pos.y * 400 - info.ball.size.x / 2,
+				info.ball.pos.x * width - (info.ball.size.x) / 2,
+				info.ball.pos.y * height - (info.ball.size.y) / 2,
         info.ball.size.x,
-        info.ball.size.x
+        info.ball.size.y
       );
-			this.score.p1 = info.score.p1;
-			this.score.p2 = info.score.p2;
+
       if (info.events) this.handleEvents(info.events);
     });
 
@@ -145,20 +138,43 @@ export class PongScreenComponent implements OnInit {
     	this.audio.playGame(true, true);
     });
 
-    // this.server.listen("player-ready").subscribe((info: string) => {
-    // 	this.log('player ' + info + ' is ready!');
-    // });
+    this.server.listen("player-ready").subscribe((info: number) => {
+			console.log(info);
+    	if (info === 1)
+				this.p1Ready = true;
+			if (info === 2)
+				this.p2Ready = true;
+    });
+
+		this.server.listen("ready-check").subscribe((info: number) => {
+				this.p1Ready = false;
+				this.p2Ready = false;
+    });
   }
 
+	setRoomListener() {
+    this.server.listen('room-update').subscribe((info: RoomInfo | undefined | null) => {
+			if (!info) return;
+      if (info.roomId != this.roomInfo?.roomId) {
+				this.updateRoom(info);
+			}
+		});
+	}
+
+	updateRoom(roomInfo : RoomInfo) {
+		this.roomInfo = roomInfo;
+	}
+
 	drawAfterImage(size: number) {
-		let multi = 1;
+		let width = this.gameCanvas.nativeElement.width
+		let height = this.gameCanvas.nativeElement.height
 		let afterCount = this.afterImage.length;
 		let i: number = 0;
 		while (i < afterCount)
 		{
 			this.context.fillRect(
-        this.afterImage[i].x * 600 - size / 2,
-        this.afterImage[i].y * 400 - size / 2,
+        this.afterImage[i].x * width - size / 2,
+        this.afterImage[i].y * height - size / 2,
         size * (i / afterCount),
         size * (i / afterCount)
       );
@@ -190,8 +206,6 @@ export class PongScreenComponent implements OnInit {
   }
 
   scoreEvent(payload: any) {
-    this.score[0] = payload.p1;
-    this.score[1] = payload.p2;
     this.audio.playScore(true);
   }
   collisionEvent(payload: any) {
@@ -206,8 +220,8 @@ export class PongScreenComponent implements OnInit {
       this.gameCanvas.nativeElement.width,
       this.gameCanvas.nativeElement.height
     );
-    for (let i = 10; i < 400; i += 40) {
-      this.context.fillRect(297, i, 6, 20);
+    for (let i = 10; i < this.dimension.h; i += this.dimension.h / 10) {
+      this.context.fillRect(this.dimension.w / 2 - 3, i, 6, 20);
     }
   }
 

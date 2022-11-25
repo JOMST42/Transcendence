@@ -3,6 +3,9 @@ import { PlayService } from '../../play.service';
 import { Response } from '../../interfaces';
 import {ButtonModule} from 'primeng/button'
 import { ToastService } from 'src/app/core/services';
+import { PongService } from 'src/app/pong/services/pong.service';
+import { Subscription, take } from 'rxjs';
+import { QueueState } from 'src/app/pong/data/enums';
 
 enum ButtonState {
 	JOIN = 0,
@@ -13,6 +16,7 @@ enum ButtonState {
 @Component({
   selector: 'app-queue-button',
   templateUrl: './queue-button.component.html',
+  styleUrls: ['./queue-button.component.scss'],
 	styles: ['#joinQueueButton { min-width: 200px; }'],
 })
 export class QueueButtonComponent implements OnInit {
@@ -29,24 +33,51 @@ export class QueueButtonComponent implements OnInit {
 	isProcessing: boolean = false;
 	classStyle: string = this.defaultStyle;
 
+	private interval?: NodeJS.Timer;
+	private updateSub: Subscription;
 
-  constructor(private server: PlayService, private toast: ToastService) {
+  constructor(private server: PlayService, private toast: ToastService, private readonly pongService: PongService) {
 		this.handleLabel();
 		this.handleState();
+		
+		// this.interval = setInterval(() => this.refreshButton(), 1000);
 	}
 
   ngOnInit(): void {
+		this.refreshButton()
   }
+
+	refreshButton() {
+		if (!this.pongService.user) return ;
+		this.updateSub?.unsubscribe();
+		this.updateSub = this.pongService.canQueue(this.pongService.user.id).pipe(take(1)).subscribe({
+      next: (data: Response) => {
+        if (data.code === 0) {
+					this.changeToJoin();
+				}
+				else
+				{
+					if (data.payload.queue === QueueState.QUEUED)
+						this.changeToLeave();
+					else
+						this.disabled = true;
+				}
+      },
+      error: (err) => { 
+				this.disabled = true;
+			},
+    });
+	}
 
 	async handleQueue(event: any) {
 		if (this.state === ButtonState.JOIN) {
 			this.changeToProcess();
-			await this.delay(1000); // TODO test purpose
+			// await this.delay(1000); // TODO test purpose
 			await this.joinQueue();
 		}
 		else if (this.state === ButtonState.LEAVE) {
 			this.changeToProcess();
-			await this.delay(1000); // TODO test purpose
+			// await this.delay(1000); // TODO test purpose
 			await this.leaveQueue();
 		}
 

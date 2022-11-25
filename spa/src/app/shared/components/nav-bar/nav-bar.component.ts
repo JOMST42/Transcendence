@@ -24,22 +24,28 @@ const animationParams = {
   selector: 'app-nav-bar',
   templateUrl: './nav-bar.component.html',
   styleUrls: ['./nav-bar.component.scss'],
+  animations: [
+    trigger('sideMenu', [
+      transition('open => closed', [
+        useAnimation(SidebarOpenAnimation, {
+          params: animationParams,
+        }),
+      ]),
+    ]),
+  ],
 })
 export class NavBarComponent implements OnInit {
-
-	private unsubscribeAll$ = new Subject<void>();
-  @Input()user!: User | null;
-//   me!: User;
+  private unsubscribeAll$ = new Subject<void>();
+  @Input() user!: User | null;
+  //   me!: User;
   avatarUrl: string;
   userIsMe: boolean;
 
   isOpen = false;
 
-
   constructor(private readonly router: Router) {}
 
   ngOnInit(): void {}
-
 
   navGame() {
     this.router.navigate(['game']);
@@ -49,6 +55,4 @@ export class NavBarComponent implements OnInit {
     this.router.navigate(['users/jbadia']);
   }
   // moveBall()
-
-  
 }
