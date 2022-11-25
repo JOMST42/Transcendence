@@ -10,6 +10,7 @@ import { CardModule } from 'primeng/card';
 import { TabViewModule } from 'primeng/tabview';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { BadgeModule } from 'primeng/badge';
+import { ProgressBarModule } from 'primeng/progressbar';
 import {
   JoinGameDialogComponent,
   NavBarComponent,
@@ -50,6 +51,7 @@ import { MatchHistoryComponent } from './components/match-history/match-history.
     CardModule,
     InputTextareaModule,
     BadgeModule,
+    ProgressBarModule,
   ],
   exports: [
     CommonModule,

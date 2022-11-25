@@ -54,7 +54,7 @@ export class FriendCardComponent implements OnInit {
       .subscribe({
         next: (data) => {
           if (data) {
-            if (data.blocked === true) {
+            if (data.adresseeBlocker === true || data.requesterBlocker === true) {
               this.friendState = false;
             } else if (data.accepted === false) {
               this.friendState = false;

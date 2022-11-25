@@ -23,7 +23,7 @@ export class FtStrategy extends PassportStrategy(Strategy, '42') {
         firstName: 'first_name',
         lastName: 'last_name',
         email: 'email',
-        avatarUrl: 'image',
+        avatarUrl: 'image_url',
       },
     });
   }

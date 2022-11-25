@@ -71,7 +71,9 @@
         <p-tabView>
           <p-tabPanel header="STATS" [cache]="false">
             <ng-template pTemplate="content">
-              <div class="stats-card col-4 mr-3"></div>
+              <div class="stats-card col-4 mr-3">
+                <app-user-stats *ngIf="user" [user]="user"></app-user-stats>
+              </div>
               <div class="stats-card col-4"></div>
             </ng-template>
           </p-tabPanel>

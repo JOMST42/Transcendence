@@ -143,11 +143,11 @@ export class FriendService {
       throw new BadRequestException('Friendship not found');
     }
     if (friendship.adresseeId === userId) {
-      return await this.prisma.fiendship.update({
+      return await this.prisma.friendship.update({
         where: {
           requesterId_adresseeId: {
-            requesterId: userId,
-            adresseeId: adressee.id,
+            requesterId: adresseeId,
+            adresseeId: userId,
           },
         },
         data: {
@@ -158,11 +158,11 @@ export class FriendService {
     console.log('adresse = ' + adressee);
     console.log('user = ' + userId);
     if (friendship.requesterId === userId) {
-      return await this.prisma.fiendship.update({
+      return await this.prisma.friendship.update({
         where: {
           requesterId_adresseeId: {
             requesterId: userId,
-            adresseeId: adressee.id,
+            adresseeId: adresseeId,
           },
         },
         data: {
@@ -181,17 +181,49 @@ export class FriendService {
     if (!adressee) {
       throw new BadRequestException('Cannot find user');
     }
-    return await this.prisma.friendship.update({
+    const friendship = await this.prisma.friendship.findFirst({
       where: {
-        requesterId_adresseeId: {
-          requesterId: userId,
-          adresseeId: adressee.id,
-        },
-      },
-      data: {
-        blocked: false,
+        OR: [
+          {
+            adresseeId: adresseeId,
+            requesterId: userId,
+          },
+          {
+            adresseeId: userId,
+            requesterId: adresseeId,
+          },
+        ],
       },
     });
+    if (!friendship) {
+      throw new BadRequestException('Friendship not found');
+    }
+    if (friendship.adresseeId === userId) {
+      return await this.prisma.friendship.update({
+        where: {
+          requesterId_adresseeId: {
+            requesterId: adresseeId,
+            adresseeId: userId,
+          },
+        },
+        data: {
+          adresseeBlocker: false,
+        },
+      });
+    }
+    if (friendship.requesterId === userId) {
+      return await this.prisma.friendship.update({
+        where: {
+          requesterId_adresseeId: {
+            requesterId: userId,
+            adresseeId: adresseeId,
+          },
+        },
+        data: {
+          requesterBlocker: false,
+        },
+      });
+    }
   }
 
   async getFriendship(

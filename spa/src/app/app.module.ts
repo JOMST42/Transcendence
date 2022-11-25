@@ -9,7 +9,6 @@ import { CoreModule } from './core/core.module';
 import { CredentialsInterceptor, ErrorInterceptor } from './core/interceptors';
 import { SharedModule } from './shared/shared.module';
 
-
 @NgModule({
   declarations: [AppComponent],
   imports: [

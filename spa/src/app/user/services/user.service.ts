@@ -1,9 +1,10 @@
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map, Observable, Subject, take, takeUntil } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 
 import { AuthService, BaseApiService } from '../../core/services';
 import { UpdateUserDto, User } from '../models';
+import { Game } from '../../watch/models';
 
 @Injectable({
   providedIn: 'root',
@@ -34,4 +35,7 @@ export class UserService {
     return this.baseApiService.getMany('/users/all');
   }
 
+  getGamesByUserId(id: number): Observable<Game[]> {
+    return this.baseApiService.getMany(`/games/${id}/all`);
+  }
 }
