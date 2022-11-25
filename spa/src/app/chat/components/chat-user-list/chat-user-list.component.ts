@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { DialogService } from 'primeng/dynamicdialog';
-import { take } from 'rxjs';
+import { Subject, take, takeUntil } from 'rxjs';
 import { User } from '../../../user/models';
 import { UserService } from '../../../user/services';
 
@@ -14,6 +14,7 @@ import { UserInviteComponent } from '../user-invite/user-invite.component';
   styleUrls: ['./chat-user-list.component.scss'],
 })
 export class ChatUserListComponent implements OnInit {
+  private unsubscribeAll$ = new Subject<void>();
   @Input() users: UserChatRoom[];
   @Input() roomId: string;
 
@@ -23,7 +24,14 @@ export class ChatUserListComponent implements OnInit {
     private readonly userService: UserService
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.chatService
+      .getNewUser()
+      .pipe(takeUntil(this.unsubscribeAll$))
+      .subscribe((user) => {
+        this.users.push(user);
+      });
+  }
 
   inviteUser(): void {
     this.userService

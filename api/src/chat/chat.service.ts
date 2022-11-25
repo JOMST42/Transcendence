@@ -116,6 +116,9 @@ export class ChatService {
 
     return await this.prisma.userChatRoom.create({
       data: { userId, roomId },
+      include: {
+        user: true,
+      },
     });
   }
 

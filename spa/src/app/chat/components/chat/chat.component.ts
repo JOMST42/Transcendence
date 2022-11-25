@@ -16,7 +16,6 @@ import { PasswordDialogComponent } from '../password-dialog/password-dialog.comp
 })
 export class ChatComponent implements OnInit, OnDestroy {
   private unsubscribeAll$ = new Subject<void>();
-  private newUser$: Subscription = null;
   rooms: Room[];
   selectedChannel: Room | null = null;
   me: User;
@@ -86,14 +85,6 @@ export class ChatComponent implements OnInit, OnDestroy {
                 tap((data) => {
                   this.leaveChannel();
                   this.chatService.joinRoom(data.id);
-                  if (this.newUser$) {
-                    this.newUser$.unsubscribe();
-                  }
-                  this.newUser$ = this.chatService.getNewUser().subscribe({
-                    next: (user) => {
-                      this.selectedChannel.users.push(user);
-                    },
-                  });
                 })
               )
               .subscribe({
@@ -112,14 +103,6 @@ export class ChatComponent implements OnInit, OnDestroy {
           tap((data) => {
             this.leaveChannel();
             this.chatService.joinRoom(data.id);
-            if (this.newUser$) {
-              this.newUser$.unsubscribe();
-            }
-            this.newUser$ = this.chatService.getNewUser().subscribe({
-              next: (user) => {
-                this.selectedChannel.users.push(user);
-              },
-            });
           })
         )
         .subscribe({
