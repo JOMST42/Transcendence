@@ -36,7 +36,7 @@ export class PongRoomService {
   private disconnectListener: any;
 
   public classic_set: GameSettings = {
-    score_to_win: 7,
+    score_to_win: 4,
     ball_radius: 10,
     pad_size: 50,
     pad_speed: 600,

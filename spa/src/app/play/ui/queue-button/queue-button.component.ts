@@ -5,7 +5,7 @@ import {ButtonModule} from 'primeng/button'
 import { ToastService } from 'src/app/core/services';
 import { PongService } from 'src/app/pong/services/pong.service';
 import { Subscription, take } from 'rxjs';
-import { QueueState } from 'src/app/pong/data/enums';
+import { QueueState } from 'src/app/pong/enums';
 
 enum ButtonState {
 	JOIN = 0,

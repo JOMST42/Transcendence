@@ -10,18 +10,33 @@
 	display: inline-block;
 }
 
-#gameCanvas {
-	// margin-right: 100px;
-	border: 3px solid black;
-	background-color: black;
-	z-index: 5;
-	border-radius: 10px;
-	width:  800px;
-	height: auto;
-	box-shadow: -12px -12px #7869C4,
-				-13px -11px #000,
-				-15px -15px #000;
+#canvasContainer {
+	position: relative;
+	display: block;
 }
+
+#pongEndOverlay {
+	position: absolute;
+	display: block;
+	z-index: 20;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+}
+
+// .gameCanvas {
+// 	// margin-right: 100px;
+// 	border: 3px solid black;
+// 	background-color: black;
+// 	z-index: 5;
+// 	border-radius: 10px;
+// 	width:  800px;
+// 	height: auto;
+// 	box-shadow: -12px -12px #7869C4,
+// 				-13px -11px #000,
+// 				-15px -15px #000;
+// }
 
 #countdown {
 	position: absolute;
@@ -36,11 +51,12 @@
 	left: 50%;
 	top: 40%;
 	font-size: 40px;
+	color: #00A595;
 	transform: translate(-50%, -50%);
 }
 
 @media  screen and (min-width: 500px) and (max-width: 800px) {
-	.watch-screen #gameCanvas {
+	.watch-screen .gameCanvas {
 		width:  500px;
 		height: auto;
 	}
@@ -55,7 +71,7 @@
 }
 
 @media  screen and (min-width: 0px) and (max-width: 500px) {
-	.watch-screen #gameCanvas {
+	.watch-screen .gameCanvas {
 		width:  250px;
 		height: auto;
 	}
@@ -77,6 +93,8 @@
 	position: absolute;
 	font-size: 100px;
 	z-index: 10;
+	top: 0;
+	left: 0;
 	transform: translateX(-50%);
 	// opacity: 0.5;
 	// text-shadow: -12px -12px #7869C4,

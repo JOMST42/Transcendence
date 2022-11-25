@@ -5,7 +5,7 @@ import { Response } from 'src/app/play/interfaces';
 import { User } from 'src/app/user/models';
 
 import {  AuthService, BaseApiService } from '../../core/services';
-import { UserState } from '../data/interfaces';
+import { UserState } from '../interfaces';
 
 @Injectable({
   providedIn: 'root',

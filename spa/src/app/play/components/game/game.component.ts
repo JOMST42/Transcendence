@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 
 // TODO To be changed
-import { Response } from './interfaces';
+import { Response } from '../../interfaces';
 
-import { AudioHandler } from './classes';
-import { PlayService } from './play.service';
-import { Score } from '../pong/data/interfaces';
+import { AudioHandler } from '../../classes';
+import { PlayService } from '../../play.service';
+import { Score } from '../../../pong/interfaces';
 
 @Component({
   selector: 'app-game',

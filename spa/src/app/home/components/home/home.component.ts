@@ -3,6 +3,7 @@ import { AuthService } from 'src/app/core/services';
 import { UserService } from '../../../user/services';
 import { User } from '../../../user/models';
 import { Subject, takeUntil } from 'rxjs';
+import { PlayService } from 'src/app/play/play.service';
 
 @Component({
   selector: 'app-home',
@@ -18,7 +19,7 @@ export class HomeComponent implements OnInit {
 
   constructor(
     private readonly userService: UserService,
-    private readonly authService: AuthService
+    private readonly authService: AuthService,
   ) {}
 
   handleClick() {

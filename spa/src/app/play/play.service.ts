@@ -10,11 +10,13 @@ export class PlayService {
   constructor(private socket: PongSocket) {}
 
 	// private inQueue
-  // public connect(address: string) : Socket {
-  // 	this.socket?.disconnect();
-  // 	this.socket = io("http://localhost:3000/pong");
-  // 	return this.socket;
-  // }
+  public reconnect() {
+  	// this.socket?.disconnect();
+  	// this.socket = io("http://localhost:3000/pong");
+  	// return this.socket;
+		this.socket?.disconnect();
+  	this.socket.connect();
+  }
 
   public listen(eventName: string): Observable<any> {
     return this.socket.fromEvent(eventName);

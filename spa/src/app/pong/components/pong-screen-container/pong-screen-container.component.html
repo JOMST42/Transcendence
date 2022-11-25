@@ -11,13 +11,23 @@
 				</div>
 			</div>
 		</div>
-		<canvas #game id="gameCanvas"  width="{{dimension.w}}" height="{{dimension.h}}" ></canvas>
-		<span id="score1" class="score" [innerHTML]="score.p1"></span>
-		<span id="score2" class="score" [innerHTML]="score.p2"></span>
+		<div id="canvasContainer">
+			<app-pong-3dscreen *ngIf="threeD" class="gameCanvas"></app-pong-3dscreen>
+			<app-pong-screen *ngIf="!threeD" class="gameCanvas"></app-pong-screen>
+			<span id="score1" class="score" [innerHTML]="score.p1"></span>
+			<span id="score2" class="score" [innerHTML]="score.p2"></span>
+			<app-pong-end-overlay *ngIf="roomInfo?.user2 && gameEnded" id="pongEndOverlay" 
+				[winnerAvatarUrl]="roomInfo.user2.avatarUrl"
+				[winnerName]="'bilbo'"
+				[endState]="endState">
+			</app-pong-end-overlay>
+		</div>
 		<!-- <span [innerHTML]="timer"></span> -->
 		<span id="countdownLabel" [innerHTML]="countdownLabel"></span>
 		<!-- <span id="countdown" [@.disabled]="animDisabled" [@countdown]="{value: countdown}" [innerHTML]="countdown"></span> -->
 		<span *ngIf="countdown != 0" id="countdown" [@.disabled]="animDisabled" [innerHTML]="countdown"></span>
 		<!-- <button (click)="testCountdown()">Countdown test</button> -->
 	</div>
+	<button (click)="set3D(false)">2D</button>
+		<button (click)="set3D(true)">3D</button>
 </section>

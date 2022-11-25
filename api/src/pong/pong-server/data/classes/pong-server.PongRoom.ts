@@ -453,6 +453,16 @@ export class PongRoom {
       response.payload = this.getRoomInfo();
       callback(response);
     });
+
+    user.on('am-i-player', (args, callback) => {
+      const response: Response = { code: 0, msg: 'You are a player' };
+      response.payload = this.isUserPlayer(user);
+      if (response.payload === 0) {
+        response.code = 1;
+        response.msg = 'You are not a player';
+      }
+      callback(response);
+    });
   }
 
   private setInputListeners(user: Socket) {

@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { GameComponent } from './game.component';
-import { ModeSelectComponent } from './mode-select/mode-select.component';
+import { GameComponent } from './components/game/game.component';
+import { ModeSelectComponent } from './components/mode-select/mode-select.component';
 import { RoomListComponent } from '../watch/components/room-list/room-list.component';
 
 const routes: Routes = [
@@ -20,10 +20,6 @@ const routes: Routes = [
   },
 	{
     path: 'custom',
-    component: GameComponent
-  },
-	{
-    path: 'queued',
     component: GameComponent
   },
 ];

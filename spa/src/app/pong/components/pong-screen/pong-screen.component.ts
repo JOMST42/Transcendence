@@ -12,17 +12,11 @@ import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { UserService } from 'src/app/user/services';
 import { AudioHandler } from '../../../play/classes';
 import { PlayService } from '../../../play/play.service';
-import { GameInfo, RoomInfo, Score, Vector3 } from '../../data/interfaces';
+import { GameInfo, RoomInfo, Score, Vector3 } from '../../interfaces';
 
 export interface EntityInfo {
   pos: Vector3;
   size: Vector3;
-}
-
-export enum Winner {
-  PLAYER1,
-  PLAYER2,
-  NONE,
 }
 
 @Component({
@@ -54,26 +48,15 @@ export class PongScreenComponent implements OnInit {
   private context: any;
 	dimension = {w:600, h:400};
 
-  score: Score = {p1:0, p2:0};
 	p1Ready: boolean = false;
 	p2Ready: boolean = false;
 	p1Joined: boolean = false;
 	p2Joined: boolean = false;
-	timer: number = 0;
-
-  countdown: number = 0;
-	countdownLabel: string = '';
-  countdownId?: NodeJS.Timer;
-  animDisabled?: boolean = false;
 
 	afterImage: Vector3[] = [];
 	afterTimer = {frames:0, reset:5};
 
 	roomInfo?: RoomInfo; 
-
-
-
-  private audio: AudioHandler = new AudioHandler(0, 0);
 
   constructor(
 	private server: PlayService,
@@ -84,14 +67,8 @@ export class PongScreenComponent implements OnInit {
 
   ngAfterViewInit() {
     this.context = this.gameCanvas.nativeElement.getContext('2d');
-		this.audio.setSoundColPad('assets/sound/hit_paddle.m4a');
-    this.audio.setSoundColWall('assets/sound/hit_wall.m4a');
-    this.audio.setSoundScore('assets/sound/score.m4a');
-    this.audio.setMusicGame('assets/music/game.mp3');
-    this.audio.setMusicVictory('assets/music/victory.mp3');
 		this.refresh();
     this.setGameListener();
-		this.setRoomListener();
     // this.animDisabled = false;
   }
 
@@ -102,9 +79,6 @@ export class PongScreenComponent implements OnInit {
       this.context.fillStyle = '#FFFFFF';
 			let width = this.gameCanvas.nativeElement.width
 			let height = this.gameCanvas.nativeElement.height
-			this.score.p1 = info.score.p1;
-			this.score.p2 = info.score.p2;
-			this.timer = Math.floor(info.time);
 
 			if (this.afterImage.length >= 10){
 				this.afterImage.shift();
@@ -139,12 +113,9 @@ export class PongScreenComponent implements OnInit {
         info.ball.size.x,
         info.ball.size.y
       );
-
-      if (info.events) this.handleEvents(info.events);
     });
 
     this.server.listenGameStart().then((info: string) => {
-    	this.audio.playGame(true, true);
     });
 
     this.server.listen("player-ready").subscribe((info: number) => {
@@ -159,39 +130,12 @@ export class PongScreenComponent implements OnInit {
 				this.p1Ready = false;
 				this.p2Ready = false;
     });
-
-		this.server.listen("game-finished").subscribe((winner: Winner) => {
-			// TODO
-	});
   }
-
-	setRoomListener() {
-    this.server.listen('room-update').subscribe((info: RoomInfo | undefined | null) => {
-			if (!info) return;
-      if (info.roomId != this.roomInfo?.roomId) {
-				this.updateRoomInfo(info);
-			}
-			this.updateRoom(info)
-		});
-	}
 
 	updateRoomInfo(roomInfo : RoomInfo) {
 		this.roomInfo = roomInfo;
 	}
 
-	updateRoom(info: RoomInfo) {
-		this.p1Ready = info.user1Ready;
-		this.p2Ready = info.user2Ready;
-		this.p1Joined = info.user1Joined;
-		this.p2Joined = info.user2Joined;
-		if (info.hasCountdown) {
-			this.countdown = Math.ceil(info.countdownTime);
-			this.countdownLabel = info.countdownLabel;
-		} else {
-			this.countdown = 0
-			this.countdownLabel = '';
-		}
-	}
 
 	drawAfterImage(size: number) {
 		let width = this.gameCanvas.nativeElement.width
@@ -210,37 +154,6 @@ export class PongScreenComponent implements OnInit {
 		}
 	}
 
-  handleEvents(events: any[]) {
-    if (events.length > 0) {
-      for (var i = 0; i < events.length; i++) {
-        switch (events[i].type) {
-          case 'COLLISION':
-            this.collisionEvent(events[i].payload);
-            break;
-          case 'SCORE':
-            this.scoreEvent(events[i].payload);
-            break;
-          case 'VICTORY':
-            this.victoryEvent(events[i].payload);
-            break;
-        }
-      }
-    }
-  }
-
-  victoryEvent(payload: any) {
-    this.audio.stopGame();
-    this.audio.playVictory(true, true);
-  }
-
-  scoreEvent(payload: any) {
-    this.audio.playScore(true);
-  }
-  collisionEvent(payload: any) {
-    if (payload.type === 'Wall') this.audio.playColWall(true);
-    if (payload.type === 'Pad') this.audio.playColPad(true);
-  }
-
   private refresh() {
     this.context.clearRect(
       0,
@@ -252,20 +165,4 @@ export class PongScreenComponent implements OnInit {
       this.context.fillRect(this.dimension.w / 2 - 3, i, 6, 20);
     }
   }
-
-  testCountdown() {
-    clearInterval(this.countdownId);
-    this.countdown = 3;
-    this.countdownId = setInterval(() => this.tickCountdown(), 1000);
-  }
-
-  tickCountdown() {
-    if (this.countdown - 1 === 0) {
-      clearInterval(this.countdownId);
-      return;
-    }
-    this.countdown--;
-    console.log('ticking');
-  }
-
 }

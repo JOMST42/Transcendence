@@ -5,25 +5,14 @@ import {
   transition,
   animate,
   keyframes,
-  animation,
-  useAnimation,
 } from '@angular/animations';
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { Response } from 'src/app/play/interfaces';
 import { UserService } from 'src/app/user/services';
 import { AudioHandler } from '../../../play/classes';
 import { PlayService } from '../../../play/play.service';
-import { GameInfo, RoomInfo, Score, Vector3 } from '../../data/interfaces';
-
-export interface EntityInfo {
-  pos: Vector3;
-  size: Vector3;
-}
-
-export enum Winner {
-  PLAYER1,
-  PLAYER2,
-  NONE,
-}
+import { EndState, Winner } from '../../enums';
+import { GameInfo, RoomInfo, Score } from '../../interfaces';
 
 @Component({
   selector: 'app-pong-screen-container',
@@ -49,12 +38,10 @@ export enum Winner {
 })
 export class PongScreenContainerComponent implements OnInit {
 
-  @ViewChild('game')
-  private gameCanvas!: ElementRef;
-  private context: any;
-	dimension = {w:600, h:400};
-
+	
   score: Score = {p1:0, p2:0};
+	@Input() isPlayer: boolean = false;
+	playerIndex: 0 | 1 | 2;
 	p1Ready: boolean = false;
 	p2Ready: boolean = false;
 	p1Joined: boolean = false;
@@ -66,14 +53,14 @@ export class PongScreenContainerComponent implements OnInit {
   countdownId?: NodeJS.Timer;
   animDisabled?: boolean = false;
 
-	afterImage: Vector3[] = [];
-	afterTimer = {frames:0, reset:5};
+	threeD: boolean = false;
 
 	roomInfo?: RoomInfo; 
-
-
+	gameEnded: boolean = false;
+	endState: EndState = EndState.CANCEL;
 
   private audio: AudioHandler = new AudioHandler(0, 0);
+	
 
   constructor(
 	private server: PlayService,
@@ -83,13 +70,11 @@ export class PongScreenContainerComponent implements OnInit {
   ngOnInit(): void {}
 
   ngAfterViewInit() {
-    this.context = this.gameCanvas.nativeElement.getContext('2d');
 		this.audio.setSoundColPad('assets/sound/hit_paddle.m4a');
     this.audio.setSoundColWall('assets/sound/hit_wall.m4a');
     this.audio.setSoundScore('assets/sound/score.m4a');
     this.audio.setMusicGame('assets/music/game.mp3');
     this.audio.setMusicVictory('assets/music/victory.mp3');
-		this.refresh();
     this.setGameListener();
 		this.setRoomListener();
     // this.animDisabled = false;
@@ -123,8 +108,27 @@ export class PongScreenContainerComponent implements OnInit {
     });
 
 		this.server.listen("game-finished").subscribe((winner: Winner) => {
-			// TODO
-	});
+			switch (winner) {
+				case Winner.NONE:
+					this.endState = EndState.CANCEL;
+					break;
+				case Winner.PLAYER1:
+					if (this.isPlayer) {
+						if (this.playerIndex === 1) this.endState = EndState.WINNER;
+						else if (this.playerIndex === 2) this.endState = EndState.LOSER
+						else	this.endState = EndState.SPECTATOR
+					}
+					break;
+				case Winner.PLAYER2:
+					if (this.isPlayer) {
+						if (this.playerIndex === 2) this.endState = EndState.WINNER;
+						else if (this.playerIndex === 1) this.endState = EndState.LOSER
+						else	this.endState = EndState.SPECTATOR
+					}
+					break;
+			}
+			this.gameEnded = true;
+		});
   }
 
 	setRoomListener() {
@@ -139,6 +143,18 @@ export class PongScreenContainerComponent implements OnInit {
 
 	updateRoomInfo(roomInfo : RoomInfo) {
 		this.roomInfo = roomInfo;
+		this.server.emit('am-i-player', {}).then((data:Response) => {
+			if (data.code === 0) {
+				this.isPlayer = true;
+				this.playerIndex = data.payload;
+			} else {
+				this.isPlayer = false;
+				this.playerIndex = 0;
+			}
+		}).catch(() => {
+			this.isPlayer = false;
+			this.playerIndex = 0;
+		});
 	}
 
 	updateRoom(info: RoomInfo) {
@@ -152,23 +168,6 @@ export class PongScreenContainerComponent implements OnInit {
 		} else {
 			this.countdown = 0
 			this.countdownLabel = '';
-		}
-	}
-
-	drawAfterImage(size: number) {
-		let width = this.gameCanvas.nativeElement.width
-		let height = this.gameCanvas.nativeElement.height
-		let afterCount = this.afterImage.length;
-		let i: number = 0;
-		while (i < afterCount)
-		{
-			this.context.fillRect(
-        this.afterImage[i].x * width - size / 2,
-        this.afterImage[i].y * height - size / 2,
-        size * (i / afterCount),
-        size * (i / afterCount)
-      );
-			i++;
 		}
 	}
 
@@ -198,36 +197,13 @@ export class PongScreenContainerComponent implements OnInit {
   scoreEvent(payload: any) {
     this.audio.playScore(true);
   }
+
   collisionEvent(payload: any) {
     if (payload.type === 'Wall') this.audio.playColWall(true);
     if (payload.type === 'Pad') this.audio.playColPad(true);
   }
 
-  private refresh() {
-    this.context.clearRect(
-      0,
-      0,
-      this.gameCanvas.nativeElement.width,
-      this.gameCanvas.nativeElement.height
-    );
-    for (let i = 10; i < this.dimension.h; i += this.dimension.h / 10) {
-      this.context.fillRect(this.dimension.w / 2 - 3, i, 6, 20);
-    }
-  }
-
-  testCountdown() {
-    clearInterval(this.countdownId);
-    this.countdown = 3;
-    this.countdownId = setInterval(() => this.tickCountdown(), 1000);
-  }
-
-  tickCountdown() {
-    if (this.countdown - 1 === 0) {
-      clearInterval(this.countdownId);
-      return;
-    }
-    this.countdown--;
-    console.log('ticking');
-  }
-
+	set3D(flag: boolean) {
+		this.threeD = flag;
+	}
 }

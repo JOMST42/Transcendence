@@ -10,7 +10,7 @@ import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { UserService } from 'src/app/user/services';
 import { AudioHandler } from '../../../play/classes';
 import { PlayService } from '../../../play/play.service';
-import { GameInfo, RoomInfo, Score, Vector3 } from '../../data/interfaces';
+import { GameInfo, RoomInfo, Score, Vector3 } from '../../interfaces';
 
 export interface EntityInfo {
   pos: Vector3;
@@ -37,33 +37,10 @@ export interface GameInfo3D {
 	ball?: Ball3D,
 }
 
-export enum Winner {
-  PLAYER1,
-  PLAYER2,
-  NONE,
-}
-
 @Component({
   selector: 'app-pong-3dscreen',
   templateUrl: './pong-3dscreen.component.html',
   styleUrls: ['./pong-3dscreen.component.scss'],
-  animations: [
-    trigger('countdown', [
-      state('*', style({ opacity: '0', 'font-size': '0px' })),
-      transition(
-        '*=>*',
-        animate(
-          '1s ease',
-          keyframes([
-            style({ opacity: '0', 'font-size': '0px', offset: 0.01 }),
-            style({ opacity: '1', 'font-size': '0px', offset: 0.02 }),
-            style({ opacity: '1', 'font-size': '75px', offset: 0.75 }),
-            style({ opacity: '0', 'font-size': '100px', offset: 1 }),
-          ])
-        )
-      ),
-    ]),
-  ],
 })
 export class Pong3DScreenComponent implements OnInit {
 
@@ -76,23 +53,15 @@ export class Pong3DScreenComponent implements OnInit {
 	perspective: number = 0.50;
 	depthMod: number = 0.20;
 
-  score: Score = {p1:0, p2:0};
 	p1Ready: boolean = false;
 	p2Ready: boolean = false;
 	p1Joined: boolean = false;
 	p2Joined: boolean = false;
-	timer: number = 0;
 
-  countdown: number = 0;
-  countdownId?: NodeJS.Timer;
-  animDisabled?: boolean = false;
-
-	afterImage: Vector3[] = [];
+	afterImage: Ball3D[] = [];
 	afterTimer = {frames:0, reset:5};
 
 	roomInfo?: RoomInfo; 
-
-  private audio: AudioHandler = new AudioHandler(0, 0);
 
   constructor(
 	private server: PlayService,
@@ -103,11 +72,6 @@ export class Pong3DScreenComponent implements OnInit {
 
   ngAfterViewInit() {
     this.context = this.gameCanvas.nativeElement.getContext('2d');
-		this.audio.setSoundColPad('assets/sound/hit_paddle.m4a');
-    this.audio.setSoundColWall('assets/sound/hit_wall.m4a');
-    this.audio.setSoundScore('assets/sound/score.m4a');
-    this.audio.setMusicGame('assets/music/game.mp3');
-    this.audio.setMusicVictory('assets/music/victory.mp3');
 		this.refresh();
     this.setGameListener();
 		this.setRoomListener();
@@ -125,18 +89,10 @@ export class Pong3DScreenComponent implements OnInit {
 			info3D.pad2 = this.applyPerspectivePad(info.pad2);
 			info3D.ball = this.applyPerspectiveBall(info.ball);
       
-			this.score.p1 = info.score.p1;
-			this.score.p2 = info.score.p2;
-			this.timer = Math.floor(info.time);
 
 			this.draw3D(info3D);
-
-      if (info.events) this.handleEvents(info.events);
     });
 
-    this.server.listenGameStart().then((info: string) => {
-    	this.audio.playGame(true, true);
-    });
 
     this.server.listen("player-ready").subscribe((info: number) => {
     	if (info === 1)
@@ -155,11 +111,6 @@ export class Pong3DScreenComponent implements OnInit {
 			
 		this.context.fillStyle = '#FFFFFF';
 		this.context.strokeStyle = '#FFFFFF';
-		// if (this.afterImage.length >= 10){
-		// 	this.afterImage.shift();
-		// }
-		// this.afterImage.push(info.ball.pos);
-		// this.drawAfterImage(info.ball.size.x); // TODO
 		let xOffset = (1 - this.depthMod) * this.width / 2;
 		let yOffset = (1 - this.perspective) * this.height / 2;
 		info.pad1.y += yOffset;
@@ -174,7 +125,13 @@ export class Pong3DScreenComponent implements OnInit {
 		this.context.stroke();
 
 		this.drawPad(info.pad1, this.p1Joined, this.p1Ready);
+
 		this.drawBall(info.ball);
+		if (this.afterImage.length >= 10){
+			this.afterImage.shift();
+		}
+		this.afterImage.push(info.ball);
+		this.drawAfterImage(); // TODO
 
 		this.drawPad(info.pad2, this.p2Joined, this.p2Ready);
 		
@@ -286,53 +243,18 @@ export class Pong3DScreenComponent implements OnInit {
 		this.p2Joined = info.user2Joined;
 	}
 
-	drawAfterImage(size: number) {
+	drawAfterImage() {
 		let width = this.gameCanvas.nativeElement.width
 		let height = this.gameCanvas.nativeElement.height
 		let afterCount = this.afterImage.length;
 		let i: number = 0;
 		while (i < afterCount)
 		{
-			this.context.fillRect(
-        this.afterImage[i].x * width - size / 2,
-        this.afterImage[i].y * height - size / 2,
-        size * (i / afterCount),
-        size * (i / afterCount)
-      );
+			this.afterImage[i].rad *= 0.2
+			this.drawBall(this.afterImage[i]);
 			i++;
 		}
 	}
-
-  handleEvents(events: any[]) {
-    if (events.length > 0) {
-      for (var i = 0; i < events.length; i++) {
-        switch (events[i].type) {
-          case 'COLLISION':
-            this.collisionEvent(events[i].payload);
-            break;
-          case 'SCORE':
-            this.scoreEvent(events[i].payload);
-            break;
-          case 'VICTORY':
-            this.victoryEvent(events[i].payload);
-            break;
-        }
-      }
-    }
-  }
-
-  victoryEvent(payload: any) {
-    this.audio.stopGame();
-    this.audio.playVictory(true, true);
-  }
-
-  scoreEvent(payload: any) {
-    this.audio.playScore(true);
-  }
-  collisionEvent(payload: any) {
-    if (payload.type === 'Wall') this.audio.playColWall(true);
-    if (payload.type === 'Pad') this.audio.playColPad(true);
-  }
 
   private refresh() {
     this.context.clearRect(
@@ -346,19 +268,4 @@ export class Pong3DScreenComponent implements OnInit {
     //   this.context.fillRect(this.dimension.w / 2 - 3, i, 6, 20);
     // }
   }
-
-  testCountdown() {
-    clearInterval(this.countdownId);
-    this.countdown = 3;
-    this.countdownId = setInterval(() => this.tickCountdown(), 1000);
-  }
-
-  tickCountdown() {
-    if (this.countdown - 1 === 0) {
-      clearInterval(this.countdownId);
-      return;
-    }
-    this.countdown--;
-  }
-
 }

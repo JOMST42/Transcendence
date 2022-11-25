@@ -8,6 +8,7 @@ import { GameRoutingModule } from '../play/play-routing.module';
 import { SharedModule } from '../shared/shared.module';
 import { GameInviteComponent, InviteDialogComponent, JoinGameDialogComponent, PongAudioComponent, PongInputComponent, PongScreenComponent } from './components';
 import { Pong3DScreenComponent } from './components/pong-3dscreen/pong-3dscreen.component';
+import { PongEndOverlayComponent } from './components/pong-end-overlay/pong-end-overlay.component';
 import { PongScreenContainerComponent } from './components/pong-screen-container/pong-screen-container.component';
 import { PongService } from './services/pong.service';
 
@@ -18,6 +19,7 @@ import { PongService } from './services/pong.service';
 		JoinGameDialogComponent,
 		PongAudioComponent,
 		PongScreenContainerComponent,
+		PongEndOverlayComponent,
 		PongScreenComponent,
 		Pong3DScreenComponent,
 		PongInputComponent,
@@ -29,6 +31,7 @@ import { PongService } from './services/pong.service';
 		JoinGameDialogComponent,
 		PongAudioComponent,
 		PongScreenContainerComponent,
+		PongEndOverlayComponent,
 		PongScreenComponent,
 		Pong3DScreenComponent,
 		PongInputComponent,
