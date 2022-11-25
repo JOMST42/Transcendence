@@ -229,6 +229,31 @@ export class ChatService {
           id: roomId,
         },
       });
+    } else {
+      const newOwner = room.users.reduce((prev, user) => {
+        if (!prev) {
+          return user;
+        }
+
+        if (prev.role !== 'ADMIN' && user.role === 'ADMIN') {
+          return user;
+        }
+
+        return prev;
+      });
+
+      newOwner.role = 'ADMIN';
+      newOwner.isOwner = true;
+
+      await this.prisma.userChatRoom.update({
+        where: {
+          userId_roomId: {
+            userId: newOwner.userId,
+            roomId: newOwner.roomId,
+          },
+        },
+        data: newOwner,
+      });
     }
   }
 }
