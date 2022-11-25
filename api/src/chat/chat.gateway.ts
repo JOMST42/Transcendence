@@ -125,6 +125,18 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     @MessageBody() dto: AddUserToChatRoomDto,
   ): Promise<void> {
     try {
+      const user = await this.chatService.getUserChatRoom(
+        socket.data.user.id,
+        dto.roomId,
+      );
+
+      if (!user || user.role !== 'ADMIN') {
+        this.server.to(socket.id).emit('socketError', {
+          message: "You don't have the permissions to do this",
+        });
+        return;
+      }
+
       const userChatRoom = await this.chatService.addUserToRoom(
         dto.userId,
         dto.roomId,

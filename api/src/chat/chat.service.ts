@@ -259,4 +259,15 @@ export class ChatService {
       });
     }
   }
+
+  async getUserChatRoom(userId: number, roomId: string): Promise<UserChatRoom> {
+    return this.prisma.userChatRoom.findUnique({
+      where: {
+        userId_roomId: {
+          roomId,
+          userId,
+        },
+      },
+    });
+  }
 }

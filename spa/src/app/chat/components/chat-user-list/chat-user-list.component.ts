@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { DialogService } from 'primeng/dynamicdialog';
 import { Subject, take, takeUntil } from 'rxjs';
+import { AuthService, ToastService } from '../../../core/services';
 import { User } from '../../../user/models';
 import { UserService } from '../../../user/services';
 
@@ -17,23 +18,43 @@ export class ChatUserListComponent implements OnInit {
   private unsubscribeAll$ = new Subject<void>();
   @Input() users: UserChatRoom[];
   @Input() roomId: string;
+  me: User;
 
   constructor(
     private readonly dialogService: DialogService,
     private readonly chatService: ChatService,
-    private readonly userService: UserService
+    private readonly userService: UserService,
+    private readonly authService: AuthService,
+    private readonly toastService: ToastService
   ) {}
 
   ngOnInit(): void {
     this.chatService
       .getNewUser()
       .pipe(takeUntil(this.unsubscribeAll$))
-      .subscribe((user) => {
-        this.users.push(user);
+      .subscribe({
+        next: (user) => {
+          this.users.push(user);
+        },
       });
+    this.authService
+      .getCurrentUser()
+      .pipe(takeUntil(this.unsubscribeAll$))
+      .subscribe({ next: (user) => (this.me = user) });
   }
 
   inviteUser(): void {
+    const chatUser = this.users.find((user) => {
+      return user.userId === this.me.id;
+    });
+
+    if (chatUser.role !== 'ADMIN') {
+      this.toastService.showError(
+        'Unauthorized',
+        "You don't have the permissions to do this"
+      );
+      return;
+    }
     this.userService
       .getUsers()
       .pipe(take(1))
