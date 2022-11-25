@@ -5,7 +5,7 @@ import { Subject, Subscription, take, takeUntil, tap } from 'rxjs';
 
 import { AuthService, ToastService } from '../../../core/services';
 import { User } from '../../../user/models';
-import { Room } from '../../models';
+import { Room, UserChatRoom } from '../../models';
 import { ChatService } from '../../services';
 import { PasswordDialogComponent } from '../password-dialog/password-dialog.component';
 
@@ -138,4 +138,6 @@ export class ChatComponent implements OnInit, OnDestroy {
     }
     this.selectedChannel = undefined;
   }
+
+  userListClick(user: UserChatRoom): void {}
 }

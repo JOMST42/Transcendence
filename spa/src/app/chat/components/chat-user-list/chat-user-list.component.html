@@ -18,7 +18,7 @@
   </div>
   <div class="h-full flex flex-column overflow-y-auto thin-bar">
     <div *ngFor="let user of users">
-      <app-chat-user [user]="user"></app-chat-user>
+      <app-chat-user (click)="userClick(user)" [user]="user"></app-chat-user>
     </div>
   </div>
 </div>

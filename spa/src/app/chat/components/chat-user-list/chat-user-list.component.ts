@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { DialogService } from 'primeng/dynamicdialog';
 import { Subject, take, takeUntil } from 'rxjs';
 import { AuthService, ToastService } from '../../../core/services';
@@ -18,6 +18,7 @@ export class ChatUserListComponent implements OnInit {
   private unsubscribeAll$ = new Subject<void>();
   @Input() users: UserChatRoom[];
   @Input() roomId: string;
+  @Output() userSelect = new EventEmitter<UserChatRoom>();
   me: User;
 
   constructor(
@@ -78,5 +79,9 @@ export class ChatUserListComponent implements OnInit {
           });
         },
       });
+  }
+
+  userClick(user: UserChatRoom): void {
+    this.userSelect.emit(user);
   }
 }

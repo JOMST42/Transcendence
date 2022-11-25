@@ -46,6 +46,12 @@ enum ChatRole {
   USER
 }
 
+enum UserChatStatus {
+  NORMAL
+  MUTED
+  BANNED
+}
+
 model ChatRoom {
   id          String             @id @default(uuid())
   name        String
@@ -68,8 +74,10 @@ model UserChatRoom {
   room   ChatRoom @relation(fields: [roomId], references: [id])
   roomId String
 
-  isOwner Boolean  @default(false)
-  role    ChatRole @default(USER)
+  isOwner     Boolean        @default(false)
+  role        ChatRole       @default(USER)
+  status      UserChatStatus @default(NORMAL)
+  statusTimer DateTime       @default(now())
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
