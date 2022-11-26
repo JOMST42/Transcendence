@@ -156,6 +156,7 @@ export class ChatService {
     message: CreateChatMessageDto,
   ): Promise<ChatMessageWithAuthor> {
     const room = await this.validateUserForRoom(userId, roomId);
+    await this.updateTimers(roomId);
 
     return this.prisma.chatMessage.create({
       data: {
@@ -165,6 +166,32 @@ export class ChatService {
       },
       include: { author: true },
     });
+  }
+
+  async updateTimers(roomId: string): Promise<void> {
+    const room = await this.prisma.chatRoom.findUnique({
+      where: {
+        id: roomId,
+      },
+      include: {
+        users: true,
+      },
+    });
+
+    if (!room) {
+      console.log('Null room');
+      return;
+    }
+
+    const usersToUpdate: UserChatRoom[] = [];
+    for (const user of room.users) {
+      if (user.status !== 'NORMAL' && user.statusTimer.getTime() < Date.now()) {
+        user.status = 'NORMAL';
+        usersToUpdate.push(user);
+      }
+    }
+
+    await this.prisma.userChatRoom.updateMany({ data: usersToUpdate });
   }
 
   async getRoomWithMessages(
@@ -267,6 +294,34 @@ export class ChatService {
           roomId,
           userId,
         },
+      },
+    });
+  }
+
+  async banUserFromRoom(
+    userId: number,
+    roomId: string,
+    time: Date,
+    status: 'BANNED' | 'MUTED',
+  ): Promise<void> {
+    const user = await this.prisma.userChatRoom.findUnique({
+      where: { userId_roomId: { userId, roomId } },
+    });
+
+    if (user.isOwner || user.role === 'ADMIN') {
+      throw new BadRequestException('Cannot ban or mute admins');
+    }
+
+    await this.prisma.userChatRoom.update({
+      where: {
+        userId_roomId: {
+          userId,
+          roomId,
+        },
+      },
+      data: {
+        status,
+        statusTimer: new Date(Date.now() + time.getTime()),
       },
     });
   }

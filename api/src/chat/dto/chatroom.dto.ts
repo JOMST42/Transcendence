@@ -26,3 +26,13 @@ export type ChatRoomWithMessages = ChatRoom & {
   messages: ChatMessageWithAuthor[];
   users: (UserChatRoom & { user: User })[];
 };
+
+export class BanUserDto {
+  @IsNumber()
+  userId: number;
+
+  @IsString()
+  roomId: string;
+
+  time: Date;
+}

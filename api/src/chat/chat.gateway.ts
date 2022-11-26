@@ -14,7 +14,7 @@ import { AuthService } from '../auth/auth.service';
 import { UserConnectionService } from '../user/services/user-connection.service';
 import { UserService } from '../user/services/user.service';
 import { ChatService } from './chat.service';
-import { AddUserToChatRoomDto } from './dto';
+import { AddUserToChatRoomDto, BanUserDto } from './dto';
 import { ChatMessageWithAuthor, SendChatMessageDto } from './dto/message.dto';
 
 @WebSocketGateway({
@@ -143,6 +143,87 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
       );
 
       this.server.to(userChatRoom.roomId).emit('newRoomUser', userChatRoom);
+    } catch (e) {
+      if (e instanceof BadRequestException) {
+        this.server.to(socket.id).emit('socketError', { message: e.message });
+      } else {
+        this.unknownError(socket);
+      }
+    }
+  }
+
+  @SubscribeMessage('banUser')
+  async banUser(
+    @ConnectedSocket() socket: Socket,
+    @MessageBody() dto: BanUserDto,
+  ): Promise<void> {
+    try {
+      const user = await this.chatService.getUserChatRoom(
+        socket.data.user.id,
+        dto.roomId,
+      );
+
+      if (!user) {
+        this.server
+          .to(socket.id)
+          .emit('socketError', { message: 'Bad Request' });
+      }
+
+      if (user.role !== 'ADMIN') {
+        this.server
+          .to(socket.id)
+          .emit('socketError', { message: 'Unauthorized' });
+      }
+
+      await this.chatService.banUserFromRoom(
+        dto.userId,
+        dto.roomId,
+        dto.time,
+        'BANNED',
+      );
+
+      socket.leave(dto.roomId);
+      this.server.to(socket.id).emit('banned');
+    } catch (e) {
+      if (e instanceof BadRequestException) {
+        this.server.to(socket.id).emit('socketError', { message: e.message });
+      } else {
+        this.unknownError(socket);
+      }
+    }
+  }
+
+  @SubscribeMessage('banUser')
+  async muteUser(
+    @ConnectedSocket() socket: Socket,
+    @MessageBody() dto: BanUserDto,
+  ): Promise<void> {
+    try {
+      const user = await this.chatService.getUserChatRoom(
+        socket.data.user.id,
+        dto.roomId,
+      );
+
+      if (!user) {
+        this.server
+          .to(socket.id)
+          .emit('socketError', { message: 'Bad Request' });
+      }
+
+      if (user.role !== 'ADMIN') {
+        this.server
+          .to(socket.id)
+          .emit('socketError', { message: 'Unauthorized' });
+      }
+
+      await this.chatService.banUserFromRoom(
+        dto.userId,
+        dto.roomId,
+        dto.time,
+        'MUTED',
+      );
+
+      this.server.to(socket.id).emit('muted');
     } catch (e) {
       if (e instanceof BadRequestException) {
         this.server.to(socket.id).emit('socketError', { message: e.message });
