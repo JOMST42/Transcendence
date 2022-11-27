@@ -4,7 +4,6 @@
 >
   <ul
     [@stagger]="friendsList.length"
-    *ngIf="user?.id === me?.id"
     style="list-style-type: none"
   >
     <li *ngFor="let friend of friendsList">

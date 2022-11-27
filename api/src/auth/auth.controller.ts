@@ -1,9 +1,12 @@
 import {
+  Body,
   Controller,
   Get,
   HttpCode,
   HttpStatus,
+  Post,
   Res,
+  UnauthorizedException,
   UseGuards,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
@@ -39,6 +42,8 @@ export class AuthController {
       'access_token',
       await this.authService.signToken({
         sub: user.id,
+        isTwoFactorAuthEnabled: user.twoFAEnable,
+        isTwoFactorAutehnticated: false,
       }),
       {
         maxAge: cookieConstants.maxAge,
@@ -48,4 +53,17 @@ export class AuthController {
     );
     res.redirect(this.config.get('CLIENT_URL'));
   }
+
+  @Post('2fa/turnOn')
+  // @UseGuards(FtAuthGuard)
+  async turnOnTwoFAuth(@GetUser() user: User, @Body() body: string) {
+    const isValid = this.authService.validateTwoFAuthCode(body, user);
+    if (!isValid) {
+      throw new UnauthorizedException('Wrong authentification code');
+    }
+    return this.authService.logWith2FAuth(user);
+  }
+
+  // @Post('2fa/generate')
+  // async
 }

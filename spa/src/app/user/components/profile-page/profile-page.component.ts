@@ -17,11 +17,16 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
   user!: User;
   me!: User;
   displayName!: string;
+  requestsNb!: number;
 
   constructor(
     private activatedRoute: ActivatedRoute,
-    private readonly authService: AuthService,
+    private readonly authService: AuthService
   ) {}
+
+  getRequestNumber(newRequest: number): void {
+    this.requestsNb = newRequest;
+  }
 
   refreshUser(): void {
     this.authService

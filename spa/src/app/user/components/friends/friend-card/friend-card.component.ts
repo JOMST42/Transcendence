@@ -13,7 +13,6 @@ export class FriendCardComponent implements OnInit {
   user!: User;
   @Input() userIsMe!: boolean;
   @Input() me: User;
-  // @Input() friends: Friendship[];
   myFriendId!: number;
   @Input() friendship: Friendship;
   display: boolean = false;
@@ -55,7 +54,7 @@ export class FriendCardComponent implements OnInit {
       .subscribe({
         next: (data) => {
           if (data) {
-            if (data.blocked === true) {
+            if (data.adresseeBlocker === true || data.requesterBlocker === true) {
               this.friendState = false;
             } else if (data.accepted === false) {
               this.friendState = false;

@@ -14,8 +14,19 @@
 	border: 3px solid #7869C4;
 }
 
+:host ::ng-deep .p-dialog-footer{
+  text-align: center;
+}
+
+
+:host ::ng-deep .p-dialog{
+  max-width: 600px;
+  min-width: 400px;
+  max-height: 200px;
+}
+
 .button-set{
-  float: left; display: inline-flex;
+  display: inline-flex;
 }
 
 .blockedCard{

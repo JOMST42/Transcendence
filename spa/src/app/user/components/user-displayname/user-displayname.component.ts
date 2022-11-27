@@ -15,6 +15,7 @@ import { UserService } from '../../services';
 export class UserDisplaynameComponent implements OnInit, OnDestroy {
   private unsubscribeAll$ = new Subject<void>();
   displayName!: string;
+  showButton: boolean = false;
   @Input() user!: User;
   @Input() userIsMe!: boolean;
 
@@ -22,6 +23,15 @@ export class UserDisplaynameComponent implements OnInit, OnDestroy {
     private readonly toast: ToastService,
     private readonly userService: UserService
   ) {}
+
+  focusInput(): void {
+    this.showButton = true;
+  }
+
+  clearInput(): void {
+    this.displayName = '';
+    this.showButton = false;
+  }
 
   inputValidator(): boolean {
     const pattern = /^[a-zA-Z_0-9_\-]+$/;
