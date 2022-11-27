@@ -36,3 +36,8 @@ export class BanUserDto {
 
   time: Date;
 }
+
+export class ChangePasswordDto {
+  @IsString()
+  password: string;
+}

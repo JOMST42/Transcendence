@@ -336,4 +336,33 @@ export class ChatService {
       },
     });
   }
+
+  async changePassword(
+    userId: number,
+    roomId: string,
+    password: string,
+  ): Promise<ChatRoom> {
+    const userChatRoom = await this.prisma.userChatRoom.findUnique({
+      where: { userId_roomId: { roomId, userId } },
+    });
+
+    if (!userChatRoom || userChatRoom?.role !== 'ADMIN') {
+      throw new UnauthorizedException('Unauthorized');
+    }
+
+    const chatRoom = await this.prisma.chatRoom.findUnique({
+      where: { id: roomId },
+    });
+    if (password === '') {
+      chatRoom.isProtected = false;
+    } else {
+      chatRoom.hash = await argon2.hash(password);
+      chatRoom.isProtected = true;
+    }
+
+    return await this.prisma.chatRoom.update({
+      where: { id: roomId },
+      data: chatRoom,
+    });
+  }
 }

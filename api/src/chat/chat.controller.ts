@@ -11,7 +11,11 @@ import {
 import { ChatRoom, User, UserChatRoom } from '@prisma/client';
 import { GetUser } from '../auth/decorator';
 import { JwtGuard } from '../auth/guards';
-import { ChatRoomWithMessages, CreateChatRoomDto } from './dto';
+import {
+  ChangePasswordDto,
+  ChatRoomWithMessages,
+  CreateChatRoomDto,
+} from './dto';
 import { ChatService } from './chat.service';
 
 @UseGuards(JwtGuard)
@@ -55,5 +59,14 @@ export class ChatController {
     @Param('id') id: string,
   ): Promise<void> {
     return await this.chatService.removeUserFromRoom(user.id, id);
+  }
+
+  @Post(':id/changepassword')
+  async changePassword(
+    @GetUser() user: User,
+    @Param('id') roomId: string,
+    @Body() dto: ChangePasswordDto,
+  ): Promise<void> {
+    await this.chatService.changePassword(user.id, roomId, dto.password);
   }
 }
