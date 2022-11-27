@@ -158,6 +158,14 @@ export class ChatService {
     const room = await this.validateUserForRoom(userId, roomId);
     await this.updateTimers(roomId);
 
+    const user = await this.prisma.userChatRoom.findUnique({
+      where: { userId_roomId: { roomId, userId } },
+    });
+
+    if (user && (user.status === 'MUTED' || user.status === 'BANNED')) {
+      throw new UnauthorizedException('You cannot post in this room');
+    }
+
     return this.prisma.chatMessage.create({
       data: {
         ...message,
@@ -191,7 +199,9 @@ export class ChatService {
       }
     }
 
-    await this.prisma.userChatRoom.updateMany({ data: usersToUpdate });
+    if (usersToUpdate.length > 0) {
+      await this.prisma.userChatRoom.updateMany({ data: usersToUpdate });
+    }
   }
 
   async getRoomWithMessages(
@@ -199,6 +209,7 @@ export class ChatService {
     roomId: string,
   ): Promise<ChatRoomWithMessages> {
     await this.validateUserForRoom(userId, roomId);
+    await this.updateTimers(roomId);
 
     const room = await this.prisma.chatRoom.findUnique({
       where: {

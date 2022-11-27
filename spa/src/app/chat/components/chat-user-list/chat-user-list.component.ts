@@ -30,14 +30,6 @@ export class ChatUserListComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.chatService
-      .getNewUser()
-      .pipe(takeUntil(this.unsubscribeAll$))
-      .subscribe({
-        next: (user) => {
-          this.users.push(user);
-        },
-      });
     this.authService
       .getCurrentUser()
       .pipe(takeUntil(this.unsubscribeAll$))

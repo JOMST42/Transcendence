@@ -41,6 +41,16 @@ export class ChatComponent implements OnInit, OnDestroy {
       .getCurrentUser()
       .pipe(takeUntil(this.unsubscribeAll$))
       .subscribe((user) => (this.me = user));
+    this.chatService
+      .getNewUser()
+      .pipe(takeUntil(this.unsubscribeAll$))
+      .subscribe({
+        next: (user) => {
+          if (this.selectedChannel) {
+            this.selectedChannel.users.push(user);
+          }
+        },
+      });
   }
 
   onChannelSelect(channel: Room): void {
@@ -129,7 +139,7 @@ export class ChatComponent implements OnInit, OnDestroy {
       return;
     }
 
-    if (room.visibility === 'PRIVATE' || room.users.length === 1) {
+    if (room.visibility === 'PRIVATE' || room.users.length === 0) {
       const idx = this.rooms.indexOf(room);
       if (idx < 0) {
         return;
