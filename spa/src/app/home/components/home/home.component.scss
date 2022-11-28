@@ -198,9 +198,9 @@ p {
 	border-radius: 30px;
 	width: 700px !important;
 	position: relative;
-	background-color: #00A595  !important;
+	// background-color: #00A595  !important;
 	// background-color: #000  !important;
-	// background-color: #fff  !important;
+	background-color: #fff  !important;
 	border: 3px solid black;;
 	box-shadow: -30px -30px #7869C4,
 				-30px -28px #000,
@@ -210,8 +210,8 @@ p {
 }
 
 .img-container {
-	background-color: #000;
-	// background-color: #00A595;
+	// background-color: #000;
+	background-color: #00A595;
 	border: 3px solid #000;
 	border-radius: 8px;
 	box-shadow: -10px -10px #7869C4,

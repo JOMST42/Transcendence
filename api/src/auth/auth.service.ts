@@ -103,9 +103,9 @@ export class AuthService {
     });
   }
 
-  async generateQrCode(otpAuthUrl: string) {
-    return toDataURL(otpAuthUrl);
-  }
+//   async generateQrCode(otpAuthUrl: string) {
+//     return toDataURL(otpAuthUrl);
+//   }
 
   validateTwoFAuthCode(code: string, user: User): boolean {
     return authenticator.verify({
