@@ -211,6 +211,14 @@ export class ChatService {
     await this.validateUserForRoom(userId, roomId);
     await this.updateTimers(roomId);
 
+    const userChat = await this.prisma.userChatRoom.findUnique({
+      where: { userId_roomId: { roomId, userId } },
+    });
+
+    if (userChat.status === 'BANNED') {
+      throw new UnauthorizedException('You are banned');
+    }
+
     const room = await this.prisma.chatRoom.findUnique({
       where: {
         id: roomId,
