@@ -63,9 +63,9 @@ export class FriendService {
           next: (data) => {
             if (data) {
               resolve(data);
-              console.log(data);
+              // console.log(data);
             }
-            console.log(data);
+            // console.log(data);
             reject(null);
           },
         });
@@ -82,7 +82,7 @@ export class FriendService {
           .pipe(take(1))
           .subscribe({
             next: (data) => {
-              console.log(data);
+              // console.log(data);
             },
           });
       });

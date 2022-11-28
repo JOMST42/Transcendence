@@ -5,11 +5,13 @@
     placeholder="{{ user?.displayName }}"
     [(ngModel)]="displayName"
     #dname="ngModel"
-    [ngModelOptions]="{ standalone: true }"
     ngFormControl="control"
+    [disabled]="!userIsMe"
+    (blur)="clearInput()"
+    (focus)="focusInput()"
   />
   <button
-    *ngIf="userIsMe && displayName"
+    *ngIf="userIsMe && displayName && showButton"
     pButton
     pRipple
     type="button"
@@ -17,10 +19,5 @@
     class="p-button p-button-outlined btn"
     (click)="changeDisplayName()"
   ></button>
-  <div
-    *ngIf="dname.invalid && (dname.dirty || dname.touched)"
-    class="ng-invalid ng-dirty"
-  >
-    <div *ngIf="dname.errors?.['required']">Display name is required</div>
-  </div>
+ 
 </div>

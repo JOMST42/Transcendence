@@ -1,10 +1,10 @@
-@media screen and (max-width:900px){
-  .container{
-    align-items: center;
-		align-content: center;
-		justify-content: center;
-  }
-}
+// @media screen and (max-width:900px){
+//   .container{
+//     align-items: center;
+// 		align-content: center;
+// 		justify-content: center;
+//   }
+// }
 
 :host ::ng-deep .p-tabview-panels{
   background-color: #7869c4;
@@ -25,11 +25,23 @@
 }
 
 :host ::ng-deep .p-tabview-nav-link {
-	margin: 0rem 3rem 3rem 3rem;
+	// margin: 0rem 3rem 3rem 3rem;
+	max-height: 55px;
   background-color: #7869c4 !important;
-	color: #00A595;
+	// color: #00A595;
 	border-style: 2px 2px 2px 2px;
   border:  solid black;
+	-webkit-text-stroke: black;
+	-webkit-text-stroke-width: 1px;
+	font-family: "PixelPowerline";
+	font-weight: 50;
+	font-size: 1rem;
+	color: #fff !important;
+	opacity: 1;
+}
+
+:host ::ng-deep .p-tabview .p-tabview-nav li.p-highlight .p-tabview-nav-link{
+	color: white;
 }
 
 :host ::ng-deep .p-tabview-title{
@@ -44,6 +56,17 @@
 
 :host ::ng-deep .p-tabview-ink-bar{
 	color: #00A595;
+}
+
+:host ::ng-deep .p-badge {
+  background-color: #00A595;
+  color: #1c2127;
+  font-size: 0.8rem;
+	 display: inline;
+	 border-radius: 10px;
+	text-align: center;
+	padding: 0 .5rem;
+
 }
 
 h1 {
@@ -111,11 +134,41 @@ input {
 .container  {
 	border-radius: 30px;
 	width: 900px !important;
-	position: relative;
+	// position: relative;
 	background-color: #fff  !important;
 	border: 3px solid black;;
 	box-shadow: -10px -10px #7869C4,
 				-10px -8px #000,
 				-8px -10px #000,
 				-12px -12px #000;
+}
+
+@media screen  and (min-width: 600px) and (max-width:99999px) {
+	.tab-mobile {
+		display: none;
+	}
+}
+
+@media screen  and (min-width: 0px) and (max-width:600px) {
+	.container .tab {
+		display: none !important;
+	}
+	.container .card-user {
+		justify-content: center !important;
+	}
+	.container h2 {
+		justify-content: center;
+		text-align: center;
+	}
+	.container .card-user {
+		display: block !important;
+		justify-content: center !important;
+	}
+	// .container .tab-mobile {
+	// 	display: block;
+	// }
+}
+
+.card-tab-mobile {
+	height: auto;
 }

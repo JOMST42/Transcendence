@@ -10,6 +10,10 @@
 	height: 48.5px
 }
 
+:host ::ng-deep .p-inputtext:disabled{
+	opacity: 1;
+}
+
 .container .btn{
   position: absolute;
 	border-bottom-right-radius: 6px;

@@ -12,6 +12,7 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { DropdownModule } from 'primeng/dropdown';
 import { BadgeModule } from 'primeng/badge';
+import { ProgressBarModule } from 'primeng/progressbar';
 import {
   NavBarComponent,
   NotFoundComponent,
@@ -48,6 +49,7 @@ import { UserMatchHistoryComponent } from './components/user-match-history/user-
     BadgeModule,
 		MultiSelectModule,
 		DropdownModule,
+    ProgressBarModule,
   ],
   exports: [
     CommonModule,

@@ -16,6 +16,7 @@ enum ButtonState {
 @Component({
   selector: 'app-queue-button',
   templateUrl: './queue-button.component.html',
+  styleUrls: ['./queue-button.component.scss'],
 	styles: ['#joinQueueButton { min-width: 200px; }'],
 })
 export class QueueButtonComponent implements OnInit {

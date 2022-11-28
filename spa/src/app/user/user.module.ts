@@ -17,6 +17,7 @@ import { FriendRequestsComponent } from './components/friends/friend-requests/fr
 import { FriendRequestCardComponent } from './components/friends/friend-request-card/friend-request-card.component';
 import { AcceptFriendBtnComponent } from './components/friends/accept-friend-btn/accept-friend-btn.component';
 import { RefuseFriendBtnComponent } from './components/friends/refuse-friend-btn/refuse-friend-btn.component';
+import { UserStatsComponent } from './components/user-stats/user-stats.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { RefuseFriendBtnComponent } from './components/friends/refuse-friend-btn
     FriendRequestCardComponent,
     AcceptFriendBtnComponent,
     RefuseFriendBtnComponent,
+    UserStatsComponent,
   ],
   imports: [SharedModule, UserRoutingModule, FileUploadModule, PongModule],
   exports: [
@@ -40,6 +42,7 @@ import { RefuseFriendBtnComponent } from './components/friends/refuse-friend-btn
     UserRoutingModule,
     ProfilePageComponent,
     FriendListComponent,
+    UserStatsComponent
   ],
 })
 export class UserModule {}

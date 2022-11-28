@@ -13,7 +13,6 @@ import { PlayService } from 'src/app/play/play.service';
 export class HomeComponent implements OnInit {
   private unsubscribeAll$ = new Subject<void>();
   @Input() user!: User | null;
-  //   me!: User;
   avatarUrl: string;
   userIsMe: boolean;
 

@@ -12,16 +12,14 @@ import { FriendService } from '../../../services';
 export class RefuseFriendBtnComponent implements OnInit {
   constructor(
     private readonly friendService: FriendService,
-    private readonly toastService: ToastService,
-    private readonly authService: AuthService
+    private readonly toastService: ToastService
   ) {}
 
   buttonState: boolean = false;
   @Input() user!: User;
-  me!: User;
+  @Input() me!: User;
 
   removeFriend() {
-    console.log('dans remove friends');
     this.friendService
       .removeFriendship(this.user.id, this.me.id)
       .pipe(take(1))
@@ -32,7 +30,10 @@ export class RefuseFriendBtnComponent implements OnInit {
             'Ciao Bye ' + this.user.displayName
           );
           console.log(data);
-          this.buttonState = false;
+          this.buttonState = true;
+        },
+        error: (err) => {
+          this.toastService.showWarn('Ho ho', 'You are not friend ');
         },
       });
   }
@@ -42,24 +43,24 @@ export class RefuseFriendBtnComponent implements OnInit {
       .checkFriendship(this.user.id, this.me.id)
       .then((data) => {
         if (data.adresseeId === this.me.id) {
-          this.buttonState = true;
-        } else {
           this.buttonState = false;
+        } else {
+          this.buttonState = true;
         }
+        console.log(this.buttonState);
       })
       .catch((err) => console.log('err catch dans refuse friend btn'));
   }
 
   async ngOnInit(): Promise<void> {
-    this.authService.getCurrentUser().subscribe({
-      next: (data) => {
-        this.me = data;
-      },
-      error: (err) => {
-        console.log(err);
-      },
-    });
-
+    // this.authService.getCurrentUser().subscribe({
+    //   next: (data) => {
+    //     this.me = data;
+    //   },
+    //   error: (err) => {
+    //     console.log(err);
+    //   },
+    // });
     await this.checkState();
   }
 }
