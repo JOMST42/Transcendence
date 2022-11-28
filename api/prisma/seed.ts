@@ -2,6 +2,19 @@ import { Game, Prisma, PrismaClient, User } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
+const gamesToSeed = 500;
+// let users: User[];
+// let games: Game[];
+
+main()
+  .then(async () => {
+    await prisma.$disconnect();
+  })
+  .catch(async (e) => {
+    console.error(e);
+    await prisma.$disconnect();
+    process.exit(1);
+  });
 // const weatherData: Prisma.WeatherCreateInput[] = [
 //   {
 //     value: '123C',
@@ -20,14 +33,12 @@ const prisma = new PrismaClient();
 //     value: '10C',
 //   },
 // ];
-const gamesToSeed = 500;
-let users: User[];
-let games: Game[];
 
 async function main() {
   console.log(`Start seeding ...`);
   await seedUsers();
   await seedGames();
+  await seedFriends();
   // for (const w of weatherData) {
   //   const weather = await prisma.weather.create({
   //     data: w,
@@ -43,7 +54,7 @@ async function seedUsers() {
       data: [
         {
           username: 'sfournie',
-          email: 'foussy@gmail.com',
+          email: 'sfournie@student.42quebec.com',
           displayName: 'Fousse',
           normalizedName: 'fousse',
           firstName: 'Sébastien',
@@ -51,7 +62,7 @@ async function seedUsers() {
         },
         {
           username: 'mleblanc',
-          email: 'leblanc@gmail.com',
+          email: 'mleblanc@student.42quebec.com',
           displayName: 'mikastiv',
           normalizedName: 'mikastiv',
           firstName: 'Michael',
@@ -59,7 +70,7 @@ async function seedUsers() {
         },
         {
           username: 'jbadia',
-          email: 'badia@gmail.com',
+          email: 'jbadia@student.42quebec.com ',
           displayName: 'Just_in_case',
           normalizedName: 'just_in_case',
           firstName: 'Justine',
@@ -67,16 +78,17 @@ async function seedUsers() {
         },
         {
           username: 'olabrecq',
-          email: 'olala@gmail.com',
+          email: 'olabrecq@student.42quebec.com ',
           displayName: 'sheSaidOlalaOli',
           normalizedName: 'shesaidolalaoli',
           firstName: 'Olivier',
           lastName: 'Lala',
         },
       ],
+      skipDuplicates: true,
     })
     .catch((e) => {
-      console.log(e);
+      // console.log(e);
     });
 }
 
@@ -102,8 +114,32 @@ async function seedGames() {
         },
       })
       .catch((e) => {
-        console.log(e);
+        // console.log(e);
       });
+  }
+}
+
+async function seedFriends() {
+  const prismaUsers = await prisma.user.findMany();
+  const range = prismaUsers.length;
+  let i = 0;
+  let j = 0;
+
+  for (i = 0; i < prismaUsers.length; i++) {
+    for (j = i + 1; j < prismaUsers.length; j++) {
+      await prisma.friendship
+        .create({
+          data: {
+            requesterId: prismaUsers[i].id,
+            adresseeId: prismaUsers[j].id,
+            accepted: Math.random() > 0.5 ? true : false,
+            blocked: Math.random() > 0.5 ? true : false,
+          },
+        })
+        .catch((e) => {
+          // console.log(e);
+        });
+    }
   }
 }
 
@@ -145,13 +181,3 @@ async function seedGames() {
 //     ],
 //   });
 // }
-
-main()
-  .then(async () => {
-    await prisma.$disconnect();
-  })
-  .catch(async (e) => {
-    console.error(e);
-    await prisma.$disconnect();
-    process.exit(1);
-  });
