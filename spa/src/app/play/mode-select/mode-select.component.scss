@@ -38,7 +38,7 @@
 //   text-align: center;
 }
 
-img { 
+.classic-img { 
 	display: block;
 	position: relative;
 	border-radius: 10px;
@@ -51,6 +51,10 @@ img {
 	
 }
 
+.arrow-img {
+	width: 30px !important;
+
+}
 .image-card:hover img {
 	opacity: 0.3;
 }
