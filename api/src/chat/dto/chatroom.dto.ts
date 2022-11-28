@@ -1,4 +1,10 @@
-import { ChatRoom, User, UserChatRoom } from '@prisma/client';
+import {
+  ChatRole,
+  ChatRoom,
+  ChatRoomVisibility,
+  User,
+  UserChatRoom,
+} from '@prisma/client';
 import { IsNumber, IsOptional, IsString } from 'class-validator';
 import { ChatMessageWithAuthor } from './message.dto';
 
@@ -7,7 +13,7 @@ export class CreateChatRoomDto {
   name: string;
 
   @IsString()
-  visibility: 'PUBLIC' | 'PRIVATE';
+  visibility: ChatRoomVisibility;
 
   @IsOptional()
   @IsString()
@@ -40,4 +46,12 @@ export class BanUserDto {
 export class ChangePasswordDto {
   @IsString()
   password: string;
+}
+
+export class ChangeRoleDto {
+  @IsNumber()
+  userId: number;
+
+  @IsString()
+  role: ChatRole;
 }

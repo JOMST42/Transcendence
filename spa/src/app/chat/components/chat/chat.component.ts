@@ -150,4 +150,10 @@ export class ChatComponent implements OnInit, OnDestroy {
   }
 
   userListClick(user: UserChatRoom): void {}
+
+  findMe(): UserChatRoom {
+    return this.selectedChannel?.users.find((user) => {
+      return user.userId === this.me.id;
+    });
+  }
 }

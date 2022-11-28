@@ -7,6 +7,14 @@
       label="Leave"
       icon="pi pi-power-off"
     ></button>
+    <div *ngIf="user?.isOwner">
+      <button
+        (click)="changePassword(roomId)"
+        pButton
+        type="button"
+        label="Change password"
+      ></button>
+    </div>
   </div>
   <div
     #messages

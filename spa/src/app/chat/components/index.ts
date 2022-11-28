@@ -9,3 +9,5 @@ export * from './chat-message-list/chat-message-list.component';
 export * from './chat-user/chat-user.component';
 export * from './chat-user-list/chat-user-list.component';
 export * from './user-invite/user-invite.component';
+export * from './password-dialog/password-dialog.component';
+export * from './user-dialog/user-dialog.component';

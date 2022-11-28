@@ -346,7 +346,7 @@ export class ChatService {
       where: { userId_roomId: { roomId, userId } },
     });
 
-    if (!userChatRoom || userChatRoom?.role !== 'ADMIN') {
+    if (!userChatRoom || userChatRoom?.isOwner === false) {
       throw new UnauthorizedException('Unauthorized');
     }
 
@@ -363,6 +363,36 @@ export class ChatService {
     return await this.prisma.chatRoom.update({
       where: { id: roomId },
       data: chatRoom,
+    });
+  }
+
+  async changeUserRole(
+    actionUserId: number,
+    userId: number,
+    roomId: string,
+    role: ChatRole,
+  ): Promise<UserChatRoom> {
+    const actionUser = await this.getUserChatRoom(actionUserId, roomId);
+
+    if (!actionUser || actionUser?.role !== 'ADMIN') {
+      throw new UnauthorizedException('Unauthorized');
+    }
+
+    const user = await this.getUserChatRoom(userId, roomId);
+
+    if (
+      !user ||
+      user?.isOwner ||
+      (!actionUser.isOwner && user?.role === 'ADMIN')
+    ) {
+      throw new BadRequestException('Cannot change role of an admin');
+    }
+
+    return await this.prisma.userChatRoom.update({
+      where: { userId_roomId: { roomId, userId } },
+      data: {
+        role,
+      },
     });
   }
 }

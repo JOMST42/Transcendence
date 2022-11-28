@@ -39,6 +39,7 @@
   <app-chat-message-list
     [chatMessages]="selectedChannel?.messages"
     [roomId]="selectedChannel?.id"
+    [user]="findMe()"
     class="h-full flex-grow-1 flex"
     (onLeaveChannel)="userLeaveChannel($event)"
   ></app-chat-message-list>

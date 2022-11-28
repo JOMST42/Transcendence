@@ -9,10 +9,14 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
+import { DialogService } from 'primeng/dynamicdialog';
 import { Subject, take, takeUntil } from 'rxjs';
+import { AuthService } from '../../../core/services';
+import { User } from '../../../user/models';
 
-import { ChatMessage, Room } from '../../models';
+import { ChatMessage, UserChatRoom } from '../../models';
 import { ChatService } from '../../services';
+import { PasswordDialogComponent } from '../password-dialog/password-dialog.component';
 
 @Component({
   selector: 'app-chat-message-list',
@@ -26,10 +30,16 @@ export class ChatMessageListComponent
   @ViewChild('messages') private messagesScroller: ElementRef;
   @Input() chatMessages: ChatMessage[];
   @Input() roomId: string;
+  @Input() user: UserChatRoom;
   @Output() onLeaveChannel = new EventEmitter<string>();
+  me: User;
   message: string;
 
-  constructor(private readonly chatService: ChatService) {}
+  constructor(
+    private readonly chatService: ChatService,
+    private readonly authService: AuthService,
+    private readonly dialogService: DialogService
+  ) {}
 
   ngOnDestroy(): void {
     this.unsubscribeAll$.next();
@@ -39,6 +49,14 @@ export class ChatMessageListComponent
     if (this.messagesScroller) {
       this.scrollToBottom();
     }
+    this.authService
+      .getCurrentUser()
+      .pipe(takeUntil(this.unsubscribeAll$))
+      .subscribe({
+        next: (user) => {
+          this.me = user;
+        },
+      });
   }
 
   ngOnInit(): void {
@@ -78,5 +96,20 @@ export class ChatMessageListComponent
       .subscribe(() => {
         this.onLeaveChannel.emit(roomId);
       });
+  }
+
+  changePassword(roomId: string): void {
+    const ref = this.dialogService.open(PasswordDialogComponent, {
+      header: 'Enter password',
+      width: '50%',
+    });
+
+    ref.onClose.pipe(take(1)).subscribe({
+      next: (data: { password: string }) => {
+        if (data) {
+          this.chatService.changePassword(roomId, data.password);
+        }
+      },
+    });
   }
 }

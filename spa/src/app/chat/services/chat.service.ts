@@ -70,4 +70,19 @@ export class ChatService {
   userLeaveRoom(roomId: string): Observable<void> {
     return this.baseApiService.deleteOne(`/chatrooms/${roomId}`);
   }
+
+  getRoomUser(roomId: string, userId: number): Observable<UserChatRoom> {
+    console.log(roomId);
+
+    return this.baseApiService.getOne(
+      `/chatrooms/${roomId}/user`,
+      new HttpParams().append('userId', userId)
+    );
+  }
+
+  changePassword(roomId: string, password: string): Observable<void> {
+    return this.baseApiService.postOne(`/chatrooms/${roomId}/changepassword`, {
+      password,
+    });
+  }
 }

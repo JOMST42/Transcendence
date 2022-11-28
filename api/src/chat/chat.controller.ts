@@ -13,6 +13,7 @@ import { GetUser } from '../auth/decorator';
 import { JwtGuard } from '../auth/guards';
 import {
   ChangePasswordDto,
+  ChangeRoleDto,
   ChatRoomWithMessages,
   CreateChatRoomDto,
 } from './dto';
@@ -53,6 +54,14 @@ export class ChatController {
     return await this.chatService.getRoomWithMessages(user.id, id);
   }
 
+  @Get(':id/user')
+  async getUserChatRoom(
+    @Param('id') roomId: string,
+    @Query('userId') userId: number,
+  ): Promise<UserChatRoom> {
+    return await this.chatService.getUserChatRoom(userId, roomId);
+  }
+
   @Delete(':id')
   async leaveRoom(
     @GetUser() user: User,
@@ -68,5 +77,19 @@ export class ChatController {
     @Body() dto: ChangePasswordDto,
   ): Promise<void> {
     await this.chatService.changePassword(user.id, roomId, dto.password);
+  }
+
+  @Post(':id/changerole')
+  async changeRole(
+    @GetUser() user: User,
+    @Param('id') roomId: string,
+    @Body() dto: ChangeRoleDto,
+  ): Promise<UserChatRoom> {
+    return this.chatService.changeUserRole(
+      user.id,
+      dto.userId,
+      roomId,
+      dto.role,
+    );
   }
 }
