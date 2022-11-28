@@ -6,16 +6,10 @@ import {
   animate,
   keyframes,
 } from '@angular/animations';
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { UserService } from 'src/app/user/services';
-import { AudioHandler } from '../../../play/classes';
 import { PlayService } from '../../../play/play.service';
-import { GameInfo, RoomInfo, Score, Vector3 } from '../../interfaces';
-
-export interface EntityInfo {
-  pos: Vector3;
-  size: Vector3;
-}
+import { EntityInfo, GameInfo, RoomInfo } from '../../interfaces';
 
 export interface Pad3D {
 	x:number,
@@ -58,9 +52,6 @@ export class Pong3DScreenComponent implements OnInit {
 	p1Joined: boolean = false;
 	p2Joined: boolean = false;
 
-	afterImage: Ball3D[] = [];
-	afterTimer = {frames:0, reset:5};
-
 	roomInfo?: RoomInfo; 
 
   constructor(
@@ -89,7 +80,6 @@ export class Pong3DScreenComponent implements OnInit {
 			info3D.pad2 = this.applyPerspectivePad(info.pad2);
 			info3D.ball = this.applyPerspectiveBall(info.ball);
       
-
 			this.draw3D(info3D);
     });
 
@@ -125,14 +115,6 @@ export class Pong3DScreenComponent implements OnInit {
 		this.context.stroke();
 
 		this.drawPad(info.pad1, this.p1Joined, this.p1Ready);
-
-		this.drawBall(info.ball);
-		if (this.afterImage.length >= 10){
-			this.afterImage.shift();
-		}
-		this.afterImage.push(info.ball);
-		this.drawAfterImage(); // TODO
-
 		this.drawPad(info.pad2, this.p2Joined, this.p2Ready);
 		
 		this.context.strokeStyle = '#FFFFFF';
@@ -241,19 +223,6 @@ export class Pong3DScreenComponent implements OnInit {
 		this.p2Ready = info.user2Ready;
 		this.p1Joined = info.user1Joined;
 		this.p2Joined = info.user2Joined;
-	}
-
-	drawAfterImage() {
-		let width = this.gameCanvas.nativeElement.width
-		let height = this.gameCanvas.nativeElement.height
-		let afterCount = this.afterImage.length;
-		let i: number = 0;
-		while (i < afterCount)
-		{
-			this.afterImage[i].rad *= 0.2
-			this.drawBall(this.afterImage[i]);
-			i++;
-		}
 	}
 
   private refresh() {

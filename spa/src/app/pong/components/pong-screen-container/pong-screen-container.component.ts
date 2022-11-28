@@ -83,10 +83,6 @@ export class PongScreenContainerComponent implements OnInit {
   setGameListener() {
     this.server.listenGameUpdate().subscribe((info: GameInfo | undefined | null) => {
 			if (!info) return;
-			this.score.p1 = info.score.p1;
-			this.score.p2 = info.score.p2;
-			this.timer = Math.floor(info.time);
-
       if (info.events) this.handleEvents(info.events);
     });
 
@@ -169,6 +165,8 @@ export class PongScreenContainerComponent implements OnInit {
 			this.countdown = 0
 			this.countdownLabel = '';
 		}
+		this.score.p1 = info.score.p1;
+		this.score.p2 = info.score.p2;
 	}
 
   handleEvents(events: any[]) {
@@ -195,6 +193,8 @@ export class PongScreenContainerComponent implements OnInit {
   }
 
   scoreEvent(payload: any) {
+		this.score[0] = payload.p1;
+    this.score[1] = payload.p2;
     this.audio.playScore(true);
   }
 

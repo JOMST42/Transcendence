@@ -10,3 +10,17 @@
 				-13px -11px #000,
 				-15px -15px #000;
 }
+
+@media  screen and (min-width: 500px) and (max-width: 800px) {
+	#gameCanvas {
+		width:  500px;
+		height: auto;
+	}
+}
+
+@media  screen and (min-width: 0px) and (max-width: 500px) {
+	#gameCanvas {
+		width:  250px;
+		height: auto;
+	}
+}

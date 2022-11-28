@@ -86,7 +86,7 @@ export class PongGameModule {
   // update(): {};
 
   getGameInfo(): GameInfo {
-    let pong_info: GameInfo;
+    let pongInfo: GameInfo;
     const pos1 = this.getPad1().getPos();
     const pos2 = this.getPad2().getPos();
     const bPos = this.ball.getPos();
@@ -102,25 +102,17 @@ export class PongGameModule {
       x: (bPos.x + this.ball.getSize().x / 2) / this.dimension.x,
       y: (bPos.y + this.ball.getSize().x / 2) / this.dimension.y,
     };
-    pong_info = {
+    pongInfo = {
       ball: {
         pos: ballPct,
         size: { x: this.ball.getRadius(), y: this.ball.getRadius() },
       },
       pad1: { pos: pos1Pct, size: this.getPad1().getSize() },
       pad2: { pos: pos2Pct, size: this.getPad2().getSize() },
-      score: { p1: this.score.p1, p2: this.score.p2 },
-      state: {
-        started: this.started,
-        paused: this.paused,
-        victory: this.victory,
-        finished: this.finished,
-      },
-      time: this.gameTimer.getTime(),
       events: this.events,
     };
     this.events = [];
-    return pong_info;
+    return pongInfo;
   }
 
   movePad(i: number, dir: string) {

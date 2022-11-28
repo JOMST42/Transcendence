@@ -14,11 +14,6 @@ import { AudioHandler } from '../../../play/classes';
 import { PlayService } from '../../../play/play.service';
 import { GameInfo, RoomInfo, Score, Vector3 } from '../../interfaces';
 
-export interface EntityInfo {
-  pos: Vector3;
-  size: Vector3;
-}
-
 @Component({
   selector: 'app-pong-screen',
   templateUrl: './pong-screen.component.html',

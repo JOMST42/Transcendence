@@ -43,11 +43,6 @@ export class GameComponent implements OnInit {
   // }
 
   setGameListener() {
-
-		this.server.listen('queue-success').subscribe((info: string)=> {
-			this.log('queue success!');
-		});
-
     this.server.listenGameStart().then((info: Response) => {
       this.log(info?.msg);
       // this.audio.playGame(true, true);
