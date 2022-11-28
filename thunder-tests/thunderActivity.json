@@ -1,0 +1,80 @@
+[
+  {
+    "_id": "61059859-744e-4fbc-affa-911570ee4327",
+    "colId": "history",
+    "containerId": "",
+    "name": "http://localhost:3000/api/auth/ft/login",
+    "url": "http://localhost:3000/api/auth/ft/login",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2022-11-28T22:26:12.158Z",
+    "modified": "2022-11-28T22:26:12.158Z",
+    "headers": [],
+    "params": [],
+    "auth": {
+      "type": "oauth2",
+      "oauth2": {
+        "grantType": "authorization_code",
+        "tokenUrl": "",
+        "clientId": "",
+        "clientSecret": "",
+        "clientAuth": "in-header"
+      }
+    },
+    "tests": []
+  },
+  {
+    "_id": "3a7453b5-d027-4081-91d5-86cc24e5ce98",
+    "colId": "history",
+    "containerId": "",
+    "name": "http://localhost:3000/api/users/me",
+    "url": "http://localhost:3000/api/users/me",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2022-11-28T22:27:38.064Z",
+    "modified": "2022-11-28T22:27:52.764Z",
+    "headers": [],
+    "params": [],
+    "auth": {
+      "type": "bearer",
+      "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImlzVHdvRmFjdG9yQXV0aEVuYWJsZWQiOmZhbHNlLCJpc1R3b0ZhY3RvckF1dGhlbnRpY2F0ZWQiOmZhbHNlLCJpYXQiOjE2Njk2NzQyNDYsImV4cCI6MTY2OTc2MDY0Nn0.H759oGS_B-JCSds021jG4jbg9QUSES5RaTxYjOQ94r4"
+    },
+    "tests": []
+  },
+  {
+    "_id": "70ead58e-dbb4-4e6d-8f7c-1ff92cefeb40",
+    "colId": "history",
+    "containerId": "",
+    "name": "http://localhost:3000/api/auth/login",
+    "url": "http://localhost:3000/api/auth/login",
+    "method": "POST",
+    "sortNum": 0,
+    "created": "2022-11-28T22:28:26.728Z",
+    "modified": "2022-11-28T22:28:26.728Z",
+    "headers": [],
+    "params": [],
+    "auth": {
+      "type": "bearer",
+      "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImlzVHdvRmFjdG9yQXV0aEVuYWJsZWQiOmZhbHNlLCJpc1R3b0ZhY3RvckF1dGhlbnRpY2F0ZWQiOmZhbHNlLCJpYXQiOjE2Njk2NzQyNDYsImV4cCI6MTY2OTc2MDY0Nn0.H759oGS_B-JCSds021jG4jbg9QUSES5RaTxYjOQ94r4"
+    },
+    "tests": []
+  },
+  {
+    "_id": "acff7b2e-c5cf-4eef-b2dd-8a0417530097",
+    "colId": "history",
+    "containerId": "",
+    "name": "http://localhost:3000/api/auth/2fa/turn-on",
+    "url": "http://localhost:3000/api/auth/2fa/turn-on",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2022-11-28T22:30:18.431Z",
+    "modified": "2022-11-28T22:44:01.071Z",
+    "headers": [],
+    "params": [],
+    "auth": {
+      "type": "bearer",
+      "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImlzVHdvRmFjdG9yQXV0aEVuYWJsZWQiOmZhbHNlLCJpc1R3b0ZhY3RvckF1dGhlbnRpY2F0ZWQiOmZhbHNlLCJpYXQiOjE2Njk2NzQyNDYsImV4cCI6MTY2OTc2MDY0Nn0.H759oGS_B-JCSds021jG4jbg9QUSES5RaTxYjOQ94r4"
+    },
+    "tests": []
+  }
+]
