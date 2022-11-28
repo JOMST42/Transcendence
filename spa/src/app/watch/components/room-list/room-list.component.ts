@@ -52,13 +52,13 @@ export class RoomListComponent implements OnInit {
   }
 
 	onSelect(room: {id:string, name:string}): void {
-    this.server.emit('join-room', room.id);
+    this.server.emit('join-room', room.id).catch(() => {});
   }
 
 	async getRooms(){
 		this.server.emit('get-rooms', {}).then((data:Response) => 
 			data.code === 0 ? this.fillRooms(data.payload!) : null
-			);
+			).catch(() => {});
 	}
 
 	async fillRooms(rooms:RoomInfo[]) {

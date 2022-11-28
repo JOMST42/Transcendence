@@ -51,7 +51,6 @@ Ton meilleur copain de jeu*/
 			this.timePlayed += game.timePlayed;
 		  });
 		   //je recupère toutes les games du joueurs
-          console.log(data);
 					this.gamesFetched = true;
         },
         error: (err) => {
@@ -68,7 +67,6 @@ Ton meilleur copain de jeu*/
           this.wins = data;
 					this.winsFetched = true;
 		   //je recupère toutes les games du joueurs
-          console.log(data);
         },
         error: (err) => {
 					this.winsFetched = true;
@@ -84,7 +82,6 @@ Ton meilleur copain de jeu*/
           this.losses = data;
 					this.lossesFetched = true;
 		   //je recupère toutes les games du joueurs
-          console.log(data);
         },
         error: (err) => {
 					this.lossesFetched = true;

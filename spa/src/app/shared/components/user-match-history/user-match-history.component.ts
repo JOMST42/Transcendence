@@ -35,8 +35,6 @@ export class UserMatchHistoryComponent implements OnInit {
 	private matchTable! : Table;
 
 	games: Game[] = [];
-	first?: UserMatch;
-	last?: UserMatch;
 	activeMatches: UserMatch[];
 	opponents: Opponent[]
 	@Input() user!: User;
@@ -68,6 +66,7 @@ export class UserMatchHistoryComponent implements OnInit {
         games.forEach(async (game: Game) => {
 					await this.gameToMatch(game).then((match) => {
 						this.activeMatches.push(match)
+						console.log('???');
 					});
 				});
       },
@@ -106,7 +105,7 @@ export class UserMatchHistoryComponent implements OnInit {
 				});
 			});
 
-			match.date = this.parseISOString(game.endTime);
+			match.date = this.parseISOString(game.startTime);
 			match.dateString = this.dateToString(match.date);
 			match.id = game.id;
 			if (opponentPn === 1) match.score = {you:game.scorePlayer2, them:game.scorePlayer1};
@@ -117,10 +116,6 @@ export class UserMatchHistoryComponent implements OnInit {
 			match.timeString = this.numToMMSS(game.timePlayed);
 			resolve(match);
 		});
-	}
-
-	fetchUserGames()
-	{
 	}
 
 	numToMMSS(time: number): string  {
@@ -135,11 +130,15 @@ export class UserMatchHistoryComponent implements OnInit {
 	}
 
 	parseISOString(s): Date {
+		if (!s)
+			return null;
 		var b = s.split(/\D+/);
 		return new Date(Date.UTC(b[0], --b[1], b[2], b[3], b[4], b[5], b[6]));
 	}
 
 	dateToString(date: Date): string  {
+		if (!date)
+			return '';
 		return date.getFullYear() + '/' +
 			date.getMonth() + '/' +
 			date.getDay() + ' ' +
