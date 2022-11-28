@@ -22,7 +22,7 @@ enum ButtonState {
 export class QueueButtonComponent implements OnInit {
 
 	labelJoin = "Join";
-	labelProcess = "processing...";
+	labelProcess = "...";
 	labelLeave = "Leave";
 	defaultStyle = "p-button-raised p-button-outlined"
 	private processStyle = "p-button-raised p-button-outlined p-button-secondary"
@@ -52,7 +52,6 @@ export class QueueButtonComponent implements OnInit {
 		this.updateSub?.unsubscribe();
 		this.updateSub = this.pongService.canQueue(this.pongService.user.id).pipe(take(1)).subscribe({
       next: (data: Response) => {
-				console.log(data.code);
         if (data.code === 0) {
 					this.changeToJoin();
 				}
@@ -85,8 +84,6 @@ export class QueueButtonComponent implements OnInit {
 	}
 
 	async joinQueue(){
-		console.log('Attempting to join queue...');
-		
     await this.server
       .emit('join-queue', {})
       .then((data:Response) => {
@@ -100,7 +97,6 @@ export class QueueButtonComponent implements OnInit {
   }
 
   async leaveQueue() {
-		console.log('Attempting to leave queue...');
     await this.server
       .emit('leave-queue', {})
       .then((data:Response) => {
@@ -112,10 +108,6 @@ export class QueueButtonComponent implements OnInit {
 			});
 		return;
   }
-
-  // private async leaveQueueResponse(data: Response) {
-  //   console.log('leave queue: ' + data.code + ' ' + data.msg);
-  // }
 
 	private changeToJoin() {
 		this.disabled = false;

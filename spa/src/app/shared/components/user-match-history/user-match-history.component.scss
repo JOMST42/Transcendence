@@ -1,22 +1,24 @@
 .matchWinner {
-	background-color: rgba(green, 0.2);
+	background-color: rgba(green, 0.5);
 }
 
 .matchLoser {
-	background-color: rgba(red, 0.2);
+	background-color: rgba(red, 0.5);
 }
 
 :host ::ng-deep p-table{
-  background-color: rgba(#9969c4, 1) !important;
+  background-color: rgba(#7869C4, 1) !important;
 	color: #fff;
+	border: black;
+
 }
 :host ::ng-deep th{
-  background-color: rgba(#9969c4, 1) !important;
+  background-color: rgba(#7869C4, 1) !important;
 	color: #fff;
 }
 
 :host ::ng-deep tr{
-  background-color: rgba(#220022, 0.5) !important;
+  background-color: rgba(#00A595, 1) !important;
 	-webkit-text-stroke: black;
 	-webkit-text-stroke-width: 1px;
 	font-family: "PixelPowerline";

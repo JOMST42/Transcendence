@@ -51,8 +51,6 @@ export class MatchHistoryComponent implements OnInit {
 					{ field: 'timePlayed', header: 'Time Played' },
 					{ field: 'date', header: 'Date' },
         ];
-				console.log(this.user.displayName); // WARNING
-
 				this.refreshMatches();
 				this.loading = false;
     }
@@ -84,7 +82,6 @@ export class MatchHistoryComponent implements OnInit {
 				this.userService.getUserById(game.player1Id).pipe(take(1)).subscribe({
 					next: (user) => {
 						match.p1 = {name:user.displayName, img:user.avatarUrl};
-						console.log(match.p1.name);
 						resolve(null);
 					},
 					error: (err) => {
@@ -97,7 +94,6 @@ export class MatchHistoryComponent implements OnInit {
 				this.userService.getUserById(game.player2Id).pipe(take(1)).subscribe({
 					next: (user) => {
 						match.p2 = {name:user.displayName, img:user.avatarUrl};
-						console.log(match.p2.name);
 						resolve(null);
 					},
 					error: (err) => {
@@ -122,18 +118,15 @@ export class MatchHistoryComponent implements OnInit {
 	}
 
 	numToMMSS(time: number): string  {
-		var seconds = Math.trunc(time % 60);
-		var minutes = Math.trunc(time / 60);
-		return minutes + 'm ' + seconds + 's';
+		let seconds = Math.trunc(time % 60);
+		let minutes = Math.trunc(time / 60);
+		let numString : string = '';
+		if (minutes < 10) numString += '0';
+		numString += minutes + ':';
+		if (seconds < 10) numString += '0';
+		numString += seconds;
+		return numString;
 	}
-
-	// dateToString(date: Date): string  {
-	// 	return date.getMonth() + '/' +
-	// 		date.getDay() + ' ' +
-	// 		date.getHours() + ':' +
-	// 		date.getMinutes() + ':' +
-	// 		date.getSeconds();
-	// }
 
   clear(table: Table) {
     table.clear();

@@ -1,5 +1,5 @@
 import { Time } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { Table } from 'primeng/table';
 import { take } from 'rxjs';
 import { User } from 'src/app/user/models';
@@ -31,8 +31,12 @@ export interface Opponent {
 })
 export class UserMatchHistoryComponent implements OnInit {
 
+	@ViewChild('matchTable', { static: false })
+	private matchTable! : Table;
+
 	games: Game[] = [];
-	matches: UserMatch[];
+	first?: UserMatch;
+	last?: UserMatch;
 	activeMatches: UserMatch[];
 	opponents: Opponent[]
 	@Input() user!: User;
@@ -43,11 +47,17 @@ export class UserMatchHistoryComponent implements OnInit {
     
 
 
-    ngOnInit() {
+	ngOnInit() {
 
-				this.refreshMatches();
-				this.loading = false;
-    }
+		this.refreshMatches();
+		this.loading = false;
+		this.initTable();
+	}
+
+	async initTable() {
+		if (!this.matchTable) setTimeout(() => this.initTable(), 1000);
+		else this.matchTable.reset();
+	}
 
 	async refreshMatches() {
 		this.activeMatches = [];
@@ -65,6 +75,7 @@ export class UserMatchHistoryComponent implements OnInit {
         console.log(err);
       },
     });
+		if (this.matchTable) this.matchTable.reset();
 	}
 
 	async gameToMatch(game: Game): Promise<UserMatch> {
@@ -113,9 +124,14 @@ export class UserMatchHistoryComponent implements OnInit {
 	}
 
 	numToMMSS(time: number): string  {
-		var seconds = Math.trunc(time % 60);
-		var minutes = Math.trunc(time / 60);
-		return minutes + 'm ' + seconds + 's';
+		let seconds = Math.trunc(time % 60);
+		let minutes = Math.trunc(time / 60);
+		let numString : string = '';
+		if (minutes < 10) numString += '0';
+		numString += minutes + ':';
+		if (seconds < 10) numString += '0';
+		numString += seconds;
+		return numString;
 	}
 
 	parseISOString(s): Date {

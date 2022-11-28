@@ -65,7 +65,7 @@ export class PongEndOverlayComponent implements OnInit {
 				this.endText = this.lossText;
 				break;
 		}
-		console.log(this.endText);
+
 	}
 		// if (this.isCancelled) {
 		// 	this.winnerAvatarUrl = '';

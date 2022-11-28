@@ -1,9 +1,13 @@
 
 <div class="card">
-	<p-table #dt1 [value]="activeMatches" dataKey="id"
-			[rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" [loading]="loading"
-			[paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-			[globalFilterFields]="['match.opponent.name','match.timePlayed']">
+	<p-table #matchTable 
+		[value]="activeMatches"
+		dataKey="id"
+		[rows]="5"
+		[rowsPerPageOptions]="[5,10,20]"
+		[loading]="loading"
+		[paginator]="true"
+			>
 			<ng-template pTemplate="header">
 					<tr>
 						<th style="max-width:5rem" [pSortableColumn]="'win'">

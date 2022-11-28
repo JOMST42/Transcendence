@@ -114,7 +114,6 @@ export class PongScreenComponent implements OnInit {
     });
 
     this.server.listen("player-ready").subscribe((info: number) => {
-			console.log(info);
     	if (info === 1)
 				this.p1Ready = true;
 			if (info === 2)

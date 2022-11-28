@@ -23,7 +23,6 @@ export class WatchComponent implements OnInit {
 		this.watchService.getGames().pipe(take(1)).subscribe({
       next: (games) => {
         this.games = games;
-        //console.log(data);
       },
       error: (err) => {
         console.log(err);

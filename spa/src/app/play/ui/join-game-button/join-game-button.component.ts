@@ -62,7 +62,6 @@ export class JoinGameButtonComponent {
   }
 
   async unjoin() {
-		console.log('Attempting to leave queue...');
     await this.server
       .emit('leave-game', {})
       .then((data: Response) => {
