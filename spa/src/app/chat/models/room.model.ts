@@ -3,7 +3,7 @@ import { ChatMessage } from './chat-message.model';
 
 export interface UserChatRoom {
   userId?: number;
-  roomId?: number;
+  roomId?: string;
   isOwner?: boolean;
   role?: 'ADMIN' | 'USER';
   user?: User;

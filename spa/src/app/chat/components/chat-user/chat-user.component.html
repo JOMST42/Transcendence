@@ -9,7 +9,11 @@
       color: 'var(--text-color)'
     }"
   ></p-avatar>
-  <p [ngStyle]="{ color: user.role === 'ADMIN' ? 'red' : 'white' }">
+  <p
+    [ngStyle]="{
+      color: user.role === 'ADMIN' ? (user.isOwner ? 'red' : 'orange') : 'white'
+    }"
+  >
     {{ user.user.displayName }}
   </p>
 </div>

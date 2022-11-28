@@ -8,6 +8,7 @@ import { User } from '../../../user/models';
 import { Room, UserChatRoom } from '../../models';
 import { ChatService } from '../../services';
 import { PasswordDialogComponent } from '../password-dialog/password-dialog.component';
+import { UserDialogComponent } from '../user-dialog/user-dialog.component';
 
 @Component({
   selector: 'app-chat',
@@ -149,7 +150,46 @@ export class ChatComponent implements OnInit, OnDestroy {
     this.selectedChannel = undefined;
   }
 
-  userListClick(user: UserChatRoom): void {}
+  userListClick(user: UserChatRoom): void {
+    if (user.userId === this.me.id) {
+      return;
+    }
+
+    const userChat = this.selectedChannel.users.find((u) => {
+      return u.userId === this.me.id;
+    });
+
+    if (!userChat.isOwner && user.role === 'ADMIN') {
+      return;
+    }
+
+    const ref = this.dialogService.open(UserDialogComponent, {
+      header: user.user.displayName,
+      width: '50%',
+      height: '500px',
+    });
+
+    ref.onClose.pipe(take(1)).subscribe({
+      next: (data: { role: 'ADMIN' | 'USER' }) => {
+        if (data) {
+          this.chatService
+            .changeRole(user.userId, user.roomId, data.role)
+            .pipe(take(1))
+            .subscribe({
+              next: (user) => {
+                const toUpdate = this.selectedChannel.users.find((u) => {
+                  return u.userId === user.userId;
+                });
+
+                if (toUpdate) {
+                  toUpdate.role = data.role;
+                }
+              },
+            });
+        }
+      },
+    });
+  }
 
   findMe(): UserChatRoom {
     return this.selectedChannel?.users.find((user) => {

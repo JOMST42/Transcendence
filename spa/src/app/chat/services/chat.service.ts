@@ -85,4 +85,15 @@ export class ChatService {
       password,
     });
   }
+
+  changeRole(
+    userId: number,
+    roomId: string,
+    role: 'ADMIN' | 'USER'
+  ): Observable<UserChatRoom> {
+    return this.baseApiService.postOne(`/chatrooms/${roomId}/changerole`, {
+      userId,
+      role,
+    });
+  }
 }

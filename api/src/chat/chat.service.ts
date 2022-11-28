@@ -393,6 +393,9 @@ export class ChatService {
       data: {
         role,
       },
+      include: {
+        user: true,
+      },
     });
   }
 }

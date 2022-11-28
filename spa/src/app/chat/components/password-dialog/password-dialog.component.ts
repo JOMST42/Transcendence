@@ -20,13 +20,7 @@ export class PasswordDialogComponent implements OnInit {
 
   close(): void {
     this.password = this.password.trim();
-    if (this.password.length > 0 && this.password.length < 8) {
-      this.toastService.showError(
-        'Invalid password',
-        'The channel password must have at least 8 characters'
-      );
-      return;
-    }
+
     this.ref.close({
       password: this.password,
     });
