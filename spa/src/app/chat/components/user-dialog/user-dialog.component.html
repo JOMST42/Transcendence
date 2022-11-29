@@ -1,10 +1,31 @@
-<div>
-  <h5>Role</h5>
-  <p-dropdown
-    [options]="roles"
-    [(ngModel)]="role"
-    optionLabel="name"
-    optionValue="value"
-  ></p-dropdown>
-  <button (click)="close()" pButton type="button" label="Update Role"></button>
+<div class="flex flex-column">
+  <div>
+    <h5>Role</h5>
+    <p-dropdown
+      class="mr-2"
+      [options]="roles"
+      [(ngModel)]="role"
+      optionLabel="name"
+      optionValue="value"
+    ></p-dropdown>
+    <button
+      (click)="close()"
+      pButton
+      type="button"
+      label="Update Role"
+    ></button>
+  </div>
+  <div class="mt-4">
+    <app-game-invite [userId]="userId"></app-game-invite>
+  </div>
+  <div class="mt-4">
+    <button
+      class="mr-2"
+      (click)="close()"
+      pButton
+      type="button"
+      label="Ban"
+    ></button>
+    <button (click)="close()" pButton type="button" label="Mute"></button>
+  </div>
 </div>

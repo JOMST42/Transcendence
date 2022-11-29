@@ -13,6 +13,7 @@ export class UserDialogComponent implements OnInit {
     { name: 'Admin', value: 'ADMIN' },
     { name: 'User', value: 'USER' },
   ];
+  userId: number;
 
   constructor(
     private readonly ref: DynamicDialogRef,
@@ -20,7 +21,9 @@ export class UserDialogComponent implements OnInit {
     private readonly toastService: ToastService
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.userId = this.config.data;
+  }
 
   close(): void {
     if (!this.role) {

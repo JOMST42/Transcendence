@@ -167,6 +167,7 @@ export class ChatComponent implements OnInit, OnDestroy {
       header: user.user.displayName,
       width: '50%',
       height: '500px',
+      data: user.userId,
     });
 
     ref.onClose.pipe(take(1)).subscribe({

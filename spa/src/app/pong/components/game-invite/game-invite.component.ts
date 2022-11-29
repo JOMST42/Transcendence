@@ -7,15 +7,13 @@ import { GameInviteService } from '../../services/game-invite.service';
   templateUrl: './game-invite.component.html',
 })
 export class GameInviteComponent implements OnInit {
-	@Input() user!: User;
+  @Input() userId!: number;
 
-  constructor(private inviteService: GameInviteService) { }
+  constructor(private inviteService: GameInviteService) {}
 
-  ngOnInit(): void {
+  ngOnInit(): void {}
+
+  invitePlayer() {
+    this.inviteService.invitePlayer(this.userId);
   }
-
-	invitePlayer() {
-		this.inviteService.invitePlayer(this.user.id);
-	}
-
 }
