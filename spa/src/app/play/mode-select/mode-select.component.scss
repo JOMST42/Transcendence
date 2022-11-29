@@ -24,6 +24,8 @@
 
 .mode-container {
 	position: relative;
+//   transform: translate(-50%, -50%);
+
 }
 
 .queu-button {
@@ -39,7 +41,7 @@
 }
 
 .classic-img { 
-	display: block;
+	// display: block;
 	position: relative;
 	border-radius: 10px;
 	max-height: 600px;
@@ -79,6 +81,8 @@
 }
 
 h2 {
+	// transform: translate(20%);
+
 	font-family: PixelPowerline;
 	font-size: 42px;
 	-webkit-text-stroke: black;
