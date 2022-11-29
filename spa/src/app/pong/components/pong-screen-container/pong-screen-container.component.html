@@ -16,9 +16,9 @@
 			<app-pong-screen *ngIf="!threeD" class="gameCanvas"></app-pong-screen>
 			<span id="score1" class="score" [innerHTML]="score.p1"></span>
 			<span id="score2" class="score" [innerHTML]="score.p2"></span>
-			<app-pong-end-overlay *ngIf="roomInfo?.user2 && gameEnded" id="pongEndOverlay" 
-				[winnerAvatarUrl]="roomInfo.user2.avatarUrl"
-				[winnerName]="'bilbo'"
+			<app-pong-end-overlay *ngIf="gameEnded" id="pongEndOverlay" 
+				[winnerAvatarUrl]="winner?.avatarUrl"
+				[winnerName]="winner?.displayName"
 				[endState]="endState">
 			</app-pong-end-overlay>
 			<!-- <app-pong-end-overlay id="pongEndOverlay" 

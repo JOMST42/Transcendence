@@ -114,8 +114,9 @@ export class Pong3DScreenComponent implements OnInit {
 		this.context.lineTo(this.width, info.pad2.y + 3);
 		this.context.stroke();
 
-		this.drawPad(info.pad1, this.p1Joined, this.p1Ready);
-		this.drawPad(info.pad2, this.p2Joined, this.p2Ready);
+		this.drawPad(info.pad1, this.p1Ready, this.p1Joined);
+		this.drawBall(info.ball);
+		this.drawPad(info.pad2, this.p2Ready, this.p2Joined);
 		
 		this.context.strokeStyle = '#FFFFFF';
 		this.context.moveTo(0, info.pad2.y + 3);

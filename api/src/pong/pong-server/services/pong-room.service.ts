@@ -19,7 +19,7 @@ import { CreateGameDto, EndGameDto } from '../../../prisma/game/dto';
 import { RoomState } from '../data/enums';
 import { Response, RoomInfo } from '../data/interfaces';
 import { PongServerGateway } from '../gateway/pong-server.gateway';
-import { Game, User } from '@prisma/client';
+import { Game, User, UserStatus } from '@prisma/client';
 import { EventEmitter2, OnEvent } from '@nestjs/event-emitter';
 import { UserGameState } from 'src/pong/data/enums';
 
@@ -33,13 +33,11 @@ export class PongRoomService {
   rooms: PongRoom[] = [];
   max_rooms = 20;
 
-  private disconnectListener: any;
-
   public classic_set: GameSettings = {
-    score_to_win: 4,
+    score_to_win: 7,
     ball_radius: 10,
     pad_size: 50,
-    pad_speed: 600,
+    pad_speed: 500,
     ball_speed: 5,
     ball_hit_multi: 1.05,
   };
@@ -48,7 +46,7 @@ export class PongRoomService {
     score_to_win: 100,
     ball_radius: 10,
     pad_size: 50,
-    pad_speed: 600,
+    pad_speed: 500,
     ball_speed: 5,
     ball_hit_multi: 1.05,
   };
@@ -226,11 +224,16 @@ export class PongRoomService {
 
   private userJoinRoomAsPlayer(user: Socket, room: PongRoom) {
     this.userJoinRoom(room.getRoomId(), user);
+    try {
+      if (user.data?.user?.id)
+        user.broadcast.emit('user-status-change', user.data.user.id);
+    } catch (e) {}
   }
 
   addUser(user: Socket) {
     this.users.push(user);
     this.setRoomListeners(user);
+    this.setDisconnectListener(user);
     this.handleReconnection(user);
   }
 
@@ -258,6 +261,18 @@ export class PongRoomService {
 
   getRoomCount(): number {
     return this.rooms.length;
+  }
+
+  getUserOnlineStatus(userId: number): UserStatus {
+    const room = this.rooms.find((room) => {
+      if (room.getUserGameState(userId) != UserGameState.OFFLINE) {
+        return true;
+        return false;
+      }
+    });
+    if (room) return UserStatus.IN_GAME;
+    if (this.getUserWithId(userId)) return UserStatus.ONLINE;
+    return UserStatus.OFFLINE;
   }
 
   getUserGameState(userId: number): UserGameState {
@@ -300,6 +315,12 @@ export class PongRoomService {
   }
 
   /********** EVENT LISTENERS **********/
+  setDisconnectListener(user: Socket) {
+    user.on('disconnect', () => {
+      this.disconnectUser(user);
+    });
+  }
+
   setRoomListeners(user: Socket) {
     user.on('leave-room', (id: string, callback) => {
       callback(this.userLeaveRooms(user));

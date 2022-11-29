@@ -34,7 +34,7 @@ export class PongEndOverlayComponent implements OnInit {
 	spectatorText: string = "Winner: "
 
 	winHeader: string = "WIN!"
-	winText: string = "You've pwned "
+	winText: string = ""
 
 	lossHeader: string = "Lost..."
 	lossText: string = "You've been pwned by "

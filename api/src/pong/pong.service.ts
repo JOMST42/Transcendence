@@ -11,6 +11,7 @@ import { PongInviteService } from './pong-server/services/pong-invite.service';
 import { PongQueueService } from './pong-server/services/pong-queue.service';
 import { UserState } from './data/interfaces';
 import { UserGameState, InviteState, QueueState } from './data/enums';
+import { UserStatus } from '@prisma/client';
 
 @Injectable({})
 export class PongService {
@@ -21,6 +22,10 @@ export class PongService {
     private inviteService: PongInviteService,
     private queueService: PongQueueService,
   ) {}
+
+  getOnlineStatus(userId: number): UserStatus {
+    return this.roomService.getUserOnlineStatus(userId);
+  }
 
   getUserState(userId: number): UserState {
     let states: UserState;

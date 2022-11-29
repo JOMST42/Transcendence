@@ -27,6 +27,7 @@ import { UserService } from 'src/user/services/user.service';
 import { PongInviteService } from '../services/pong-invite.service';
 import { PongService } from 'src/pong/pong.service';
 import { EventEmitter2 } from '@nestjs/event-emitter';
+import { UserConnectionService } from 'src/user/services/user-connection.service';
 
 @Injectable({})
 @UseInterceptors(new PongServerInterceptor())
@@ -48,8 +49,9 @@ export class PongServerGateway
     @Inject(forwardRef(() => PongInviteService))
     private inviteService: PongInviteService,
     private pongService: PongService,
-    private authService: AuthService,
-    private userService: UserService,
+    private readonly authService: AuthService,
+    private readonly userService: UserService,
+    private readonly userConnectionService: UserConnectionService,
     private prisma: PrismaService,
   ) {}
 
@@ -94,11 +96,19 @@ export class PongServerGateway
           break tryBlock;
         }
 
+        await this.userConnectionService.create(prismaUser.id, {
+          socketId: socket.id,
+          type: 'GAME',
+        });
+
         socket.data.user = prismaUser;
         socket.data.userRoom = <string>('u' + prismaUser.id);
         socket.data.gameRoom = 0;
         socket.join(socket.data.userRoom);
         this.roomService.addUser(socket);
+        // this.userConnectionService.create(prismaUser.id, {
+
+        // });
         // socket.setMaxListeners(Infinity); // TODO
         this.logger.log(
           'Socket connection: socket connected with nickname ' +
@@ -111,19 +121,20 @@ export class PongServerGateway
       //   this.roomService.createGameRoom(socket, socket);
       // }
     } catch (e) {
-      data = { code: 1, msg: 'unknown connection exception' };
+      data = { code: 1, msg: 'connection exception' };
     } finally {
-      if (data.code === 0) socket.emit('connect-success', data);
-      else {
+      if (data.code === 0) {
+        socket.emit('connect-success', data);
+        socket.broadcast.emit('user-status-change', socket.data.user.id);
+      } else {
         socket.emit('connect-error', data);
-        socket.disconnect();
+        this.disconnectSocket(socket);
       }
     }
   }
 
   handleDisconnect(socket: Socket) {
     this.disconnectSocket(socket);
-    this.logger.log('Server log: socket disconnected');
   }
 
   @SubscribeMessage('join-queue')
@@ -166,8 +177,16 @@ export class PongServerGateway
    * This is the "master disconnect".
    * It needs to make sure everything is ok before disconnecting.
    */
-  private disconnectSocket(socket: Socket) {
+  private async disconnectSocket(socket: Socket) {
+    try {
+      await this.userConnectionService.deleteBySocketId(socket.id);
+    } catch {}
     socket.disconnect;
+    try {
+      if (socket.data?.user?.id)
+        socket.broadcast.emit('user-status-change', socket.data.user.id);
+    } catch (e) {}
+    this.logger.log('Socket disconnected');
   }
 
   showServerInfo() {

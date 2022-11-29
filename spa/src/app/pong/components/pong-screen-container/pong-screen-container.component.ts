@@ -8,6 +8,7 @@ import {
 } from '@angular/animations';
 import { Component, Input, OnInit } from '@angular/core';
 import { Response } from 'src/app/play/interfaces';
+import { User } from 'src/app/user/models';
 import { UserService } from 'src/app/user/services';
 import { AudioHandler } from '../../../play/classes';
 import { PlayService } from '../../../play/play.service';
@@ -58,8 +59,9 @@ export class PongScreenContainerComponent implements OnInit {
 	roomInfo?: RoomInfo; 
 	gameEnded: boolean = false;
 	endState: EndState = EndState.CANCEL;
+	winner?: User;
 
-  private audio: AudioHandler = new AudioHandler(0, 0);
+  private audio: AudioHandler = new AudioHandler(0.3, 0.8);
 	
 
   constructor(
@@ -113,6 +115,7 @@ export class PongScreenContainerComponent implements OnInit {
 						else if (this.playerIndex === 2) this.endState = EndState.LOSER
 						else	this.endState = EndState.SPECTATOR
 					}
+					this.winner = this.roomInfo?.user1;
 					break;
 				case Winner.PLAYER2:
 					if (this.isPlayer) {
@@ -120,6 +123,7 @@ export class PongScreenContainerComponent implements OnInit {
 						else if (this.playerIndex === 1) this.endState = EndState.LOSER
 						else	this.endState = EndState.SPECTATOR
 					}
+					this.winner = this.roomInfo?.user2;
 					break;
 			}
 			this.gameEnded = true;
@@ -192,8 +196,9 @@ export class PongScreenContainerComponent implements OnInit {
   }
 
   scoreEvent(payload: any) {
-		this.score[0] = payload.p1;
-    this.score[1] = payload.p2;
+		this.score.p1 = payload.p1;
+    this.score.p2 = payload.p2;
+		console.log(this.score[0], this.score[1]);
     this.audio.playScore(true);
   }
 

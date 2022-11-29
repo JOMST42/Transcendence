@@ -66,7 +66,6 @@ export class UserMatchHistoryComponent implements OnInit {
         games.forEach(async (game: Game) => {
 					await this.gameToMatch(game).then((match) => {
 						this.activeMatches.push(match)
-						console.log('???');
 					});
 				});
       },

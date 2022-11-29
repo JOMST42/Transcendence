@@ -94,6 +94,8 @@ export class JoinGameDialogComponent {
 		});
 
 		this.server.listen('game-finished').subscribe(() => {
+			if (this.state === ButtonState.ACTIVE)
+				this.toast.showInfo('Game ended', 'A player has left the game');
 			this.changeToDisabled();
 		});
 	}

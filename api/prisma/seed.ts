@@ -70,7 +70,7 @@ async function seedUsers() {
         },
         {
           username: 'jbadia',
-          email: 'jbadia@student.42quebec.com ',
+          email: 'jbadia@student.42quebec.com',
           displayName: 'Just_in_case',
           normalizedName: 'just_in_case',
           firstName: 'Justine',
@@ -78,11 +78,43 @@ async function seedUsers() {
         },
         {
           username: 'olabrecq',
-          email: 'olabrecq@student.42quebec.com ',
+          email: 'olabrecq@student.42quebec.com',
           displayName: 'sheSaidOlalaOli',
           normalizedName: 'shesaidolalaoli',
           firstName: 'Olivier',
           lastName: 'Lala',
+        },
+        {
+          username: 'pirichar',
+          email: 'pirichar@student.42quebec.com',
+          displayName: 'PisRichard',
+          normalizedName: 'pisrichard',
+          firstName: 'Pier-luc',
+          lastName: 'ichard',
+        },
+        {
+          username: 'tblanco',
+          email: 'tblanco@student.42quebec.com',
+          displayName: 'BigBlanco',
+          normalizedName: 'bigblanco',
+          firstName: 'Teddy',
+          lastName: 'Blanco',
+        },
+        {
+          username: 'gcollet',
+          email: 'gcollet@student.42quebec.com',
+          displayName: 'poutineStJean',
+          normalizedName: 'poutinestjean',
+          firstName: 'Gabriel',
+          lastName: 'Collet',
+        },
+        {
+          username: 'hbanthiy',
+          email: 'hbanthiy@student.42quebec.com',
+          displayName: 'LovingIndianDad',
+          normalizedName: 'lovingindiandad',
+          firstName: 'Harsh',
+          lastName: 'Bant',
         },
       ],
       skipDuplicates: true,
@@ -126,14 +158,15 @@ async function seedFriends() {
   let j = 0;
 
   for (i = 0; i < prismaUsers.length; i++) {
-    for (j = i + 1; j < prismaUsers.length; j++) {
+    for (j = i + 1; j < prismaUsers.length; j += 2) {
       await prisma.friendship
         .create({
           data: {
             requesterId: prismaUsers[i].id,
             adresseeId: prismaUsers[j].id,
             accepted: Math.random() > 0.5 ? true : false,
-            blocked: Math.random() > 0.5 ? true : false,
+            adresseeBlocker: Math.random() > 0.8 ? true : false,
+            requesterBlocker: Math.random() > 0.8 ? true : false,
           },
         })
         .catch((e) => {

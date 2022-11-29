@@ -65,6 +65,20 @@ export class PongRoom {
     this.clearListeners(this.userP1);
     this.clearListeners(this.userP2);
     this.state = RoomState.ToBeDeleted;
+    try {
+      if (this.userP1.data?.user?.id)
+        this.userP1.broadcast.emit(
+          'user-status-change',
+          this.userP1.data.user.id,
+        );
+    } catch (e) {}
+    try {
+      if (this.userP2.data?.user?.id)
+        this.userP2.broadcast.emit(
+          'user-status-change',
+          this.userP2.data.user.id,
+        );
+    } catch (e) {}
   }
 
   isDeletable(): boolean {
@@ -227,7 +241,6 @@ export class PongRoom {
 
   setReadyPlayer(i: number, flag: boolean): Response {
     let response: Response;
-    this.logger.debug('roomstate in readyplayer: ' + this.state);
     if (this.state !== RoomState.Readying) {
       return { code: 1, msg: 'Room is not in a ready check' };
     }
@@ -430,7 +443,7 @@ export class PongRoom {
           if (!this.leaveAllowed) {
             if (user === this.userP1) this.game.forceWin(2);
             if (user === this.userP2) this.game.forceWin(1);
-          }
+          } else this.game.forceWin(0);
         }
       });
     }

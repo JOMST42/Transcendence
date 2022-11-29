@@ -64,6 +64,7 @@ export class PongScreenComponent implements OnInit {
     this.context = this.gameCanvas.nativeElement.getContext('2d');
 		this.refresh();
     this.setGameListener();
+		this.setRoomListener();
     // this.animDisabled = false;
   }
 
@@ -126,8 +127,25 @@ export class PongScreenComponent implements OnInit {
     });
   }
 
+	setRoomListener() {
+    this.server.listen('room-update').subscribe((info: RoomInfo | undefined | null) => {
+			if (!info) return;
+      if (info.roomId != this.roomInfo?.roomId) {
+				this.updateRoomInfo(info);
+			}
+			this.updateRoom(info)
+		});
+	}
+
 	updateRoomInfo(roomInfo : RoomInfo) {
 		this.roomInfo = roomInfo;
+	}
+
+	updateRoom(info: RoomInfo) {
+		this.p1Ready = info.user1Ready;
+		this.p2Ready = info.user2Ready;
+		this.p1Joined = info.user1Joined;
+		this.p2Joined = info.user2Joined;
 	}
 
 
