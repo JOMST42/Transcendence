@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { PlayService } from '../../play.service';
-import { Response } from '../../interfaces';
+import { PlayService } from '../../../play/play.service';
+import { Response } from '../../../play/interfaces';
 import {ButtonModule} from 'primeng/button'
 import { ToastService } from 'src/app/core/services';
 import { PongService } from 'src/app/pong/services/pong.service';

@@ -140,3 +140,30 @@ h2 {
 	// 				-17px -17px #000,
 	// 				-23px -23px #000;
 }
+
+.mode-button {
+	background-color: #fff;
+	padding: 10px 20px;
+	text-align: center;
+	text-transform: uppercase;
+	transition: 0.3s;
+	background-size: 200% auto;
+	color: #7869C4;
+	-webkit-text-stroke: black;
+	-webkit-text-stroke-width: 1.5px;
+	border-radius: 5px;
+	display: block;
+	font-family: PixelPowerline;
+	font-weight: 50;
+	transition: 0.3s ease-in-out;
+	border-color: #000;
+	font-size: 1.2rem;
+  }
+
+	.mode-button:hover {
+	scale: 1.2;
+	background-color: #7869C4;
+	background-position: right center; /* change the direction of the change here */
+	color: #fff;
+	text-decoration: none;
+  }

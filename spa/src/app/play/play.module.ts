@@ -9,7 +9,6 @@ import { SharedModule } from '../shared/shared.module';
 import { QueueButtonComponent } from './ui/queue-button/queue-button.component';
 import { JoinGameButtonComponent } from './ui/join-game-button/join-game-button.component';
 import { QueueWidjetComponent } from './ui/queue-widjet/queue-widjet.component';
-import { ReadyButtonComponent } from './ui/ready-button/ready-button.component';
 import { PongModule } from '../pong/pong.module';
 
 @NgModule({
@@ -19,7 +18,6 @@ import { PongModule } from '../pong/pong.module';
 		QueueButtonComponent,
 		JoinGameButtonComponent,
 		QueueWidjetComponent,
-		ReadyButtonComponent,
 	],
   imports: [CommonModule, GameRoutingModule, FormsModule, SharedModule, PongModule],
   providers: [],

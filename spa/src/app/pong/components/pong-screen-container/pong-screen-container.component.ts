@@ -113,16 +113,18 @@ export class PongScreenContainerComponent implements OnInit {
 					if (this.isPlayer) {
 						if (this.playerIndex === 1) this.endState = EndState.WINNER;
 						else if (this.playerIndex === 2) this.endState = EndState.LOSER
-						else	this.endState = EndState.SPECTATOR
+						else this.endState = EndState.SPECTATOR
 					}
+					else this.endState = EndState.SPECTATOR
 					this.winner = this.roomInfo?.user1;
 					break;
 				case Winner.PLAYER2:
 					if (this.isPlayer) {
 						if (this.playerIndex === 2) this.endState = EndState.WINNER;
 						else if (this.playerIndex === 1) this.endState = EndState.LOSER
-						else	this.endState = EndState.SPECTATOR
+						else this.endState = EndState.SPECTATOR	
 					}
+					else this.endState = EndState.SPECTATOR
 					this.winner = this.roomInfo?.user2;
 					break;
 			}

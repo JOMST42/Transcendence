@@ -33,6 +33,10 @@
 		<span *ngIf="countdown != 0" id="countdown" [@.disabled]="animDisabled" [innerHTML]="countdown"></span>
 		<!-- <button (click)="testCountdown()">Countdown test</button> -->
 	</div>
-	<button (click)="set3D(false)">2D</button>
-		<button (click)="set3D(true)">3D</button>
+	<div class="col-12 flex align-items-center justify-content-center">
+		<app-ready-button *ngIf="isPlayer"></app-ready-button>
+		<button class="mode-button" (click)="set3D(false)">2D</button>
+		<button class="mode-button" (click)="set3D(true)">3D</button>
+	</div>
+	
 </section>
