@@ -38,7 +38,6 @@ export class AuthService {
     );
   }
 
-
   getProfile(): Observable<User> {
     return this.baseApiService.getOne('/users/me');
   }
@@ -68,5 +67,9 @@ export class AuthService {
     this.cookieService.delete('access_token');
     this.userSubject.next(null);
     localStorage.removeItem('access_token');
+  }
+
+  generateQR(): Observable<string> {
+    return this.baseApiService.postOne('/auth/2fa/generate');
   }
 }

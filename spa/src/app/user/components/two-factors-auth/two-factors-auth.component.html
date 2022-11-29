@@ -1,0 +1,14 @@
+<div>
+  <button
+    pButton
+    pRipple
+    type="button"
+    label="Activate 2 factors authentication"
+    class="p-button-raised p-button-success p-button-text"
+    (click)="showDialog()"
+  ></button>
+
+  <p-dialog header="Title" [(visible)]="displayDialog">
+    <qrcode [qrdata]="codeQR" [width]="256" [errorCorrectionLevel]="'M'"></qrcode>
+</p-dialog>
+</div>

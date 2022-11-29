@@ -17,6 +17,8 @@ import { FriendRequestCardComponent } from './components/friends/friend-request-
 import { AcceptFriendBtnComponent } from './components/friends/accept-friend-btn/accept-friend-btn.component';
 import { RefuseFriendBtnComponent } from './components/friends/refuse-friend-btn/refuse-friend-btn.component';
 import { UserStatsComponent } from './components/user-stats/user-stats.component';
+import { TwoFactorsAuthComponent } from './components/two-factors-auth/two-factors-auth.component';
+import { QRCodeModule } from 'angularx-qrcode';
 
 @NgModule({
   declarations: [
@@ -32,8 +34,9 @@ import { UserStatsComponent } from './components/user-stats/user-stats.component
     AcceptFriendBtnComponent,
     RefuseFriendBtnComponent,
     UserStatsComponent,
+    TwoFactorsAuthComponent,
   ],
-  imports: [SharedModule, UserRoutingModule, FileUploadModule],
+  imports: [SharedModule, UserRoutingModule, FileUploadModule, QRCodeModule],
   exports: [
     UserDisplaynameComponent,
     UserImgComponent,
@@ -41,7 +44,8 @@ import { UserStatsComponent } from './components/user-stats/user-stats.component
     UserRoutingModule,
     ProfilePageComponent,
     FriendListComponent,
-    UserStatsComponent
+    UserStatsComponent,
+    TwoFactorsAuthComponent,
   ],
 })
 export class UserModule {}

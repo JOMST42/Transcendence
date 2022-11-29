@@ -1,1 +1,153 @@
-[]
+[
+  {
+    "_id": "7d426183-be14-4dcc-998d-943bff29345a",
+    "colId": "history",
+    "containerId": "",
+    "name": "http://localhost:3000/api/auth/ft/login",
+    "url": "http://localhost:3000/api/auth/ft/login",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2022-11-29T15:06:41.686Z",
+    "modified": "2022-11-29T15:06:41.686Z",
+    "headers": [],
+    "params": [],
+    "auth": {
+      "type": "bearer",
+      "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjYsImlzVHdvRmFjdG9yQXV0aEVuYWJsZWQiOmZhbHNlLCJpc1R3b0ZhY3RvckF1dGhlbnRpY2F0ZWQiOmZhbHNlLCJpYXQiOjE2Njk3MzQzNjAsImV4cCI6MTY2OTgyMDc2MH0._uMG5zw9QBARBcPhjGhodoPPLZoZ_ezNsPHFO2xMHcc"
+    },
+    "tests": []
+  },
+  {
+    "_id": "b1109569-982c-46e1-8635-e48ad8e62dfb",
+    "colId": "history",
+    "containerId": "",
+    "name": "http://localhost:3000/api/auth/2fa/generate",
+    "url": "http://localhost:3000/api/auth/2fa/generate",
+    "method": "POST",
+    "sortNum": 0,
+    "created": "2022-11-29T15:07:04.064Z",
+    "modified": "2022-11-29T15:39:30.579Z",
+    "headers": [
+      {
+        "name": "user",
+        "value": "",
+        "isDisabled": true
+      }
+    ],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{ \"user\": {\n  \n  \"email\": \"jbadia@student.42quebec.com\",\n  \"displayName\": \"Justine Badia\",\n  \"normalizedName\": \"justine badia\",\n  \"firstName\": \"Justine\",\n  \"lastName\": \"Badia\",\n  \"avatarUrl\": \"https://ui-avatars.com/api/?name=Justine+Badia&background=random&rounded=true&bold=true&size=256\",\n  \"status\": \"OFFLINE\",\n  \"twoFASecret\": null,\n  \"isTwoFactorAuthEnabled\": false,\n  \"isTwoFactorAuthenticated\": false,\n  \"createdAt\": \"2022-11-29T15:06:00.114Z\",\n  \"updatedAt\": \"2022-11-29T15:06:00.114Z\"\n}\n}",
+      "form": []
+    },
+    "tests": []
+  },
+  {
+    "_id": "ad4275a7-81fb-40e7-8419-c63cea58900b",
+    "colId": "history",
+    "containerId": "",
+    "name": "http://localhost:3000/api/users/me",
+    "url": "http://localhost:3000/api/users/me",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2022-11-29T15:08:05.701Z",
+    "modified": "2022-11-29T15:24:31.427Z",
+    "headers": [
+      {
+        "name": "user",
+        "value": "",
+        "isDisabled": true
+      }
+    ],
+    "params": [],
+    "auth": {
+      "type": "bearer",
+      "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjYsImlzVHdvRmFjdG9yQXV0aEVuYWJsZWQiOmZhbHNlLCJpc1R3b0ZhY3RvckF1dGhlbnRpY2F0ZWQiOmZhbHNlLCJpYXQiOjE2Njk3MzQzNjAsImV4cCI6MTY2OTgyMDc2MH0._uMG5zw9QBARBcPhjGhodoPPLZoZ_ezNsPHFO2xMHcc"
+    },
+    "tests": []
+  },
+  {
+    "_id": "18c14461-ba29-4835-b1bf-d9c7434270dd",
+    "colId": "history",
+    "containerId": "",
+    "name": "http://localhost:3000/api/auth/ft/callback",
+    "url": "http://localhost:3000/api/auth/ft/callback",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2022-11-29T15:13:13.160Z",
+    "modified": "2022-11-29T15:13:13.160Z",
+    "headers": [],
+    "params": [],
+    "auth": {
+      "type": "bearer",
+      "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjYsImlzVHdvRmFjdG9yQXV0aEVuYWJsZWQiOmZhbHNlLCJpc1R3b0ZhY3RvckF1dGhlbnRpY2F0ZWQiOmZhbHNlLCJpYXQiOjE2Njk3MzQzNjAsImV4cCI6MTY2OTgyMDc2MH0._uMG5zw9QBARBcPhjGhodoPPLZoZ_ezNsPHFO2xMHcc"
+    },
+    "tests": []
+  },
+  {
+    "_id": "173f5d83-eef7-4632-9d2b-d60d57f224af",
+    "colId": "history",
+    "containerId": "",
+    "name": "http://localhost:3000/api/auth/2fa/generate",
+    "url": "http://localhost:3000/api/auth/2fa/generate",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2022-11-29T15:14:56.805Z",
+    "modified": "2022-11-29T15:14:56.805Z",
+    "headers": [],
+    "params": [],
+    "auth": {
+      "type": "bearer",
+      "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjYsImlzVHdvRmFjdG9yQXV0aEVuYWJsZWQiOmZhbHNlLCJpc1R3b0ZhY3RvckF1dGhlbnRpY2F0ZWQiOmZhbHNlLCJpYXQiOjE2Njk3MzQzNjAsImV4cCI6MTY2OTgyMDc2MH0._uMG5zw9QBARBcPhjGhodoPPLZoZ_ezNsPHFO2xMHcc"
+    },
+    "tests": []
+  },
+  {
+    "_id": "dc7027ab-766a-48f1-bfc7-8b8191a3d91a",
+    "colId": "history",
+    "containerId": "",
+    "name": "http://localhost:3000/api/auth/login",
+    "url": "http://localhost:3000/api/auth/2fa/authenticate",
+    "method": "POST",
+    "sortNum": 0,
+    "created": "2022-11-29T15:23:57.904Z",
+    "modified": "2022-11-29T19:55:07.681Z",
+    "headers": [
+      {
+        "name": "user",
+        "value": "",
+        "isDisabled": true
+      }
+    ],
+    "params": [],
+    "auth": {
+      "type": "bearer",
+      "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjYsImlzVHdvRmFjdG9yQXV0aEVuYWJsZWQiOmZhbHNlLCJpc1R3b0ZhY3RvckF1dGhlbnRpY2F0ZWQiOmZhbHNlLCJpYXQiOjE2Njk3NDU5MjQsImV4cCI6MTY2OTgzMjMyNH0.-vN0BuSsRDY--efRKMNPAHDBkQQ7QC-Ku0NiOyWl8xY"
+    },
+    "tests": []
+  },
+  {
+    "_id": "6850bd07-324e-4847-bad8-69eed69ffc6b",
+    "colId": "history",
+    "containerId": "",
+    "name": "http://localhost:3000/api/users/me",
+    "url": "http://localhost:3000/api/users/me",
+    "method": "POST",
+    "sortNum": 0,
+    "created": "2022-11-29T15:24:27.159Z",
+    "modified": "2022-11-29T15:24:27.159Z",
+    "headers": [
+      {
+        "name": "user",
+        "value": "",
+        "isDisabled": true
+      }
+    ],
+    "params": [],
+    "auth": {
+      "type": "bearer",
+      "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjYsImlzVHdvRmFjdG9yQXV0aEVuYWJsZWQiOmZhbHNlLCJpc1R3b0ZhY3RvckF1dGhlbnRpY2F0ZWQiOmZhbHNlLCJpYXQiOjE2Njk3MzQzNjAsImV4cCI6MTY2OTgyMDc2MH0._uMG5zw9QBARBcPhjGhodoPPLZoZ_ezNsPHFO2xMHcc"
+    },
+    "tests": []
+  }
+]

@@ -6,10 +6,16 @@ import { AuthController } from './auth.controller';
 import { FtStrategy, JwtStrategy } from './strategy';
 import { UserModule } from '../user/user.module';
 import { SessionSerializer } from './utils';
-
+import { TwoFAStrategy } from './strategy/TwoFAstrategy';
 @Module({
   imports: [JwtModule.register({}), UserModule],
-  providers: [AuthService, FtStrategy, JwtStrategy, SessionSerializer],
+  providers: [
+    AuthService,
+    FtStrategy,
+    JwtStrategy,
+    SessionSerializer,
+    TwoFAStrategy,
+  ],
   controllers: [AuthController],
   exports: [AuthService],
 })

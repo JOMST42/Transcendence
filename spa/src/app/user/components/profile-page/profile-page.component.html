@@ -110,6 +110,11 @@
               <app-match-history [user]="user"></app-match-history>
             </ng-template>
           </p-tabPanel>
+          <p-tabPanel header="SETTINGS">
+            <ng-template pTemplate="content">
+             <app-two-factors-auth></app-two-factors-auth>
+            </ng-template>
+          </p-tabPanel>
         </p-tabView>
       </div>
     </div>

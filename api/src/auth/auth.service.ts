@@ -71,18 +71,15 @@ export class AuthService {
 
   async login2FA(user: User) {
     const payload = {
-      email: user.email,
+      sub: user.id,
       isTwoFactorAuthEnabled: user.isTwoFactorAuthEnabled,
       isTwoFactorAuthenticated: true,
     };
-    return {
-      email: payload.email,
-      access_token: this.jwt.sign(payload),
-    };
+    return await this.signToken(payload);
   }
 
   async setTwoFAuthSecret(secret: string, userId: number) {
-    this.prisma.user.update({
+    await this.prisma.user.update({
       where: {
         id: userId,
       },
@@ -90,6 +87,7 @@ export class AuthService {
         twoFASecret: secret,
       },
     });
+    console.log(secret);
   }
 
   async generateTwoFAuthSecret(user: User) {
@@ -103,11 +101,13 @@ export class AuthService {
     return otpauthUrl;
   }
 
-  async generateQrCode(otpAuthUrl: string) {
+  async generateQrCode(otpAuthUrl: string): Promise<string> {
     return toDataURL(otpAuthUrl);
   }
 
   validateTwoFAuthCode(code: string, user: User): boolean {
+    console.log('code ' + code);
+    console.log('secret ' + user.twoFASecret);
     return authenticator.verify({
       token: code,
       secret: user.twoFASecret,

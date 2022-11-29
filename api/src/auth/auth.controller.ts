@@ -17,9 +17,10 @@ import { Response } from 'express';
 
 import { AuthService } from './auth.service';
 import { GetUser } from './decorator';
-import { FtAuthGuard } from './guards';
+import { FtAuthGuard, JwtGuard } from './guards';
 import { cookieConstants } from '../constants';
 import { UserService } from 'src/user/services/user.service';
+import { TwoFAGuard } from './guards/TwoFA.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -58,44 +59,41 @@ export class AuthController {
     res.redirect(this.config.get('CLIENT_URL'));
   }
 
-  //   @Post('login')
-  //   @HttpCode(200)
-  //   async login(@Request() req) {
-  //     const user = req.user;
-  //     return this.authService.login2FA(user);
-  //   }
+  // @UseGuards(JwtGuard)
+  // @Post('login/2fa')
+  // @HttpCode(HttpStatus.OK)
+  // async login(@GetUser() user: User) {
+  //   console.log(user);
+  //   return this.authService.login2FA(user);
+  // }
 
   @Post('2fa/generate')
-  // @UseGuards(FtAuthGuard)
-  async register(@Res() res, @Request() req) {
-    const otpAuthUrl = await this.authService.generateTwoFAuthSecret(req.user);
+  @UseGuards(JwtGuard)
+  async register(@Res() res, @GetUser() user: User): Promise<string> {
+    const otpAuthUrl = await this.authService.generateTwoFAuthSecret(user);
     return res.json(await this.authService.generateQrCode(otpAuthUrl));
   }
 
   @Post('2fa/turn-on')
-  //   @UseGuards(FtAuthGuard)
-  async turnOnTwoFAuth(@Req() request, @Body() body) {
-    const isCodeValid = this.authService.validateTwoFAuthCode(
-      body.code,
-      request.user,
-    );
+  @UseGuards(JwtGuard)
+  async turnOnTwoFAuth(@GetUser() user: User, @Body() body) {
+    const isCodeValid = this.authService.validateTwoFAuthCode(body.code, user);
     if (!isCodeValid) {
       throw new UnauthorizedException('Wrong authenticqtion code');
     }
-    await this.userService.turnOnTwoFAuth(request.user.id);
+    await this.userService.turnOnTwoFAuth(user.id);
   }
 
   @Post('2fa/authenticate')
-  @HttpCode(200)
-  //   @UseGuards(FtAuthGuard)
-  async authenticate(@Request() request, @Body() body) {
-    const isCodeValid = this.authService.validateTwoFAuthCode(
-      body.code,
-      request.user,
-    );
+  @HttpCode(HttpStatus.OK)
+  @UseGuards(JwtGuard)
+  async authenticate(@GetUser() user: User, @Body() body) {
+    const code = '778040';
+    console.log(user.twoFASecret);
+    const isCodeValid = this.authService.validateTwoFAuthCode(code, user);
     if (!isCodeValid) {
-      throw new UnauthorizedException('Wrong authenticqtion code');
+      throw new UnauthorizedException('Wrong authentication code');
     }
-    return this.authService.login2FA(request.user);
+    return this.authService.login2FA(user);
   }
 }
