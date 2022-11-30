@@ -55,7 +55,10 @@
 
 .arrow-img {
 	width: 30px !important;
+}
 
+.arrow-img2 {
+	width: 63px !important;
 }
 .image-card:hover img {
 	opacity: 0.3;
@@ -96,6 +99,21 @@ h2 {
 						-10px -8px #000,
 		 				-8px -10px #000,
 						-12px -12px #000;
+}
+h3 {
+	font-family: PixelPOwerline;
+	font-size: 30px;
+	-webkit-text-stroke: black;
+	-webkit-text-stroke-width: 2px;
+	color: #00A595;
+}
+
+h4 {
+	font-family: PixelPOwerline;
+	font-size: 25px;
+	-webkit-text-stroke: black;
+	-webkit-text-stroke-width: 2px;
+	color: #00A595;
 }
 
 @media  screen and (min-width: 0px) and (max-width: 1280px) {
