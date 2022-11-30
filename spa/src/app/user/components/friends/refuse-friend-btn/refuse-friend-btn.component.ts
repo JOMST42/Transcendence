@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { take } from 'rxjs';
-import { AuthService, ToastService } from '../../../../core/services';
+import { ToastService } from '../../../../core/services';
 import { User } from '../../../models';
 import { FriendService } from '../../../services';
 
@@ -53,14 +53,6 @@ export class RefuseFriendBtnComponent implements OnInit {
   }
 
   async ngOnInit(): Promise<void> {
-    // this.authService.getCurrentUser().subscribe({
-    //   next: (data) => {
-    //     this.me = data;
-    //   },
-    //   error: (err) => {
-    //     console.log(err);
-    //   },
-    // });
     await this.checkState();
   }
 }

@@ -1,9 +1,7 @@
-import { InvokeFunctionExpr } from '@angular/compiler';
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Subject, take, takeUntil } from 'rxjs';
+import { Component, Input, OnInit } from '@angular/core';
+import { take } from 'rxjs';
 
-import { AuthService, ToastService } from '../../../core/services';
+import { ToastService } from '../../../core/services';
 import { User } from '../../models';
 import { UserService } from '../../services';
 
@@ -12,8 +10,7 @@ import { UserService } from '../../services';
   templateUrl: './user-displayname.component.html',
   styleUrls: ['./user-displayname.component.scss'],
 })
-export class UserDisplaynameComponent implements OnInit, OnDestroy {
-  private unsubscribeAll$ = new Subject<void>();
+export class UserDisplaynameComponent implements OnInit {
   displayName!: string;
   showButton: boolean = false;
   @Input() user!: User;
@@ -62,8 +59,4 @@ export class UserDisplaynameComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {}
-
-  ngOnDestroy(): void {
-    this.unsubscribeAll$.next();
-  }
 }

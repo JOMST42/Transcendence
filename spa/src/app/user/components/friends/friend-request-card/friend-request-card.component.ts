@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { take } from 'rxjs';
 import { Friendship, User } from '../../../models';
-import { FriendService, UserService } from '../../../services';
+import { UserService } from '../../../services';
 
 @Component({
   selector: 'app-friend-request-card',
@@ -16,14 +17,17 @@ export class FriendRequestCardComponent implements OnInit {
 
   async getFriendToUser(friend: Friendship): Promise<User> {
     return new Promise((resolve, reject) => {
-      this.userService.getUserById(friend.requesterId).subscribe({
-        next: (data) => {
-          if (data) {
-            resolve(data);
-          }
-          reject(null);
-        },
-      });
+      this.userService
+        .getUserById(friend.requesterId)
+        .pipe(take(1))
+        .subscribe({
+          next: (data) => {
+            if (data) {
+              resolve(data);
+            }
+            reject(null);
+          },
+        });
     });
   }
 

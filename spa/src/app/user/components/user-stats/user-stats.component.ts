@@ -1,5 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { take } from 'rxjs';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Subject, take, takeUntil } from 'rxjs';
 import { AuthService } from '../../../core/services';
 import { Game } from '../../../watch/models';
 import { User } from '../../models';
@@ -10,15 +10,13 @@ import { UserService } from '../../services';
   templateUrl: './user-stats.component.html',
   styleUrls: ['./user-stats.component.scss'],
 })
-export class UserStatsComponent implements OnInit {
+export class UserStatsComponent implements OnInit, OnDestroy {
   constructor(
     private readonly userService: UserService,
     private readonly authService: AuthService
   ) {}
 
-/*Games perdues et games gagnées
-Ton plus grand ennemi
-Ton meilleur copain de jeu*/
+  private unsubscribeAll$ = new Subject<void>();
 
   games!: Game[];
 
@@ -27,7 +25,7 @@ Ton meilleur copain de jeu*/
   ngOnInit(): void {
     this.userService
       .getGamesByUserId(this.user.id)
-      .pipe(take(1))
+      .pipe(takeUntil(this.unsubscribeAll$))
       .subscribe({
         next: (data) => {
           this.games = data; //je recupère toutes les games du joueurs
@@ -37,5 +35,9 @@ Ton meilleur copain de jeu*/
           console.log('pas de games trouvées');
         },
       });
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribeAll$.next();
   }
 }

@@ -1,7 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
 import { take } from 'rxjs';
-import { AuthService, ToastService } from '../../../../core/services';
+import { ToastService } from '../../../../core/services';
 import { User } from '../../../models';
 import { FriendService } from '../../../services';
 
@@ -13,9 +12,7 @@ import { FriendService } from '../../../services';
 export class AcceptFriendBtnComponent implements OnInit {
   constructor(
     private readonly friendService: FriendService,
-    private readonly toastService: ToastService,
-    private readonly router: Router,
-    private readonly route: ActivatedRoute
+    private readonly toastService: ToastService
   ) {}
 
   buttonState: boolean = false;
@@ -50,14 +47,6 @@ export class AcceptFriendBtnComponent implements OnInit {
   }
 
   async ngOnInit(): Promise<void> {
-    // this.authService.getCurrentUser().subscribe({
-    //   next: (data) => {
-    //     this.me = data;
-    //   },
-    //   error: (err) => {
-    //     console.log(err);
-    //   },
-    // });
     await this.checkState();
   }
 }

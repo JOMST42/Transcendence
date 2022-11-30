@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, resolveForwardRef } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { take } from 'rxjs';
 import { Friendship, User } from '../../../models';
@@ -54,7 +54,10 @@ export class FriendCardComponent implements OnInit {
       .subscribe({
         next: (data) => {
           if (data) {
-            if (data.adresseeBlocker === true || data.requesterBlocker === true) {
+            if (
+              data.adresseeBlocker === true ||
+              data.requesterBlocker === true
+            ) {
               this.friendState = false;
             } else if (data.accepted === false) {
               this.friendState = false;
@@ -74,14 +77,17 @@ export class FriendCardComponent implements OnInit {
       this.myFriendId = friends.adresseeId;
     }
     return new Promise((resolve, reject) => {
-      this.userService.getUserById(this.myFriendId).subscribe({
-        next: (data) => {
-          if (data) {
-            resolve(data);
-          }
-          reject(null);
-        },
-      });
+      this.userService
+        .getUserById(this.myFriendId)
+        .pipe(take(1))
+        .subscribe({
+          next: (data) => {
+            if (data) {
+              resolve(data);
+            }
+            reject(null);
+          },
+        });
     });
   }
 

@@ -26,20 +26,15 @@ const animationParams = {
   styleUrls: ['./nav-bar.component.scss'],
 })
 export class NavBarComponent implements OnInit {
-
-	private unsubscribeAll$ = new Subject<void>();
-  @Input()user!: User | null;
-//   me!: User;
+  @Input() user!: User | null;
   avatarUrl: string;
   userIsMe: boolean;
 
   isOpen = false;
 
-
   constructor(private readonly router: Router) {}
 
   ngOnInit(): void {}
-
 
   navGame() {
     this.router.navigate(['game']);
@@ -48,7 +43,4 @@ export class NavBarComponent implements OnInit {
   navUsers() {
     this.router.navigate(['users/jbadia']);
   }
-  // moveBall()
-
-  
 }

@@ -37,7 +37,6 @@ export class TwoFactorsAuthComponent implements OnInit {
       .subscribe({
         next: (data) => {
           console.log('ca a fonctionné');
-          //authenticate ?
         },
         error: (err) => {
           console.log('ca a pas fonctionné');

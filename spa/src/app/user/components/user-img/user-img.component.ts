@@ -1,6 +1,5 @@
 import {
   Component,
-  OnDestroy,
   OnInit,
   Input,
   OnChanges,
@@ -8,15 +7,13 @@ import {
   Output,
   EventEmitter,
 } from '@angular/core';
-import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-user-img',
   templateUrl: './user-img.component.html',
   styleUrls: ['./user-img.component.scss'],
 })
-export class UserImgComponent implements OnInit, OnDestroy, OnChanges {
-  private unsubscribeAll$ = new Subject<void>();
+export class UserImgComponent implements OnInit, OnChanges {
   @Input() avatarUrl: string;
   @Input() userIsMe!: boolean;
   @Output() eventUpload = new EventEmitter<void>();
@@ -32,10 +29,6 @@ export class UserImgComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   ngOnInit(): void {}
-
-  ngOnDestroy(): void {
-    this.unsubscribeAll$.next();
-  }
 
   ngOnChanges(changes: SimpleChanges): void {
     this.avatarUrl = this.getUrl();
