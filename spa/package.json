@@ -19,7 +19,7 @@
     "@angular/platform-browser-dynamic": "^14.1.0",
     "@angular/router": "^14.1.0",
     "@auth0/angular-jwt": "^5.1.0",
-    "angularx-qrcode": "^15.0.0",
+    "angularx-qrcode": "14.0.0",
     "bootstrap": "^5.2.2",
     "ngx-cookie-service": "^14.0.1",
     "ngx-socket-io": "^4.3.1",

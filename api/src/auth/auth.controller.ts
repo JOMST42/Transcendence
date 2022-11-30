@@ -59,14 +59,6 @@ export class AuthController {
     res.redirect(this.config.get('CLIENT_URL'));
   }
 
-  // @UseGuards(JwtGuard)
-  // @Post('login/2fa')
-  // @HttpCode(HttpStatus.OK)
-  // async login(@GetUser() user: User) {
-  //   console.log(user);
-  //   return this.authService.login2FA(user);
-  // }
-
   @Post('2fa/generate')
   @UseGuards(JwtGuard)
   async register(@Res() res, @GetUser() user: User): Promise<string> {
@@ -88,9 +80,9 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @UseGuards(JwtGuard)
   async authenticate(@GetUser() user: User, @Body() body) {
-    const code = '778040';
-    console.log(user.twoFASecret);
-    const isCodeValid = this.authService.validateTwoFAuthCode(code, user);
+    // const code = '778040';
+    // console.log(user.twoFASecret);
+    const isCodeValid = this.authService.validateTwoFAuthCode(body.code, user);
     if (!isCodeValid) {
       throw new UnauthorizedException('Wrong authentication code');
     }

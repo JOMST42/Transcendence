@@ -72,4 +72,12 @@ export class AuthService {
   generateQR(): Observable<string> {
     return this.baseApiService.postOne('/auth/2fa/generate');
   }
+
+  turnOnTwoFactorAuth(code: string) {
+    return this.baseApiService.postOne('/auth/2fa/turn-on', code);
+  }
+
+  authenticateTwoFactorAuth(code: string) {
+    return this.baseApiService.postOne('/auth/2fa/authenticate', code);
+  }
 }
