@@ -6,13 +6,17 @@ import {
   animate,
   keyframes,
 } from '@angular/animations';
+import { Location } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { Subject, takeUntil } from 'rxjs';
+import { ToastService } from 'src/app/core/services';
 import { Response } from 'src/app/play/interfaces';
 import { User } from 'src/app/user/models';
 import { UserService } from 'src/app/user/services';
 import { AudioHandler } from '../../../play/classes';
 import { PlayService } from '../../../play/play.service';
-import { EndState, Winner } from '../../enums';
+import { EndState, RoomState, Winner } from '../../enums';
 import { GameInfo, RoomInfo, Score } from '../../interfaces';
 
 @Component({
@@ -39,7 +43,8 @@ import { GameInfo, RoomInfo, Score } from '../../interfaces';
 })
 export class PongScreenContainerComponent implements OnInit {
 
-	
+	private unsubscribeAll$ = new Subject<void>();
+
   score: Score = {p1:0, p2:0};
 	@Input() isPlayer: boolean = false;
 	playerIndex: 0 | 1 | 2;
@@ -66,10 +71,30 @@ export class PongScreenContainerComponent implements OnInit {
 
   constructor(
 	private server: PlayService,
-	public readonly userService: UserService
+	private readonly userService: UserService,
+	private readonly router: Router,
+	private readonly location: Location,
+	private readonly toast: ToastService,
 	) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+		if (this.location.path() != "/play/classic") {
+			this.audio.reset();
+	}
+		// this.router.events.subscribe(val => {
+		// 	console.log(this.location.path());
+    //   if (this.location.path() != "/play/classic") {
+    //       this.audio.reset();
+    //   } else if (this.location.path() != "/watch")
+		// 		this
+    // });
+	}
+
+	ngOnDestroy(): void {
+		this.audio.reset();
+		console.log('destroy screen');
+		this.unsubscribeAll$.next();
+	}
 
   ngAfterViewInit() {
 		this.audio.setSoundColPad('assets/sound/hit_paddle.m4a');
@@ -83,7 +108,7 @@ export class PongScreenContainerComponent implements OnInit {
   }
 
   setGameListener() {
-    this.server.listenGameUpdate().subscribe((info: GameInfo | undefined | null) => {
+    this.server.listenGameUpdate().pipe(takeUntil(this.unsubscribeAll$)).subscribe((info: GameInfo | undefined | null) => {
 			if (!info) return;
       if (info.events) this.handleEvents(info.events);
     });
@@ -92,19 +117,19 @@ export class PongScreenContainerComponent implements OnInit {
     	this.audio.playGame(true, true);
     });
 
-    this.server.listen("player-ready").subscribe((info: number) => {
+    this.server.listen("player-ready").pipe(takeUntil(this.unsubscribeAll$)).subscribe((info: number) => {
     	if (info === 1)
 				this.p1Ready = true;
 			if (info === 2)
 				this.p2Ready = true;
     });
 
-		this.server.listen("ready-check").subscribe((info: number) => {
+		this.server.listen("ready-check").pipe(takeUntil(this.unsubscribeAll$)).subscribe((info: number) => {
 				this.p1Ready = false;
 				this.p2Ready = false;
     });
 
-		this.server.listen("game-finished").subscribe((winner: Winner) => {
+		this.server.listen("game-finished").pipe(takeUntil(this.unsubscribeAll$)).subscribe((winner: Winner) => {
 			switch (winner) {
 				case Winner.NONE:
 					this.endState = EndState.CANCEL;
@@ -133,7 +158,7 @@ export class PongScreenContainerComponent implements OnInit {
   }
 
 	setRoomListener() {
-    this.server.listen('room-update').subscribe((info: RoomInfo | undefined | null) => {
+    this.server.listen('room-update').pipe(takeUntil(this.unsubscribeAll$)).subscribe((info: RoomInfo | undefined | null) => {
 			if (!info) return;
       if (info.roomId != this.roomInfo?.roomId) {
 				this.updateRoomInfo(info);
@@ -146,14 +171,14 @@ export class PongScreenContainerComponent implements OnInit {
 		this.roomInfo = roomInfo;
 		this.server.emit('am-i-player', {}).then((data:Response) => {
 			if (data.code === 0) {
-				this.isPlayer = true;
+				// this.isPlayer = true;
 				this.playerIndex = data.payload;
 			} else {
-				this.isPlayer = false;
+				// this.isPlayer = false;
 				this.playerIndex = 0;
 			}
 		}).catch(() => {
-			this.isPlayer = false;
+			// this.isPlayer = false;
 			this.playerIndex = 0;
 		});
 	}
@@ -200,7 +225,6 @@ export class PongScreenContainerComponent implements OnInit {
   scoreEvent(payload: any) {
 		this.score.p1 = payload.p1;
     this.score.p2 = payload.p2;
-		console.log(this.score[0], this.score[1]);
     this.audio.playScore(true);
   }
 
@@ -211,5 +235,10 @@ export class PongScreenContainerComponent implements OnInit {
 
 	set3D(flag: boolean) {
 		this.threeD = flag;
+	}
+
+	async leaveGame() {
+		this.router.navigate(['/']);
+		return;
 	}
 }

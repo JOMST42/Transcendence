@@ -55,7 +55,6 @@ Ton meilleur copain de jeu*/
         },
         error: (err) => {
 					this.gamesFetched = true;
-          console.log('pas de games trouvées');
         },
       });
 
@@ -70,7 +69,6 @@ Ton meilleur copain de jeu*/
         },
         error: (err) => {
 					this.winsFetched = true;
-          console.log('pas de games trouvées');
         },
 	});
 
@@ -85,7 +83,6 @@ Ton meilleur copain de jeu*/
         },
         error: (err) => {
 					this.lossesFetched = true;
-          console.log('pas de ldoy trouvées');
         },
 	});
 	

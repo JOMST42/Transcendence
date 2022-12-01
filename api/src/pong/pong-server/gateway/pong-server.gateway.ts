@@ -57,10 +57,7 @@ export class PongServerGateway
 
   afterInit(server: Server) {
     this.logger.log('Server log: Socket is live');
-    this.server.setMaxListeners(Infinity); // WARNING need to read about it
-
-    // WARNING test purpose
-    // this.initTestServer();
+    this.server.setMaxListeners(Infinity);
 
     // setInterval(() => {
     //   this.showServerInfo();
@@ -109,7 +106,7 @@ export class PongServerGateway
         // this.userConnectionService.create(prismaUser.id, {
 
         // });
-        // socket.setMaxListeners(Infinity); // TODO
+        socket.setMaxListeners(Infinity); // TODO
         this.logger.log(
           'Socket connection: socket connected with nickname ' +
             socket.data.user.displayName,
@@ -196,78 +193,6 @@ export class PongServerGateway
     this.logger.log('* Rooms: ' + this.roomService.getRoomCount());
     this.logger.log('* Queue: ' + this.queueService.getQueueSize());
     this.logger.log('********************');
-  }
-
-  async initTestServer() {
-    let i = 100;
-    const users: User[] = [];
-    try {
-      this.logger.debug('starting test user creation');
-      users.push(
-        await this.prisma.user.create({
-          data: {
-            username: 'fousse',
-            email: 'foussemail',
-            displayName: 'foussypuss',
-            normalizedName: 'foussypuss'.toLowerCase(),
-            firstName: 'seb',
-            lastName: 'fou',
-          },
-        }),
-      );
-      users.push(
-        await this.prisma.user.create({
-          data: {
-            username: 'justincase',
-            email: 'justinmail',
-            displayName: 'justincase',
-            normalizedName: 'justincase'.toLowerCase(),
-            firstName: 'justin',
-            lastName: 'badia',
-          },
-        }),
-      );
-      users.push(
-        await this.prisma.user.create({
-          data: {
-            username: 'olala',
-            email: 'olalamail',
-            displayName: 'olalalalao',
-            normalizedName: 'olalalalao'.toLowerCase(),
-            firstName: 'Oli',
-            lastName: 'Lab',
-          },
-        }),
-      );
-      users.push(
-        await this.prisma.user.create({
-          data: {
-            username: 'Mikastiv',
-            email: 'mikmail',
-            displayName: 'sk8terboi',
-            normalizedName: 'sk8terboi'.toLowerCase(),
-            firstName: 'mik',
-            lastName: 'mika',
-          },
-        }),
-      );
-    } catch (e) {}
-    while (i++ < 200) {
-      try {
-        await this.prisma.game.create({
-          data: {
-            player1Id: users[Math.floor(Math.random() * 2)].id,
-            player2Id: users[Math.floor(Math.random() * 2 + 2)].id,
-            scorePlayer1: Math.ceil(Math.random() * 7),
-            scorePlayer2: Math.ceil(Math.random() * 7),
-            description: 'Game is done',
-            timePlayed: Math.random() * 200,
-            endTime: new Date(),
-            winner: Math.random() < 0.5 ? 'PLAYER1' : 'PLAYER2',
-          },
-        });
-      } catch (e) {}
-    }
   }
 
   getServer(): Server {

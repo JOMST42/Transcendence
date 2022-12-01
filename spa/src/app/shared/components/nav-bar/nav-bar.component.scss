@@ -145,6 +145,7 @@ h3 {
 .side-menu {
   // z-index: 1;
   height: 100vh;
+	z-index: 100;
   position: fixed;
   top: 0;
   width: 450px;

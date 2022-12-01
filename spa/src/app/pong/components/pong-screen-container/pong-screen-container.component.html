@@ -1,15 +1,20 @@
 <section class="pong-game">
 	<div id="screenContainer" class="watch-screen">
 		<div class="col-12 flex align-items-center justify-content-center">
-			<div class="grid">
+			<app-pong-versus
+			[user1]="roomInfo?.user1"
+			[user2]="roomInfo?.user2">
+			</app-pong-versus>
+			<!-- <div class="grid">
+				
 				<div class="col-4 flex align-items-center justify-content-start">
-						<app-user-avatar *ngIf="roomInfo?.user1" [user]="roomInfo.user1" [avatarUrl]="roomInfo.user1.avatarUrl" >coucuou</app-user-avatar>
+						<app-user-avatar *ngIf="roomInfo?.user1" [user]="roomInfo.user1" [avatarUrl]="roomInfo.user1.avatarUrl" ></app-user-avatar>
 				</div>
 				<div class="col-4 flex align-items-center justify-content-center"><h2>VS</h2></div>
 				<div class="col-4 flex align-items-center justify-content-end">
-					<app-user-avatar *ngIf="roomInfo?.user2" [user]="roomInfo.user2" [avatarUrl]="roomInfo.user2.avatarUrl" >coucuou</app-user-avatar>
+					<app-user-avatar *ngIf="roomInfo?.user2" [user]="roomInfo.user2" [avatarUrl]="roomInfo.user2.avatarUrl" ></app-user-avatar>
 				</div>
-			</div>
+			</div> -->
 		</div>
 		<div id="canvasContainer">
 			<app-pong-3dscreen *ngIf="threeD" class="gameCanvas"></app-pong-3dscreen>
@@ -21,22 +26,17 @@
 				[winnerName]="winner?.displayName"
 				[endState]="endState">
 			</app-pong-end-overlay>
-			<!-- <app-pong-end-overlay id="pongEndOverlay" 
-				[winnerAvatarUrl]=""
-				[winnerName]="'bilbo'"
-				[endState]="endState">
-			</app-pong-end-overlay> -->
 		</div>
 		<!-- <span [innerHTML]="timer"></span> -->
 		<span id="countdownLabel" [innerHTML]="countdownLabel"></span>
-		<!-- <span id="countdown" [@.disabled]="animDisabled" [@countdown]="{value: countdown}" [innerHTML]="countdown"></span> -->
 		<span *ngIf="countdown != 0" id="countdown" [@.disabled]="animDisabled" [innerHTML]="countdown"></span>
-		<!-- <button (click)="testCountdown()">Countdown test</button> -->
 	</div>
-	<div class="col-12 flex align-items-center justify-content-center">
-		<app-ready-button *ngIf="isPlayer"></app-ready-button>
-		<button class="mode-button" (click)="set3D(false)">2D</button>
-		<button class="mode-button" (click)="set3D(true)">3D</button>
+	<div class="col-12 screen-buttons flex align-items-center justify-content-center">
+		<app-room-list *ngIf="!isPlayer"></app-room-list>
+		<app-ready-button class="screen-button" *ngIf="isPlayer"></app-ready-button>
+		<button class="screen-button mode-button" (click)="set3D(false)">2D</button>
+		<button class="screen-button mode-button" (click)="set3D(true)">3D</button>
+		<button *ngIf="gameEnded" class="mode-button screen-button" (click)="leaveGame()">Return home</button>
 	</div>
 	
 </section>

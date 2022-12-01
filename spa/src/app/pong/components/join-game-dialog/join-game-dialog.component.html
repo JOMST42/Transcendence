@@ -12,32 +12,31 @@
 	[closable]="true"
 	(onHide)="handleLeave($event)"	>
     <!-- <p>Accept: Move you to the game room</p> -->
-    <ng-template pTemplate="footer">
-					
-	<button pButton id="joinGameButton"
-	[label]="labelJoinButton"
-	[ngClass]="{
-		'p-button-danger': state === 2,
-		'p-button-secondary': state === 1
-	}"
-	class="p-button-raised"
-	[disabled]="disabled"
-	[loading]="isProcessing"
-	loadingIcon="pi pi-spinner pi-spin"
-	(click)="handleJoin($event)"
-	></button>
+  <ng-template pTemplate="footer">
+		<button pButton id="joinGameButton"
+		[label]="labelJoinButton"
+		[ngClass]="{
+			'p-button-danger': state === 2,
+			'p-button-secondary': state === 1
+		}"
+		class="p-button-raised"
+		[disabled]="disabled"
+		[loading]="isProcessing"
+		loadingIcon="pi pi-spinner pi-spin"
+		(click)="handleJoin($event)"
+		></button>
 
-	<button pButton id="leaveGameButton"
-	[label]="labelLeaveButton"
-	[ngClass]="{
-		'p-button-danger': state === 2,
-		'p-button-secondary': state === 1
-	}"
-	class="p-button-raised"
-	[disabled]="disabled"
-	[loading]="isProcessing"
-	loadingIcon="pi pi-spinner pi-spin"
-	(click)="handleLeave($event)"
-	></button>
+		<button pButton id="leaveGameButton"
+		[label]="labelLeaveButton"
+		[ngClass]="{
+			'p-button-danger': state === 2,
+			'p-button-secondary': state === 1
+		}"
+		class="p-button-raised"
+		[disabled]="disabled"
+		[loading]="isProcessing"
+		loadingIcon="pi pi-spinner pi-spin"
+		(click)="handleLeave($event)"
+		></button>
   </ng-template>
 </p-dialog>

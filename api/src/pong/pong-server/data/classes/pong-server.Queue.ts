@@ -61,7 +61,8 @@ export class Queue {
   unqueue(s: Socket): Socket | undefined {
     this.clean();
     const i = this.queue.indexOf(s);
-    if (i >= 0) return this.queue.splice(i)[0];
+    if (i === 0) return this.queue.shift();
+    else if (i > 0) return this.queue.splice(i)[0];
     return undefined;
   }
 

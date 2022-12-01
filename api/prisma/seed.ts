@@ -2,7 +2,7 @@ import { Game, Prisma, PrismaClient, User } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-const gamesToSeed = 500;
+const gamesToSeed = 150;
 // let users: User[];
 // let games: Game[];
 

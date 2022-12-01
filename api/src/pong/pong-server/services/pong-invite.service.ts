@@ -205,14 +205,16 @@ export class PongInviteService {
   cullInvite(invite: Invite) {
     const i = this.inviteList.indexOf(invite);
     if (i < 0) return;
-    this.inviteList.splice(i, 1);
+    if (i === 0) this.inviteList.shift();
+    else this.inviteList.splice(i, 1);
   }
 
   cullAllInvalid() {
     let i = 0;
     while (i < this.inviteList.length) {
       if (this.checkAndWarnInvalid(this.inviteList[i])) {
-        this.inviteList.splice(i, 1);
+        if (i === 0) this.inviteList.shift();
+        else this.inviteList.splice(i, 1);
       } else i++;
     }
   }

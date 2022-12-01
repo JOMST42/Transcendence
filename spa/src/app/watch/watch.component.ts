@@ -30,18 +30,6 @@ export class WatchComponent implements OnInit {
     });
 	}
 
-	logDefault() {
-		return console.log('default');
-	}
-
-	logProcess() {
-		return console.log('process');
-	}
-
-	logSuccess() {
-		return console.log('Success');
-	}
-
 	set3D(flag: boolean) {
 		this.threeD = flag;
 	}

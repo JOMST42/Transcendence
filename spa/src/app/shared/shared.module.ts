@@ -22,7 +22,7 @@ import { RouterModule } from '@angular/router';
 import { SearchUserComponent } from './components/search-user/search-user.component';
 import { UserAvatarComponent } from './components/user-avatar/user-avatar.component';
 import { MatchHistoryComponent } from './components/match-history/match-history.component';
-import { UserMatchHistoryComponent } from './components/user-match-history/user-match-history.component';
+import { UserMatchHistoryComponent } from '../user/components/user-match-history/user-match-history.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +32,6 @@ import { UserMatchHistoryComponent } from './components/user-match-history/user-
     SearchUserComponent,
     UserAvatarComponent,
     MatchHistoryComponent,
-		UserMatchHistoryComponent,
   ],
   imports: [
     CommonModule,
@@ -65,7 +64,6 @@ import { UserMatchHistoryComponent } from './components/user-match-history/user-
     SearchUserComponent,
     UserAvatarComponent,
     MatchHistoryComponent,
-		UserMatchHistoryComponent,
     InputTextareaModule,
     BadgeModule,
 		MultiSelectModule,

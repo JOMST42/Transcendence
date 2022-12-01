@@ -101,7 +101,8 @@ export class PongRoomService {
     while (i < this.rooms.length) {
       if (this.rooms[i].isDeletable()) {
         this.logger.debug('room being deleted');
-        this.rooms.splice(i, 1);
+        if (i === 0) this.rooms.shift();
+        else this.rooms.splice(i, 1);
       } else i++;
     }
   }
@@ -125,7 +126,7 @@ export class PongRoomService {
     return { code: 0, msg: 'you have left all game rooms' };
   }
 
-  userGetRooms(user: Socket): Response {
+  userGetRoomsInfo(user: Socket): Response {
     const rooms: RoomInfo[] = [];
 
     for (let i = 0; i < this.rooms.length; i++) {
@@ -325,8 +326,8 @@ export class PongRoomService {
     user.on('leave-room', (id: string, callback) => {
       callback(this.userLeaveRooms(user));
     });
-    user.on('get-rooms', (args, callback) => {
-      callback(this.userGetRooms(user));
+    user.on('get-rooms-info', (args, callback) => {
+      callback(this.userGetRoomsInfo(user));
     });
   }
 

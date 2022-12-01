@@ -87,6 +87,10 @@
 	
 }
 
+.screen-button {
+	margin: 5px;
+}
+
 @media  screen and (min-width: 500px) and (max-width: 800px) {
 	.gameCanvas {
 		width:  500px;
@@ -98,6 +102,10 @@
 
 	#countdownLabel, #countdown{
 		font-size: 30px;
+	}
+
+	.screen-buttons {
+		scale: 0.85;
 	}
 
 }
@@ -113,6 +121,10 @@
 
 	#countdownLabel, #countdown{
 		font-size: 20px;
+	}
+
+	.screen-buttons {
+		scale: 0.75;
 	}
 }
 

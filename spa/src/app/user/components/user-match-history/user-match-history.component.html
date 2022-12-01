@@ -3,11 +3,13 @@
 	<p-table #matchTable 
 		[value]="activeMatches"
 		dataKey="id"
-		[rows]="5"
-		[rowsPerPageOptions]="[5,10,20]"
+		[rows]="8"
 		[loading]="loading"
 		[paginator]="true"
-			>
+		[showCurrentPageReport]="true"
+		currentPageReportTemplate="{first} to {last} of {totalRecords} games"
+		[globalFilterFields]="['match.opponent.name']"
+		>
 			<ng-template pTemplate="header">
 					<tr>
 						<th style="max-width:5rem" [pSortableColumn]="'win'">

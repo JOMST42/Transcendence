@@ -7,9 +7,10 @@ import { PongSocket } from '../core/core.module';
   providedIn: 'root',
 })
 export class PlayService {
-  constructor(private socket: PongSocket) {}
 
-	// private inQueue
+  constructor(private socket: PongSocket) {
+	}
+
   public reconnect() {
   	// this.socket?.disconnect();
   	// this.socket = io("http://localhost:3000/pong");
@@ -24,7 +25,6 @@ export class PlayService {
 
   public emit(eventName: string, data: any): Promise<any> {
     // return this.socket.emit(eventName, data);
-
     return new Promise((resolve, reject) => {
       this.socket.emit(eventName, data, (response: any) => {
         if (!response || response.code !== 0) {

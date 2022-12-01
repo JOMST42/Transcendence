@@ -13,7 +13,8 @@ import {
   // ...
 } from '@angular/animations';
 import { PlayService } from '../../../play/play.service';
-import { RoomInfo } from '../../data/enums/match.room-info';
+import { RoomInfo } from '../../enums/pong.RoomInfo';
+import { DropdownFilterOptions } from 'primeng/dropdown';
 
 @Component({
   selector: 'app-room-list',
@@ -42,31 +43,46 @@ import { RoomInfo } from '../../data/enums/match.room-info';
 export class RoomListComponent implements OnInit {
 
 	// RoomList: string = "";
-	roomList: {id:string, name:string}[] = [];
-	selectedRoom?: {id:string, name:string};
+	roomList: RoomInfo[] = []
+	selectedRoom?: RoomInfo;
+	filterValue = '';
+
+	display: boolean = false;
 
   constructor(private server: PlayService) { }
 
   ngOnInit(): void {
-		
   }
 
-	onSelect(room: {id:string, name:string}): void {
-    this.server.emit('join-room', room.id).catch(() => {});
+	async showRooms() {
+		await this.getRooms();
+		this.displayDialog();
+	}
+
+	onSelect(room: RoomInfo): void {
+    this.server.emit('join-room', room.roomId).catch(() => {});
+		console.log(room.roomId);
   }
 
 	async getRooms(){
-		this.server.emit('get-rooms', {}).then((data:Response) => 
-			data.code === 0 ? this.fillRooms(data.payload!) : null
-			).catch(() => {});
+		this.server.emit('get-rooms-info', {}).then((data:Response) => {
+			data.code === 0 ? this.roomList = data.payload : this.roomList = [];
+			console.log('got rooms');
+		}).catch(() => { this.roomList = [];});
+		console.log('in get rooms');
 	}
 
-	async fillRooms(rooms:RoomInfo[]) {
-		this.roomList = [];
+	myResetFunction(options: DropdownFilterOptions) {
+		options.reset();
+		this.filterValue = '';
+	}
 
-		for (let i = 0; i < rooms.length; i++) {
-			this.roomList.push({id:rooms[i].roomId, name:rooms[i].roomId});
-		}
+	displayDialog() {
+		this.display = true;
+	}
+
+	hideDialog() {
+		this.display = false;
 	}
 
 }

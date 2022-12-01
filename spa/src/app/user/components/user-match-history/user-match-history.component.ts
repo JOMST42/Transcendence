@@ -61,9 +61,11 @@ export class UserMatchHistoryComponent implements OnInit {
 		this.activeMatches = [];
 		this.opponents = [];
 
+		let i = 0;
 		this.watchService.getGamesByUserId(this.user.id).pipe(take(1)).subscribe({
       next: (games) => {
         games.forEach(async (game: Game) => {
+					i++;
 					await this.gameToMatch(game).then((match) => {
 						this.activeMatches.push(match)
 					});
