@@ -194,8 +194,10 @@ export class ChatService {
 
     const usersToUpdate: UserChatRoom[] = [];
     for (const user of room.users) {
-      if (user.status !== 'NORMAL' && user.statusTimer.getTime() < Date.now()) {
+      if (user.status !== 'NORMAL' && user.statusTimer < new Date(Date.now())) {
         user.status = 'NORMAL';
+        delete user.createdAt;
+        delete user.updatedAt;
         usersToUpdate.push(user);
       }
     }
