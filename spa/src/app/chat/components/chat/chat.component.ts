@@ -167,22 +167,30 @@ export class ChatComponent implements OnInit, OnDestroy {
     });
 
     ref.onClose.pipe(take(1)).subscribe({
-      next: (data: { role: 'ADMIN' | 'USER' }) => {
+      next: (data: { role?: 'ADMIN' | 'USER'; ban?: Date; mute?: Date }) => {
         if (data) {
-          this.chatService
-            .changeRole(user.userId, user.roomId, data.role)
-            .pipe(take(1))
-            .subscribe({
-              next: (user) => {
-                const toUpdate = this.selectedChannel.users.find((u) => {
-                  return u.userId === user.userId;
-                });
+          if (data.role) {
+            this.chatService
+              .changeRole(user.userId, user.roomId, data.role)
+              .pipe(take(1))
+              .subscribe({
+                next: (user) => {
+                  const toUpdate = this.selectedChannel.users.find((u) => {
+                    return u.userId === user.userId;
+                  });
 
-                if (toUpdate) {
-                  toUpdate.role = data.role;
-                }
-              },
-            });
+                  if (toUpdate) {
+                    toUpdate.role = data.role;
+                  }
+                },
+              });
+          }
+          if (data.ban) {
+            this.chatService.banUser(user.userId, user.roomId, data.ban);
+          }
+          if (data.mute) {
+            this.chatService.muteUser(user.userId, user.roomId, data.mute);
+          }
         }
       },
     });

@@ -18,3 +18,9 @@ export interface Room {
   password?: string;
   isProtected?: boolean;
 }
+
+export interface BanUserDto {
+  userId: number;
+  roomId: string;
+  time: Date;
+}

@@ -108,6 +108,16 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
       });
       return;
     }
+    const status = await this.chatService.getUserChatStatus(
+      socket.data.user.id,
+      roomId,
+    );
+    if (status === 'BANNED') {
+      this.server.emit('socketError', {
+        message: 'You are banned from this chat room',
+      });
+      return;
+    }
     socket.join(roomId);
   }
 
@@ -183,7 +193,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
       );
 
       socket.leave(dto.roomId);
-      this.server.to(socket.id).emit('banned');
+      this.server.to(socket.id).emit('banned', { ...dto });
     } catch (e) {
       if (e instanceof BadRequestException) {
         this.server.to(socket.id).emit('socketError', { message: e.message });
@@ -193,7 +203,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     }
   }
 
-  @SubscribeMessage('banUser')
+  @SubscribeMessage('muteUser')
   async muteUser(
     @ConnectedSocket() socket: Socket,
     @MessageBody() dto: BanUserDto,
@@ -223,7 +233,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
         'MUTED',
       );
 
-      this.server.to(socket.id).emit('muted');
+      this.server.to(socket.id).emit('muted', { ...dto });
     } catch (e) {
       if (e instanceof BadRequestException) {
         this.server.to(socket.id).emit('socketError', { message: e.message });

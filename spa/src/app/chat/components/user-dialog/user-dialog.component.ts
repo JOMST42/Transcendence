@@ -41,7 +41,15 @@ export class UserDialogComponent implements OnInit {
     });
   }
 
-  ban(): void {}
+  ban(): void {
+    this.ref.close({
+      ban: new Date(Date.now() + 15 * 60000),
+    });
+  }
 
-  mute(): void {}
+  mute(): void {
+    this.ref.close({
+      mute: new Date(Date.now() + 15 * 60000),
+    });
+  }
 }

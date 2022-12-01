@@ -8,6 +8,7 @@ import {
   ChatRoom,
   ChatRoomVisibility,
   UserChatRoom,
+  UserChatStatus,
 } from '@prisma/client';
 import * as argon2 from 'argon2';
 
@@ -331,6 +332,10 @@ export class ChatService {
       throw new BadRequestException('Cannot ban or mute admins');
     }
 
+    if (new Date(Date.now()) >= time) {
+      throw new BadRequestException('Time must be in future');
+    }
+
     await this.prisma.userChatRoom.update({
       where: {
         userId_roomId: {
@@ -340,7 +345,7 @@ export class ChatService {
       },
       data: {
         status,
-        statusTimer: new Date(Date.now() + time.getTime()),
+        statusTimer: time,
       },
     });
   }
@@ -401,5 +406,17 @@ export class ChatService {
         user: true,
       },
     });
+  }
+
+  async getUserChatStatus(
+    userId: number,
+    roomId: string,
+  ): Promise<UserChatStatus> {
+    await this.updateTimers(roomId);
+    const user = await this.prisma.userChatRoom.findUnique({
+      where: { userId_roomId: { roomId, userId } },
+    });
+
+    return user.status;
   }
 }

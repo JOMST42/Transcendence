@@ -4,7 +4,7 @@ import { Observable, take } from 'rxjs';
 
 import { ChatSocket } from '../../core/core.module';
 import { BaseApiService } from '../../core/services';
-import { ChatMessage, Room, UserChatRoom } from '../models';
+import { BanUserDto, ChatMessage, Room, UserChatRoom } from '../models';
 
 @Injectable({
   providedIn: 'root',
@@ -95,5 +95,21 @@ export class ChatService {
       userId,
       role,
     });
+  }
+
+  banUser(userId: number, roomId: string, time: Date): void {
+    this.socket.emit('banUser', { userId, roomId, time });
+  }
+
+  muteUser(userId: number, roomId: string, time: Date): void {
+    this.socket.emit('muteUser', { userId, roomId, time });
+  }
+
+  userBanned(): Observable<BanUserDto> {
+    return this.socket.fromEvent<BanUserDto>('banned');
+  }
+
+  userMuted(): Observable<BanUserDto> {
+    return this.socket.fromEvent<BanUserDto>('muted');
   }
 }
