@@ -1,5 +1,5 @@
 <div class="flex flex-column">
-  <div *ngIf="!user.isOwner && me.role === 'ADMIN'">
+  <div *ngIf="!user.isOwner && me.isOwner">
     <h5>Role</h5>
     <p-dropdown
       class="mr-2"

@@ -382,18 +382,14 @@ export class ChatService {
   ): Promise<UserChatRoom> {
     const actionUser = await this.getUserChatRoom(actionUserId, roomId);
 
-    if (!actionUser || actionUser?.role !== 'ADMIN') {
+    if (!actionUser || !actionUser?.isOwner) {
       throw new UnauthorizedException('Unauthorized');
     }
 
     const user = await this.getUserChatRoom(userId, roomId);
 
-    if (
-      !user ||
-      user?.isOwner ||
-      (!actionUser.isOwner && user?.role === 'ADMIN')
-    ) {
-      throw new BadRequestException('Cannot change role of an admin');
+    if (!user || user?.isOwner) {
+      throw new BadRequestException('Cannot change role of the owner');
     }
 
     return await this.prisma.userChatRoom.update({
