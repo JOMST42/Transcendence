@@ -1,5 +1,5 @@
 <div class="flex flex-column">
-  <div>
+  <div *ngIf="!user.isOwner && me.role === 'ADMIN'">
     <h5>Role</h5>
     <p-dropdown
       class="mr-2"
@@ -16,16 +16,16 @@
     ></button>
   </div>
   <div class="mt-4">
-    <app-game-invite [userId]="userId"></app-game-invite>
+    <app-game-invite [userId]="user.userId"></app-game-invite>
   </div>
-  <div class="mt-4">
+  <div class="mt-4" *ngIf="!user.isOwner && me.role === 'ADMIN'">
     <button
       class="mr-2"
-      (click)="close()"
+      (click)="ban()"
       pButton
       type="button"
       label="Ban"
     ></button>
-    <button (click)="close()" pButton type="button" label="Mute"></button>
+    <button (click)="mute()" pButton type="button" label="Mute"></button>
   </div>
 </div>

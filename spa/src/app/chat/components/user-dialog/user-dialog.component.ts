@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { ToastService } from '../../../core/services';
+import { UserChatRoom } from '../../models';
 
 @Component({
   selector: 'app-user-dialog',
@@ -13,7 +14,9 @@ export class UserDialogComponent implements OnInit {
     { name: 'Admin', value: 'ADMIN' },
     { name: 'User', value: 'USER' },
   ];
-  userId: number;
+  user: UserChatRoom;
+  me: UserChatRoom;
+  isOwner: boolean;
 
   constructor(
     private readonly ref: DynamicDialogRef,
@@ -22,7 +25,9 @@ export class UserDialogComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.userId = this.config.data;
+    this.user = this.config.data['user'];
+    this.isOwner = this.config.data['isOwner'];
+    this.me = this.config.data['me'];
   }
 
   close(): void {
@@ -35,4 +40,8 @@ export class UserDialogComponent implements OnInit {
       role: this.role,
     });
   }
+
+  ban(): void {}
+
+  mute(): void {}
 }

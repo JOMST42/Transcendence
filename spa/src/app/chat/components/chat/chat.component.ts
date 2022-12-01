@@ -159,15 +159,11 @@ export class ChatComponent implements OnInit, OnDestroy {
       return u.userId === this.me.id;
     });
 
-    if (!userChat.isOwner && user.role === 'ADMIN') {
-      return;
-    }
-
     const ref = this.dialogService.open(UserDialogComponent, {
       header: user.user.displayName,
       width: '50%',
       height: '500px',
-      data: user.userId,
+      data: { user: user, isOwner: userChat.isOwner, me: userChat },
     });
 
     ref.onClose.pipe(take(1)).subscribe({
