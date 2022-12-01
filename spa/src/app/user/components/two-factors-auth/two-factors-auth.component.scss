@@ -8,3 +8,12 @@
 	background-color: #00A595  !important;
 	border: 3px solid black;;
 }
+
+
+:host ::ng-deep.p-inputtext {
+  background-color: #7869c4 ;
+}
+
+:host ::ng-deep.p-inputtext:hover {
+  border: none;
+}

@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { take } from 'rxjs';
-import { AuthService } from '../../../core/services';
+import { AuthService, ToastService } from '../../../core/services';
 import { User } from '../../models';
 
 @Component({
@@ -9,7 +9,10 @@ import { User } from '../../models';
   styleUrls: ['./two-factors-auth.component.scss'],
 })
 export class TwoFactorsAuthComponent implements OnInit {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly toastService: ToastService
+  ) {}
 
   me!: User;
   codeQR!: string;
@@ -36,10 +39,13 @@ export class TwoFactorsAuthComponent implements OnInit {
       .pipe(take(1))
       .subscribe({
         next: (data) => {
-          console.log('ca a fonctionné');
+          this.toastService.showSuccess(
+            'Two Factor Authentication turn on',
+            ''
+          );
         },
         error: (err) => {
-          console.log('ca a pas fonctionné');
+          this.toastService.showError('Oops turn', 'Something went wrong');
         },
       });
   }
@@ -50,11 +56,14 @@ export class TwoFactorsAuthComponent implements OnInit {
       .pipe(take(1))
       .subscribe({
         next: (data) => {
-          console.log('authentifié');
+          this.toastService.showSuccess(
+            'Two Factor Authentication success',
+            ''
+          );
         },
-        error: (err) => {
-          console.log('pas auth');
-        },
+        // error: (err) => {
+        //   this.toastService.showError('Oops auth', 'Something went wrong');
+        // },
       });
   }
 
@@ -65,7 +74,6 @@ export class TwoFactorsAuthComponent implements OnInit {
       .subscribe({
         next: (data) => {
           this.codeQR = data;
-          console.log(data);
         },
         error: (err) => {
           console.log(err);

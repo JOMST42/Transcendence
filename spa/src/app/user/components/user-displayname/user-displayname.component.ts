@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { take } from 'rxjs';
 
 import { ToastService } from '../../../core/services';
@@ -18,25 +19,34 @@ export class UserDisplaynameComponent implements OnInit {
 
   constructor(
     private readonly toast: ToastService,
-    private readonly userService: UserService
+    private readonly userService: UserService,
+    private readonly router: Router,
+    private readonly route: ActivatedRoute
   ) {}
 
   focusInput(): void {
     this.showButton = true;
   }
 
-  clearInput(): void {
-    this.displayName = '';
-    this.showButton = false;
-  }
-
   inputValidator(): boolean {
     const pattern = /^[a-zA-Z_0-9_\-]+$/;
     if (!pattern.test(this.displayName)) {
       this.toast.showError('Nope ! ✋', 'Only letters, numbers, -, _ accepted');
+      this.displayName = '';
+      this.resetPage();
       return false;
     }
+    this.resetPage();
+
     return true;
+  }
+
+  resetPage() {
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+    this.router.onSameUrlNavigation = 'reload';
+    this.router.navigate(['./'], {
+      relativeTo: this.route,
+    });
   }
 
   changeDisplayName() {

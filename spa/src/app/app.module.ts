@@ -8,9 +8,10 @@ import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
 import { CredentialsInterceptor, ErrorInterceptor } from './core/interceptors';
 import { SharedModule } from './shared/shared.module';
+import { LoginTwoFAComponent } from './login-two-fa/login-two-fa.component';
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, LoginTwoFAComponent],
   imports: [
     AppRoutingModule,
     BrowserModule,

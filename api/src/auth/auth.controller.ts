@@ -5,8 +5,6 @@ import {
   HttpCode,
   HttpStatus,
   Post,
-  Req,
-  Request,
   Res,
   UnauthorizedException,
   UseGuards,
@@ -20,6 +18,7 @@ import { GetUser } from './decorator';
 import { FtAuthGuard, JwtGuard } from './guards';
 import { cookieConstants } from '../constants';
 import { UserService } from 'src/user/services/user.service';
+import { TwoFAStrategy } from './strategy/TwoFAstrategy';
 import { TwoFAGuard } from './guards/TwoFA.guard';
 
 @Controller('auth')
@@ -56,6 +55,10 @@ export class AuthController {
         sameSite: 'strict',
       },
     );
+    if (user.isTwoFactorAuthEnabled) {
+      res.redirect(this.config.get('CLIENT_URL_2FA'));
+      return;
+    }
     res.redirect(this.config.get('CLIENT_URL'));
   }
 
@@ -69,23 +72,24 @@ export class AuthController {
   @Post('2fa/turn-on')
   @UseGuards(JwtGuard)
   async turnOnTwoFAuth(@GetUser() user: User, @Body() body) {
+    if (user.isTwoFactorAuthEnabled) {
+      throw new UnauthorizedException('You already enable the 2FA');
+    }
     const isCodeValid = this.authService.validateTwoFAuthCode(body.code, user);
     if (!isCodeValid) {
-      throw new UnauthorizedException('Wrong authenticqtion code');
+      throw new UnauthorizedException('Wrong authentication code');
     }
     await this.userService.turnOnTwoFAuth(user.id);
   }
 
   @Post('2fa/authenticate')
   @HttpCode(HttpStatus.OK)
-  @UseGuards(JwtGuard)
+  @UseGuards(TwoFAGuard)
   async authenticate(@GetUser() user: User, @Body() body) {
-    // const code = '778040';
-    // console.log(user.twoFASecret);
     const isCodeValid = this.authService.validateTwoFAuthCode(body.code, user);
     if (!isCodeValid) {
       throw new UnauthorizedException('Wrong authentication code');
     }
-    return this.authService.login2FA(user);
+    return await this.authService.login2FA(user);
   }
 }

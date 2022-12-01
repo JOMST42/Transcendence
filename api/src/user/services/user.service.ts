@@ -75,7 +75,7 @@ export class UserService {
   }
 
   async turnOnTwoFAuth(userId: number) {
-    this.prisma.user.update({
+    return this.prisma.user.update({
       where: {
         id: userId,
       },

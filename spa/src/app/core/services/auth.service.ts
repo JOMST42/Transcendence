@@ -74,10 +74,10 @@ export class AuthService {
   }
 
   turnOnTwoFactorAuth(code: string) {
-    return this.baseApiService.postOne('/auth/2fa/turn-on', code);
+    return this.baseApiService.postOne('/auth/2fa/turn-on', {code :code});
   }
 
   authenticateTwoFactorAuth(code: string) {
-    return this.baseApiService.postOne('/auth/2fa/authenticate', code);
+    return this.baseApiService.postOne('/auth/2fa/authenticate', {code :code});
   }
 }
