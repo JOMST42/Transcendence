@@ -5,8 +5,6 @@ import { Response } from '../../interfaces';
 
 import { AudioHandler } from '../../classes';
 import { PlayService } from '../../play.service';
-import { Score } from '../../../pong/interfaces';
-import { PlayGuard } from '../../play-guard';
 
 @Component({
   selector: 'app-game',

@@ -15,7 +15,7 @@ async function bootstrap() {
   const configService = app.get(ConfigService);
 
   app.enableCors({
-    origin: configService.get('CLIENT_URL'),
+    origin: [configService.get('CLIENT_URL'), configService.get('CLIENT_URL_2FA')],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     allowedHeaders: ['authorization', 'content-type'],
     credentials: true,

@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { take } from 'rxjs';
 import { ToastService } from '../../../../core/services';
-import { Friendship, User } from '../../../models';
+import { User } from '../../../models';
 import { FriendService } from '../../../services';
 
 type ButtonState = 'ADD' | 'ACCEPT' | 'REMOVE' | 'DISABLE';

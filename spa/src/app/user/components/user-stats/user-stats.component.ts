@@ -1,6 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { take } from 'rxjs';
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { WatchService } from 'src/app/watch/services/watch.service';
+import { Subject, take, takeUntil } from 'rxjs';
 import { AuthService } from '../../../core/services';
 import { Game } from '../../../watch/models';
 import { User } from '../../models';
@@ -11,16 +11,14 @@ import { UserService } from '../../services';
   templateUrl: './user-stats.component.html',
   styleUrls: ['./user-stats.component.scss'],
 })
-export class UserStatsComponent implements OnInit {
+export class UserStatsComponent implements OnInit, OnDestroy {
   constructor(
     private readonly userService: UserService,
     private readonly authService: AuthService,
 	private readonly watchService: WatchService,
   ) {}
 
-/*Games perdues et games gagnées
-Ton plus grand ennemi
-Ton meilleur copain de jeu*/
+  private unsubscribeAll$ = new Subject<void>();
 
   games: Game[] = [];
 	gamesFetched = false;
@@ -43,7 +41,7 @@ Ton meilleur copain de jeu*/
   ngOnInit(): void {
     this.watchService
       .getGamesByUserId(this.user.id)
-      .pipe(take(1))
+      .pipe(takeUntil(this.unsubscribeAll$))
       .subscribe({
         next: (data) => {
           this.games = data;
@@ -120,4 +118,7 @@ Ton meilleur copain de jeu*/
 	// 		return maxEl;
 	// }
 
+  ngOnDestroy(): void {
+    this.unsubscribeAll$.next();
+  }
 }

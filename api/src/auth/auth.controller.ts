@@ -15,14 +15,18 @@ import { Response } from 'express';
 
 import { AuthService } from './auth.service';
 import { GetUser } from './decorator';
-import { FtAuthGuard } from './guards';
+import { FtAuthGuard, JwtGuard } from './guards';
 import { cookieConstants } from '../constants';
+import { UserService } from 'src/user/services/user.service';
+import { TwoFAStrategy } from './strategy/TwoFAstrategy';
+import { TwoFAGuard } from './guards/TwoFA.guard';
 
 @Controller('auth')
 export class AuthController {
   constructor(
     private readonly authService: AuthService,
     private readonly config: ConfigService,
+    private readonly userService: UserService,
   ) {}
 
   @Get('ft/login')
@@ -42,8 +46,8 @@ export class AuthController {
       'access_token',
       await this.authService.signToken({
         sub: user.id,
-        isTwoFactorAuthEnabled: user.twoFAEnable,
-        isTwoFactorAutehnticated: false,
+        isTwoFactorAuthEnabled: user.isTwoFactorAuthEnabled,
+        isTwoFactorAuthenticated: false,
       }),
       {
         maxAge: cookieConstants.maxAge,
@@ -51,19 +55,41 @@ export class AuthController {
         sameSite: 'strict',
       },
     );
+    if (user.isTwoFactorAuthEnabled) {
+      res.redirect(this.config.get('CLIENT_URL_2FA'));
+      return;
+    }
     res.redirect(this.config.get('CLIENT_URL'));
   }
 
-  @Post('2fa/turnOn')
-  // @UseGuards(FtAuthGuard)
-  async turnOnTwoFAuth(@GetUser() user: User, @Body() body: string) {
-    const isValid = this.authService.validateTwoFAuthCode(body, user);
-    if (!isValid) {
-      throw new UnauthorizedException('Wrong authentification code');
-    }
-    return this.authService.logWith2FAuth(user);
+	@Post('2fa/generate')
+  @UseGuards(JwtGuard)
+  async register(@Res() res, @GetUser() user: User): Promise<string> {
+    const otpAuthUrl = await this.authService.generateTwoFAuthSecret(user);
+    return res.json(await this.authService.generateQrCode(otpAuthUrl));
   }
 
-  // @Post('2fa/generate')
-  // async
+  @Post('2fa/turn-on')
+  @UseGuards(JwtGuard)
+  async turnOnTwoFAuth(@GetUser() user: User, @Body() body) {
+    if (user.isTwoFactorAuthEnabled) {
+      throw new UnauthorizedException('You already enable the 2FA');
+    }
+    const isCodeValid = this.authService.validateTwoFAuthCode(body.code, user);
+    if (!isCodeValid) {
+      throw new UnauthorizedException('Wrong authentication code');
+    }
+    await this.userService.turnOnTwoFAuth(user.id);
+  }
+
+  @Post('2fa/authenticate')
+  @HttpCode(HttpStatus.OK)
+  // @UseGuards(TwoFAGuard)
+  async authenticate(@GetUser() user: User, @Body() body) {
+    const isCodeValid = this.authService.validateTwoFAuthCode(body.code, user);
+    if (!isCodeValid) {
+      throw new UnauthorizedException('Wrong authentication code');
+    }
+    return await this.authService.login2FA(user);
+  }
 }

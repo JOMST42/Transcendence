@@ -7,6 +7,9 @@ export interface User {
   email?: string;
   avatarUrl?: string;
   status: UserStatus;
+  twoFASecret?: string;
+  isTwoFactorAuthEnabled: boolean;
+  isTwoFactorAuthenticated: boolean;
 }
 
 export interface UpdateUserDto {

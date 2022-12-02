@@ -77,6 +77,11 @@
               <app-user-match-history [user]="user"></app-user-match-history>
             </ng-template>
           </p-tabPanel>
+          <p-tabPanel header="SETTINGS">
+            <ng-template pTemplate="content">
+             <app-two-factors-auth></app-two-factors-auth>
+            </ng-template>
+          </p-tabPanel>
         </p-tabView>
 		<!-- 600px et moin -->
 		<div class="tab-mobile">

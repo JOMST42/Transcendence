@@ -11,17 +11,18 @@ datasource db {
 }
 
 model User {
-  id             Int        @id @default(autoincrement())
-  username       String     @unique
-  email          String     @unique
-  displayName    String
-  normalizedName String     @unique
-  firstName      String
-  lastName       String
-  avatarUrl      String?
-  status         UserStatus @default(OFFLINE)
-  twoFASecret String? 
-  twoFAEnable Boolean @default(false)
+  id                       Int        @id @default(autoincrement())
+  username                 String     @unique
+  email                    String     @unique
+  displayName              String
+  normalizedName           String     @unique
+  firstName                String
+  lastName                 String
+  avatarUrl                String?
+  status                   UserStatus @default(OFFLINE)
+  twoFASecret              String?
+  isTwoFactorAuthEnabled   Boolean    @default(false) @map("twoFAEnable")
+  isTwoFactorAuthenticated Boolean    @default(false)
 
   rooms           UserChatRoom[]
   connections     UserConnection[]
@@ -140,14 +141,13 @@ model Game {
 }
 
 model Friendship {
-  requester   User    @relation("requester", fields: [requesterId], references: [id])
-  requesterId Int
-  adressee    User    @relation("adressee", fields: [adresseeId], references: [id])
-  adresseeId  Int
-  accepted    Boolean @default(false)
-  adresseeBlocker     Boolean @default(false)
-  requesterBlocker     Boolean @default(false)
-
+  requester        User    @relation("requester", fields: [requesterId], references: [id])
+  requesterId      Int
+  adressee         User    @relation("adressee", fields: [adresseeId], references: [id])
+  adresseeId       Int
+  accepted         Boolean @default(false)
+  adresseeBlocker  Boolean @default(false)
+  requesterBlocker Boolean @default(false)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

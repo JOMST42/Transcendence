@@ -1,13 +1,14 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Res } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { User } from '@prisma/client';
 import { authenticator } from 'otplib';
-import { jwtTokenConstants } from '../constants';
+import { cookieConstants, jwtTokenConstants } from '../constants';
 import { toDataURL } from 'qrcode';
 
 import { PrismaService } from '../prisma/prisma.service';
 import { TokenPayload, UserDetails } from './utils';
+import { Response } from 'express';
 
 @Injectable()
 export class AuthService {
@@ -70,8 +71,42 @@ export class AuthService {
     });
   }
 
+  async login2FA(user: User) {
+    // this.setTwoFactorAuthenticated(user.id);
+    const payload = {
+      sub: user.id,
+      isTwoFactorAuthEnabled: user.isTwoFactorAuthEnabled,
+      isTwoFactorAuthenticated: true,
+    };
+    // res.cookie(
+    //   'access_token',
+    //   await this.signToken({
+    //     sub: user.id,
+    //     isTwoFactorAuthEnabled: user.isTwoFactorAuthEnabled,
+    //     isTwoFactorAuthenticated: true,
+    //   }),
+    //   {
+    //     maxAge: cookieConstants.maxAge,
+    //     httpOnly: false,
+    //     sameSite: 'strict',
+    //   },
+    // );
+    return await this.signToken(payload);
+  }
+
+  async setTwoFactorAuthenticated(userId: number): Promise<User> {
+    return await this.prisma.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        isTwoFactorAuthenticated: true,
+      },
+    });
+  }
+
   async setTwoFAuthSecret(secret: string, userId: number) {
-    this.prisma.user.update({
+    return await this.prisma.user.update({
       where: {
         id: userId,
       },
@@ -92,35 +127,24 @@ export class AuthService {
     return otpauthUrl;
   }
 
-  async turnOnTwoFAuth(userId: number) {
-    this.prisma.user.update({
-      where: {
-        id: userId,
-      },
-      data: {
-        twoFAEnable: true,
-      },
-    });
+  async generateQrCode(otpAuthUrl: string): Promise<string> {
+    return toDataURL(otpAuthUrl);
   }
 
-//   async generateQrCode(otpAuthUrl: string) {
-//     return toDataURL(otpAuthUrl);
-//   }
-
   validateTwoFAuthCode(code: string, user: User): boolean {
+    console.log(code + ' = le code et le secret = ' + user.twoFASecret);
+    if (
+      authenticator.verify({
+        token: code,
+        secret: user.twoFASecret,
+      })
+    ) {
+      console.log('TRUE');
+    }
+
     return authenticator.verify({
       token: code,
       secret: user.twoFASecret,
     });
-  }
-
-  async logWith2FAuth(user: User) {
-    const payload = {
-      sub: user.id,
-      email: user.email,
-      isTwoFactorAuthEnabled: user.twoFAEnable,
-      isTwoFactorAutehnticated: true,
-    };
-    return { email: payload.email, access_token: this.jwt.sign(payload) };
   }
 }

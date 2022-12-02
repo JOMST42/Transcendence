@@ -9,7 +9,6 @@ import { ChatModule } from './chat/chat.module';
 import { CloudinaryModule } from './cloudinary/cloudinary.module';
 import { PongModule } from './pong/pong.module';
 import { EventEmitterModule } from '@nestjs/event-emitter';
-
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
@@ -38,6 +37,5 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
     }),
   ],
   controllers: [],
-  providers: [],
 })
 export class AppModule {}

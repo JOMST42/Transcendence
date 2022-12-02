@@ -5,15 +5,12 @@
     placeholder="{{ user?.displayName }}"
     [(ngModel)]="displayName"
     #dname="ngModel"
-    ngFormControl="control"
     [disabled]="!userIsMe"
-    (blur)="clearInput()"
     (focus)="focusInput()"
   />
   <button
     *ngIf="userIsMe && displayName && showButton"
     pButton
-    pRipple
     type="button"
     icon="pi pi-check"
     class="p-button p-button-outlined btn"

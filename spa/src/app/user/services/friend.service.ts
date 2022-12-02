@@ -51,8 +51,6 @@ export class FriendService {
     );
   }
 
-
-
   /*Check if there is a relation created between 2 users*/
   async checkFriendship(userId: number, meId: number): Promise<Friendship> {
     return new Promise((resolve, reject) => {
@@ -78,9 +76,7 @@ export class FriendService {
         this.createFriendship(userId, meId)
           .pipe(take(1))
           .subscribe({
-            next: (data) => {
-              // console.log(data);
-            },
+            next: (data) => {},
           });
       });
   }

@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { take } from 'rxjs';
+
 import { AuthService } from 'src/app/core/services';
-import { UserService } from '../../../user/services';
 import { User } from '../../../user/models';
 import { Subject, takeUntil } from 'rxjs';
 import { PlayService } from 'src/app/play/play.service';
@@ -11,13 +12,11 @@ import { PlayService } from 'src/app/play/play.service';
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit {
-  private unsubscribeAll$ = new Subject<void>();
   @Input() user!: User | null;
   avatarUrl: string;
   userIsMe: boolean;
 
   constructor(
-    private readonly userService: UserService,
     private readonly authService: AuthService,
   ) {}
 
@@ -44,7 +43,7 @@ export class HomeComponent implements OnInit {
   refreshUser(): void {
     this.authService
       .refreshProfile()
-      .pipe(takeUntil(this.unsubscribeAll$))
+      .pipe(take(1))
       .subscribe({
         next: (data) => {
           this.user = data;

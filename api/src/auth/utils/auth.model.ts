@@ -10,5 +10,5 @@ export class UserDetails {
 export class TokenPayload {
   sub: number;
   isTwoFactorAuthEnabled: boolean;
-  isTwoFactorAutehnticated: boolean;
+  isTwoFactorAuthenticated: boolean;
 }

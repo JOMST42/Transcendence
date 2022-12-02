@@ -136,7 +136,7 @@ export class PongServerGateway
 
   @SubscribeMessage('join-queue')
   handleJoinQueue(@ConnectedSocket() socket: Socket): Response {
-    const response = this.pongService.canQueue(socket.data.user.id);
+    const response = this.pongService.canQueue(socket?.data?.user?.id);
     if (response.code === 0) return this.queueService.userJoinQueue(socket);
     else return response;
   }
@@ -154,7 +154,7 @@ export class PongServerGateway
     @MessageBody() id: number,
     @ConnectedSocket() socket: Socket,
   ): Response {
-    const response = this.pongService.canInvite(socket.data.user.id);
+    const response = this.pongService.canInvite(socket?.data?.user?.id);
     if (response.code != 0) return response;
 
     const targetSocket = this.roomService.getUserWithId(id);
