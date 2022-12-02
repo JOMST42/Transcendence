@@ -1,29 +1,31 @@
-<div *ngIf="!me.isTwoFactorAuthenticated">
-  <button
-    pButton
-    pRipple
+<!-- *ngIf="!me.isTwoFactorAuthEnabled" -->
+<div >
+  <p-button
     type="button"
     label="Activate 2 factors authentication"
     class="p-button-raised p-button-success p-button-text"
     (click)="showDialog()"
-  ></button>
+  ></p-button>
 
-  <p-dialog
-    header="Scan me to enable 2 factor authentication"
-    [(visible)]="displayDialog"
-  >
-    <img [src]="codeQR" />
-    <input
-      type="text"
-      pInputText
-      placeholder="Enter your verification code"
-      [(ngModel)]="code"
-    />
-    <button
-      (click)="turnOnTwoFactorAuth(); authenticate()"
-      [disabled]="!isCode()"
-    >
-      Turn on 2FA
-    </button>
+  <p-dialog header="SCAN ME" [(visible)]="displayDialog">
+    <ng-template pTemplate="content" class="display-center">
+      <img [src]="codeQR" />
+      <div class="center">
+        <input
+          type="text"
+          pInputText
+          placeholder="Enter your verification code"
+          [(ngModel)]="code"
+        />
+      </div>
+      <div class="center">
+        <p-button
+          *ngIf="isCode()"
+          (click)="turnOnTwoFactorAuth(); authenticate(); closeDialog()"
+        >
+          Turn on 2FA
+        </p-button>
+      </div>
+    </ng-template>
   </p-dialog>
 </div>

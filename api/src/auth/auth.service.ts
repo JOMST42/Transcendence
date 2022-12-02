@@ -71,7 +71,7 @@ export class AuthService {
   }
 
   async login2FA(user: User) {
-    this.setTwoFactorAuthenticated(user.id);
+    // this.setTwoFactorAuthenticated(user.id);
     const payload = {
       sub: user.id,
       isTwoFactorAuthEnabled: user.isTwoFactorAuthEnabled,
@@ -131,6 +131,16 @@ export class AuthService {
   }
 
   validateTwoFAuthCode(code: string, user: User): boolean {
+    console.log(code + ' = le code et le secret = ' + user.twoFASecret);
+    if (
+      authenticator.verify({
+        token: code,
+        secret: user.twoFASecret,
+      })
+    ) {
+      console.log('TRUE');
+    }
+
     return authenticator.verify({
       token: code,
       secret: user.twoFASecret,

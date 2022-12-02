@@ -16,13 +16,15 @@
             [(ngModel)]="code"
           />
         </div>
-        <p-button
-          *ngIf="isCode()"
-          (click)="authenticate()"
-          [disabled]="!isCode()"
-        >
-          LOGIN
-        </p-button>
+        <div>
+          <p-button
+            *ngIf="isCode()"
+            (click)="authenticate()"
+            [disabled]="!isCode()"
+          >
+            LOGIN
+          </p-button>
+        </div>
       </div>
     </div>
   </div>

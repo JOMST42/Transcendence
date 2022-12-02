@@ -23,6 +23,10 @@ export class TwoFactorsAuthComponent implements OnInit {
     this.displayDialog = true;
   }
 
+  closeDialog(): void {
+    this.displayDialog = false;
+  }
+
   isCode(): boolean {
     if (this.code) {
       return true;
@@ -61,9 +65,6 @@ export class TwoFactorsAuthComponent implements OnInit {
             ''
           );
         },
-        // error: (err) => {
-        //   this.toastService.showError('Oops auth', 'Something went wrong');
-        // },
       });
   }
 
