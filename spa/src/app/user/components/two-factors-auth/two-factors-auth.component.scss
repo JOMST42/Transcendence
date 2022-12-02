@@ -26,6 +26,15 @@
 	display: flow-root;
 }
 
+h1 {
+	-webkit-text-stroke: black;
+	-webkit-text-stroke-width: 1px;
+	font-family: "PixelPowerline";
+	font-weight: 20;
+	font-size: 1rem;
+	color: #fff;
+}
+
 img {
   display: block;
   margin-left: auto;

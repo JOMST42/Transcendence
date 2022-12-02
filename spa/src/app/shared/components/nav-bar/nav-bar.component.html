@@ -2,7 +2,7 @@
   <div class="menu-trigger" (click)="isOpen = !isOpen">
     <i class="gg-menu-boxed"></i>
   </div>
-  <div class="side-menu" *ngIf="isOpen" [@sideMenu]>
+  <div class="side-menu" *ngIf="isOpen">
     <div class="menu-close" (click)="isOpen = !isOpen">
       <i class="gg-close-r"></i>
     </div>
@@ -12,9 +12,7 @@
           <li><a routerLink="/play">PLAY</a></li>
 					<li><a routerLink="/watch">WATCH</a></li>
 					<li><a routerLink="/chat">CHAT</a></li>
-					<li><a routerLink="/users/id">USERS</a></li>
-					<li><a routerLink="/stats">STATS</a></li>
-					<li><a routerLink="/settings">SETTINGS</a></li>
+					<li><a routerLink="/users/id">PROFIL</a></li>
 					<li><a routerLink="/search">SEARCH</a></li>
 
         </ul>

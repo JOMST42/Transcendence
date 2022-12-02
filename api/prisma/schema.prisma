@@ -21,8 +21,7 @@ model User {
   avatarUrl      String?
   status         UserStatus @default(OFFLINE)
   twoFASecret String? 
-  isTwoFactorAuthEnabled Boolean @default(false) @map("twoFAEnable")
- isTwoFactorAuthenticated Boolean @default(false)
+  isTwoFactorAuthEnabled Boolean @default(false)
 
   rooms           UserChatRoom[]
   connections     UserConnection[]

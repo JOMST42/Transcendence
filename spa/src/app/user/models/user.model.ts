@@ -9,7 +9,6 @@ export interface User {
   status: UserStatus;
   twoFASecret?: string;
   isTwoFactorAuthEnabled: boolean;
-  isTwoFactorAuthenticated: boolean;
 }
 
 export interface UpdateUserDto {

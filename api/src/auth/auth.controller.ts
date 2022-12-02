@@ -18,7 +18,6 @@ import { GetUser } from './decorator';
 import { FtAuthGuard, JwtGuard } from './guards';
 import { cookieConstants } from '../constants';
 import { UserService } from 'src/user/services/user.service';
-import { TwoFAStrategy } from './strategy/TwoFAstrategy';
 import { TwoFAGuard } from './guards/TwoFA.guard';
 
 @Controller('auth')
@@ -47,7 +46,7 @@ export class AuthController {
       await this.authService.signToken({
         sub: user.id,
         isTwoFactorAuthEnabled: user.isTwoFactorAuthEnabled,
-        isTwoFactorAuthenticated: user.isTwoFactorAuthenticated,
+        isTwoFactorAuthenticated: false,
       }),
       {
         maxAge: cookieConstants.maxAge,

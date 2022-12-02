@@ -14,7 +14,6 @@ export class LoginTwoFAComponent implements OnInit {
     private readonly toastService: ToastService
   ) {}
 
-  me!: User;
   codeQR!: string;
   code!: string;
   displayDialog: boolean = false;
@@ -45,16 +44,5 @@ export class LoginTwoFAComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.authService
-      .getCurrentUser()
-      .pipe(take(1))
-      .subscribe({
-        next: (data) => {
-          this.me = data;
-        },
-        error: (err) => {
-          console.log(err);
-        },
-      });
   }
 }
