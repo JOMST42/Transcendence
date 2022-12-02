@@ -198,12 +198,21 @@ export class ChatService {
         user.status = 'NORMAL';
         delete user.createdAt;
         delete user.updatedAt;
+        delete user.statusTimer;
         usersToUpdate.push(user);
       }
     }
 
-    if (usersToUpdate.length > 0) {
-      await this.prisma.userChatRoom.updateMany({ data: usersToUpdate });
+    for (const user of usersToUpdate) {
+      await this.prisma.userChatRoom.update({
+        where: {
+          userId_roomId: {
+            roomId: user.roomId,
+            userId: user.userId,
+          },
+        },
+        data: user,
+      });
     }
   }
 
