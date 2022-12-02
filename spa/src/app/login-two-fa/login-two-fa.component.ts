@@ -43,6 +43,5 @@ export class LoginTwoFAComponent implements OnInit {
       });
   }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 }
