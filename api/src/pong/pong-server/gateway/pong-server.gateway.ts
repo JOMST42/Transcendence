@@ -22,11 +22,9 @@ import { PongQueueService } from '../services/pong-queue.service';
 import { AuthService } from '../../../auth/auth.service';
 import { PongServerInterceptor } from '../pong-server.interceptor';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { User } from '@prisma/client';
 import { UserService } from 'src/user/services/user.service';
 import { PongInviteService } from '../services/pong-invite.service';
 import { PongService } from 'src/pong/pong.service';
-import { EventEmitter2 } from '@nestjs/event-emitter';
 import { UserConnectionService } from 'src/user/services/user-connection.service';
 
 @Injectable({})

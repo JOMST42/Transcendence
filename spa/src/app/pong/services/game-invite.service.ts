@@ -54,12 +54,12 @@ export class GameInviteService {
 		await this.playService.emit('refuse-invite', {}).then((data:Response) => {
 			if (data && data?.code === 0){
 			} else {
-				this.toast.showError('Game invite' ,'Refusal could not processed.');
+				this.toast.showError('Game invite' ,'Refusal could not be processed.');
 				console.debug('invitation failure: ' + data?.msg);
 			}
 			response = data;
 		}).catch((data:Response) => {
-			this.toast.showError('Game invite' ,'Refusal could not processed.');
+			this.toast.showError('Game invite' ,'Refusal could not be processed.');
 			console.debug('invitation failure: ' + data?.msg);
 			response = data;
 		});

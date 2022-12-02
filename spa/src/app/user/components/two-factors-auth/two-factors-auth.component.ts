@@ -75,6 +75,7 @@ export class TwoFactorsAuthComponent implements OnInit {
       .subscribe({
         next: (data) => {
           this.codeQR = data;
+					this.showDialog();
         },
         error: (err) => {
           console.log(err);
@@ -83,18 +84,16 @@ export class TwoFactorsAuthComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.authService
-      .getCurrentUser()
-      .pipe(take(1))
-      .subscribe({
-        next: (data) => {
-          this.me = data;
-        },
-        error: (err) => {
-          console.log(err);
-        },
-      });
-
-    this.getQRCode();
+    // this.authService
+    //   .getCurrentUser()
+    //   .pipe(take(1))
+    //   .subscribe({
+    //     next: (data) => {
+    //       this.me = data;
+    //     },
+    //     error: (err) => {
+    //       console.log(err);
+    //     },
+    //   });
   }
 }

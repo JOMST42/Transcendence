@@ -26,7 +26,9 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
       return user;
     } else if (payload.isTwoFactorAuthenticated) {
       return user;
-    }
+    } else {
+			return null;
+		}
     // return await this.userService.getUserById(payload.sub);
   }
 }

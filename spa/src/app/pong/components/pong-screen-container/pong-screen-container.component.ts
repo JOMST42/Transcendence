@@ -92,7 +92,6 @@ export class PongScreenContainerComponent implements OnInit {
 
 	ngOnDestroy(): void {
 		this.audio.reset();
-		console.log('destroy screen');
 		this.unsubscribeAll$.next();
 	}
 

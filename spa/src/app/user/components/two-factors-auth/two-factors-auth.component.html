@@ -4,7 +4,7 @@
     type="button"
     label="Activate 2 factors authentication"
     class="p-button-raised p-button-success p-button-text"
-    (click)="showDialog()"
+    (click)="getQRCode()"
   ></p-button>
 
   <p-dialog header="SCAN ME" [(visible)]="displayDialog">

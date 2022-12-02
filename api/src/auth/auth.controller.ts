@@ -18,8 +18,6 @@ import { GetUser } from './decorator';
 import { FtAuthGuard, JwtGuard } from './guards';
 import { cookieConstants } from '../constants';
 import { UserService } from 'src/user/services/user.service';
-import { TwoFAStrategy } from './strategy/TwoFAstrategy';
-import { TwoFAGuard } from './guards/TwoFA.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -85,11 +83,11 @@ export class AuthController {
   @Post('2fa/authenticate')
   @HttpCode(HttpStatus.OK)
   // @UseGuards(TwoFAGuard)
-  async authenticate(@GetUser() user: User, @Body() body) {
+  async authenticate(@GetUser() user: User, @Body() body, @Res() res: Response) {
     const isCodeValid = this.authService.validateTwoFAuthCode(body.code, user);
     if (!isCodeValid) {
       throw new UnauthorizedException('Wrong authentication code');
     }
-    return await this.authService.login2FA(user);
+    return res.json(await this.authService.login2FA(user, res));
   }
 }

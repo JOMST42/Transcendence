@@ -67,9 +67,7 @@ export class RoomListComponent implements OnInit {
 	async getRooms(){
 		this.server.emit('get-rooms-info', {}).then((data:Response) => {
 			data.code === 0 ? this.roomList = data.payload : this.roomList = [];
-			console.log('got rooms');
 		}).catch(() => { this.roomList = [];});
-		console.log('in get rooms');
 	}
 
 	myResetFunction(options: DropdownFilterOptions) {

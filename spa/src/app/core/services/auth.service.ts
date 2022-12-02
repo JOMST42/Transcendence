@@ -56,10 +56,8 @@ export class AuthService {
       this.logout();
       return this.user$;
     }
-
     localStorage.setItem('access_token', token);
     this.cookieService.delete('access_token');
-
     return this.refreshProfile();
   }
 

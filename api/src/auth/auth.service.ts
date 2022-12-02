@@ -71,27 +71,29 @@ export class AuthService {
     });
   }
 
-  async login2FA(user: User) {
+  async login2FA(user: User, res: Response) {
     // this.setTwoFactorAuthenticated(user.id);
     const payload = {
       sub: user.id,
       isTwoFactorAuthEnabled: user.isTwoFactorAuthEnabled,
       isTwoFactorAuthenticated: true,
     };
-    // res.cookie(
-    //   'access_token',
-    //   await this.signToken({
-    //     sub: user.id,
-    //     isTwoFactorAuthEnabled: user.isTwoFactorAuthEnabled,
-    //     isTwoFactorAuthenticated: true,
-    //   }),
-    //   {
-    //     maxAge: cookieConstants.maxAge,
-    //     httpOnly: false,
-    //     sameSite: 'strict',
-    //   },
-    // );
-    return await this.signToken(payload);
+    res?.cookie(
+      'access_token',
+      await this.signToken(
+				payload
+			),
+      {
+        maxAge: cookieConstants.maxAge,
+        httpOnly: false,
+        sameSite: 'strict',
+      },
+    );
+		
+		// let something = await this.signToken(payload);
+		// let token =	await this.decodeToken();
+		// console.log();
+    return true;
   }
 
   async setTwoFactorAuthenticated(userId: number): Promise<User> {
@@ -132,16 +134,7 @@ export class AuthService {
   }
 
   validateTwoFAuthCode(code: string, user: User): boolean {
-    console.log(code + ' = le code et le secret = ' + user.twoFASecret);
-    if (
-      authenticator.verify({
-        token: code,
-        secret: user.twoFASecret,
-      })
-    ) {
-      console.log('TRUE');
-    }
-
+		if (!user) return false;
     return authenticator.verify({
       token: code,
       secret: user.twoFASecret,
