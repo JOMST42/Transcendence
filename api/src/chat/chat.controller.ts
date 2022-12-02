@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Delete,
@@ -16,6 +17,7 @@ import {
   ChangeRoleDto,
   ChatRoomWithMessages,
   CreateChatRoomDto,
+  CreateDmDto,
 } from './dto';
 import { ChatService } from './chat.service';
 
@@ -43,7 +45,26 @@ export class ChatController {
     @GetUser() user: User,
     @Body() dto: CreateChatRoomDto,
   ): Promise<ChatRoom> {
-    return await this.chatService.createRoom(dto, user.id);
+    try {
+      return await this.chatService.createRoom(dto, user.id);
+    } catch (e) {
+      if (e instanceof BadRequestException) {
+        throw e;
+      }
+      throw new BadRequestException('Error');
+    }
+  }
+
+  @Post('dm')
+  async createDm(@GetUser() user: User, dto: CreateDmDto): Promise<ChatRoom> {
+    try {
+      return await this.chatService.createDm(user.id, dto.otherId);
+    } catch (e) {
+      if (e instanceof BadRequestException) {
+        throw e;
+      }
+      throw new BadRequestException('Error');
+    }
   }
 
   @Get(':id')

@@ -58,6 +58,7 @@ model ChatRoom {
   visibility  ChatRoomVisibility @default(PUBLIC)
   hash        String?
   isProtected Boolean            @default(false)
+  isDM        Boolean            @default(false)
 
   users    UserChatRoom[]
   messages ChatMessage[]

@@ -105,6 +105,10 @@ export class ChatService {
       throw new BadRequestException("Room doesn't exist");
     }
 
+    if (room.isDM) {
+      throw new BadRequestException('Cannot add users to this room');
+    }
+
     if (room.isProtected) {
       if (!password) {
         throw new UnauthorizedException('Wrong password');
@@ -429,5 +433,38 @@ export class ChatService {
     });
 
     return user.status;
+  }
+
+  async createDm(user1: number, user2: number): Promise<ChatRoom> {
+    const user = await this.prisma.user.findUnique({ where: { id: user1 } });
+    const other = await this.prisma.user.findUnique({ where: { id: user2 } });
+
+    if (!user || !other) {
+      throw new BadRequestException('User not found');
+    }
+
+    return await this.prisma.chatRoom.create({
+      data: {
+        name: user.displayName + ' ' + other.displayName,
+        isDM: true,
+        users: {
+          create: [
+            {
+              isOwner: false,
+              role: ChatRole.USER,
+              user: { connect: { id: user1 } },
+            },
+            {
+              isOwner: false,
+              role: ChatRole.USER,
+              user: { connect: { id: user2 } },
+            },
+          ],
+        },
+      },
+      include: {
+        users: true,
+      },
+    });
   }
 }

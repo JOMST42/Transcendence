@@ -17,6 +17,7 @@ export interface Room {
   visibility?: 'PUBLIC' | 'PRIVATE';
   password?: string;
   isProtected?: boolean;
+  isDM?: boolean;
 }
 
 export interface BanUserDto {

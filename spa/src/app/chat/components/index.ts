@@ -2,8 +2,6 @@ export * from './chat/chat.component';
 export * from './channel-create/channel-create.component';
 export * from './chat-channel/chat-channel.component';
 export * from './chat-channel-list/chat-channel-list.component';
-export * from './chat-friend/chat-friend.component';
-export * from './chat-friend-list/chat-friend-list.component';
 export * from './chat-message/chat-message.component';
 export * from './chat-message-list/chat-message-list.component';
 export * from './chat-user/chat-user.component';

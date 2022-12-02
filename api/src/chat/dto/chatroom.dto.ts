@@ -20,6 +20,11 @@ export class CreateChatRoomDto {
   password: string;
 }
 
+export class CreateDmDto {
+  @IsNumber()
+  otherId: number;
+}
+
 export class AddUserToChatRoomDto {
   @IsString()
   roomId: string;

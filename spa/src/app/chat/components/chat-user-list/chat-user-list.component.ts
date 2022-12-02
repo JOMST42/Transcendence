@@ -18,6 +18,7 @@ export class ChatUserListComponent implements OnInit {
   private unsubscribeAll$ = new Subject<void>();
   @Input() users: UserChatRoom[];
   @Input() roomId: string;
+  @Input() isDM: boolean;
   @Output() userSelect = new EventEmitter<UserChatRoom>();
   me: User;
 

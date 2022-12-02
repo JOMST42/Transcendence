@@ -47,9 +47,9 @@
     <app-chat-user-list
       [users]="selectedChannel?.users"
       [roomId]="selectedChannel?.id"
+      [isDM]="selectedChannel?.isDM"
       class="flex-grow-1"
       (userSelect)="userListClick($event)"
     ></app-chat-user-list>
-    <app-chat-friend-list class="flex-grow-1"></app-chat-friend-list>
   </div>
 </div>

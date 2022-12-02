@@ -7,6 +7,7 @@
   </div>
   <div *ngIf="users?.length > 0" class="flex justify-content-center mb-2">
     <button
+      *ngIf="isDM"
       pButton
       pRipple
       label="Invite"
