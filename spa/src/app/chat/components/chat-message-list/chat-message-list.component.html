@@ -21,7 +21,10 @@
     class="h-full flex flex-column-reverse mx-6 mt-6 overflow-y-auto"
   >
     <span *ngFor="let message of chatMessages">
-      <app-chat-message [message]="message"></app-chat-message>
+      <app-chat-message
+        [blockedUsers]="blockedUsers"
+        [message]="message"
+      ></app-chat-message>
     </span>
   </div>
   <div class="flex">

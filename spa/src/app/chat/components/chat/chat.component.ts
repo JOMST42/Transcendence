@@ -19,12 +19,12 @@ export class ChatComponent implements OnInit, OnDestroy {
   private unsubscribeAll$ = new Subject<void>();
   rooms: Room[];
   selectedChannel: Room | null = null;
+  blockedUsers: User[];
   me: User;
 
   constructor(
     private readonly chatService: ChatService,
     private readonly route: ActivatedRoute,
-    private readonly toastService: ToastService,
     private readonly dialogService: DialogService,
     private readonly authService: AuthService
   ) {}
@@ -37,6 +37,7 @@ export class ChatComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.route.data.pipe(takeUntil(this.unsubscribeAll$)).subscribe((data) => {
       this.rooms = data['rooms'];
+      this.blockedUsers = data['blocked'];
     });
     this.authService
       .getCurrentUser()

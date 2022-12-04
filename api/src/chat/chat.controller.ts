@@ -46,6 +46,11 @@ export class ChatController {
     }
   }
 
+  @Get('blocked')
+  async getAllBlockedUsers(@GetUser() user: User): Promise<User[]> {
+    return await this.chatService.getAllBlockedUsers(user.id);
+  }
+
   @Post(':id')
   async connectToRoom(
     @GetUser() user: User,

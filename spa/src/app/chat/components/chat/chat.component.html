@@ -37,6 +37,7 @@
     class="h-full flex-none flex border-right-2"
   ></app-chat-channel-list>
   <app-chat-message-list
+    [blockedUsers]="blockedUsers"
     [chatMessages]="selectedChannel?.messages"
     [roomId]="selectedChannel?.id"
     [user]="findMe()"

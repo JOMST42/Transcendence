@@ -7,6 +7,7 @@ import {
   ChatRole,
   ChatRoom,
   ChatRoomVisibility,
+  User,
   UserChatRoom,
   UserChatStatus,
 } from '@prisma/client';
@@ -443,6 +444,16 @@ export class ChatService {
       throw new BadRequestException('User not found');
     }
 
+    const friendship = await this.prisma.friendship.findUnique({
+      where: {
+        requesterId_adresseeId: { adresseeId: user1, requesterId: user2 },
+      },
+    });
+
+    if (friendship && friendship.blocked) {
+      throw new BadRequestException('User is blocked');
+    }
+
     const room = await this.prisma.chatRoom.findFirst({
       where: {
         isDM: true,
@@ -478,5 +489,33 @@ export class ChatService {
         users: true,
       },
     });
+  }
+
+  async getAllBlockedUsers(userId: number): Promise<User[]> {
+    const blockedFriendship1 = await this.prisma.friendship.findMany({
+      where: {
+        requesterId: userId,
+        blocked: true,
+      },
+      include: { requester: true },
+    });
+
+    const blockedFriendship2 = await this.prisma.friendship.findMany({
+      where: {
+        adresseeId: userId,
+        blocked: true,
+      },
+      include: { adressee: true },
+    });
+
+    const blocked1 = blockedFriendship1.map((v) => {
+      return v.requester;
+    });
+
+    const blocked2 = blockedFriendship2.map((v) => {
+      return v.adressee;
+    });
+
+    return blocked1.concat(blocked2);
   }
 }

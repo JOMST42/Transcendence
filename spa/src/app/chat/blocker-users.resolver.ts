@@ -1,17 +1,16 @@
 import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
 import { Observable } from 'rxjs';
-
-import { Room } from './models';
+import { User } from '../user/models';
 import { ChatService } from './services';
 
 @Injectable({
   providedIn: 'root',
 })
-export class ChatRoomListResolver implements Resolve<Room[]> {
+export class BlockerUsersResolver implements Resolve<User[]> {
   constructor(private readonly chatService: ChatService) {}
 
-  resolve(): Observable<Room[]> {
-    return this.chatService.getChatRoomList();
+  resolve(): Observable<User[]> {
+    return this.chatService.getAllBlockedUsers();
   }
 }

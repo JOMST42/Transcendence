@@ -4,6 +4,7 @@ import { Observable, take } from 'rxjs';
 
 import { ChatSocket } from '../../core/core.module';
 import { BaseApiService } from '../../core/services';
+import { User } from '../../user/models';
 import { BanUserDto, ChatMessage, Room, UserChatRoom } from '../models';
 
 @Injectable({
@@ -115,5 +116,9 @@ export class ChatService {
 
   createDm(userId: number): Observable<Room> {
     return this.baseApiService.postOne('/chatrooms/dm', { otherId: userId });
+  }
+
+  getAllBlockedUsers(): Observable<User[]> {
+    return this.baseApiService.getMany('/chatrooms/blocked');
   }
 }

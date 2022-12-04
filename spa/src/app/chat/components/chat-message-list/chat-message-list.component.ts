@@ -31,6 +31,7 @@ export class ChatMessageListComponent
   @Input() chatMessages: ChatMessage[];
   @Input() roomId: string;
   @Input() user: UserChatRoom;
+  @Input() blockedUsers: User[];
   @Output() onLeaveChannel = new EventEmitter<string>();
   me: User;
   message: string;
