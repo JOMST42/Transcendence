@@ -14,5 +14,7 @@
       color: 'var(--text-color)'
     }"
   ></p-avatar>
-  <p>{{ channel.name }}</p>
+  <p [ngStyle]="{ color: channel.isDM ? 'lime' : 'white' }">
+    {{ channel.name }}
+  </p>
 </div>

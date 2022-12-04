@@ -28,4 +28,7 @@
     ></button>
     <button (click)="mute()" pButton type="button" label="Mute"></button>
   </div>
+  <div class="mt-4">
+    <app-dm-invite (onClick)="cancel()" [userId]="user.userId"></app-dm-invite>
+  </div>
 </div>

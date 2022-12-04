@@ -112,4 +112,8 @@ export class ChatService {
   userMuted(): Observable<BanUserDto> {
     return this.socket.fromEvent<BanUserDto>('muted');
   }
+
+  createDm(userId: number): Observable<Room> {
+    return this.baseApiService.postOne('/chatrooms/dm', { otherId: userId });
+  }
 }

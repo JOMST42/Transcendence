@@ -288,7 +288,7 @@ export class ChatService {
       include: { users: true },
     });
 
-    if (room.users.length === 0) {
+    if (room.users.length === 0 || room.isDM) {
       await this.prisma.chatRoom.delete({
         where: {
           id: roomId,
@@ -443,10 +443,22 @@ export class ChatService {
       throw new BadRequestException('User not found');
     }
 
+    const room = await this.prisma.chatRoom.findFirst({
+      where: {
+        isDM: true,
+        users: { some: { AND: [{ userId: user1 }, { userId: user2 }] } },
+      },
+    });
+
+    if (room) {
+      return room;
+    }
+
     return await this.prisma.chatRoom.create({
       data: {
         name: user.displayName + ' ' + other.displayName,
         isDM: true,
+        visibility: 'PRIVATE',
         users: {
           create: [
             {

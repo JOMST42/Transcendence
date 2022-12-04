@@ -52,4 +52,8 @@ export class UserDialogComponent implements OnInit {
       mute: new Date(Date.now() + 1 * 60000),
     });
   }
+
+  cancel(): void {
+    this.ref.close();
+  }
 }

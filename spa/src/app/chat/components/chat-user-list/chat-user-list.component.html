@@ -5,9 +5,11 @@
   <div class="flex justify-content-center">
     <h2>Users</h2>
   </div>
-  <div *ngIf="users?.length > 0" class="flex justify-content-center mb-2">
+  <div
+    *ngIf="users?.length > 0 && !isDM"
+    class="flex justify-content-center mb-2"
+  >
     <button
-      *ngIf="isDM"
       pButton
       pRipple
       label="Invite"

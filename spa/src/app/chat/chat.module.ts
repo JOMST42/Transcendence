@@ -16,6 +16,7 @@ import { UserInviteComponent } from './components/user-invite/user-invite.compon
 import { PasswordDialogComponent } from './components/password-dialog/password-dialog.component';
 import { UserDialogComponent } from './components/user-dialog/user-dialog.component';
 import { PongModule } from '../pong/pong.module';
+import { DmInviteComponent } from './components/dm-invite/dm-invite.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import { PongModule } from '../pong/pong.module';
     UserInviteComponent,
     PasswordDialogComponent,
     UserDialogComponent,
+    DmInviteComponent,
   ],
   imports: [SharedModule, ChatRoutingModule, PongModule],
 })
