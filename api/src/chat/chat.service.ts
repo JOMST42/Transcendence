@@ -290,6 +290,13 @@ export class ChatService {
     });
 
     if (room.users.length === 0 || room.isDM) {
+      if (room.isDM) {
+        await this.prisma.userChatRoom.delete({
+          where: {
+            userId_roomId: { roomId: room.id, userId: room.users[0].userId },
+          },
+        });
+      }
       await this.prisma.chatRoom.delete({
         where: {
           id: roomId,

@@ -26,7 +26,11 @@ export class DmInviteComponent implements OnInit {
       .subscribe({
         next: (room) => {
           this.onClick.emit();
-          this.router.navigate(['chat']);
+          if (this.router.url === '/chatroom') {
+            window.location.reload();
+          } else {
+            this.router.navigate(['chat']);
+          }
         },
       });
   }
