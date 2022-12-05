@@ -54,5 +54,4 @@ export class NavBarComponent implements OnInit {
   navUsers() {
     this.router.navigate(['users/jbadia']);
   }
-  // moveBall()
 }

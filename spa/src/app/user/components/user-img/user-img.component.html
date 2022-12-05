@@ -1,8 +1,8 @@
 <div class="container">
   <img [src]="avatarUrl" alt="Image" class="profile-img" />
-
+  <button class="btn">
     <p-fileUpload
-      class="upload-icons"
+      class="upload-icons "
       *ngIf="userIsMe"
       mode="basic"
       validator=""
@@ -16,8 +16,7 @@
       [invalidFileSizeMessageDetail]="'Please, choose an other image'"
       [invalidFileTypeMessageSummary]="'Select an image type'"
       [invalidFileTypeMessageDetail]="''"
-      
-      
     ></p-fileUpload>
+  </button>
 
 </div>

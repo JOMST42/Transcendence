@@ -15,10 +15,22 @@ export class AudioHandler {
 		this.sound_volume = s_volume;
 	}
 
+	reset() {
+		this.stop(this.m_game);
+		this.stop(this.m_victory);
+		this.stop(this.m_defeat);
+	}
+
+	stop(audio?: HTMLAudioElement) {
+		if (!audio) return;
+		audio?.pause();
+		audio.currentTime = 0;
+	}
+
 	playSound(audio?: HTMLAudioElement, reload?: boolean, loop?: boolean){
 		if (!audio) return;
 		audio.volume = this.sound_volume;
-		if (reload) audio.load();
+		if (reload)	audio.load();
 		if (loop) audio.loop = loop;
 		audio.play();
 	}

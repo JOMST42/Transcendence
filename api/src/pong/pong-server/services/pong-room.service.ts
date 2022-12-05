@@ -19,7 +19,7 @@ import { CreateGameDto, EndGameDto } from '../../../prisma/game/dto';
 import { RoomState } from '../data/enums';
 import { Response, RoomInfo } from '../data/interfaces';
 import { PongServerGateway } from '../gateway/pong-server.gateway';
-import { Game, User } from '@prisma/client';
+import { Game, User, UserStatus } from '@prisma/client';
 import { EventEmitter2, OnEvent } from '@nestjs/event-emitter';
 import { UserGameState } from 'src/pong/data/enums';
 
@@ -33,13 +33,11 @@ export class PongRoomService {
   rooms: PongRoom[] = [];
   max_rooms = 20;
 
-  private disconnectListener: any;
-
   public classic_set: GameSettings = {
-    score_to_win: 1,
+    score_to_win: 7,
     ball_radius: 10,
     pad_size: 50,
-    pad_speed: 600,
+    pad_speed: 500,
     ball_speed: 5,
     ball_hit_multi: 1.05,
   };
@@ -48,7 +46,7 @@ export class PongRoomService {
     score_to_win: 100,
     ball_radius: 10,
     pad_size: 50,
-    pad_speed: 600,
+    pad_speed: 500,
     ball_speed: 5,
     ball_hit_multi: 1.05,
   };
@@ -57,14 +55,16 @@ export class PongRoomService {
     @Inject(forwardRef(() => PongServerGateway))
     private server: PongServerGateway,
     private readonly prisma: PrismaService,
-    private eventEmitter: EventEmitter2,
   ) {
     setInterval(() => {
-      this.updateRooms();
+      this.updateGamesInfo();
     }, (1 / 60) * 1000);
+    setInterval(() => {
+      this.updateRoomsInfo();
+    }, 1000);
   }
 
-  private updateRooms() {
+  private updateGamesInfo() {
     let info: GameInfo | undefined;
     let room: PongRoom;
     this.cleanRooms();
@@ -77,24 +77,43 @@ export class PongRoomService {
       if (room.getState() === RoomState.Finished) {
         this.logger.debug('finish');
         this.endRoom(room);
+        this.server
+          .to(room.getRoomId())
+          .emit('game-finished', room.getWinner());
       } // TODO
     }
   }
 
+  private updateRoomsInfo() {
+    let info: RoomInfo | undefined;
+    let room: PongRoom;
+    for (let i = 0; i < this.rooms.length; i++) {
+      room = this.rooms[i];
+      info = room.getRoomInfo();
+      if (info) {
+        this.server.to(room.getRoomId()).volatile.emit('room-update', info);
+      }
+    }
+  }
+
   cleanRooms() {
-    let i: number;
+    let i = 0;
     while (i < this.rooms.length) {
-      if (this.rooms[i].isDeletable()) this.rooms.splice(i, 1);
-      else i++;
+      if (this.rooms[i].isDeletable()) {
+        this.logger.debug('room being deleted');
+        if (i === 0) this.rooms.shift();
+        else this.rooms.splice(i, 1);
+      } else i++;
     }
   }
 
   userJoinRoom(id: string, user: Socket): Response {
     for (let i = 0; i < this.rooms.length; i++) {
       if (this.rooms[i].getRoomId() === id) {
-        this.rooms[i].addUser(user);
         this.logger.log('user has joined room ' + id);
-        user.join(this.rooms[i].getRoomId());
+        if (user.data.gameRoom != 0) user.leave(user.data.gameRoom);
+        user.data.gameRoom = this.rooms[i].getRoomId();
+        user.join(user.data.gameRoom);
         user.emit('game-joined', 'game id ' + id + ' has been joined');
         return { code: 0, msg: 'user has joined room ' + id };
       }
@@ -107,7 +126,7 @@ export class PongRoomService {
     return { code: 0, msg: 'you have left all game rooms' };
   }
 
-  userGetRooms(user: Socket): Response {
+  userGetRoomsInfo(user: Socket): Response {
     const rooms: RoomInfo[] = [];
 
     for (let i = 0; i < this.rooms.length; i++) {
@@ -134,15 +153,14 @@ export class PongRoomService {
           user1,
           user2,
           game,
+          this.server,
         );
         this.rooms.push(room);
         this.userJoinRoomAsPlayer(user1, room);
         this.userJoinRoomAsPlayer(user2, room);
-        room.createGame(this.test_set); // WARNING
+        room.createGame(this.classic_set); // WARNING
         room.startWaiting(); // WARNING
         // room.startGame(true, true); // WARNING
-        user1.emit('game-waiting', room.getRoomId());
-        user2.emit('game-waiting', room.getRoomId());
 
         this.logger.log('Room created and joined by 2 players');
         return {
@@ -151,8 +169,8 @@ export class PongRoomService {
           payload: room,
         };
       })
-      .catch((game) => {
-        this.logger.log('failed to add game to prisma... ' + game.id);
+      .catch((e) => {
+        this.logger.log('failed to add game to prisma... ' + e);
         return { code: 1, msg: 'Could not create game in the database' };
       });
   }
@@ -180,7 +198,8 @@ export class PongRoomService {
 
   async endRoom(room: PongRoom) {
     const roomInfo: RoomInfo = room.getRoomInfo();
-    room.endRoom();
+    await room.endRoom();
+    // TODO splice room
 
     this.logger.log('Trying to update game to prisma... ');
     try {
@@ -205,14 +224,30 @@ export class PongRoomService {
   }
 
   private userJoinRoomAsPlayer(user: Socket, room: PongRoom) {
-    this.userLeaveRooms(user);
     this.userJoinRoom(room.getRoomId(), user);
+    try {
+      if (user.data?.user?.id)
+        user.broadcast.emit('user-status-change', user.data.user.id);
+    } catch (e) {}
   }
 
   addUser(user: Socket) {
     this.users.push(user);
-    this.setDisconnectListener(user);
     this.setRoomListeners(user);
+    this.setDisconnectListener(user);
+    this.handleReconnection(user);
+  }
+
+  handleReconnection(user: Socket) {
+    const room = this.rooms.find((room) => {
+      if (
+        room.getUserGameState(user.data.user.id) === UserGameState.RECONNECT
+      ) {
+        room.handleReconnect(user);
+        user.join(room.getRoomId());
+        return;
+      }
+    });
   }
 
   disconnectUser(user: Socket) {
@@ -229,8 +264,26 @@ export class PongRoomService {
     return this.rooms.length;
   }
 
+  getUserOnlineStatus(userId: number): UserStatus {
+    const room = this.rooms.find((room) => {
+      if (room.getUserGameState(userId) != UserGameState.OFFLINE) {
+        return true;
+        return false;
+      }
+    });
+    if (room) return UserStatus.IN_GAME;
+    if (this.getUserWithId(userId)) return UserStatus.ONLINE;
+    return UserStatus.OFFLINE;
+  }
+
   getUserGameState(userId: number): UserGameState {
-    const room = this.rooms.find((room) => {});
+    const room = this.rooms.find((room) => {
+      if (room.getUserGameState(userId) != UserGameState.OFFLINE) {
+        return true;
+      }
+      return false;
+    });
+    if (room) return room.getUserGameState(userId);
     return UserGameState.OFFLINE;
   }
 
@@ -264,19 +317,17 @@ export class PongRoomService {
 
   /********** EVENT LISTENERS **********/
   setDisconnectListener(user: Socket) {
-    this.disconnectListener = () => {
+    user.on('disconnect', () => {
       this.disconnectUser(user);
-    };
-
-    user.on('disconnect', this.disconnectListener);
+    });
   }
 
   setRoomListeners(user: Socket) {
     user.on('leave-room', (id: string, callback) => {
       callback(this.userLeaveRooms(user));
     });
-    user.on('get-rooms', (args, callback) => {
-      callback(this.userGetRooms(user));
+    user.on('get-rooms-info', (args, callback) => {
+      callback(this.userGetRoomsInfo(user));
     });
   }
 
@@ -285,7 +336,6 @@ export class PongRoomService {
   }
 
   clearListeners(user: Socket) {
-    user.off('disconnect', this.disconnectListener);
     this.clearRoomListeners(user);
   }
   /********** END EVENT LISTENERS **********/

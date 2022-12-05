@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { take } from 'rxjs';
 import { ToastService } from '../../../../core/services';
-import { Friendship, User } from '../../../models';
+import { User } from '../../../models';
 import { FriendService } from '../../../services';
 
 type ButtonState = 'ADD' | 'ACCEPT' | 'REMOVE' | 'DISABLE';
@@ -31,22 +31,21 @@ export class FriendBtnComponent implements OnInit {
       .checkFriendship(this.user.id, this.me.id)
       .then((data) => {
         if (data.accepted === false) {
-          if (data.requesterId == this.me.id) {
+          if (data.requesterId === this.me.id) {
             this.state = 'DISABLE';
+            console.log(this.state + ' dans init button');
           }
-          if (data.adresseeId == this.me.id) {
+          if (data.adresseeId === this.me.id) {
             this.state = 'ACCEPT';
-            this.toastService.showInfo(
-              'Hey !',
-              'You received an invitation from ' + this.user.displayName
-            );
+            console.log(this.state + ' dans init button');
           }
         } else {
           this.state = 'REMOVE';
+          console.log(this.state + ' dans init button');
         }
       })
       .catch((data) => {
-        console.log('catch');
+        console.log('catch init button');
         this.state = 'ADD';
       });
   }
@@ -55,10 +54,6 @@ export class FriendBtnComponent implements OnInit {
     switch (state) {
       case 'ADD': {
         this.friendService.addFriend(this.user.id, this.me.id);
-        break;
-      }
-      case 'ACCEPT': {
-        this.acceptNewFriend();
         break;
       }
       case 'REMOVE': {
@@ -71,18 +66,6 @@ export class FriendBtnComponent implements OnInit {
     }
   }
 
-  acceptNewFriend() {
-    this.friendService
-      .updateFriendship(this.user.id, this.me.id)
-      .pipe(take(1))
-      .subscribe({
-        next: (data) => {
-          console.log(data);
-          this.state = 'REMOVE';
-        },
-      });
-  }
-
   removeFriend() {
     this.friendService
       .removeFriendship(this.user.id, this.me.id)
@@ -93,7 +76,6 @@ export class FriendBtnComponent implements OnInit {
             'Friend removed !',
             'You are no longer friend with ' + this.user.displayName
           );
-          console.log(data);
           this.state = 'ADD';
         },
       });

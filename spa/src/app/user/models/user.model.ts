@@ -6,9 +6,20 @@ export interface User {
   lastName?: string;
   email?: string;
   avatarUrl?: string;
+  status: UserStatus;
+  twoFASecret?: string;
+  isTwoFactorAuthEnabled: boolean;
+  isTwoFactorAuthenticated: boolean;
 }
 
 export interface UpdateUserDto {
   displayName?: string;
   avatarUrl?: string;
+}
+
+export enum UserStatus {
+  OFFLINE = 'OFFLINE',
+  ONLINE = 'ONLINE',
+  IN_GAME = 'IN_GAME',
+  SPECTATING = 'SPECTATING',
 }

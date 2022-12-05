@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, resolveForwardRef } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { take } from 'rxjs';
 import { Friendship, User } from '../../../models';
@@ -13,7 +13,6 @@ export class FriendCardComponent implements OnInit {
   user!: User;
   @Input() userIsMe!: boolean;
   @Input() me: User;
-  @Input() friends: Friendship[];
   myFriendId!: number;
   @Input() friendship: Friendship;
   display: boolean = false;
@@ -55,7 +54,10 @@ export class FriendCardComponent implements OnInit {
       .subscribe({
         next: (data) => {
           if (data) {
-            if (data.blocked === true) {
+            if (
+              data.adresseeBlocker === true ||
+              data.requesterBlocker === true
+            ) {
               this.friendState = false;
             } else if (data.accepted === false) {
               this.friendState = false;
@@ -75,14 +77,17 @@ export class FriendCardComponent implements OnInit {
       this.myFriendId = friends.adresseeId;
     }
     return new Promise((resolve, reject) => {
-      this.userService.getUserById(this.myFriendId).subscribe({
-        next: (data) => {
-          if (data) {
-            resolve(data);
-          }
-          reject(null);
-        },
-      });
+      this.userService
+        .getUserById(this.myFriendId)
+        .pipe(take(1))
+        .subscribe({
+          next: (data) => {
+            if (data) {
+              resolve(data);
+            }
+            reject(null);
+          },
+        });
     });
   }
 
@@ -90,7 +95,6 @@ export class FriendCardComponent implements OnInit {
     await this.getFriendToUser(friends)
       .then((data) => {
         this.user = data;
-        console.log(this.user);
       })
       .catch((err) => {
         console.log(err);

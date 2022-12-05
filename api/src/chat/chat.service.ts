@@ -457,7 +457,10 @@ export class ChatService {
       },
     });
 
-    if (friendship && friendship.blocked) {
+    if (
+      friendship &&
+      (friendship.adresseeBlocker || friendship.requesterBlocker)
+    ) {
       throw new BadRequestException('User is blocked');
     }
 
@@ -501,16 +504,32 @@ export class ChatService {
   async getAllBlockedUsers(userId: number): Promise<User[]> {
     const blockedFriendship1 = await this.prisma.friendship.findMany({
       where: {
-        requesterId: userId,
-        blocked: true,
+        OR: [
+          {
+            requesterId: userId,
+            requesterBlocker: true,
+          },
+          {
+            requesterId: userId,
+            adresseeBlocker: true,
+          },
+        ],
       },
       include: { requester: true },
     });
 
     const blockedFriendship2 = await this.prisma.friendship.findMany({
       where: {
-        adresseeId: userId,
-        blocked: true,
+        OR: [
+          {
+            adresseeId: userId,
+            requesterBlocker: true,
+          },
+          {
+            adresseeId: userId,
+            adresseeBlocker: true,
+          },
+        ],
       },
       include: { adressee: true },
     });

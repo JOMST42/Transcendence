@@ -1,7 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-
 import { AuthGuard } from './core/guards';
+
+import { LoginTwoFAComponent } from './login-two-fa/login-two-fa.component';
 import { NotFoundComponent, ServerErrorComponent } from './shared/components';
 import { SearchUserComponent } from './shared/components/search-user/search-user.component';
 
@@ -36,12 +37,15 @@ const routes: Routes = [
         loadChildren: () =>
           import('./watch/watch.module').then((m) => m.WatchModule),
       },
+			{
+				path: 'search',
+				component: SearchUserComponent,
+			},
     ],
   },
   {
-    path: 'watch',
-    loadChildren: () =>
-      import('./watch/watch.module').then((m) => m.WatchModule),
+    path: '2fa',
+    component: LoginTwoFAComponent,
   },
   {
     path: 'server-error',
@@ -50,10 +54,6 @@ const routes: Routes = [
   {
     path: 'not-found',
     component: NotFoundComponent,
-  },
-  {
-    path: 'search',
-    component: SearchUserComponent,
   },
   {
     path: '**',

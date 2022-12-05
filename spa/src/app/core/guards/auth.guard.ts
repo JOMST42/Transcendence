@@ -23,7 +23,6 @@ export class AuthGuard implements CanActivate {
         if (user) {
           return true;
         }
-
         this.toastService.showError('Unauthorized', 'You are not logged in');
         return this.router.parseUrl('');
       })

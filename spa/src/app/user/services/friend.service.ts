@@ -18,7 +18,7 @@ export class FriendService {
   }
 
   getPendingInvitations(userId: number): Observable<Friendship[]> {
-    return this.baseApiService.getMany(`/users/${userId}/pending_friends`);
+    return this.baseApiService.getMany(`/users/${userId}/pendingFriends`);
   }
 
   updateFriendship(adresseeId: number, userId: number): Observable<Friendship> {
@@ -34,7 +34,6 @@ export class FriendService {
   }
 
   blockFriend(adresseeId: number, userId: number): Observable<Friendship> {
-    console.log('dans service front');
     return this.baseApiService.patchOne(
       `/users/${userId}/blockfriend/${adresseeId}`
     );
@@ -52,8 +51,6 @@ export class FriendService {
     );
   }
 
-
-
   /*Check if there is a relation created between 2 users*/
   async checkFriendship(userId: number, meId: number): Promise<Friendship> {
     return new Promise((resolve, reject) => {
@@ -63,9 +60,7 @@ export class FriendService {
           next: (data) => {
             if (data) {
               resolve(data);
-              console.log(data);
             }
-            console.log(data);
             reject(null);
           },
         });
@@ -81,9 +76,7 @@ export class FriendService {
         this.createFriendship(userId, meId)
           .pipe(take(1))
           .subscribe({
-            next: (data) => {
-              console.log(data);
-            },
+            next: (data) => {},
           });
       });
   }

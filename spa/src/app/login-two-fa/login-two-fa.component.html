@@ -1,0 +1,31 @@
+<div class="grid">
+  <div class="col-12 flex align-items-center justify-content-center">
+    <h1 class="title text-center">LOGIN</h1>
+  </div>
+  <div class="col-12 flex align-items-center justify-content-center">
+    <div class="grid">
+      <div
+        class="col-8 flex align-items-center justify-content-center search-card"
+        style="width: 700px"
+      >
+        <div style="padding-right: 2rem">
+          <input
+            type="text"
+            pInputText
+            placeholder="Enter your verification code"
+            [(ngModel)]="code"
+          />
+        </div>
+        <div>
+          <p-button
+            *ngIf="isCode()"
+            (click)="authenticate()"
+            [disabled]="!isCode()"
+          >
+            LOGIN
+          </p-button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

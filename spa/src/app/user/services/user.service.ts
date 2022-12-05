@@ -1,20 +1,16 @@
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import { Observable } from 'rxjs';
 
-import { AuthService, BaseApiService } from '../../core/services';
+import { BaseApiService } from '../../core/services';
 import { UpdateUserDto, User } from '../models';
+import { Game } from '../../watch/models';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
-  constructor(
-    private readonly baseApiService: BaseApiService,
-    private readonly authService: AuthService
-  ) {}
-  private unsubscribeAll$ = new Subject<void>();
-  user!: User;
+  constructor(private readonly baseApiService: BaseApiService) {}
 
   getUserById(id: number): Observable<User> {
     return this.baseApiService.getOne(`/users/${id}`);
@@ -31,5 +27,9 @@ export class UserService {
 
   getUsers(): Observable<User[]> {
     return this.baseApiService.getMany('/users/all');
+  }
+
+  getGamesByUserId(id: number): Observable<Game[]> {
+    return this.baseApiService.getMany(`/games/${id}/all`);
   }
 }

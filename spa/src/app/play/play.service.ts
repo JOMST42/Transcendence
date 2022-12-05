@@ -7,14 +7,17 @@ import { PongSocket } from '../core/core.module';
   providedIn: 'root',
 })
 export class PlayService {
-  constructor(private socket: PongSocket) {}
 
-	// private inQueue
-  // public connect(address: string) : Socket {
-  // 	this.socket?.disconnect();
-  // 	this.socket = io("http://localhost:3000/pong");
-  // 	return this.socket;
-  // }
+  constructor(private socket: PongSocket) {
+	}
+
+  public reconnect() {
+  	// this.socket?.disconnect();
+  	// this.socket = io("http://localhost:3000/pong");
+  	// return this.socket;
+		this.socket?.disconnect();
+  	this.socket.connect();
+  }
 
   public listen(eventName: string): Observable<any> {
     return this.socket.fromEvent(eventName);
@@ -22,7 +25,6 @@ export class PlayService {
 
   public emit(eventName: string, data: any): Promise<any> {
     // return this.socket.emit(eventName, data);
-
     return new Promise((resolve, reject) => {
       this.socket.emit(eventName, data, (response: any) => {
         if (!response || response.code !== 0) {
@@ -34,8 +36,8 @@ export class PlayService {
     });
   }
 
-	public listenGameWaiting(): Promise<any> {
-    return this.socket.fromOneTimeEvent('game-waiting');
+	public listenGameWaiting(): Observable<any> {
+    return this.socket.fromEvent('game-waiting');
   }
 
   public listenGameStart(): Promise<any> {

@@ -1,6 +1,24 @@
 .container {
-	z-index: 0;
-	// position: absolute;
+	position: relative;
+  display: inline-block;
+	max-width: 100px;
+}
+
+:host ::ng-deep .p-inputtext{
+	cursor: text;
+	width: 247px;
+	height: 48.5px
+}
+
+:host ::ng-deep .p-inputtext:disabled{
+	opacity: 1;
+}
+
+.container .btn{
+  position: absolute;
+	border-bottom-right-radius: 6px;
+  top: 39%;
+  left: 194%;
 }
 
 .p-button {
@@ -10,14 +28,11 @@
 	color: #7869C4;
 	border: 3px solid #000;
 	background-color: #00A595;
-	// position: absolute;
 }
 
 .p-button:hover {
-	color: #7869C4 !important;
-	border: 3px solid #7869C4;
-
-
+	color: #00A595 !important;
+	border: 3px solid #00A595 !important;
 }
 
 input {
@@ -27,7 +42,6 @@ input {
 	-webkit-text-stroke: black;
 	-webkit-text-stroke-width: 1px;
 	border: 3px solid #000 !important;
-	// letter-spacing: 2px;
 	font-size: 20px;
 	font-weight: 200;
 }

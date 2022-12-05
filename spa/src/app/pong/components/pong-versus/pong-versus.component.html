@@ -1,0 +1,10 @@
+
+<div class="grid versus-container">
+	<div class="col-4 flex align-items-center justify-content-start">
+			<app-user-avatar *ngIf="user1" [user]="user1" [avatarUrl]="user1.avatarUrl" ></app-user-avatar>
+	</div>
+	<div class="col-4 flex align-items-center justify-content-center"><h2>VS</h2></div>
+	<div class="col-4 flex align-items-center justify-content-end">
+		<app-user-avatar *ngIf="user2" [user]="user2" [avatarUrl]="user2.avatarUrl" ></app-user-avatar>
+	</div>
+</div>

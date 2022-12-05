@@ -57,10 +57,8 @@ export class AuthService {
       this.logout();
       return this.user$;
     }
-
     localStorage.setItem('access_token', token);
     this.cookieService.delete('access_token');
-
     return this.refreshProfile();
   }
 
@@ -68,5 +66,17 @@ export class AuthService {
     this.cookieService.delete('access_token');
     this.userSubject.next(null);
     localStorage.removeItem('access_token');
+  }
+
+  generateQR(): Observable<string> {
+    return this.baseApiService.postOne('/auth/2fa/generate');
+  }
+
+  turnOnTwoFactorAuth(code: string) {
+    return this.baseApiService.postOne('/auth/2fa/turn-on', {code :code});
+  }
+
+  authenticateTwoFactorAuth(code: string) {
+    return this.baseApiService.postOne('/auth/2fa/authenticate', {code :code});
   }
 }

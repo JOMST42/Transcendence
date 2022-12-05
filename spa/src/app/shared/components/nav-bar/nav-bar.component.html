@@ -9,14 +9,12 @@
     <nav class="nav">
       <div class="menu-item">
         <ul>
-          <li><a routerLink="/play">PLAY</a></li>
-					<li><a routerLink="/watch">WATCH</a></li>
-					<li><a routerLink="/chat">CHAT</a></li>
-					<li><a routerLink="/users/id">USERS</a></li>
-					<li><a routerLink="/stats">STATS</a></li>
-					<li><a routerLink="/settings">SETTINGS</a></li>
-					<li><a routerLink="/search">SEARCH</a></li>
-
+        	<li><a routerLink="/" (click)="isOpen = !isOpen">HOME</a></li>
+        	<li><a routerLink="/play" (click)="isOpen = !isOpen">PLAY</a></li>
+			<li><a routerLink="/watch"(click)="isOpen = !isOpen">WATCH</a></li>
+			<li><a routerLink="/chat" (click)="isOpen = !isOpen">CHAT</a></li>
+			<li><a routerLink="/users/id" (click)="isOpen = !isOpen">USERS</a></li>
+			<li><a routerLink="/search"(click)="isOpen = !isOpen">SEARCH</a></li>
         </ul>
       </div>
     </nav>

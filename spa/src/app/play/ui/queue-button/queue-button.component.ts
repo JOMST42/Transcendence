@@ -5,7 +5,7 @@ import {ButtonModule} from 'primeng/button'
 import { ToastService } from 'src/app/core/services';
 import { PongService } from 'src/app/pong/services/pong.service';
 import { Subscription, take } from 'rxjs';
-import { QueueState } from 'src/app/pong/data/enums';
+import { QueueState } from 'src/app/pong/enums';
 
 enum ButtonState {
 	JOIN = 0,
@@ -16,12 +16,13 @@ enum ButtonState {
 @Component({
   selector: 'app-queue-button',
   templateUrl: './queue-button.component.html',
+  styleUrls: ['./queue-button.component.scss'],
 	styles: ['#joinQueueButton { min-width: 200px; }'],
 })
 export class QueueButtonComponent implements OnInit {
 
 	labelJoin = "Join";
-	labelProcess = "processing...";
+	labelProcess = "...";
 	labelLeave = "Leave";
 	defaultStyle = "p-button-raised p-button-outlined"
 	private processStyle = "p-button-raised p-button-outlined p-button-secondary"
@@ -83,8 +84,6 @@ export class QueueButtonComponent implements OnInit {
 	}
 
 	async joinQueue(){
-		console.log('Attempting to join queue...');
-		
     await this.server
       .emit('join-queue', {})
       .then((data:Response) => {
@@ -98,7 +97,6 @@ export class QueueButtonComponent implements OnInit {
   }
 
   async leaveQueue() {
-		console.log('Attempting to leave queue...');
     await this.server
       .emit('leave-queue', {})
       .then((data:Response) => {
@@ -110,10 +108,6 @@ export class QueueButtonComponent implements OnInit {
 			});
 		return;
   }
-
-  // private async leaveQueueResponse(data: Response) {
-  //   console.log('leave queue: ' + data.code + ' ' + data.msg);
-  // }
 
 	private changeToJoin() {
 		this.disabled = false;

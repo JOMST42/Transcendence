@@ -5,7 +5,7 @@ import { ToastService, AuthService } from "src/app/core/services";
 import { Response } from "src/app/play/interfaces";
 import { PlayService } from "src/app/play/play.service";
 import { UserService } from "src/app/user/services";
-import { InviteState } from "../../data/enums";
+import { InviteState } from "../../enums";
 import { GameInviteService } from "../../services/game-invite.service";
 import { PongService } from "../../services/pong.service";
 

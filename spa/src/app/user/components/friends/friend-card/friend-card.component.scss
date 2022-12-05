@@ -1,5 +1,32 @@
 :host ::ng-deep .p-card{
-  background-color: antiquewhite;
+  background-color: #00A595;
+}
+
+:host ::ng-deep .p-button{
+  color: #00A595;;
+  background: #776ac4;
+  border: 1px solid #000000;
+}
+
+:host ::ng-deep .p-button:hover {
+	color: #7869C4;
+  background-color: transparent;
+	border: 3px solid #7869C4;
+}
+
+:host ::ng-deep .p-dialog-footer{
+  text-align: center;
+}
+
+
+:host ::ng-deep .p-dialog{
+  max-width: 600px;
+  min-width: 400px;
+  max-height: 200px;
+}
+
+.button-set{
+  display: inline-flex;
 }
 
 .blockedCard{

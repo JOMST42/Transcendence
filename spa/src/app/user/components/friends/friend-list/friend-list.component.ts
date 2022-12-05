@@ -7,10 +7,11 @@ import {
   transition,
   trigger,
 } from '@angular/animations';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Subject, take, takeUntil } from 'rxjs';
 import { AuthService } from '../../../../core/services';
 import { Friendship, User } from '../../../models';
-import { FriendService, UserService } from '../../../services';
+import { FriendService } from '../../../services';
 
 @Component({
   selector: 'app-friend-list',
@@ -23,9 +24,9 @@ import { FriendService, UserService } from '../../../services';
         query(':enter', style({ opacity: 0 }), { optional: true }),
         query(
           ':enter',
-          stagger('1500ms', [
+          stagger('500ms', [
             animate(
-              '1000ms ease-in',
+              '500ms ease-in',
               keyframes([
                 style({ opacity: 0, transform: 'translateY(0%)', offset: 0 }),
                 style({
@@ -43,33 +44,46 @@ import { FriendService, UserService } from '../../../services';
     ]),
   ],
 })
-export class FriendListComponent implements OnInit {
+export class FriendListComponent implements OnInit, OnDestroy {
   constructor(
     private readonly friendService: FriendService,
-    private readonly authService: AuthService,
+    private readonly authService: AuthService
   ) {}
+
+  private unsubscribeAll$ = new Subject<void>();
+
   friendsList!: Friendship[];
   userList!: User[];
   me!: User;
   @Input() user!: User;
 
   ngOnInit(): void {
-    this.authService.getCurrentUser().subscribe({
-      next: (data) => {
-        this.me = data;
-      },
-      error: (err) => {
-        console.log(err);
-      },
-    });
+    this.authService
+      .getCurrentUser()
+      .pipe(take(1))
+      .subscribe({
+        next: (data) => {
+          this.me = data;
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      });
 
-    this.friendService.getFriendships(this.me.id).subscribe({
-      next: (data) => {
-        this.friendsList = data;
-      },
-      error: (err) => {
-        console.log(err);
-      },
-    });
+    this.friendService
+      .getFriendships(this.me.id)
+      .pipe(takeUntil(this.unsubscribeAll$))
+      .subscribe({
+        next: (data) => {
+          this.friendsList = data;
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribeAll$.next();
   }
 }

@@ -15,12 +15,11 @@ import { ChipModule } from 'primeng/chip';
 import { DropdownModule } from 'primeng/dropdown';
 import { PasswordModule } from 'primeng/password';
 import { ContextMenuModule } from 'primeng/contextmenu';
-
+import { BadgeModule } from 'primeng/badge';
+import { MultiSelectModule } from 'primeng/multiselect';
 import {
   NavBarComponent,
   NotFoundComponent,
-  PongAudioComponent,
-  PongScreenComponent,
   ServerErrorComponent,
 } from './components';
 import { RouterModule } from '@angular/router';
@@ -33,8 +32,6 @@ import { MatchHistoryComponent } from './components/match-history/match-history.
     NotFoundComponent,
     ServerErrorComponent,
     NavBarComponent,
-    PongScreenComponent,
-    PongAudioComponent,
     SearchUserComponent,
     UserAvatarComponent,
     MatchHistoryComponent,
@@ -57,14 +54,15 @@ import { MatchHistoryComponent } from './components/match-history/match-history.
     DropdownModule,
     PasswordModule,
     ContextMenuModule,
+    DropdownModule,
+    BadgeModule,
+    MultiSelectModule,
   ],
   exports: [
     CommonModule,
     FormsModule,
     ButtonModule,
     TableModule,
-    PongScreenComponent,
-    PongAudioComponent,
     NavBarComponent,
     InputTextModule,
     AvatarModule,
@@ -81,6 +79,8 @@ import { MatchHistoryComponent } from './components/match-history/match-history.
     DropdownModule,
     PasswordModule,
     ContextMenuModule,
+    BadgeModule,
+    MultiSelectModule,
   ],
 })
 export class SharedModule {}

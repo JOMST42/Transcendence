@@ -1,0 +1,181 @@
+.pong-game {
+	margin-top: -4.5rem;
+	height: 100%;
+	width: 100%;
+
+}
+
+#screenContainer {
+	position: relative;
+	display: inline-block;
+}
+
+#canvasContainer {
+	position: relative;
+	display: block;
+}
+
+#pongEndOverlay {
+	position: absolute;
+	display: block;
+	z-index: 20;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+}
+
+// .gameCanvas {
+// 	// margin-right: 100px;
+// 	border: 3px solid black;
+// 	background-color: black;
+// 	z-index: 5;
+// 	border-radius: 10px;
+// 	width:  800px;
+// 	height: auto;
+// 	box-shadow: -12px -12px #7869C4,
+// 				-13px -11px #000,
+// 				-15px -15px #000;
+// }
+
+#countdown {
+	position: absolute;
+	font-size: 40px;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+}
+
+#countdownLabel {
+	position: absolute;
+	left: 50%;
+	top: 40%;
+	font-size: 40px;
+	color: #00A595;
+	transform: translate(-50%, -50%);
+}
+
+// #gameCanvas {
+// 	// margin-right: 100px;
+// 	border: 3px solid black;
+// 	background-color: black;
+// 	z-index: 5;
+// 	border-radius: 10px;
+// 	width:  800px;
+// 	height: auto;
+// 	box-shadow: -12px -12px #7869C4,
+// 				-13px -11px #000,
+// 				-15px -15px #000;
+// }
+
+.score {
+	font-family: PixelPowerline;
+	-webkit-text-stroke: black;
+	-webkit-text-stroke-width: 2px;
+	color: #fff;
+	opacity: 0.6;
+	position: absolute;
+	font-size: 100px;
+	z-index: 10;
+	top: 0;
+	left: 0;
+	transform: translateX(-50%);
+	// opacity: 0.5;
+	// text-shadow: -12px -12px #7869C4,
+	// 			-13px -11px #000,
+	// 			-15px -15px #000;
+	
+}
+
+.screen-button {
+	margin: 5px;
+}
+
+@media  screen and (min-width: 500px) and (max-width: 800px) {
+	.gameCanvas {
+		width:  500px;
+		height: auto;
+	}
+	.score {
+		font-size: 60px;
+	}
+
+	#countdownLabel, #countdown{
+		font-size: 30px;
+	}
+
+	.screen-buttons {
+		scale: 0.85;
+	}
+
+}
+
+@media  screen and (min-width: 0px) and (max-width: 500px) {
+	.gameCanvas {
+		width:  250px;
+		height: auto;
+	}
+	.score {
+		font-size: 30px;
+	}
+
+	#countdownLabel, #countdown{
+		font-size: 20px;
+	}
+
+	.screen-buttons {
+		scale: 0.75;
+	}
+}
+
+#score1 {
+	left: 35%;
+}
+
+#score2 {
+	left: 65%;
+}
+
+
+h2 {
+	padding-top: 0;
+	-webkit-text-stroke: black;
+	-webkit-text-stroke-width: 3px;
+	// margin-top: -0.4rem;
+	font-family: "PixelPowerline";
+	font-weight: 50;
+	font-size: 2.7rem;
+	color: #7869C4;
+	transition: 0.3s;
+	// transform: translateX(-50%);
+	// text-shadow: -20px -20px #7869C4,
+	// 				-17px -17px #000,
+	// 				-23px -23px #000;
+}
+
+.mode-button {
+	background-color: #fff;
+	padding: 10px 20px;
+	text-align: center;
+	text-transform: uppercase;
+	transition: 0.3s;
+	background-size: 200% auto;
+	color: #7869C4;
+	-webkit-text-stroke: black;
+	-webkit-text-stroke-width: 1.5px;
+	border-radius: 5px;
+	display: block;
+	font-family: PixelPowerline;
+	font-weight: 50;
+	transition: 0.3s ease-in-out;
+	border-color: #000;
+	font-size: 1.2rem;
+  }
+
+	.mode-button:hover {
+	scale: 1.2;
+	background-color: #7869C4;
+	background-position: right center; /* change the direction of the change here */
+	color: #fff;
+	text-decoration: none;
+  }

@@ -22,18 +22,27 @@ export class BlockedBtnComponent implements OnInit {
   stateChanged(state: ButtonState) {
     this.stateChange.emit();
   }
-  
+
   async initButton() {
     if (this.me.id != this.user.id) {
       await this.friendService
         .checkFriendship(this.user.id, this.me.id)
         .then((data) => {
-          if (data.blocked === true) {
-            this.state = 'UNBLOCK';
+          if (data.adresseeId === this.me.id) {
+            if (data.adresseeBlocker === true) {
+              this.state = 'UNBLOCK';
+            } else {
+              this.state = 'BLOCK';
+            }
           }
-          if (data.blocked === false) {
-            this.state = 'BLOCK';
+          if (data.requesterId === this.me.id) {
+            if (data.requesterBlocker === true) {
+              this.state = 'UNBLOCK';
+            } else {
+              this.state = 'BLOCK';
+            }
           }
+          console.log(this.state);
         })
         .catch((data) => {
           this.friendService
@@ -41,13 +50,20 @@ export class BlockedBtnComponent implements OnInit {
             .pipe(take(1))
             .subscribe({
               next: (data) => {
-                if (data.blocked === true) {
-                  this.state = 'UNBLOCK';
+                if (data.adresseeId === this.me.id) {
+                  if (data.adresseeBlocker === true) {
+                    this.state = 'UNBLOCK';
+                  } else {
+                    this.state = 'BLOCK';
+                  }
                 }
-                if (data.blocked === false) {
-                  this.state = 'BLOCK';
+                if (data.requesterId === this.me.id) {
+                  if (data.requesterBlocker === true) {
+                    this.state = 'UNBLOCK';
+                  } else {
+                    this.state = 'BLOCK';
+                  }
                 }
-                console.log(data);
               },
             });
         });

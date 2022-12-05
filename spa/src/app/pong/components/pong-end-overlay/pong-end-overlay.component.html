@@ -1,0 +1,13 @@
+<div class="flex-container" id="overlay">
+	<div>
+		<h3 [ngClass]="{'isWinner' : endState === 'WINNER', 'isLoser' : endState === 'LOSER'}" id="endHeader">{{endHeader}}</h3>
+	</div>
+	<div>
+		<span id="endText">{{endText}}</span>
+		<div *ngIf="endState != 'CANCEL'" id="winnerContainer">
+			<img id="winnerAvatar" alt="" [src]="winnerAvatarUrl">
+			<span id="winnerName">{{winnerName}}</span>
+		</div>	
+	</div>
+</div>
+

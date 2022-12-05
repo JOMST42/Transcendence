@@ -1,32 +1,34 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Subject, take, takeUntil } from 'rxjs';
+import { take } from 'rxjs';
 
 import { User } from '../../models';
 import { AuthService } from '../../../core/services';
-import { UserService } from '../../services';
 
 @Component({
   selector: 'app-profile-page',
   templateUrl: './profile-page.component.html',
   styleUrls: ['profile-page.component.scss'],
 })
-export class ProfilePageComponent implements OnInit, OnDestroy {
-  private unsubscribeAll$ = new Subject<void>();
-
+export class ProfilePageComponent implements OnInit {
   user!: User;
   me!: User;
   displayName!: string;
+  requestsNb!: number;
 
   constructor(
     private activatedRoute: ActivatedRoute,
     private readonly authService: AuthService
   ) {}
 
+  getRequestNumber(newRequest: number): void {
+    this.requestsNb = newRequest;
+  }
+
   refreshUser(): void {
     this.authService
       .refreshProfile()
-      .pipe(takeUntil(this.unsubscribeAll$))
+      .pipe(take(1))
       .subscribe({
         next: (data) => {
           this.user = data;
@@ -38,7 +40,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.activatedRoute.data.pipe(takeUntil(this.unsubscribeAll$)).subscribe({
+    this.activatedRoute.data.pipe(take(1)).subscribe({
       next: (data) => {
         this.user = data['user'];
       },
@@ -46,7 +48,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
 
     this.authService
       .getCurrentUser()
-      .pipe(takeUntil(this.unsubscribeAll$))
+      .pipe(take(1))
       .subscribe({
         next: (data) => {
           this.me = data;
@@ -55,9 +57,5 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
           console.log(err);
         },
       });
-  }
-
-  ngOnDestroy(): void {
-    this.unsubscribeAll$.next();
   }
 }

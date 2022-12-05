@@ -5,7 +5,7 @@ import { Response } from 'src/app/play/interfaces';
 import { User } from 'src/app/user/models';
 
 import {  AuthService, BaseApiService } from '../../core/services';
-import { UserState } from '../data/interfaces';
+import { UserState } from '../interfaces';
 
 @Injectable({
   providedIn: 'root',
@@ -21,9 +21,14 @@ export class PongService {
 		private readonly authService: AuthService
   ) {
 		// this.interval = setInterval(() => this.updateState(), 2000);
+		this.interval = setInterval(() => this.updateUser(), 2000);
 	}
 
 	updateUser() {
+		if (this.user){
+			clearInterval(this.interval);
+			return;
+		}
 		this.authService
       .getCurrentUser()
       .pipe(take(1))

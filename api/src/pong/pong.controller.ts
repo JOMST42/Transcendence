@@ -39,7 +39,20 @@ export class PongController {
     return {
       code: 0,
       msg: 'state fetched',
-      payload: this.pongService.getUserState(id),
+      payload: state,
+    };
+  }
+
+  @Get(':id/onlineStatus')
+  async getOnlineStatus(
+    @Param('id', ParseIntPipe) id: number,
+  ): Promise<Response> {
+    const user = this.userService.getUserById(id);
+    if (!user) return { code: 1, msg: 'Given user id is invalid' };
+    return {
+      code: 0,
+      msg: 'status fetched',
+      payload: this.pongService.getOnlineStatus(id),
     };
   }
 

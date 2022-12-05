@@ -79,4 +79,15 @@ export class UserService {
       throw new BadRequestException('Invalid file type');
     });
   }
+
+  async turnOnTwoFAuth(userId: number) {
+    return this.prisma.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        isTwoFactorAuthEnabled: true,
+      },
+    });
+  }
 }

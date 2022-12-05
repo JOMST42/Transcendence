@@ -1,0 +1,21 @@
+.list-card{
+  height: 500px; 
+  overflow-y: scroll; 
+  overflow-x: hidden
+}
+
+:host ::ng-deep .p-card{
+  background-color: #00A595;
+}
+
+:host ::ng-deep .p-button{
+  color: #00A595;;
+  background: #776ac4;
+  border: 1px solid #000000;
+}
+
+:host ::ng-deep .p-button:hover {
+	color: #7869C4;
+  background-color: transparent;
+	border: 3px solid #7869C4;
+}

@@ -1,0 +1,142 @@
+#rooms {
+  margin: 0 0 2em 0;
+  list-style-type: none;
+  padding: 0;
+	max-height: 600px;
+	overflow-y: scroll;
+	
+}
+
+#rooms .roomInfo{
+  border: 2px solid black;
+	background-color: white;
+}
+
+:host ::ng-deep .p-dropdown {
+  width: 20rem;
+	height: 100px;
+	font-family: PixelPowerline;
+	overflow-x: hidden !important;
+}
+
+:host ::ng-deep .p-dialog-header {
+  background-color: #7869C4 !important;
+}
+
+:host ::ng-deep .p-dialog-content {
+  background-color: #7869C4 !important;
+}
+
+.room-dialog {
+	background-color: #7869C4 !important;
+}
+
+.room-table {
+	background-color: #7869C4 !important;
+}
+
+.room-tr {
+	background-color: rgba(#4fe8d0, 0.5) !important;
+	background-size: 120%;
+	transition: 0.3s;
+	display: block;
+}
+
+.room-tr:hover {
+	scale: 1.1;
+	background-color: #7869C4 !important;
+	background-position: right center; /* change the direction of the change here */
+}
+
+.versus {
+	max-width: 14rem !important;
+	background-color: white;
+	cursor: pointer;
+	
+}
+
+.p-button-raised {
+	background-color: #fff;
+	padding: 10px 20px;
+	text-align: center;
+	text-transform: uppercase;
+	transition: 0.3s;
+	background-size: 200% auto;
+	color: #7869C4;
+	-webkit-text-stroke: black;
+	-webkit-text-stroke-width: 1.5px;
+	border-radius: 5px;
+	display: block;
+	font-family: PixelPowerline;
+	font-weight: 50;
+	transition: 0.3s ease-in-out;
+	border-color: #000;
+	font-size: 1.2rem;
+}
+
+.p-button-raised:hover {
+	scale: 1.2;
+	background-color: #7869C4;
+	background-position: right center; /* change the direction of the change here */
+	color: #fff;
+	text-decoration: none;
+}
+
+// #rooms li {
+//   display: flex;
+// }
+
+// #rooms button {
+//   flex: 1;
+//   cursor: pointer;
+//   position: relative;
+//   left: 0;
+//   background-color: #EEE;
+//   margin: .5em;
+//   padding: 0;
+//   border-radius: 4px;
+//   display: flex;
+//   align-items: stretch;
+//   height: 1.8em;
+// }
+
+// #rooms button:hover {
+//   color: #2c3a41;
+//   background-color: #e6e6e6;
+//   left: .1em;
+// }
+
+// #rooms button:active {
+//   background-color: #525252;
+//   color: #fafafa;
+// }
+
+// #rooms button.selected {
+//   background-color: black;
+//   color: white;
+// }
+
+// #rooms button.selected:hover {
+//   background-color: #505050;
+//   color: white;
+// }
+
+// #rooms button.selected:active {
+//   background-color: black;
+//   color: white;
+// }
+
+#rooms .badge {
+  display: inline-block;
+  font-size: small;
+  color: white;
+  padding: 0em 0.7em 0 0.7em;
+  background-color: #405061;
+  // line-height: 1em;
+  // margin-right: .8em;
+  border-radius: 4px 0 0 4px;
+}
+
+#rooms .name {
+  align-self: center;
+}

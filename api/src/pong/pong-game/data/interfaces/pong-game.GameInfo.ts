@@ -9,7 +9,5 @@ export interface GameInfo {
   ball: EntityInfo;
   pad1: EntityInfo;
   pad2: EntityInfo;
-  score: Score;
-  state: any;
   events: Event[];
 }
