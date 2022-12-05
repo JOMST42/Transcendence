@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { take } from 'rxjs';
+import { Room } from '../../models';
 import { ChatService } from '../../services';
 
 @Component({
@@ -11,6 +12,7 @@ import { ChatService } from '../../services';
 export class DmInviteComponent implements OnInit {
   @Input() userId: number;
   @Output() onClick = new EventEmitter<void>();
+  @Output() room = new EventEmitter<Room>();
 
   constructor(
     private readonly chatService: ChatService,
@@ -26,8 +28,10 @@ export class DmInviteComponent implements OnInit {
       .subscribe({
         next: (room) => {
           this.onClick.emit();
-          if (this.router.url === '/chatroom') {
-            window.location.reload();
+          console.log(this.router.url);
+
+          if (this.router.url === '/chat') {
+            this.room.emit(room);
           } else {
             this.router.navigate(['chat']);
           }

@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Router } from '@angular/router';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { ToastService } from '../../../core/services';
-import { UserChatRoom } from '../../models';
+import { Room, UserChatRoom } from '../../models';
 
 @Component({
   selector: 'app-user-dialog',
@@ -21,7 +22,8 @@ export class UserDialogComponent implements OnInit {
   constructor(
     private readonly ref: DynamicDialogRef,
     private readonly config: DynamicDialogConfig,
-    private readonly toastService: ToastService
+    private readonly toastService: ToastService,
+    private readonly router: Router
   ) {}
 
   ngOnInit(): void {
@@ -55,5 +57,16 @@ export class UserDialogComponent implements OnInit {
 
   cancel(): void {
     this.ref.close();
+  }
+
+  viewProfile(): void {
+    this.router.navigate(['users', this.user.userId]);
+    this.ref.close();
+  }
+
+  emitRoom(room: Room): void {
+    this.ref.close({
+      room,
+    });
   }
 }

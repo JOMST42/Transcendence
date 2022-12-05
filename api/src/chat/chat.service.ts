@@ -464,15 +464,20 @@ export class ChatService {
       throw new BadRequestException('User is blocked');
     }
 
-    const room = await this.prisma.chatRoom.findFirst({
+    const rooms = await this.prisma.chatRoom.findMany({
       where: {
         isDM: true,
-        users: { some: { AND: [{ userId: user1 }, { userId: user2 }] } },
+        users: { some: { userId: user1 } },
       },
+      include: { users: true },
     });
 
-    if (room) {
-      return room;
+    for (const room of rooms) {
+      for (const user of room.users) {
+        if (user.userId === user2) {
+          return room;
+        }
+      }
     }
 
     return await this.prisma.chatRoom.create({

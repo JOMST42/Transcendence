@@ -29,6 +29,18 @@
     <button (click)="mute()" pButton type="button" label="Mute"></button>
   </div>
   <div class="mt-4">
-    <app-dm-invite (onClick)="cancel()" [userId]="user.userId"></app-dm-invite>
+    <app-dm-invite
+      (room)="emitRoom($event)"
+      [userId]="user.userId"
+    ></app-dm-invite>
+  </div>
+  <div class="mt-4">
+    <button
+      class="mr-2"
+      (click)="viewProfile()"
+      pButton
+      type="button"
+      label="Profile"
+    ></button>
   </div>
 </div>

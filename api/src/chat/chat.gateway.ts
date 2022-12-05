@@ -55,7 +55,10 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
       );
       const user = await this.userService.getUserById(payload.sub);
 
-      if (!user) {
+      if (
+        !user ||
+        (payload.isTwoFactorAuthEnabled && !payload.isTwoFactorAuthenticated)
+      ) {
         this.disconnect(socket);
         return;
       }

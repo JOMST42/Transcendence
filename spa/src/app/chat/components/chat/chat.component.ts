@@ -168,7 +168,12 @@ export class ChatComponent implements OnInit, OnDestroy {
     });
 
     ref.onClose.pipe(take(1)).subscribe({
-      next: (data: { role?: 'ADMIN' | 'USER'; ban?: Date; mute?: Date }) => {
+      next: (data: {
+        role?: 'ADMIN' | 'USER';
+        ban?: Date;
+        mute?: Date;
+        room?: Room;
+      }) => {
         if (data) {
           if (data.role) {
             this.chatService
@@ -191,6 +196,14 @@ export class ChatComponent implements OnInit, OnDestroy {
           }
           if (data.mute) {
             this.chatService.muteUser(user.userId, user.roomId, data.mute);
+          }
+          if (data.room) {
+            const found = this.rooms.find((r) => {
+              return r.id === data.room.id;
+            });
+            if (!found) {
+              this.rooms.push(data.room);
+            }
           }
         }
       },
