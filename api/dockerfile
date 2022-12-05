@@ -1,0 +1,37 @@
+FROM node:18.12.1-alpine as builder
+
+# Create app directory
+WORKDIR /api
+
+# A wildcard is used to ensure both package.json AND package-lock.json are copied
+COPY package*.json ./
+COPY prisma ./prisma/
+
+# Install app dependencies
+RUN yarn install && npx prisma migrate dev
+
+# COPY . .
+
+# RUN npm run build
+
+FROM node:18.12.1-alpine
+
+COPY --from=builder /api/node_modules ./node_modules
+COPY --from=builder /api/package*.json ./
+# COPY --from=builder /api/dist ./dist
+
+# RUN npx prisma migrate dev
+
+# EXPOSE 3000
+CMD [ "yarn", "start" ]
+
+
+# FROM node:18.12.1-alpine as node
+
+# RUN mkdir /api
+# WORKDIR /api
+
+# # RUN yarn install && npx prisma migrate dev --schema ./prisma/schema.prisma && npx prisma db seed
+# RUN yarn install
+# CMD yarn start
+

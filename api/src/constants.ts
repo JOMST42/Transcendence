@@ -8,6 +8,5 @@ export const jwtTokenConstants = {
   accessToken: {
     expiresIn: '1d',
   },
-};
-
+}
 export const CLOUDINARY = 'Cloudinary';

@@ -1,11 +1,8 @@
 {
   "folders": [
 	{
-		"path": "./api"
-	},
-	{
-		"path": "./spa"
+		"path": "."
 	}
-],
+  ],
   "settings": {}
 }

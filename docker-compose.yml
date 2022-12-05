@@ -1,0 +1,64 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:latest
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: ${DEV_DB_USER}
+      POSTGRES_PASSWORD: ${DEV_DB_PASSWORD}
+      POSTGRES_DB: ${DEV_DB_NAME}
+    networks:
+      - transcendence
+    restart: always
+
+  api:
+    build: ./api
+    depends_on:
+      postgres:
+        condition: service_started
+    ports:
+        - "3000:3000"
+    volumes:
+        - v_api:/api
+        # - /api/node_modules
+    networks:
+      - transcendence
+    restart: always
+    command: yarn start
+
+  spa:
+    build: ./spa
+    ports:
+        - "4200:4200"
+    volumes:
+        - v_spa:/spa
+        # - /home/jomst/spa/node_modules
+    networks:
+      - transcendence
+    restart: always
+    command: yarn start
+
+networks:
+  transcendence:
+    name: n_transcendence
+    driver: bridge
+
+volumes:
+  v_spa:
+    name: v_spa
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ${PWD}/spa
+
+  v_api:
+    name: v_api
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ${PWD}/api
