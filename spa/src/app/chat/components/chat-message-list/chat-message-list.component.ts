@@ -108,7 +108,9 @@ export class ChatMessageListComponent
     ref.onClose.pipe(take(1)).subscribe({
       next: (data: { password: string }) => {
         if (data) {
-          this.chatService.changePassword(roomId, data.password);
+          this.chatService
+            .changePassword(roomId, data.password)
+            .subscribe({ next: () => {} });
         }
       },
     });

@@ -110,15 +110,17 @@ export class ChatService {
       throw new BadRequestException('Cannot add users to this room');
     }
 
-    if (room.isProtected) {
-      if (!password) {
-        throw new UnauthorizedException('Wrong password');
-      }
-      const passwordOk = await argon2.verify(room.hash, password);
-      if (!passwordOk) {
-        throw new UnauthorizedException('Wrong password');
-      }
-    }
+    // if (room.isProtected) {
+    //   if (!password) {
+    //     throw new UnauthorizedException('Wrong password');
+    //   }
+    //   console.log(3);
+    //   const passwordOk = await argon2.verify(room.hash, password);
+    //   if (!passwordOk) {
+    //     throw new UnauthorizedException('Wrong password');
+    //   }
+    //   console.log(4);
+    // }
 
     return await this.prisma.userChatRoom.create({
       data: { userId, roomId },

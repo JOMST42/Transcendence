@@ -105,6 +105,8 @@ export class ChatController {
     @Param('id') roomId: string,
     @Body() dto: ChangePasswordDto,
   ): Promise<void> {
+    console.log(dto);
+
     await this.chatService.changePassword(user.id, roomId, dto.password);
   }
 
