@@ -18,7 +18,7 @@ import { AddUserToChatRoomDto, BanUserDto } from './dto';
 import { ChatMessageWithAuthor, SendChatMessageDto } from './dto/message.dto';
 
 @WebSocketGateway({
-  cors: { origin: 'http://localhost:4200' },
+  cors: { origin: 'http://10.12.2.11:4200' },
   namespace: '/chat',
 })
 export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {

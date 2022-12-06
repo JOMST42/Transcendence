@@ -1,15 +1,13 @@
-<!-- *ngIf="!me.isTwoFactorAuthEnabled" -->
 <div>
   <p-button
-    *ngIf="!me.isTwoFactorAuthEnabled; else elseBlock"
+    *ngIf="!me?.isTwoFactorAuthEnabled; else elseBlock"
     type="button"
     label="Activate 2 factors authentication"
     class="p-button-raised p-button-success p-button-text"
     (click)="getQRCode()"
   ></p-button>
-  <ng-template #elseBlock
-    > 
-    <h1>TWO FACTOR AUTHENTICATION ALREADY ACTIVATED </h1>
+  <ng-template #elseBlock>
+    <h1>TWO FACTOR AUTHENTICATION ALREADY ACTIVATED</h1>
   </ng-template>
 
   <p-dialog header="SCAN ME" [(visible)]="displayDialog">

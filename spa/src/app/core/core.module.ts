@@ -20,7 +20,7 @@ const tokenGetter = () => localStorage.getItem('access_token');
 export class PongSocket extends Socket {
   constructor() {
     super({
-      url: 'http://localhost:3000/pong',
+      url: 'http://10.12.2.11:3000/pong',
       options: {
         extraHeaders: {
           Authorization: tokenGetter() || '',
@@ -35,7 +35,7 @@ export class ChatSocket extends Socket implements OnDestroy {
 
   constructor(toastService: ToastService) {
     super({
-      url: 'http://localhost:3000/chat',
+      url: 'http://10.12.2.11:3000/chat',
       options: {
         extraHeaders: {
           Authorization: tokenGetter() || '',
@@ -64,7 +64,7 @@ export class ChatSocket extends Socket implements OnDestroy {
     JwtModule.forRoot({
       config: {
         tokenGetter,
-        allowedDomains: ['localhost:3000'],
+        allowedDomains: ['10.12.2.11:3000'],
       },
     }),
   ],

@@ -7,16 +7,14 @@ import { PongSocket } from '../core/core.module';
   providedIn: 'root',
 })
 export class PlayService {
-
-  constructor(private socket: PongSocket) {
-	}
+  constructor(private socket: PongSocket) {}
 
   public reconnect() {
-  	// this.socket?.disconnect();
-  	// this.socket = io("http://localhost:3000/pong");
-  	// return this.socket;
-		this.socket?.disconnect();
-  	this.socket.connect();
+    // this.socket?.disconnect();
+    // this.socket = io("http://10.12.2.11:3000/pong");
+    // return this.socket;
+    this.socket?.disconnect();
+    this.socket.connect();
   }
 
   public listen(eventName: string): Observable<any> {
@@ -36,7 +34,7 @@ export class PlayService {
     });
   }
 
-	public listenGameWaiting(): Observable<any> {
+  public listenGameWaiting(): Observable<any> {
     return this.socket.fromEvent('game-waiting');
   }
 

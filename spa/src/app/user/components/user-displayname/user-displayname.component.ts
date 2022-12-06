@@ -33,20 +33,9 @@ export class UserDisplaynameComponent implements OnInit {
     if (!pattern.test(this.displayName)) {
       this.toast.showError('Nope ! ✋', 'Only letters, numbers, -, _ accepted');
       this.displayName = '';
-      this.resetPage();
       return false;
     }
-    this.resetPage();
-
     return true;
-  }
-
-  resetPage() {
-    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-    this.router.onSameUrlNavigation = 'reload';
-    this.router.navigate(['./'], {
-      relativeTo: this.route,
-    });
   }
 
   changeDisplayName() {

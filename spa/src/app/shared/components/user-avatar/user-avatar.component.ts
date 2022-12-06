@@ -38,7 +38,6 @@ export class UserAvatarComponent implements OnInit {
 			next: (data: Response) => {
 				if (data?.code === 0)
 					this.status = data.payload;
-					console.log(data.payload);
 			},
 			error: (err) => {},
 		});

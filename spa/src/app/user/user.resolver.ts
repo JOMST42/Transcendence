@@ -18,7 +18,7 @@ export class UserResolver implements Resolve<User> {
 
   resolve(route: ActivatedRouteSnapshot): Observable<User> {
     const id = route.paramMap.get('id');
-    if (id === null || isNaN(+id)) {
+    if (!id || isNaN(+id)) {
       return this.authService.getCurrentUser();
     } else {
       return this.userService.getUserById(+id);

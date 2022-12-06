@@ -11,7 +11,6 @@ datasource db {
 }
 
 model User {
-<<<<<<< HEAD
   id             Int        @id @default(autoincrement())
   username       String     @unique
   email          String     @unique
@@ -23,20 +22,6 @@ model User {
   status         UserStatus @default(OFFLINE)
   twoFASecret String? 
   isTwoFactorAuthEnabled Boolean @default(false)
-=======
-  id                       Int        @id @default(autoincrement())
-  username                 String     @unique
-  email                    String     @unique
-  displayName              String
-  normalizedName           String     @unique
-  firstName                String
-  lastName                 String
-  avatarUrl                String?
-  status                   UserStatus @default(OFFLINE)
-  twoFASecret              String?
-  isTwoFactorAuthEnabled   Boolean    @default(false) @map("twoFAEnable")
-  isTwoFactorAuthenticated Boolean    @default(false)
->>>>>>> c5f9fdd229b7d801456dd7dbae5eb809d4199413
 
   rooms           UserChatRoom[]
   connections     UserConnection[]

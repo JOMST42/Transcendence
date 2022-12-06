@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { take } from 'rxjs';
+import { Subject, take, takeUntil } from 'rxjs';
 
 import { User } from '../../models';
 import { AuthService } from '../../../core/services';
@@ -10,16 +10,21 @@ import { AuthService } from '../../../core/services';
   templateUrl: './profile-page.component.html',
   styleUrls: ['profile-page.component.scss'],
 })
-export class ProfilePageComponent implements OnInit {
+export class ProfilePageComponent implements OnInit, OnDestroy {
   user!: User;
   me!: User;
   displayName!: string;
   requestsNb!: number;
+  private unsubscribeAll$ = new Subject<void>();
 
   constructor(
     private activatedRoute: ActivatedRoute,
     private readonly authService: AuthService
   ) {}
+
+  ngOnDestroy(): void {
+    this.unsubscribeAll$.next();
+  }
 
   getRequestNumber(newRequest: number): void {
     this.requestsNb = newRequest;
@@ -40,7 +45,7 @@ export class ProfilePageComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.activatedRoute.data.pipe(take(1)).subscribe({
+    this.activatedRoute.data.pipe(takeUntil(this.unsubscribeAll$)).subscribe({
       next: (data) => {
         this.user = data['user'];
       },
@@ -48,7 +53,7 @@ export class ProfilePageComponent implements OnInit {
 
     this.authService
       .getCurrentUser()
-      .pipe(take(1))
+      .pipe(takeUntil(this.unsubscribeAll$))
       .subscribe({
         next: (data) => {
           this.me = data;

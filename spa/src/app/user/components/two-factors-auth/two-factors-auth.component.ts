@@ -36,7 +36,7 @@ export class TwoFactorsAuthComponent implements OnInit {
 
   turnOnTwoFactorAuth() {
     if (!this.code) {
-      console.error('pas de code');
+      this.toastService.showError('Oops', 'Enter your code');
     }
     this.authService
       .turnOnTwoFactorAuth(this.code)
@@ -49,7 +49,7 @@ export class TwoFactorsAuthComponent implements OnInit {
           );
         },
         error: (err) => {
-          this.toastService.showError('Oops turn', 'Something went wrong');
+          this.toastService.showError('Oops', 'Something went wrong');
         },
       });
   }
@@ -69,7 +69,6 @@ export class TwoFactorsAuthComponent implements OnInit {
   }
 
   getQRCode(): void {
-<<<<<<< HEAD
     if (!this.me.isTwoFactorAuthEnabled) {
       this.authService
         .generateQR()
@@ -77,39 +76,26 @@ export class TwoFactorsAuthComponent implements OnInit {
         .subscribe({
           next: (data) => {
             this.codeQR = data;
+            this.showDialog();
           },
           error: (err) => {
             console.log(err);
           },
         });
     }
-=======
+  }
+
+  ngOnInit(): void {
     this.authService
-      .generateQR()
+      .getCurrentUser()
       .pipe(take(1))
       .subscribe({
         next: (data) => {
-          this.codeQR = data;
-					this.showDialog();
+          this.me = data;
         },
         error: (err) => {
           console.log(err);
         },
       });
->>>>>>> c5f9fdd229b7d801456dd7dbae5eb809d4199413
-  }
-
-  ngOnInit(): void {
-    // this.authService
-    //   .getCurrentUser()
-    //   .pipe(take(1))
-    //   .subscribe({
-    //     next: (data) => {
-    //       this.me = data;
-    //     },
-    //     error: (err) => {
-    //       console.log(err);
-    //     },
-    //   });
   }
 }

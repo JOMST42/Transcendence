@@ -89,7 +89,6 @@ export class BlockedBtnComponent implements OnInit {
       .pipe(take(1))
       .subscribe({
         next: (data) => {
-          console.log(data);
           this.state = 'UNBLOCK';
         },
       });
@@ -101,7 +100,6 @@ export class BlockedBtnComponent implements OnInit {
       .pipe(take(1))
       .subscribe({
         next: (data) => {
-          console.log(data);
           this.state = 'BLOCK';
         },
       });
