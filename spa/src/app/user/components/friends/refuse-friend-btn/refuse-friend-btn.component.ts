@@ -47,7 +47,6 @@ export class RefuseFriendBtnComponent implements OnInit {
         } else {
           this.buttonState = true;
         }
-        console.log(this.buttonState);
       })
       .catch((err) => console.log('err catch dans refuse friend btn'));
   }

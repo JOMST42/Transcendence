@@ -38,12 +38,12 @@ export class JoinGameButtonComponent {
 	async handleJoin(event: any) {
 		if (this.state === ButtonState.JOIN) {
 			this.changeToProcess();
-			await this.delay(1000); // TODO test purpose
+			// await this.delay(1000); // TODO test purpose
 			await this.join();
 		}
 		else if (this.state === ButtonState.LEAVE) {
 			this.changeToProcess();
-			await this.delay(1000); // TODO test purpose
+			// await this.delay(1000); // TODO test purpose
 			await this.unjoin();
 		}
 
@@ -62,7 +62,6 @@ export class JoinGameButtonComponent {
   }
 
   async unjoin() {
-		console.log('Attempting to leave queue...');
     await this.server
       .emit('leave-game', {})
       .then((data: Response) => {

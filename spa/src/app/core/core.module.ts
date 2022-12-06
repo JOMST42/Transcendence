@@ -11,6 +11,8 @@ import { DialogModule } from 'primeng/dialog';
 
 import { SocketError } from './models';
 import { ToastService } from './services';
+import { DialogService } from 'primeng/dynamicdialog';
+import { ClickStopPropagation } from './directives';
 
 const tokenGetter = () => localStorage.getItem('access_token');
 
@@ -27,7 +29,6 @@ export class PongSocket extends Socket {
     });
   }
 }
-
 @Injectable()
 export class ChatSocket extends Socket implements OnDestroy {
   unsubscribeAll$ = new Subject<void>();
@@ -55,7 +56,7 @@ export class ChatSocket extends Socket implements OnDestroy {
 }
 
 @NgModule({
-  declarations: [],
+  declarations: [ClickStopPropagation],
   imports: [
     CommonModule,
     HttpClientModule,
@@ -67,7 +68,13 @@ export class ChatSocket extends Socket implements OnDestroy {
       },
     }),
   ],
-  providers: [MessageService, CookieService, PongSocket, ChatSocket],
+  providers: [
+    MessageService,
+    CookieService,
+    PongSocket,
+    ChatSocket,
+    DialogService,
+  ],
   exports: [ToastModule, DialogModule],
 })
 export class CoreModule {}

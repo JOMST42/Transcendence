@@ -5,7 +5,7 @@ import { PongServerGateway } from '../gateway/pong-server.gateway';
 import { Response } from '../data/interfaces';
 import { PongRoomService } from './pong-room.service';
 import { Timer } from 'src/pong/data/classes';
-import { TimerType, UserState } from 'src/pong/data/enums';
+import { TimerType } from 'src/pong/data/enums';
 
 class QueueConfig {
   maxEntries = 100;
@@ -21,7 +21,6 @@ export class PongQueueService {
 
   private config = new QueueConfig();
   private queue: Queue = new Queue(this.config.maxEntries);
-  private disconnectListener: any;
 
   constructor(
     @Inject(forwardRef(() => PongRoomService))
@@ -53,12 +52,6 @@ export class PongQueueService {
   }
 
   setListeners(socket: Socket) {
-    this.disconnectListener = () => {
-      this.handleLeaveQueue(socket);
-    };
-
-    socket.once('disconnect', this.disconnectListener);
-
     socket.on('leave-queue', (args, callback) => {
       const response = this.handleLeaveQueue(socket);
       if (typeof callback === 'function') callback(response);
@@ -75,26 +68,20 @@ export class PongQueueService {
     response = this.attemptJoinQueue(socket);
     if (response.code !== 0) return response;
     this.setListeners(socket);
-    socket.data.queueTimer = new Timer(TimerType.STOPWATCH, 0, 0);
-    socket.data.queueTimer.start();
-    // socket.data.state.value = UserState.QUEUED;
     this.logger.debug('join-queue event: Queue size: ' + this.queue.length());
-    this.logger.debug('added queue timer in socket.data.queueTimer.');
     return { code: 0, msg: 'you have joined the queue.' };
   }
 
   attemptJoinQueue(socket: Socket): Response {
-    if (this.config.checkDuplicate && this.queue.is_queued(socket)) {
+    if (this.config.checkDuplicate && this.queue.isQueued(socket)) {
       this.logger.debug('join-queue event: socket is already queued');
       return { code: 1, msg: 'You are already queued' };
     } else if (!this.queue.push(socket)) {
       this.logger.debug('join-queue event: Full queue');
       return { code: 1, msg: 'The queue is full' };
-    } else if (socket.data.user?.state === UserState.INGAME) {
-      //TODO
-      this.logger.debug('join-queue event: user is ingame.');
-      return { code: 1, msg: 'You are currently considered in-game' };
-    }
+    } // TODO check ingame
+    // this.logger.debug('join-queue event: user is ingame.');
+    // return { code: 1, msg: 'You are currently considered in-game' };
     return { code: 0, msg: 'You are allowed to queue' };
   }
 
@@ -119,17 +106,19 @@ export class PongQueueService {
       .to(socket.data.userRoom)
       .emit('queue-success', 'Successfully matched');
     this.clearListeners(socket);
-    socket.data.queueTimer.stop();
+  }
+
+  isUserQueued(userId: number): boolean {
+    return this.queue.isUserQueued(userId);
   }
 
   getQueueSize(): number {
     return this.queue.length();
   }
 
+  getQueueState(userId: number) {}
+
   clearListeners(socket: Socket) {
-    try {
-      socket.off('disconnect', this.disconnectListener);
-    } catch (e) {}
     socket.removeAllListeners('leave-queue');
     socket.removeAllListeners('update-queue');
   }

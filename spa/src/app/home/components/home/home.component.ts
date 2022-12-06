@@ -3,6 +3,8 @@ import { take } from 'rxjs';
 
 import { AuthService } from 'src/app/core/services';
 import { User } from '../../../user/models';
+import { Subject, takeUntil } from 'rxjs';
+import { PlayService } from 'src/app/play/play.service';
 
 @Component({
   selector: 'app-home',
@@ -14,7 +16,9 @@ export class HomeComponent implements OnInit {
   avatarUrl: string;
   userIsMe: boolean;
 
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+  ) {}
 
   handleClick() {
     window.location.href = 'http://localhost:3000/api/auth/ft/login';

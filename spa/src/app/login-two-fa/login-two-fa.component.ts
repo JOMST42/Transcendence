@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { take } from 'rxjs';
 import { AuthService, ToastService } from '../core/services';
-import { User } from '../user/models';
 
 @Component({
   selector: 'app-login-two-fa',
@@ -11,7 +11,8 @@ import { User } from '../user/models';
 export class LoginTwoFAComponent implements OnInit {
   constructor(
     private readonly authService: AuthService,
-    private readonly toastService: ToastService
+    private readonly toastService: ToastService,
+		private router: Router,
   ) {}
 
   codeQR!: string;
@@ -30,6 +31,7 @@ export class LoginTwoFAComponent implements OnInit {
   }
 
   authenticate() {
+
     this.authService
       .authenticateTwoFactorAuth(this.code)
       .pipe(take(1))
@@ -39,9 +41,18 @@ export class LoginTwoFAComponent implements OnInit {
             'Two Factor Authentication success',
             ''
           );
+					this.authService.login().pipe(take(1)).subscribe({
+						next: (data) => {
+							this.router.navigate(['']);
+						}
+					});
         },
+				error: (err) => {
+					console.log(err);
+				},
       });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+  }
 }

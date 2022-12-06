@@ -61,7 +61,8 @@ export class Queue {
   unqueue(s: Socket): Socket | undefined {
     this.clean();
     const i = this.queue.indexOf(s);
-    if (i >= 0) return this.queue.splice(i)[0];
+    if (i === 0) return this.queue.shift();
+    else if (i > 0) return this.queue.splice(i)[0];
     return undefined;
   }
 
@@ -89,9 +90,16 @@ export class Queue {
     this.queue = this.queue.filter(this.is_connected);
   }
 
-  is_queued(s: Socket): boolean {
+  isQueued(s: Socket): boolean {
     this.clean();
     if (this.queue.find((socket) => socket.data.user?.id === s.data.user?.id))
+      return true;
+    return false;
+  }
+
+  isUserQueued(userId: number): boolean {
+    this.clean();
+    if (this.queue.find((socket) => socket.data.user?.id === userId))
       return true;
     return false;
   }

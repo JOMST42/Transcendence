@@ -8,6 +8,7 @@ import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
 import { CredentialsInterceptor, ErrorInterceptor } from './core/interceptors';
 import { SharedModule } from './shared/shared.module';
+import { PongModule } from './pong/pong.module';
 import { LoginTwoFAComponent } from './login-two-fa/login-two-fa.component';
 
 @NgModule({
@@ -17,6 +18,7 @@ import { LoginTwoFAComponent } from './login-two-fa/login-two-fa.component';
     BrowserModule,
     BrowserAnimationsModule,
     CoreModule,
+		PongModule,
     SharedModule,
   ],
   providers: [

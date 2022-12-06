@@ -24,9 +24,10 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
     const user = await this.userService.getUserById(payload.sub);
     if (!user.isTwoFactorAuthEnabled) {
       return user;
-    }
-    if (payload.isTwoFactorAuthenticated) {
+    } else if (payload.isTwoFactorAuthenticated) {
       return user;
+    } else {
+      return null;
     }
   }
 }

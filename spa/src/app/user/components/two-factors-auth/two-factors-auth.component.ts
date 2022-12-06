@@ -69,6 +69,7 @@ export class TwoFactorsAuthComponent implements OnInit {
   }
 
   getQRCode(): void {
+<<<<<<< HEAD
     if (!this.me.isTwoFactorAuthEnabled) {
       this.authService
         .generateQR()
@@ -82,21 +83,33 @@ export class TwoFactorsAuthComponent implements OnInit {
           },
         });
     }
-  }
-
-  ngOnInit(): void {
+=======
     this.authService
-      .getCurrentUser()
+      .generateQR()
       .pipe(take(1))
       .subscribe({
         next: (data) => {
-          this.me = data;
+          this.codeQR = data;
+					this.showDialog();
         },
         error: (err) => {
           console.log(err);
         },
       });
+>>>>>>> c5f9fdd229b7d801456dd7dbae5eb809d4199413
+  }
 
-    this.getQRCode();
+  ngOnInit(): void {
+    // this.authService
+    //   .getCurrentUser()
+    //   .pipe(take(1))
+    //   .subscribe({
+    //     next: (data) => {
+    //       this.me = data;
+    //     },
+    //     error: (err) => {
+    //       console.log(err);
+    //     },
+    //   });
   }
 }

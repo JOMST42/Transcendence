@@ -9,17 +9,19 @@ import { AvatarModule } from 'primeng/avatar';
 import { CardModule } from 'primeng/card';
 import { TabViewModule } from 'primeng/tabview';
 import { InputTextareaModule } from 'primeng/inputtextarea';
+import { DynamicDialogModule } from 'primeng/dynamicdialog';
+import { AutoCompleteModule } from 'primeng/autocomplete';
+import { ChipModule } from 'primeng/chip';
+import { DropdownModule } from 'primeng/dropdown';
+import { PasswordModule } from 'primeng/password';
+import { ContextMenuModule } from 'primeng/contextmenu';
 import { BadgeModule } from 'primeng/badge';
-import { ProgressBarModule } from 'primeng/progressbar';
+import { MultiSelectModule } from 'primeng/multiselect';
 import {
-  JoinGameDialogComponent,
   NavBarComponent,
   NotFoundComponent,
-  PongAudioComponent,
-  PongScreenComponent,
   ServerErrorComponent,
 } from './components';
-import { EventButtonComponent } from './components/event-button/event-button.component';
 import { RouterModule } from '@angular/router';
 import { SearchUserComponent } from './components/search-user/search-user.component';
 import { UserAvatarComponent } from './components/user-avatar/user-avatar.component';
@@ -30,10 +32,6 @@ import { MatchHistoryComponent } from './components/match-history/match-history.
     NotFoundComponent,
     ServerErrorComponent,
     NavBarComponent,
-    PongScreenComponent,
-    PongAudioComponent,
-    EventButtonComponent,
-    JoinGameDialogComponent,
     SearchUserComponent,
     UserAvatarComponent,
     MatchHistoryComponent,
@@ -50,20 +48,23 @@ import { MatchHistoryComponent } from './components/match-history/match-history.
     TabViewModule,
     CardModule,
     InputTextareaModule,
+    DynamicDialogModule,
+    AutoCompleteModule,
+    ChipModule,
+    DropdownModule,
+    PasswordModule,
+    ContextMenuModule,
+    DropdownModule,
     BadgeModule,
-    ProgressBarModule,
+    MultiSelectModule,
   ],
   exports: [
     CommonModule,
     FormsModule,
     ButtonModule,
     TableModule,
-    PongScreenComponent,
-    PongAudioComponent,
-    EventButtonComponent,
     NavBarComponent,
     InputTextModule,
-    JoinGameDialogComponent,
     AvatarModule,
     DialogModule,
     TabViewModule,
@@ -72,7 +73,14 @@ import { MatchHistoryComponent } from './components/match-history/match-history.
     UserAvatarComponent,
     MatchHistoryComponent,
     InputTextareaModule,
+    DynamicDialogModule,
+    AutoCompleteModule,
+    ChipModule,
+    DropdownModule,
+    PasswordModule,
+    ContextMenuModule,
     BadgeModule,
+    MultiSelectModule,
   ],
 })
 export class SharedModule {}

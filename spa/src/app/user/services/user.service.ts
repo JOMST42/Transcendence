@@ -21,9 +21,8 @@ export class UserService {
   }
 
   findByDisplayName(displayName: string): Observable<User[]> {
-    const params = new HttpParams();
-    params.append('displayName', displayName);
-    return this.baseApiService.getMany('/users', params);
+    const params = new HttpParams().append('displayname', displayName);
+    return this.baseApiService.getMany('/users/all', params);
   }
 
   getUsers(): Observable<User[]> {

@@ -3,14 +3,25 @@ import { ChatMessage } from './chat-message.model';
 
 export interface UserChatRoom {
   userId?: number;
-  roomId?: number;
+  roomId?: string;
   isOwner?: boolean;
+  role?: 'ADMIN' | 'USER';
   user?: User;
 }
 
 export interface Room {
-  id?: number;
+  id?: string;
   name?: string;
   users?: UserChatRoom[];
   messages?: ChatMessage[];
+  visibility?: 'PUBLIC' | 'PRIVATE';
+  password?: string;
+  isProtected?: boolean;
+  isDM?: boolean;
+}
+
+export interface BanUserDto {
+  userId: number;
+  roomId: string;
+  time: Date;
 }

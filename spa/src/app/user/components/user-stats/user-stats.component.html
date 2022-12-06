@@ -1,3 +1,16 @@
-<p>user-stats works!</p>
-
-<p-progressBar [value]="games?.length"></p-progressBar>
+<div class="stats-card col-4">
+	Games played: {{games?.length}}	
+</div>
+<div class="stats-card col-4">
+	Wins: {{wins?.length}}					
+</div>
+<div class="stats-card col-4">
+	Losses: {{losses?.length}}
+</div>
+<div class="stats-card col-4">
+	W/L: {{winLossRatio.toFixed(2)}}									
+</div>
+<!-- <p-progressBar [value]="games?.length"></p-progressBar>
+<p-progressBar [value]="wins?.length"></p-progressBar>
+<p-progressBar [value]="losses?.length"></p-progressBar>
+<p-progressBar [value]="winLossRatio"></p-progressBar> -->

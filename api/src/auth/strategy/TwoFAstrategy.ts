@@ -21,11 +21,11 @@ export class TwoFAStrategy extends PassportStrategy(Strategy, 'TwoFA') {
   async validate(payload: TokenPayload): Promise<User | null> {
     const user = await this.userService.getUserById(payload.sub);
 
-    // if (!user.isTwoFactorAuthEnabled) {
-    //   return user;
-    // }
-    // if (payload.isTwoFactorAuthenticated) {
-    return user;
-    // }
+    if (!user.isTwoFactorAuthEnabled) {
+      return user;
+    }
+    if (payload.isTwoFactorAuthenticated) {
+    	return user;
+    }
   }
 }

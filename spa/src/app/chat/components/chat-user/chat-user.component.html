@@ -1,6 +1,6 @@
 <div class="flex border-round py-1 pl-2 pr-3 cursor-pointer user">
   <p-avatar
-    label="V"
+    label="{{ label }}"
     styleClass="mr-2"
     size="large"
     shape="circle"
@@ -9,5 +9,11 @@
       color: 'var(--text-color)'
     }"
   ></p-avatar>
-  <p>User Name</p>
+  <p
+    [ngStyle]="{
+      color: user.role === 'ADMIN' ? (user.isOwner ? 'red' : 'orange') : 'white'
+    }"
+  >
+    {{ user.user.displayName }}
+  </p>
 </div>

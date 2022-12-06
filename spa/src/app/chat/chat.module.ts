@@ -2,17 +2,37 @@ import { NgModule } from '@angular/core';
 
 import { SharedModule } from '../shared/shared.module';
 import { ChatRoutingModule } from './chat-routing.module';
-import { ChatComponent } from './components';
-import { ChatRoomComponent } from './components/chat-room/chat-room.component';
-import { ChatMessageComponent } from './components/chat-message/chat-message.component';
-import { ChatChannelListComponent } from './components/chat-channel-list/chat-channel-list.component';
-import { ChatChannelComponent } from './components/chat-channel/chat-channel.component';
-import { ChatMessageListComponent } from './components/chat-message-list/chat-message-list.component';
-import { ChatUserListComponent } from './components/chat-user-list/chat-user-list.component';
-import { ChatUserComponent } from './components/chat-user/chat-user.component';
+import {
+  ChannelCreateComponent,
+  ChatChannelComponent,
+  ChatChannelListComponent,
+  ChatComponent,
+  ChatMessageComponent,
+  ChatMessageListComponent,
+  ChatUserComponent,
+  ChatUserListComponent,
+} from './components';
+import { UserInviteComponent } from './components/user-invite/user-invite.component';
+import { PasswordDialogComponent } from './components/password-dialog/password-dialog.component';
+import { UserDialogComponent } from './components/user-dialog/user-dialog.component';
+import { PongModule } from '../pong/pong.module';
+import { DmInviteComponent } from './components/dm-invite/dm-invite.component';
 
 @NgModule({
-  declarations: [ChatComponent, ChatRoomComponent, ChatMessageComponent, ChatChannelListComponent, ChatChannelComponent, ChatMessageListComponent, ChatUserListComponent, ChatUserComponent],
-  imports: [SharedModule, ChatRoutingModule],
+  declarations: [
+    ChatComponent,
+    ChatMessageComponent,
+    ChatChannelListComponent,
+    ChatChannelComponent,
+    ChatMessageListComponent,
+    ChatUserListComponent,
+    ChatUserComponent,
+    ChannelCreateComponent,
+    UserInviteComponent,
+    PasswordDialogComponent,
+    UserDialogComponent,
+    DmInviteComponent,
+  ],
+  imports: [SharedModule, ChatRoutingModule, PongModule],
 })
 export class ChatModule {}

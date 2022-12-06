@@ -1,40 +1,51 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { AuthGuard } from './core/guards';
 
 import { LoginTwoFAComponent } from './login-two-fa/login-two-fa.component';
 import { NotFoundComponent, ServerErrorComponent } from './shared/components';
 import { SearchUserComponent } from './shared/components/search-user/search-user.component';
 
 const routes: Routes = [
-  {
-    path: 'users',
-    loadChildren: () => import('./user/user.module').then((m) => m.UserModule),
-  },
-  {
-    path: 'chat',
-    loadChildren: () => import('./chat/chat.module').then((m) => m.ChatModule),
-  },
-  {
-    path: 'play',
-    loadChildren: () => import('./play/play.module').then((m) => m.PlayModule),
-  },
-  {
-    path: 'watch',
-    loadChildren: () =>
-      import('./watch/watch.module').then((m) => m.WatchModule),
-  },
-  {
-    path: '2fa',
-    component: LoginTwoFAComponent,
-  },
-  {
+	{
     path: '',
     loadChildren: () => import('./home/home.module').then((m) => m.HomeModule),
     pathMatch: 'full',
   },
   {
-    path: 'search',
-    component: SearchUserComponent,
+    path: '',
+    runGuardsAndResolvers: 'always',
+    canActivate: [AuthGuard],
+    children: [
+      {
+        path: 'users',
+        loadChildren: () =>
+          import('./user/user.module').then((m) => m.UserModule),
+      },
+      {
+        path: 'chat',
+        loadChildren: () =>
+          import('./chat/chat.module').then((m) => m.ChatModule),
+      },
+      {
+        path: 'play',
+        loadChildren: () =>
+          import('./play/play.module').then((m) => m.PlayModule),
+      },
+      {
+        path: 'watch',
+        loadChildren: () =>
+          import('./watch/watch.module').then((m) => m.WatchModule),
+      },
+			{
+				path: 'search',
+				component: SearchUserComponent,
+			},
+    ],
+  },
+  {
+    path: '2fa',
+    component: LoginTwoFAComponent,
   },
   {
     path: 'server-error',

@@ -1,7 +1,8 @@
 <p-card class="p-card" [ngClass]="friendState ? '' : 'blockedCard'">
   <ng-template pTemplate="content">
     <a routerLink="/users/{{ user?.id }}" style="cursor: pointer">
-      <app-user-avatar *ngIf="user"
+      <app-user-avatar
+        *ngIf="user"
         [avatarUrl]="user?.avatarUrl"
         [user]="user"
       ></app-user-avatar>
@@ -16,7 +17,12 @@
   </ng-template>
 </p-card>
 
-<p-dialog header="Title" [(visible)]="display" [dismissableMask]="true" [modal]="true">
+<p-dialog
+  header="Title"
+  [(visible)]="display"
+  [dismissableMask]="true"
+  [modal]="true"
+>
   <ng-template pTemplate="header">
     <app-user-avatar
       [avatarUrl]="user?.avatarUrl"

@@ -4,23 +4,24 @@ import { CookieService } from 'ngx-cookie-service';
 import { Observable, ReplaySubject, take, map } from 'rxjs';
 
 import { User } from '../../user/models';
-import { UserService } from '../../user/services';
+import { ChatSocket } from '../core.module';
 import { BaseApiService } from './base-api.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private userSubject = new ReplaySubject<User | null>(1);
+  private userSubject = new ReplaySubject<User>(1);
   private user$ = this.userSubject.asObservable();
 
   constructor(
     private readonly cookieService: CookieService,
     private readonly jwtService: JwtHelperService,
-    private readonly baseApiService: BaseApiService
+    private readonly baseApiService: BaseApiService,
+    private readonly chatSocket: ChatSocket
   ) {}
 
-  getCurrentUser(): Observable<User | null> {
+  getCurrentUser(): Observable<User> {
     return this.user$;
   }
 
@@ -28,7 +29,7 @@ export class AuthService {
     this.userSubject.next(user);
   }
 
-  refreshProfile(): Observable<User | null> {
+  refreshProfile(): Observable<User> {
     return this.getProfile().pipe(
       take(1),
       map((user: User) => {
@@ -42,7 +43,7 @@ export class AuthService {
     return this.baseApiService.getOne('/users/me');
   }
 
-  login(): Observable<User | null> {
+  login(): Observable<User> {
     const token =
       this.cookieService.get('access_token') ||
       localStorage.getItem('access_token');
@@ -56,10 +57,8 @@ export class AuthService {
       this.logout();
       return this.user$;
     }
-
     localStorage.setItem('access_token', token);
     this.cookieService.delete('access_token');
-
     return this.refreshProfile();
   }
 

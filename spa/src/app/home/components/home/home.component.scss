@@ -52,6 +52,10 @@
 		font-size: 0.7rem;
 		padding: 10px 40px;
 	}
+	.home-page-card .user-info {
+		display: block !important;
+		text-align: initial !important;
+	}
 }
 
 @media  screen and (min-width: 350px) and (max-width: 500px) {
@@ -66,15 +70,27 @@
 		font-size: 0.5rem;
 		padding: 8px 38px;
 	}
+	.home-page-card .user-info {
+		display: block !important;
+		text-align: initial !important;
+	}
 }
 
-@media  screen and (min-width: 0px) and (max-width: 350px) {
+@media  screen and (min-width: 0px) and (max-width: 375px) {
 	.title-div .title-logpage {
 		font-size: 2rem;
 	}
 	.button-div .btn-grad {
 		font-size: 0.5rem;
 		padding: 8px 38px;
+	}
+	.home-page-card .img-container img {
+		width: 125px;
+		height: 125px;
+	}
+	.home-page-card .user-info {
+		display: block !important;
+		text-align: initial !important;
 	}
 }
 
@@ -142,7 +158,6 @@ p {
 	border-color: #000;
 	font-size: 1.6rem;
 	position: absolute;
-
   }
 
   .btn-grad:hover {
@@ -183,8 +198,9 @@ p {
 	border-radius: 30px;
 	width: 700px !important;
 	position: relative;
-	background-color: #00A595  !important;
+	// background-color: #00A595  !important;
 	// background-color: #000  !important;
+	background-color: #fff  !important;
 	border: 3px solid black;;
 	box-shadow: -30px -30px #7869C4,
 				-30px -28px #000,
@@ -194,6 +210,7 @@ p {
 }
 
 .img-container {
+	// background-color: #000;
 	background-color: #00A595;
 	border: 3px solid #000;
 	border-radius: 8px;
@@ -205,6 +222,16 @@ p {
 	height: auto;
 	margin-bottom: 20px;
 }
+
+@media  screen and (min-width: 0px) and (max-width: 600px) {
+	.home-page-card img {
+		width: 160px;
+		height: 160px;
+	}
+}
+
+
+
 
 img {
 	width: 200px;
@@ -220,11 +247,19 @@ img:hover {
 
 h2 {
 	font-size: 30px;
-	font-family: Franchise;
+	font-family: "PixelPowerline";
 	font-weight: 50;
 	// font-size: 10rem;
-	color: #08090a;
+	color: #fff;
+	-webkit-text-stroke: black;
+	-webkit-text-stroke-width: 1.5px;
+	// color: #000;
 	transition: 0.3s;
+}
+
+h2:hover {
+	color: #00A595;
+	cursor: pointer;
 }
 
 .title-homepage  {

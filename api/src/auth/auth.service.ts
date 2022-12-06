@@ -3,8 +3,9 @@ import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { User } from '@prisma/client';
 import { authenticator } from 'otplib';
-import { jwtTokenConstants } from '../constants';
+import { cookieConstants, jwtTokenConstants } from '../constants';
 import { toDataURL } from 'qrcode';
+import { Response } from 'express';
 
 import { PrismaService } from '../prisma/prisma.service';
 import { TokenPayload, UserDetails } from './utils';
@@ -59,6 +60,7 @@ export class AuthService {
       {
         secret: this.config.get('JWT_SECRET'),
         expiresIn: jwtTokenConstants.accessToken.expiresIn,
+        //on ajoute les infos sur le 2FA
       },
     );
   }
@@ -69,26 +71,18 @@ export class AuthService {
     });
   }
 
-  async login2FA(user: User) {
+  async login2FA(user: User, res: Response) {
     const payload = {
       sub: user.id,
       isTwoFactorAuthEnabled: user.isTwoFactorAuthEnabled,
       isTwoFactorAuthenticated: true,
     };
-    // res.cookie(
-    //   'access_token',
-    //   await this.signToken({
-    //     sub: user.id,
-    //     isTwoFactorAuthEnabled: user.isTwoFactorAuthEnabled,
-    //     isTwoFactorAuthenticated: true,
-    //   }),
-    //   {
-    //     maxAge: cookieConstants.maxAge,
-    //     httpOnly: false,
-    //     sameSite: 'strict',
-    //   },
-    // );
-    return await this.signToken(payload);
+    res?.cookie('access_token', await this.signToken(payload), {
+      maxAge: cookieConstants.maxAge,
+      httpOnly: false,
+      sameSite: 'strict',
+    });
+    return true;
   }
 
   async setTwoFAuthSecret(secret: string, userId: number) {
@@ -118,6 +112,7 @@ export class AuthService {
   }
 
   validateTwoFAuthCode(code: string, user: User): boolean {
+    if (!user) return false;
     return authenticator.verify({
       token: code,
       secret: user.twoFASecret,

@@ -36,7 +36,6 @@ export class UserController implements OnModuleInit {
     await this.userConnectionService.deleteAll();
   }
 
-  @UseGuards(JwtGuard)
   @Get('me')
   async getMe(@GetUser() user: User): Promise<User> {
     return user;

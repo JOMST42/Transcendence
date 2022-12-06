@@ -34,7 +34,6 @@ export class FriendService {
   }
 
   blockFriend(adresseeId: number, userId: number): Observable<Friendship> {
-    console.log('dans service front');
     return this.baseApiService.patchOne(
       `/users/${userId}/blockfriend/${adresseeId}`
     );

@@ -20,11 +20,12 @@ import { Response } from '../data/interfaces';
 import { PongRoomService } from '../services/pong-room.service';
 import { PongQueueService } from '../services/pong-queue.service';
 import { AuthService } from '../../../auth/auth.service';
-import { UserState } from 'src/pong/data/enums';
 import { PongServerInterceptor } from '../pong-server.interceptor';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { User } from '@prisma/client';
 import { UserService } from 'src/user/services/user.service';
+import { PongInviteService } from '../services/pong-invite.service';
+import { PongService } from 'src/pong/pong.service';
+import { UserConnectionService } from 'src/user/services/user-connection.service';
 
 @Injectable({})
 @UseInterceptors(new PongServerInterceptor())
@@ -34,10 +35,6 @@ export class PongServerGateway
 {
   private logger: Logger = new Logger('PongServerGateway');
   private maxEntries = 200;
-  private userStates: Map<number, { value: UserState }> = new Map<
-    number,
-    { value: UserState }
-  >();
 
   @WebSocketServer()
   private server!: Server;
@@ -47,103 +44,22 @@ export class PongServerGateway
     private roomService: PongRoomService,
     @Inject(forwardRef(() => PongQueueService))
     private queueService: PongQueueService,
-    private authService: AuthService,
-    private userService: UserService,
+    @Inject(forwardRef(() => PongInviteService))
+    private inviteService: PongInviteService,
+    private pongService: PongService,
+    private readonly authService: AuthService,
+    private readonly userService: UserService,
+    private readonly userConnectionService: UserConnectionService,
     private prisma: PrismaService,
   ) {}
 
   afterInit(server: Server) {
     this.logger.log('Server log: Socket is live');
-    this.server.setMaxListeners(Infinity); // WARNING need to read about it
-
-    // WARNING test purpose
-    this.initTestServer();
+    this.server.setMaxListeners(Infinity);
 
     // setInterval(() => {
     //   this.showServerInfo();
     // }, 30000);
-    // setInterval(() => {
-    //   this.updateRooms();
-    // }, (1 / 60) * 1000); // FPS
-    // setInterval(() => {
-    //   this.updateQueue();
-    // }, 2000); // every 2 seconds
-  }
-
-  async initTestServer() {
-    let i = 100;
-    const users: User[] = [];
-    try {
-      this.logger.debug('starting test user creation');
-      users.push(
-        await this.prisma.user.create({
-          data: {
-            username: 'fousse',
-            email: 'foussemail',
-            displayName: 'foussypuss',
-            normalizedName: 'foussypuss'.toLowerCase(),
-            firstName: 'seb',
-            lastName: 'fou',
-          },
-        }),
-      );
-      users.push(
-        await this.prisma.user.create({
-          data: {
-            username: 'justincase',
-            email: 'justinmail',
-            displayName: 'justincase',
-            normalizedName: 'justincase'.toLowerCase(),
-            firstName: 'justin',
-            lastName: 'badia',
-          },
-        }),
-      );
-      users.push(
-        await this.prisma.user.create({
-          data: {
-            username: 'olala',
-            email: 'olalamail',
-            displayName: 'olalalalao',
-            normalizedName: 'olalalalao'.toLowerCase(),
-            firstName: 'Oli',
-            lastName: 'Lab',
-          },
-        }),
-      );
-      users.push(
-        await this.prisma.user.create({
-          data: {
-            username: 'Mikastiv',
-            email: 'mikmail',
-            displayName: 'sk8terboi',
-            normalizedName: 'sk8terboi'.toLowerCase(),
-            firstName: 'mik',
-            lastName: 'mika',
-          },
-        }),
-      );
-    } catch (e) {}
-    while (i++ < 200) {
-      try {
-        await this.prisma.game.create({
-          data: {
-            player1Id: users[Math.floor(Math.random() * 2)].id,
-            player2Id: users[Math.floor(Math.random() * 2 + 2)].id,
-            scorePlayer1: Math.ceil(Math.random() * 7),
-            scorePlayer2: Math.ceil(Math.random() * 7),
-            description: 'Game is done',
-            timePlayed: Math.random() * 200,
-            endTime: new Date(),
-            winner: Math.random() < 0.5 ? 'PLAYER1' : 'PLAYER2',
-          },
-        });
-      } catch (e) {}
-    }
-  }
-
-  getServer(): Server {
-    return this.server;
   }
 
   to(room: string | string[]): any {
@@ -175,39 +91,52 @@ export class PongServerGateway
           break tryBlock;
         }
 
+        await this.userConnectionService.create(prismaUser.id, {
+          socketId: socket.id,
+          type: 'GAME',
+        });
+
         socket.data.user = prismaUser;
         socket.data.userRoom = <string>('u' + prismaUser.id);
+        socket.data.gameRoom = 0;
         socket.join(socket.data.userRoom);
         this.roomService.addUser(socket);
-        if (!this.userStates.has(prismaUser.id)) {
-          this.userStates.set(prismaUser.id, { value: UserState.ONLINE });
-        }
-        // socket.setMaxListeners(Infinity); // TODO
-        socket.data.state = this.userStates.get(prismaUser.id);
+        // this.userConnectionService.create(prismaUser.id, {
+
+        // });
+        socket.setMaxListeners(Infinity); // TODO
         this.logger.log(
           'Socket connection: socket connected with nickname ' +
             socket.data.user.displayName,
         );
       }
+
+      // let i = 0;
+      // while (i++ < 5) {
+      //   this.roomService.createGameRoom(socket, socket);
+      // }
     } catch (e) {
-      data = { code: 1, msg: 'unknown connection exception' };
+      data = { code: 1, msg: 'connection exception' };
     } finally {
-      if (data.code === 0) socket.emit('connect-success', data);
-      else {
+      if (data.code === 0) {
+        socket.emit('connect-success', data);
+        socket.broadcast.emit('user-status-change', socket.data.user.id);
+      } else {
         socket.emit('connect-error', data);
-        socket.disconnect();
+        this.disconnectSocket(socket);
       }
     }
   }
 
   handleDisconnect(socket: Socket) {
     this.disconnectSocket(socket);
-    this.logger.log('Server log: socket disconnected');
   }
 
   @SubscribeMessage('join-queue')
   handleJoinQueue(@ConnectedSocket() socket: Socket): Response {
-    return this.queueService.userJoinQueue(socket);
+    const response = this.pongService.canQueue(socket?.data?.user?.id);
+    if (response.code === 0) return this.queueService.userJoinQueue(socket);
+    else return response;
   }
 
   @SubscribeMessage('join-room')
@@ -218,14 +147,41 @@ export class PongServerGateway
     return this.roomService.userJoinRoom(id, socket);
   }
 
+  @SubscribeMessage('invite-player')
+  handleInvitePlayer(
+    @MessageBody() id: number,
+    @ConnectedSocket() socket: Socket,
+  ): Response {
+    const response = this.pongService.canInvite(socket?.data?.user?.id);
+    if (response.code != 0) return response;
+
+    const targetSocket = this.roomService.getUserWithId(id);
+    if (!targetSocket)
+      return {
+        code: 1,
+        msg: 'You are trying to invite an offline or non-existant player',
+      };
+    if (targetSocket.data.user.id === socket.data.user.id)
+      return { code: 1, msg: 'You can not invite yourself' };
+    return this.inviteService.userInvite(socket, targetSocket);
+  }
+
   /********** END EVENT SUBSCRIPTIONS **********/
 
   /* TODO
    * This is the "master disconnect".
    * It needs to make sure everything is ok before disconnecting.
    */
-  private disconnectSocket(socket: Socket) {
+  private async disconnectSocket(socket: Socket) {
+    try {
+      await this.userConnectionService.deleteBySocketId(socket.id);
+    } catch {}
     socket.disconnect;
+    try {
+      if (socket.data?.user?.id)
+        socket.broadcast.emit('user-status-change', socket.data.user.id);
+    } catch (e) {}
+    this.logger.log('Socket disconnected');
   }
 
   showServerInfo() {
@@ -235,5 +191,9 @@ export class PongServerGateway
     this.logger.log('* Rooms: ' + this.roomService.getRoomCount());
     this.logger.log('* Queue: ' + this.queueService.getQueueSize());
     this.logger.log('********************');
+  }
+
+  getServer(): Server {
+    return this.server;
   }
 }

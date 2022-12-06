@@ -12,11 +12,13 @@ import {
 import { FriendBtnComponent } from './components/friends/friend-btn/friend-btn.component';
 import { BlockedBtnComponent } from './components/friends/blocked-btn/blocked-btn.component';
 import { FriendCardComponent } from './components/friends/friend-card/friend-card.component';
+import { PongModule } from '../pong/pong.module';
 import { FriendRequestsComponent } from './components/friends/friend-requests/friend-requests.component';
 import { FriendRequestCardComponent } from './components/friends/friend-request-card/friend-request-card.component';
 import { AcceptFriendBtnComponent } from './components/friends/accept-friend-btn/accept-friend-btn.component';
 import { RefuseFriendBtnComponent } from './components/friends/refuse-friend-btn/refuse-friend-btn.component';
 import { UserStatsComponent } from './components/user-stats/user-stats.component';
+import { UserMatchHistoryComponent } from './components/user-match-history/user-match-history.component';
 import { TwoFactorsAuthComponent } from './components/two-factors-auth/two-factors-auth.component';
 import { QRCodeModule } from 'angularx-qrcode';
 
@@ -34,9 +36,10 @@ import { QRCodeModule } from 'angularx-qrcode';
     AcceptFriendBtnComponent,
     RefuseFriendBtnComponent,
     UserStatsComponent,
-    TwoFactorsAuthComponent,
+		TwoFactorsAuthComponent,
+		UserMatchHistoryComponent,
   ],
-  imports: [SharedModule, UserRoutingModule, FileUploadModule, QRCodeModule],
+  imports: [SharedModule, UserRoutingModule, FileUploadModule, PongModule, QRCodeModule],
   exports: [
     UserDisplaynameComponent,
     UserImgComponent,
@@ -45,6 +48,7 @@ import { QRCodeModule } from 'angularx-qrcode';
     ProfilePageComponent,
     FriendListComponent,
     UserStatsComponent,
+		UserMatchHistoryComponent,
     TwoFactorsAuthComponent,
   ],
 })
