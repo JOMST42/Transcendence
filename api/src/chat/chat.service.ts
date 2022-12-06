@@ -110,17 +110,47 @@ export class ChatService {
       throw new BadRequestException('Cannot add users to this room');
     }
 
-    // if (room.isProtected) {
-    //   if (!password) {
-    //     throw new UnauthorizedException('Wrong password');
-    //   }
-    //   console.log(3);
-    //   const passwordOk = await argon2.verify(room.hash, password);
-    //   if (!passwordOk) {
-    //     throw new UnauthorizedException('Wrong password');
-    //   }
-    //   console.log(4);
-    // }
+    if (room.isProtected) {
+      if (!password) {
+        throw new UnauthorizedException('Wrong password');
+      }
+
+      const passwordOk = await argon2.verify(room.hash, password);
+      if (!passwordOk) {
+        throw new UnauthorizedException('Wrong password');
+      }
+    }
+
+    return await this.prisma.userChatRoom.create({
+      data: { userId, roomId },
+      include: {
+        user: true,
+      },
+    });
+  }
+
+  async addUserToRoom2(userId: number, roomId: string): Promise<UserChatRoom> {
+    const userChatRoom = await this.prisma.userChatRoom.findUnique({
+      where: { userId_roomId: { roomId, userId } },
+    });
+
+    if (userChatRoom) {
+      throw new BadRequestException('User already in chat room');
+    }
+
+    const room = await this.prisma.chatRoom.findUnique({
+      where: {
+        id: roomId,
+      },
+    });
+
+    if (!room) {
+      throw new BadRequestException("Room doesn't exist");
+    }
+
+    if (room.isDM) {
+      throw new BadRequestException('Cannot add users to this room');
+    }
 
     return await this.prisma.userChatRoom.create({
       data: { userId, roomId },

@@ -150,7 +150,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
         return;
       }
 
-      const userChatRoom = await this.chatService.addUserToRoom(
+      const userChatRoom = await this.chatService.addUserToRoom2(
         dto.userId,
         dto.roomId,
       );
