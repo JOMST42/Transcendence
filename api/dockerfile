@@ -4,26 +4,44 @@ FROM node:18.12.1-alpine as builder
 WORKDIR /api
 
 # A wildcard is used to ensure both package.json AND package-lock.json are copied
-COPY package*.json ./
-COPY prisma ./prisma/
+# COPY package*.json ./
+# COPY prisma ./prisma/
+COPY . .
 
 # Install app dependencies
-RUN yarn install && npx prisma migrate dev
-
-# COPY . .
+RUN yarn install
 
 # RUN npm run build
 
-FROM node:18.12.1-alpine
+# FROM node:18.12.1-alpine
 
-COPY --from=builder /api/node_modules ./node_modules
-COPY --from=builder /api/package*.json ./
+# COPY --from=builder /api/node_modules ./node_modules
+# COPY --from=builder /api/package*.json ./
 # COPY --from=builder /api/dist ./dist
 
 # RUN npx prisma migrate dev
+COPY ./tools/docker_prisma.sh /tmp/docker_prisma.sh
+RUN chmod +x /tmp/docker_prisma.sh
 
 # EXPOSE 3000
+ENTRYPOINT ["/tmp/docker_prisma.sh"]
 CMD [ "yarn", "start" ]
+
+# FROM alpine:3.15
+
+# #set-up users
+# RUN apk add --update --no-cache mariadb mariadb-client && \
+#     mkdir /run/mysqld
+
+# EXPOSE 3306
+
+# COPY ./tools/mariadb_setup.sh /tmp/mariadb_setup.sh
+
+# RUN chmod +x /tmp/mariadb_setup.sh
+
+# ENTRYPOINT ["/tmp/mariadb_setup.sh"]
+
+# CMD ["mariadbd", "--user=root", "--skip-networking=0"]
 
 
 # FROM node:18.12.1-alpine as node

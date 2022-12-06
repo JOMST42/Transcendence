@@ -23,11 +23,11 @@ services:
         - "3000:3000"
     volumes:
         - v_api:/api
-        # - /api/node_modules
+        - /api/node_modules
     networks:
       - transcendence
-    restart: always
-    command: yarn start
+    restart: unless-stopped
+    # command: yarn start
 
   spa:
     build: ./spa
@@ -35,11 +35,11 @@ services:
         - "4200:4200"
     volumes:
         - v_spa:/spa
-        # - /home/jomst/spa/node_modules
+        - /spa/node_modules
     networks:
       - transcendence
-    restart: always
-    command: yarn start
+    restart: unless-stopped
+    # command: yarn start
 
 networks:
   transcendence:
