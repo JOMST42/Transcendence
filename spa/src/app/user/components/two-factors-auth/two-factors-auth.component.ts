@@ -1,4 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { take } from 'rxjs';
 import { AuthService, ToastService } from '../../../core/services';
 import { User } from '../../models';
@@ -11,7 +12,8 @@ import { User } from '../../models';
 export class TwoFactorsAuthComponent implements OnInit {
   constructor(
     private readonly authService: AuthService,
-    private readonly toastService: ToastService
+    private readonly toastService: ToastService,
+    private readonly router: Router
   ) {}
 
   me!: User;
@@ -50,6 +52,18 @@ export class TwoFactorsAuthComponent implements OnInit {
         },
         error: (err) => {
           this.toastService.showError('Oops', 'Something went wrong');
+        },
+      });
+  }
+
+  desactivate2FA(): void {
+    this.authService
+      .turnOffTwoFactorAuth()
+      .pipe(take(1))
+      .subscribe({
+        next: (data) => {
+          this.authService.logout();
+          this.router.navigate(['']);
         },
       });
   }

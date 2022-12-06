@@ -7,7 +7,13 @@
     (click)="getQRCode()"
   ></p-button>
   <ng-template #elseBlock>
-    <h1>TWO FACTOR AUTHENTICATION ALREADY ACTIVATED</h1>
+    <p-button
+      type="button"
+      label="Desactivate 2FA"
+      class="p-button-raised p-button-success p-button-text"
+      (click)="desactivate2FA()"
+    >
+    </p-button>
   </ng-template>
 
   <p-dialog header="SCAN ME" [(visible)]="displayDialog">

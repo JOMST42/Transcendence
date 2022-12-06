@@ -80,6 +80,12 @@ export class AuthController {
     await this.userService.turnOnTwoFAuth(user.id);
   }
 
+  @Post('2fa/turn-off')
+  @UseGuards(JwtGuard)
+  async turnOffTwoFAuth(@GetUser() user: User): Promise<User> {
+    return await this.userService.turnOffTwoFAuth(user.id);
+  }
+
   @Post('2fa/authenticate')
   @HttpCode(HttpStatus.OK)
   async authenticate(
