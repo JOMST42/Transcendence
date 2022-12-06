@@ -20,10 +20,10 @@
     #messages
     class="h-full flex flex-column-reverse mx-6 mt-6 overflow-y-auto"
   >
-    <span *ngFor="let message of chatMessages">
+    <span *ngFor="let msg of chatMessages">
       <app-chat-message
         [blockedUsers]="blockedUsers"
-        [message]="message"
+        [message]="checkBlock(msg)"
       ></app-chat-message>
     </span>
   </div>

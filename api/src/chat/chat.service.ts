@@ -533,7 +533,7 @@ export class ChatService {
           },
         ],
       },
-      include: { requester: true },
+      include: { adressee: true },
     });
 
     const blockedFriendship2 = await this.prisma.friendship.findMany({
@@ -543,21 +543,25 @@ export class ChatService {
             adresseeId: userId,
             requesterBlocker: true,
           },
+
           {
             adresseeId: userId,
             adresseeBlocker: true,
           },
         ],
       },
-      include: { adressee: true },
+      include: { requester: true },
     });
 
+    console.log(blockedFriendship1);
+    console.log(blockedFriendship2);
+
     const blocked1 = blockedFriendship1.map((v) => {
-      return v.requester;
+      return v.adressee;
     });
 
     const blocked2 = blockedFriendship2.map((v) => {
-      return v.adressee;
+      return v.requester;
     });
 
     return blocked1.concat(blocked2);

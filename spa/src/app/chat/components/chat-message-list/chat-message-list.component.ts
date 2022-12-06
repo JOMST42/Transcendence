@@ -16,6 +16,7 @@ import { User } from '../../../user/models';
 
 import { ChatMessage, UserChatRoom } from '../../models';
 import { ChatService } from '../../services';
+import { checkBlocked } from '../../utils';
 import { PasswordDialogComponent } from '../password-dialog/password-dialog.component';
 
 @Component({
@@ -114,5 +115,10 @@ export class ChatMessageListComponent
         }
       },
     });
+  }
+
+  checkBlock(msg: ChatMessage): ChatMessage {
+    msg.content = checkBlocked(msg, this.blockedUsers);
+    return msg;
   }
 }
