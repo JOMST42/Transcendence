@@ -53,6 +53,8 @@ export class ChatComponent implements OnInit, OnDestroy {
           }
         },
       });
+
+    this.chatService.resetConnection();
   }
 
   onChannelSelect(channel: Room): void {
