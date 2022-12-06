@@ -17,6 +17,7 @@ import { PasswordModule } from 'primeng/password';
 import { ContextMenuModule } from 'primeng/contextmenu';
 import { BadgeModule } from 'primeng/badge';
 import { MultiSelectModule } from 'primeng/multiselect';
+import { InputNumberModule } from 'primeng/inputnumber';
 import {
   NavBarComponent,
   NotFoundComponent,
@@ -57,6 +58,7 @@ import { MatchHistoryComponent } from './components/match-history/match-history.
     DropdownModule,
     BadgeModule,
     MultiSelectModule,
+    InputNumberModule,
   ],
   exports: [
     CommonModule,
@@ -81,6 +83,7 @@ import { MatchHistoryComponent } from './components/match-history/match-history.
     ContextMenuModule,
     BadgeModule,
     MultiSelectModule,
+    InputNumberModule,
   ],
 })
 export class SharedModule {}

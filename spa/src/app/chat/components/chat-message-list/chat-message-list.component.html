@@ -27,7 +27,7 @@
       ></app-chat-message>
     </span>
   </div>
-  <div class="flex">
+  <div *ngIf="roomId" class="flex">
     <div class="w-full flex flex-row my-3 mx-3">
       <input
         class="w-full"

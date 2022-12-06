@@ -451,15 +451,26 @@ export class ChatService {
       throw new BadRequestException('User not found');
     }
 
-    const friendship = await this.prisma.friendship.findUnique({
+    const friendship1 = await this.prisma.friendship.findUnique({
       where: {
         requesterId_adresseeId: { adresseeId: user1, requesterId: user2 },
       },
     });
+    const friendship2 = await this.prisma.friendship.findUnique({
+      where: {
+        requesterId_adresseeId: { adresseeId: user2, requesterId: user1 },
+      },
+    });
 
     if (
-      friendship &&
-      (friendship.adresseeBlocker || friendship.requesterBlocker)
+      friendship1 &&
+      (friendship1.adresseeBlocker || friendship1.requesterBlocker)
+    ) {
+      throw new BadRequestException('User is blocked');
+    }
+    if (
+      friendship2 &&
+      (friendship2.adresseeBlocker || friendship2.requesterBlocker)
     ) {
       throw new BadRequestException('User is blocked');
     }

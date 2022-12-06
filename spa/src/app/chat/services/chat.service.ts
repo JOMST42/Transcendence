@@ -121,4 +121,9 @@ export class ChatService {
   getAllBlockedUsers(): Observable<User[]> {
     return this.baseApiService.getMany('/chatrooms/blocked');
   }
+
+  resetConnection(): void {
+    this.socket?.disconnect();
+    this.socket.connect();
+  }
 }
