@@ -155,8 +155,6 @@ export class FriendService {
         },
       });
     }
-    console.log('adresse = ' + adressee);
-    console.log('user = ' + userId);
     if (friendship.requesterId === userId) {
       return await this.prisma.friendship.update({
         where: {
