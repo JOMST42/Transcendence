@@ -18,6 +18,7 @@ export class UserDialogComponent implements OnInit {
   user: UserChatRoom;
   me: UserChatRoom;
   isOwner: boolean;
+  timeout = 5;
 
   constructor(
     private readonly ref: DynamicDialogRef,
@@ -45,13 +46,13 @@ export class UserDialogComponent implements OnInit {
 
   ban(): void {
     this.ref.close({
-      ban: new Date(Date.now() + 1 * 60000),
+      ban: new Date(Date.now() + this.timeout * 60000),
     });
   }
 
   mute(): void {
     this.ref.close({
-      mute: new Date(Date.now() + 1 * 60000),
+      mute: new Date(Date.now() + this.timeout * 60000),
     });
   }
 

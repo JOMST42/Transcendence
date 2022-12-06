@@ -19,6 +19,14 @@
     <app-game-invite [userId]="user.userId"></app-game-invite>
   </div>
   <div class="mt-4" *ngIf="!user.isOwner && me.role === 'ADMIN'">
+    <p>Time (min)</p>
+    <p-inputNumber
+      class="mr-2"
+      [(ngModel)]="timeout"
+      [showButtons]="true"
+      [min]="0"
+      [max]="100"
+    ></p-inputNumber>
     <button
       class="mr-2"
       (click)="ban()"
