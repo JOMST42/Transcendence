@@ -28,8 +28,6 @@ export class DmInviteComponent implements OnInit {
       .subscribe({
         next: (room) => {
           this.onClick.emit();
-          console.log(this.router.url);
-
           if (this.router.url === '/chat') {
             this.room.emit(room);
           } else {

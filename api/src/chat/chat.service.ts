@@ -225,7 +225,6 @@ export class ChatService {
     });
 
     if (!room) {
-      console.log('Null room');
       return;
     }
 
@@ -582,9 +581,6 @@ export class ChatService {
       },
       include: { requester: true },
     });
-
-    console.log(blockedFriendship1);
-    console.log(blockedFriendship2);
 
     const blocked1 = blockedFriendship1.map((v) => {
       return v.adressee;
