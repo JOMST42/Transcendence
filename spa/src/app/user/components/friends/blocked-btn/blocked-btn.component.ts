@@ -42,7 +42,6 @@ export class BlockedBtnComponent implements OnInit {
               this.state = 'BLOCK';
             }
           }
-          console.log(this.state);
         })
         .catch((data) => {
           this.friendService

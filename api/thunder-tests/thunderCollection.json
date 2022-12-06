@@ -9,7 +9,7 @@
       "headers": [],
       "tests": [],
       "options": {
-        "baseUrl": "http://10.12.2.11:3000/api/weather"
+        "baseUrl": "http://localhost:3000/api/weather"
       }
     }
   },
@@ -23,7 +23,7 @@
       "headers": [],
       "tests": [],
       "options": {
-        "baseUrl": "http://10.12.2.11:3000/api/auth"
+        "baseUrl": "http://localhost:3000/api/auth"
       }
     }
   }

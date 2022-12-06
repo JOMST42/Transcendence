@@ -19,7 +19,7 @@ export class HomeComponent implements OnInit {
   constructor(private readonly authService: AuthService) {}
 
   handleClick() {
-    window.location.href = 'http://10.12.2.11:3000/api/auth/ft/login';
+    window.location.href = 'http://localhost:3000/api/auth/ft/login';
     this.authService.login();
   }
 

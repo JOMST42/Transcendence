@@ -11,7 +11,7 @@ export class PlayService {
 
   public reconnect() {
     // this.socket?.disconnect();
-    // this.socket = io("http://10.12.2.11:3000/pong");
+    // this.socket = io("http://localhost:3000/pong");
     // return this.socket;
     this.socket?.disconnect();
     this.socket.connect();
