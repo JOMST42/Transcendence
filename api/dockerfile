@@ -4,52 +4,30 @@ FROM node:18.12.1-alpine as builder
 WORKDIR /api
 
 # A wildcard is used to ensure both package.json AND package-lock.json are copied
-# COPY package*.json ./
-# COPY prisma ./prisma/
-COPY . .
+COPY package*.json ./
+COPY yarn.lock ./
+COPY prisma ./prisma/
 
 # Install app dependencies
 RUN yarn install
+
+COPY . .
+
+CMD ["yarn", "start:migrate"]
 
 # RUN npm run build
 
 # FROM node:18.12.1-alpine
 
-# COPY --from=builder /api/node_modules ./node_modules
-# COPY --from=builder /api/package*.json ./
-# COPY --from=builder /api/dist ./dist
+# # COPY --from=builder /api/node_modules ./node_modules
+# # COPY --from=builder /api/package*.json ./
+# # COPY --from=builder /api/tsconfig.*.json ./
+# # # COPY --from=builder /api/dist ./dist
+# # COPY --from=builder /api/prisma ./prisma
 
-# RUN npx prisma migrate dev
-COPY ./tools/docker_prisma.sh /tmp/docker_prisma.sh
-RUN chmod +x /tmp/docker_prisma.sh
+# COPY --from=builder /api .
 
-# EXPOSE 3000
-ENTRYPOINT ["/tmp/docker_prisma.sh"]
-CMD [ "yarn", "start" ]
-
-# FROM alpine:3.15
-
-# #set-up users
-# RUN apk add --update --no-cache mariadb mariadb-client && \
-#     mkdir /run/mysqld
-
-# EXPOSE 3306
-
-# COPY ./tools/mariadb_setup.sh /tmp/mariadb_setup.sh
-
-# RUN chmod +x /tmp/mariadb_setup.sh
-
-# ENTRYPOINT ["/tmp/mariadb_setup.sh"]
-
-# CMD ["mariadbd", "--user=root", "--skip-networking=0"]
+# CMD ["yarn", "start:migrate"]
 
 
-# FROM node:18.12.1-alpine as node
-
-# RUN mkdir /api
-# WORKDIR /api
-
-# # RUN yarn install && npx prisma migrate dev --schema ./prisma/schema.prisma && npx prisma db seed
-# RUN yarn install
-# CMD yarn start
 

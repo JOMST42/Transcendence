@@ -3,11 +3,11 @@ set -euo pipefail
 cd /api
 
 echo "CHECKING PRISMA CONFIGURATION..."
-ERROR=1
 
-while [$ERROR == 1]
+while [$ERROR != 0]
 do
 	npx prisma migrate dev
+	$ERROR = $?
 	npx prisma db seed
 done 
 
