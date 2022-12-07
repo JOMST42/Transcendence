@@ -16,7 +16,7 @@
     ></button>
   </div>
   <div class="mt-4">
-    <app-game-invite [userId]="user.userId"></app-game-invite>
+    <app-game-invite (click)="cancel()" [userId]="user.userId"></app-game-invite>
   </div>
   <div class="mt-4" *ngIf="!user.isOwner && me.role === 'ADMIN'">
     <p>Time (min)</p>

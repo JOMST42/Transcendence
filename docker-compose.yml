@@ -54,17 +54,4 @@ networks:
 
 volumes:
   v_spa:
-    name: v_spa
-    driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: ${PWD}/spa
-
   v_api:
-    name: v_api
-    driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: ${PWD}/api
