@@ -1,4 +1,5 @@
 .vscode/
 .git/
+.angular/
 dump/
 node_modules/
