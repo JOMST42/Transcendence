@@ -70,7 +70,6 @@ export class FriendService {
   async addFriend(userId: number, meId: number) {
     const friend = await this.checkFriendship(userId, meId)
       .then((data) => {
-        console.log(data);
       })
       .catch((err) => {
         this.createFriendship(userId, meId)

@@ -36,9 +36,6 @@ export class FriendRequestsComponent implements OnInit, OnDestroy {
           this.friendsRequests = data;
           this.newRequest(this.friendsRequests.length);
         },
-        error: (err) => {
-          console.log(err);
-        },
       });
   }
   ngOnDestroy(): void {

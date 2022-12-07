@@ -38,9 +38,6 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
         next: (data) => {
           this.user = data;
         },
-        error: (err) => {
-          console.log(err);
-        },
       });
   }
 
@@ -57,9 +54,6 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (data) => {
           this.me = data;
-        },
-        error: (err) => {
-          console.log(err);
         },
       });
   }

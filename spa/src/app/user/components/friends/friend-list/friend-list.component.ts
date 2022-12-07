@@ -65,9 +65,6 @@ export class FriendListComponent implements OnInit, OnDestroy {
         next: (data) => {
           this.me = data;
         },
-        error: (err) => {
-          console.log(err);
-        },
       });
 
     this.friendService
@@ -76,9 +73,6 @@ export class FriendListComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (data) => {
           this.friendsList = data;
-        },
-        error: (err) => {
-          console.log(err);
         },
       });
   }

@@ -64,9 +64,6 @@ export class FriendCardComponent implements OnInit {
             }
           }
         },
-        error: (err) => {
-          console.log(err);
-        },
       });
   }
 
@@ -96,9 +93,7 @@ export class FriendCardComponent implements OnInit {
       .then((data) => {
         this.user = data;
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => {});
   }
 
   ngOnInit(): void {

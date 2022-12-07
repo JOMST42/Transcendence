@@ -92,9 +92,6 @@ export class TwoFactorsAuthComponent implements OnInit {
             this.codeQR = data;
             this.showDialog();
           },
-          error: (err) => {
-            console.log(err);
-          },
         });
     }
   }
@@ -106,9 +103,6 @@ export class TwoFactorsAuthComponent implements OnInit {
       .subscribe({
         next: (data) => {
           this.me = data;
-        },
-        error: (err) => {
-          console.log(err);
         },
       });
   }

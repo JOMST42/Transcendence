@@ -29,7 +29,6 @@ export class RefuseFriendBtnComponent implements OnInit {
             'Friend removed !',
             'Ciao Bye ' + this.user.displayName
           );
-          console.log(data);
           this.buttonState = true;
         },
         error: (err) => {
@@ -47,8 +46,7 @@ export class RefuseFriendBtnComponent implements OnInit {
         } else {
           this.buttonState = true;
         }
-      })
-      .catch((err) => console.log('err catch dans refuse friend btn'));
+      });
   }
 
   async ngOnInit(): Promise<void> {

@@ -42,8 +42,7 @@ export class AcceptFriendBtnComponent implements OnInit {
         } else {
           this.buttonState = true;
         }
-      })
-      .catch((err) => console.log('err catch dans accept friend btn'));
+      });
   }
 
   async ngOnInit(): Promise<void> {

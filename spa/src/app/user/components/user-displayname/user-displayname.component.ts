@@ -50,9 +50,6 @@ export class UserDisplaynameComponent implements OnInit {
               'Your new display name is ' + this.displayName + ' !'
             );
           },
-          error: (err) => {
-            console.log(err);
-          },
         });
     }
   }

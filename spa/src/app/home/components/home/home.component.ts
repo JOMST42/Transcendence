@@ -32,9 +32,6 @@ export class HomeComponent implements OnInit {
       next: (user: User | null) => {
         this.user = user;
       },
-      error: (err) => {
-        console.log(err);
-      },
     });
   }
 
@@ -45,9 +42,6 @@ export class HomeComponent implements OnInit {
       .subscribe({
         next: (data) => {
           this.user = data;
-        },
-        error: (err) => {
-          console.log(err);
         },
       });
   }

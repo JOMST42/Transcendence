@@ -67,9 +67,6 @@ export class MatchHistoryComponent implements OnInit {
 					});
 				});
       },
-      error: (err) => {
-        console.log(err);
-      },
     });
 	}
 

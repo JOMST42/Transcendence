@@ -29,11 +29,7 @@ export class SearchUserComponent implements OnInit, OnDestroy {
           if (data) {
             this.users = data;
             this.loading = false;
-            console.log(data);
           }
-        },
-        error: (err) => {
-          console.log(err);
         },
       });
   }

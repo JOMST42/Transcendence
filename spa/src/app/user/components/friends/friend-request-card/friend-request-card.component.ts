@@ -36,9 +36,7 @@ export class FriendRequestCardComponent implements OnInit {
       .then((data) => {
         this.myFriend = data;
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => {});
   }
 
   ngOnInit(): void {
