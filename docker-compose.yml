@@ -1,0 +1,70 @@
+version: '3.8'
+
+services:
+  postgres:
+    container_name: postgres
+    image: postgres:latest
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: ${DEV_DB_USER}
+      POSTGRES_PASSWORD: ${DEV_DB_PASSWORD}
+      POSTGRES_DB: ${DEV_DB_NAME}
+    networks:
+      - transcendence
+    restart: always
+
+  api:
+    container_name: api
+    build: ./api
+    env_file:
+      - .env
+    depends_on:
+      postgres:
+        condition: service_started
+    ports:
+        - "3000:3000"
+    volumes:
+        - v_api:/api
+        - /api/node_modules
+    networks:
+      - transcendence
+    restart: unless-stopped
+    # command: yarn start
+
+  spa:
+    container_name: spa
+    build: ./spa
+    env_file:
+      - .env
+    ports:
+        - "4200:4200"
+    volumes:
+        - v_spa:/spa
+        - /spa/node_modules
+    networks:
+      - transcendence
+    restart: unless-stopped
+    # command: yarn start
+
+networks:
+  transcendence:
+    name: n_transcendence
+    driver: bridge
+
+volumes:
+  v_spa:
+    name: v_spa
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ${PWD}/spa
+
+  v_api:
+    name: v_api
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ${PWD}/api

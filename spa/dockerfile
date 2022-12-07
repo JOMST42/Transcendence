@@ -1,0 +1,36 @@
+#node.js to run our app. 18.12.1 is the current recommended version
+FROM node:18.12.1-alpine as node
+
+WORKDIR /spa
+
+COPY package*.json ./
+RUN yarn install
+
+COPY . .
+# COPY node_modules /app
+
+# RUN yarn install
+CMD yarn start
+
+# COPY package.json /app
+# COPY node_modules /app
+
+# WORKDIR /app
+
+
+	
+
+# FROM node:18.12.1-alpine as node
+
+# RUN adduser --disabled-password --shell /bin/false jomst jomst
+
+# ENV HOME=/home/jomst
+# COPY package.json $HOME/spa/
+# # COPY node_modules $HOME/spa/
+# RUN chown -R jomst:jomst $HOME/*
+
+# USER jomst
+# WORKDIR /home/jomst/spa
+
+# RUN yarn install
+# CMD yarn start
