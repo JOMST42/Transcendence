@@ -328,11 +328,13 @@ export class ChatService {
           },
         });
       }
-      await this.prisma.chatRoom.delete({
-        where: {
-          id: roomId,
-        },
-      });
+      try {
+        await this.prisma.chatRoom.delete({
+          where: {
+            id: roomId,
+          },
+        });
+      } catch {}
     } else {
       const newOwner = room.users.reduce((prev, user) => {
         if (!prev) {
