@@ -23,10 +23,10 @@ services:
       postgres:
         condition: service_started
     ports:
-        - "3000:3000"
+      - '3000:3000'
     volumes:
-        - v_api:/api
-        - /api/node_modules
+      - v_api:/api
+      # - /api/node_modules
     networks:
       - transcendence
     restart: unless-stopped
@@ -38,10 +38,10 @@ services:
     env_file:
       - .env
     ports:
-        - "4200:4200"
+      - '4200:4200'
     volumes:
-        - v_spa:/spa
-        - /spa/node_modules
+      - v_spa:/spa
+      # - /spa/node_modules
     networks:
       - transcendence
     restart: unless-stopped
