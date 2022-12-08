@@ -51,7 +51,7 @@ export class PongRoom {
     this.prismaGame = prismaGame;
     this.server = server;
 
-    this.waitCountdown = new Timer(TimerType.COUNTDOWN, 60, 0);
+0   this.waitCountdown = new Timer(TimerType.COUNTDOWN, 20, 0);
     this.readyCountdown = new Timer(TimerType.COUNTDOWN, 20, 0);
     this.gameCountdown = new Timer(TimerType.COUNTDOWN, 3, 0);
 
@@ -129,6 +129,15 @@ export class PongRoom {
     this.game.pause();
     this.server.to(this.roomId).emit('game-waiting', this.getRoomId());
     this.waitCountdown.start(() => {
+      if (this.leaveAllowed && (!this.p1.joined || !this.p2.joined)){
+        this.server
+            .to(this.roomId)
+            .emit(
+              'player-left',
+              'a player has left the game!',
+            );
+        this.game.forceWin(0);
+      }
       return this.startReadying();
     });
     this.logger.log('Room waiting for...' + this.waitCountdown.getTime());
