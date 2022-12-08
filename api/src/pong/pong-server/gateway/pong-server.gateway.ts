@@ -105,10 +105,6 @@ export class PongServerGateway
 
         // });
         socket.setMaxListeners(Infinity); // TODO
-        this.logger.log(
-          'Socket connection: socket connected with nickname ' +
-            socket.data.user.displayName,
-        );
       }
 
       // let i = 0;
