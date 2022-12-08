@@ -1,0 +1,15 @@
+FROM node:18.7-alpine
+
+WORKDIR /spa
+
+COPY package.json ./
+COPY yarn.lock ./
+
+RUN yarn install
+RUN npm install -g @angular/cli@14.2.1
+
+COPY . .
+
+RUN yarn build
+
+EXPOSE 4200

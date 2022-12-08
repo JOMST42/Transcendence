@@ -1,6 +1,0 @@
-FROM node:18.12.1-alpine
-
-WORKDIR /spa
-COPY package.json yarn.lock ./
-RUN yarn install
-COPY . .
