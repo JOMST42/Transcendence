@@ -26,7 +26,7 @@ services:
       - '3000:3000'
     volumes:
       - v_api:/api
-      # - v_api_node:/api/node_modules
+      - v_api_node:/api/node_modules
     networks:
       - transcendence
     restart: unless-stopped
@@ -43,7 +43,7 @@ services:
       - '4200:4200'
     volumes:
       - v_spa:/spa
-      # - v_spa_node:/spa/node_modules
+      - v_spa_node:/spa/node_modules
     networks:
       - transcendence
     restart: unless-stopped
