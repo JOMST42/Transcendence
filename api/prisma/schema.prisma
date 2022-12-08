@@ -11,17 +11,17 @@ datasource db {
 }
 
 model User {
-  id             Int        @id @default(autoincrement())
-  username       String     @unique
-  email          String     @unique
-  displayName    String
-  normalizedName String     @unique
-  firstName      String
-  lastName       String
-  avatarUrl      String?
-  status         UserStatus @default(OFFLINE)
-  twoFASecret String? 
-  isTwoFactorAuthEnabled Boolean @default(false)
+  id                     Int        @id @default(autoincrement())
+  username               String     @unique
+  email                  String     @unique
+  displayName            String
+  normalizedName         String     @unique
+  firstName              String
+  lastName               String
+  avatarUrl              String?
+  status                 UserStatus @default(OFFLINE)
+  twoFASecret            String?
+  isTwoFactorAuthEnabled Boolean    @default(false)
 
   rooms           UserChatRoom[]
   connections     UserConnection[]
@@ -120,7 +120,7 @@ model ChatMessage {
   content  String
   author   User     @relation(fields: [authorId], references: [id])
   authorId Int
-  room     ChatRoom @relation(fields: [roomId], references: [id])
+  room     ChatRoom @relation(fields: [roomId], references: [id], onDelete: Cascade)
   roomId   String
 
   createdAt DateTime @default(now())
