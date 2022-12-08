@@ -26,26 +26,28 @@ services:
       - '3000:3000'
     volumes:
       - v_api:/api
-      # - /api/node_modules
+      # - v_api_node:/api/node_modules
     networks:
       - transcendence
     restart: unless-stopped
-    # command: yarn start
+    command: yarn start:migrate
 
   spa:
     container_name: spa
     build: ./spa
     env_file:
       - .env
+    depends_on:
+      - api
     ports:
       - '4200:4200'
     volumes:
       - v_spa:/spa
-      # - /spa/node_modules
+      # - v_spa_node:/spa/node_modules
     networks:
       - transcendence
     restart: unless-stopped
-    # command: yarn start
+    command: yarn start
 
 networks:
   transcendence:
@@ -54,4 +56,19 @@ networks:
 
 volumes:
   v_spa:
+    name: v_spa
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ${PWD}/spa
+  v_spa_node:
+
   v_api:
+    name: v_api
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ${PWD}/api
+  v_api_node:
