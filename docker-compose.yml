@@ -30,15 +30,13 @@ services:
     networks:
       - transcendence
     restart: unless-stopped
-    command: yarn start:migrate
+    # command: yarn start:migrate
 
   spa:
     container_name: spa
     build: ./spa
     env_file:
       - .env
-    depends_on:
-      - api
     ports:
       - '4200:4200'
     volumes:
@@ -47,7 +45,7 @@ services:
     networks:
       - transcendence
     restart: unless-stopped
-    command: yarn start
+    # command: yarn start
 
 networks:
   transcendence:

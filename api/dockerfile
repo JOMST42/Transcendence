@@ -1,7 +1,16 @@
+FROM node:18.12.1-alpine as builder
 
-FROM node:18.12.1-alpine
-
+# Create app directory
 WORKDIR /api
-COPY package.json yarn.lock ./
+
+# A wildcard is used to ensure both package.json AND package-lock.json are copied
+COPY package*.json ./
+COPY yarn.lock ./
+COPY prisma ./prisma/
+
+# Install app dependencies
 RUN yarn install
+
 COPY . .
+
+CMD ["yarn", "start:migrate"]
