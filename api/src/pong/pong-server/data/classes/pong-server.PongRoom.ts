@@ -51,7 +51,7 @@ export class PongRoom {
     this.prismaGame = prismaGame;
     this.server = server;
 
-0   this.waitCountdown = new Timer(TimerType.COUNTDOWN, 20, 0);
+    this.waitCountdown = new Timer(TimerType.COUNTDOWN, 20, 0);
     this.readyCountdown = new Timer(TimerType.COUNTDOWN, 20, 0);
     this.gameCountdown = new Timer(TimerType.COUNTDOWN, 3, 0);
 
