@@ -1,0 +1,3 @@
+- Change localhost for the computer IP address (should be 10.xx.xx.xx)
+- Change api callback on the intranet
+- Manually migrate and seed the database
