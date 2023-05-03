@@ -36,9 +36,9 @@ main()
 
 async function main() {
   console.log(`Start seeding ...`);
-  // await seedUsers();
-  // await seedGames();
-  // await seedFriends();
+  await seedUsers();
+  await seedGames();
+  await seedFriends();
   // for (const w of weatherData) {
   //   const weather = await prisma.weather.create({
   //     data: w,

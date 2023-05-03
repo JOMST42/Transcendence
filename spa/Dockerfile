@@ -10,6 +10,6 @@ RUN npm install -g @angular/cli@14.2.1
 
 COPY . .
 
-RUN yarn build
+RUN yarn start
 
 EXPOSE 4200

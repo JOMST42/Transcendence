@@ -14,37 +14,37 @@ services:
       - transcendence
     restart: always
 
-  api:
-    container_name: api
-    build: ./api
-    env_file:
-      - .env
-    depends_on:
-      - postgres
-    ports:
-      - 3000:3000
-    volumes:
-      - ./api:/api
-      - /api/node_modules
-    networks:
-      - transcendence
-    restart: unless-stopped
-    command: yarn start:migrate
+  # api:
+  #   container_name: api
+  #   build: ./api
+  #   env_file:
+  #     - .env
+  #   depends_on:
+  #     - postgres
+  #   ports:
+  #     - 3000:3000
+  #   volumes:
+  #     - ./api:/api
+  #     - /api/node_modules
+  #   networks:
+  #     - transcendence
+  #   restart: unless-stopped
+  #   command: yarn start:migrate
 
-  spa:
-    container_name: spa
-    build: ./spa
-    env_file:
-      - .env
-    ports:
-      - 4200:4200
-    volumes:
-      - ./spa:/spa
-      - /spa/node_modules
-    networks:
-      - transcendence
-    restart: unless-stopped
-    command: yarn start
+  # spa:
+  #   container_name: spa
+  #   build: ./spa
+  #   env_file:
+  #     - .env
+  #   ports:
+  #     - 4200:4200
+  #   volumes:
+  #     - ./spa:/spa
+  #     - /spa/node_modules
+  #   networks:
+  #     - transcendence
+  #   restart: unless-stopped
+  #   command: yarn start
 
 networks:
   transcendence:
